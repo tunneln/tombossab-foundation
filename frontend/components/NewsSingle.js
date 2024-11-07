@@ -70,7 +70,6 @@ const NewsSingle = () => {
                                             <ul className="news-share">
                                                 <li><a href="#"><i className="fa fa-twitter"></i></a></li>
                                                 <li><a href="#"><i className="fa fa-facebook"></i></a></li>
-                                                <li><a href="#"><i className="fa fa-pinterest"></i></a></li>
                                                 <li><a href="#"><i className="fa fa-instagram"></i></a></li>
                                             </ul>
                                         </div>

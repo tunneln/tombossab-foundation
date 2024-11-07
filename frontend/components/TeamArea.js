@@ -19,12 +19,11 @@ const TeamArea = () => {
                     <div className="col-lg-3 col-sm-6">
                         <div className="team-item team-item1">
                             <div className="team__img">
-                                <img src="/images/team.jpg" alt="team image" />
+                                <img src="/images/birkiti.jpg" alt="team image" />
                                     <div className="team__img-links">
                                         <ul>
                                             <li><a href="#"><i className="fa fa-twitter"></i></a></li>
                                             <li><a href="#"><i className="fa fa-facebook"></i></a></li>
-                                            <li><a href="#"><i className="fa fa-pinterest"></i></a></li>
                                             <li><a href="#"><i className="fa fa-instagram"></i></a></li>
                                         </ul>
                                     </div>
@@ -38,12 +37,11 @@ const TeamArea = () => {
                     <div className="col-lg-3 col-sm-6">
                         <div className="team-item team-item2">
                             <div className="team__img">
-                                <img src="/images/team2.jpg" alt="team image" />
+                                <img src="/images/hanna.jpg" alt="team image" />
                                     <div className="team__img-links">
                                         <ul>
                                             <li><a href="#"><i className="fa fa-twitter"></i></a></li>
                                             <li><a href="#"><i className="fa fa-facebook"></i></a></li>
-                                            <li><a href="#"><i className="fa fa-pinterest"></i></a></li>
                                             <li><a href="#"><i className="fa fa-instagram"></i></a></li>
                                         </ul>
                                     </div>
@@ -57,12 +55,11 @@ const TeamArea = () => {
                     <div className="col-lg-3 col-sm-6">
                         <div className="team-item team-item3">
                             <div className="team__img">
-                                <img src="/images/team3.jpg" alt="team image" />
+                                <img src="/images/thomas.jpg" alt="team image" />
                                     <div className="team__img-links">
                                         <ul>
                                             <li><a href="#"><i className="fa fa-twitter"></i></a></li>
                                             <li><a href="#"><i className="fa fa-facebook"></i></a></li>
-                                            <li><a href="#"><i className="fa fa-pinterest"></i></a></li>
                                             <li><a href="#"><i className="fa fa-instagram"></i></a></li>
                                         </ul>
                                     </div>
@@ -76,12 +73,11 @@ const TeamArea = () => {
                     <div className="col-lg-3 col-sm-6">
                         <div className="team-item team-item4">
                             <div className="team__img">
-                                <img src="/images/team4.jpg" alt="team image" />
+                                <img src="/images/ariana.jpg" alt="team image" />
                                     <div className="team__img-links">
                                         <ul>
                                             <li><a href="#"><i className="fa fa-twitter"></i></a></li>
                                             <li><a href="#"><i className="fa fa-facebook"></i></a></li>
-                                            <li><a href="#"><i className="fa fa-pinterest"></i></a></li>
                                             <li><a href="#"><i className="fa fa-instagram"></i></a></li>
                                         </ul>
                                     </div>

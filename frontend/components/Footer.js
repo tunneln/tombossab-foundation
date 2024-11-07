@@ -113,14 +113,13 @@ class Footer extends Component {
                                     <h3 className="widget__title">contact</h3>
                                     <ul className="contact__info">
                                         <li><a href="mailto:contact@tombossabfoundation.org" className="contact__email">contact@tombossabfoundation.org</a></li>
-                                        <li>161 E 110th Street <br />New York, NY 10029</li>
-                                        <li><a href="tel:6668880000">927 392 7701</a></li>
+                                        <li>7522 Overdale Drive <br />Dallas, TX 75254</li>
+                                        <li><a href="tel:2142083936">214 208 3936</a></li>
                                     </ul>
                                     <div className="footer__social">
                                         <ul>
                                             <li><a href="#"><i className="fa fa-twitter"></i></a></li>
                                             <li><a href="#"><i className="fa fa-facebook"></i></a></li>
-                                            <li><a href="#"><i className="fa fa-pinterest"></i></a></li>
                                             <li><a href="#"><i className="fa fa-instagram"></i></a></li>
                                         </ul>
                                     </div>

@@ -20,7 +20,6 @@ const Contact = () => {
                             <ul className="section__list">
                                 <li><a href="#"><i className="fa fa-twitter"></i></a></li>
                                 <li><a href="#"><i className="fa fa-facebook"></i></a></li>
-                                <li><a href="#"><i className="fa fa-pinterest"></i></a></li>
                                 <li><a href="#"><i className="fa fa-instagram"></i></a></li>
                             </ul>
                         </div>
@@ -69,8 +68,8 @@ const Contact = () => {
                         <div className="contact-item contact-item2">
                             <h3 className="contact__title">Address</h3>
                             <p className="contact__desc" >
-                                161 E 110th Street <br />
-                                New York, NY 10029
+                                7522 Overdale Drive <br />
+                                Dallas, TX 75254
                             </p>
                         </div>
                     </div>
@@ -79,7 +78,7 @@ const Contact = () => {
                             <h3 className="contact__title">Contact</h3>
                             <p className="contact__desc">
                                 contact@tombossabfoundation.org <br />
-                                972 392 7701 
+                                214 208 3936 
                             </p>
                         </div>
                     </div>

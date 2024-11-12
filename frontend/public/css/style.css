@@ -1729,9 +1729,9 @@ a:hover {
     position: absolute;
     content: '';
     top: 0;
-    margin-top: -236px;
+    margin-top: -192px;
     right: 0;
-    width: 413px;
+    width: 777px;
     height: 698px;
     background-color: #e36955;
     z-index: -1;
@@ -1768,8 +1768,8 @@ a:hover {
 /*=== fun-content-slide ===*/
 .mixer-area2 .fun-content-slide {
     background-color: #e36955;
-    margin-top: -344px;
-    padding: 115px 0 100px 118px;
+    margin-top: -300px;
+    padding: 115px 0 100px 110px;
     position: relative;
     z-index: 1;
 }
@@ -3237,7 +3237,7 @@ a:hover {
 .helping-area2:after {
     background-color: #863bae;
     margin-top: -261px;
-    height: 954px;
+    height: 971px;
 }
 .helping-area2 .helping-form .form-shared {
     margin-top: 51px;
@@ -4101,7 +4101,7 @@ a:hover {
 }
 .contact-area .contact-detail-action .contact-item {
     background-color: #50bac3;
-    padding: 52px 30px 50px 60px;
+    padding: 52px 30px 50px 45px;
     height: 270px;
     position: relative;
     z-index: 1;
@@ -4140,9 +4140,9 @@ a:hover {
     margin-bottom: 40px;
 }
 .contact-area .contact-detail-action .contact-item .contact__desc {
-    color: #fff;
+    color: hwb(0 100% 0% / 0.956);
     line-height: 30px;
-    font-weight: 500;
+    font-weight: 650;
     font-size: 15px;
 }
 .contact-area .form-shared form .textarea {
@@ -4765,5 +4765,5 @@ html {
 
 .swiper-pagination {
     position: relative !important;
-	margin-top: 30px;
+	margin-top: -26px;
 }

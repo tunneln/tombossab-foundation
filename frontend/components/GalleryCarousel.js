@@ -1,6 +1,10 @@
 import React, {useEffect} from 'react';
-import Swiper from 'react-id-swiper';
-import 'swiper/css/swiper.css';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+import 'swiper/css';
+import 'swiper/css/pagination';
+
+import { Pagination } from 'swiper/modules';
 
 const GalleryCarousel = () => {
 
@@ -16,41 +20,6 @@ const GalleryCarousel = () => {
         });
 
     });
-
-    const params = {
-        slidesPerView : 3,
-        loop: true,
-        speed: 1000,
-        spaceBetween : 30,
-        autoplay: {
-            delay: 3000,
-            disableOnInteraction: false
-        },
-        pagination: {
-            el: '.swiper-pagination',
-            type: 'bullets',
-            clickable: true
-        },
-        // Responsive breakpoints
-        breakpoints: {
-            1499:{
-                slidesPerView : 3
-            },
-
-            991:{
-                slidesPerView : 2
-            },
-
-            767:{
-                slidesPerView : 1
-
-            },
-
-            575:{
-                slidesPerView : 1
-            }
-        }
-    }
 
     return (
         <section className="gallery-area text-center">
@@ -70,43 +39,88 @@ const GalleryCarousel = () => {
                     <div className="col-lg-12">
                         <div className="gallery-carousel">
 
-                            <Swiper {...params}>
-                                <div className="gallery-item">
-                                    <img src="/images/gallery-img.jpg" alt="" />
-                                        <a href="/images/gallery-img.jpg" className="glightbox">
-                                            <span className="gallery-icon"></span></a>
-                                </div>
-                                <div className="gallery-item">
-                                    <img src="/images/gallery-img2.jpg" alt="" />
-                                        <a href="/images/gallery-img2.jpg" className="glightbox">
-                                            <span className="gallery-icon"></span></a>
-                                </div>
-                                <div className="gallery-item">
-                                    <img src="/images/gallery-img3.jpg" alt="" />
+                            <Swiper 
+                                slidesPerView={3}
+                                loop={true}
+                                speed={1000}
+                                spaceBetween={30}
+                                autoplay={{
+                                    delay: 3000,
+                                    disableOnInteraction: false
+                                }}
+                                modules={[Pagination]}
+                                pagination={{
+                                    clickable: true,
+                                }}
+                                // Responsive breakpoints
+                                breakpoints={{
+                                    1499:{
+                                        slidesPerView : 3
+                                    },
+                                    991:{
+                                        slidesPerView : 2
+                                    },
+                                    767:{
+                                        slidesPerView : 1
+
+                                    },
+                                    575:{
+                                        slidesPerView : 1
+                                    }
+                                }}
+                            >
+                                <SwiperSlide>
+                                    <div className="gallery-item">
+                                        <img src="/images/gallery-img.jpg" alt="" />
+                                            <a href="/images/gallery-img.jpg" className="glightbox">
+                                                <span className="gallery-icon"></span></a>
+                                    </div>
+                                </SwiperSlide>
+                                <SwiperSlide>
+                                    <div className="gallery-item">
+                                        <img src="/images/gallery-img2.jpg" alt="" />
+                                            <a href="/images/gallery-img2.jpg" className="glightbox">
+                                                <span className="gallery-icon"></span></a>
+                                    </div>
+                                </SwiperSlide>
+                                <SwiperSlide>
+                                    <div className="gallery-item">
+                                        <img src="/images/gallery-img3.jpg" alt="" />
+                                            <a href="/images/gallery-img3.jpg" className="glightbox"> <span className="gallery-icon"></span></a>
+                                    </div>
+                                </SwiperSlide>
+                                <SwiperSlide>
+                                    <div className="gallery-item">
+                                        <img src="/images/gallery-img.jpg" alt="" />
+                                            <a href="/images/gallery-img.jpg" className="glightbox">
+                                                <span className="gallery-icon"></span></a>
+                                    </div>
+                                </SwiperSlide>
+                                <SwiperSlide>
+                                    <div className="gallery-item">
+                                        <img src="/images/gallery-img2.jpg" alt="" />
+                                            <a href="/images/gallery-img2.jpg" className="glightbox"> <span className="gallery-icon"></span></a>
+                                    </div>
+                                </SwiperSlide>
+                                <SwiperSlide>
+                                    <div className="gallery-item">
+                                        <img src="/images/gallery-img.jpg" alt="" />
+                                            <a href="/images/gallery-img.jpg" className="glightbox">
+                                                <span className="gallery-icon"></span></a>
+                                    </div>
+                                </SwiperSlide>
+                                <SwiperSlide>
+                                    <div className="gallery-item">
+                                        <img src="/images/gallery-img2.jpg" alt="" />
+                                            <a href="/images/gallery-img2.jpg" className="glightbox"> <span className="gallery-icon"></span></a>
+                                    </div>
+                                </SwiperSlide>
+                                <SwiperSlide>
+                                    <div className="gallery-item">
+                                        <img src="/images/gallery-img3.jpg" alt="" />
                                         <a href="/images/gallery-img3.jpg" className="glightbox"> <span className="gallery-icon"></span></a>
-                                </div>
-                                <div className="gallery-item">
-                                    <img src="/images/gallery-img.jpg" alt="" />
-                                        <a href="/images/gallery-img.jpg" className="glightbox">
-                                            <span className="gallery-icon"></span></a>
-                                </div>
-                                <div className="gallery-item">
-                                    <img src="/images/gallery-img2.jpg" alt="" />
-                                        <a href="/images/gallery-img2.jpg" className="glightbox"> <span className="gallery-icon"></span></a>
-                                </div>
-                                <div className="gallery-item">
-                                    <img src="/images/gallery-img.jpg" alt="" />
-                                        <a href="/images/gallery-img.jpg" className="glightbox">
-                                            <span className="gallery-icon"></span></a>
-                                </div>
-                                <div className="gallery-item">
-                                    <img src="/images/gallery-img2.jpg" alt="" />
-                                        <a href="/images/gallery-img2.jpg" className="glightbox"> <span className="gallery-icon"></span></a>
-                                </div>
-                                <div className="gallery-item">
-                                    <img src="/images/gallery-img3.jpg" alt="" />
-                                    <a href="/images/gallery-img3.jpg" className="glightbox"> <span className="gallery-icon"></span></a>
-                                </div>
+                                    </div>
+                                </SwiperSlide>
                             </Swiper>
                         </div>
                     </div>

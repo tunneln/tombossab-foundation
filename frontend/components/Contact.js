@@ -77,8 +77,8 @@ const Contact = () => {
                         <div className="contact-item contact-item3">
                             <h3 className="contact__title">Contact</h3>
                             <p className="contact__desc">
-                                <a href="mailto:contact@tombossabfoundation.org">contact@tombossabfoundation.org</a> <br />
-                                <a href="tel:2142083936">214 208 3936</a>
+                                contact@tombossabfoundation.org <br />
+                                214 208 3936
                             </p>
                         </div>
                     </div>

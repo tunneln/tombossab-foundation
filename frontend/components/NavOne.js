@@ -70,8 +70,6 @@ class NavOne extends Component {
                                     <div className="top-action-content info-action-content">
                                         <div className="info-box info-box-2 d-flex align-items-center justify-content-end">
                                             <ul className="top-action-list d-flex align-items-center">
-                                                {/* <li className="action__text"><a href="#">login</a></li>
-                                                <li className="action__text"><a href="#">register</a></li> */}
                                                 <li><a href="#"><i className="fa fa-twitter"></i></a></li>
                                                 <li><a href="#"><i className="fa fa-facebook"></i></a></li>
                                                 <li><a href="#"><i className="fa fa-instagram"></i></a></li>
@@ -108,15 +106,15 @@ class NavOne extends Component {
                                                 <nav className="main-navigation">
                                                     <ul>
                                                         <li className="active"><Link legacyBehavior href="/"><a>Home</a></Link></li>
-                                                        <li><a href="/causes">causes</a>
+                                                        <li>
+                                                            <Link legacyBehavior href="/causes"><a>causes</a></Link>
                                                             <ul className="dropdown-menu-item">
                                                                 <li><Link legacyBehavior href="/causes"><a>causes</a></Link></li>
-                                                                {/* <li><Link legacyBehavior href="/causes-detail"><a>causes detail</a></Link></li> */}
                                                                 <li><Link legacyBehavior href="/donate"><a>donate now</a></Link></li>
                                                             </ul>
                                                         </li>
-                                                        <li><a href="/events">events</a> </li>
-                                                        <li><a href="/news">news</a> </li>
+                                                        <li><Link legacyBehavior href="/events"><a>events</a></Link></li>
+                                                        <li><Link legacyBehavior href="/news"><a>news</a></Link></li>
                                                         <li><a href="#">pages</a>
                                                             <ul className="dropdown-menu-item">
                                                                 <li><Link legacyBehavior href="/about"><a>about us</a></Link></li>

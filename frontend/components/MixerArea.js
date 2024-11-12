@@ -1,8 +1,12 @@
 import React, {Component} from 'react';
 import CountUp from 'react-countup';
 import VisibilitySensor from 'react-visibility-sensor';
-import Swiper from 'react-id-swiper';
-import 'swiper/css/swiper.css';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+import 'swiper/css';
+import 'swiper/css/pagination';
+
+import { Pagination, Autoplay } from 'swiper/modules';
 
 class MixerArea extends Component {
     constructor(){
@@ -17,7 +21,6 @@ class MixerArea extends Component {
             this.setState({startCounter: true});
         }
     }
-
 
     render() {
         return (
@@ -64,30 +67,50 @@ class MixerArea extends Component {
                             <div className="col-lg-6">
                                 <div className="fun-content-slide">
 
-                                    <Swiper>
-
-                                        <div className="fun-slide-item">
-                                            <div className="icon-quote">“</div>
-                                            <h3 className="funslide__text">
-                                                No one has ever become poor from giving. 
-                                            </h3>
-                                            <p className="funslide__name">Anne Frank</p>
-                                        </div>
-                                        <div className="fun-slide-item">
-                                            <div className="icon-quote">“</div>
-                                            <h3 className="funslide__text">
-                                                Every man must decide whether he will walk in the light
-                                                of creative altruism or in the darkness of destructive selfishness.
-                                            </h3>
-                                            <p className="funslide__name">Martin Luther King, jr</p>
-                                        </div>
-                                        <div className="fun-slide-item">
-                                            <div className="icon-quote">“</div>
-                                            <h3 className="funslide__text">
-                                                We make a living by what we get. We make a life by what we give. 
-                                            </h3>
-                                            <p className="funslide__name">Winston Churchill</p>
-                                        </div>
+                                    <Swiper
+                                        style={{
+                                            '--swiper-pagination-color': 'pink'
+                                        }}
+                                        pagination={{
+                                            dynamicBullets: true,
+                                        }}
+                                        loop={true}
+                                        speed={3500}
+                                        autoplay={{
+                                            delay: 2500,
+                                            disableOnInteraction: false
+                                        }}
+                                        modules={[Pagination, Autoplay]}
+                                        className="mixerAreaSwiper"
+                                    >
+                                        <SwiperSlide>
+                                            <div className="fun-slide-item">
+                                                <div className="icon-quote">“</div>
+                                                <h3 className="funslide__text">
+                                                    No one has ever become poor from giving. 
+                                                </h3>
+                                                <p className="funslide__name">Anne Frank</p>
+                                            </div>
+                                        </SwiperSlide>
+                                        <SwiperSlide>
+                                            <div className="fun-slide-item">
+                                                <div className="icon-quote">“</div>
+                                                <h3 className="funslide__text">
+                                                    Every man must decide whether he will walk in the light
+                                                    of creative altruism or in the darkness of destructive selfishness.
+                                                </h3>
+                                                <p className="funslide__name">Martin Luther King, jr</p>
+                                            </div>
+                                        </SwiperSlide>
+                                        <SwiperSlide>
+                                            <div className="fun-slide-item">
+                                                <div className="icon-quote">“</div>
+                                                <h3 className="funslide__text">
+                                                    We make a living by what we get. We make a life by what we give. 
+                                                </h3>
+                                                <p className="funslide__name">Winston Churchill</p>
+                                            </div>
+                                        </SwiperSlide>
                                     </Swiper>
                                 </div>
                             </div>

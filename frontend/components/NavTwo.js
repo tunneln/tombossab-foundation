@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Link from 'next/link';
 
-class NavOne extends Component {
+class NavTwo extends Component {
     constructor(){
         super()
         this.state = {
@@ -199,4 +199,4 @@ class NavOne extends Component {
     }
 }
 
-export default NavOne;
+export default NavTwo;

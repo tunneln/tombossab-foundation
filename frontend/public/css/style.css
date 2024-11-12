@@ -4129,9 +4129,6 @@ a:hover {
 .contact-area .contact-detail-action .contact-item2:after {
     background-color: #e36955;
 }
-.contact__email {
-    text-transform: lowercase;
-}
 .contact-area .contact-detail-action .contact-item3,
 .contact-area .contact-detail-action .contact-item3:after {
     background-color: #f1ae44;

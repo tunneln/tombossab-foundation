@@ -48,7 +48,7 @@ const TeamArea = () => {
                             </div>
                             <div className="team__title">
                                 <h3 className="team__title-title"><a href="#">Hanna Negusse</a></h3>
-                                <span className="team__title-meta">volunteer</span>
+                                <span className="team__title-meta">Marketing Assistant</span>
                             </div>
                         </div>
                     </div>
@@ -66,7 +66,7 @@ const TeamArea = () => {
                             </div>
                             <div className="team__title">
                                 <h3 className="team__title-title"><a href="#">Thomas Negusse</a></h3>
-                                <span className="team__title-meta">Volunteer</span>
+                                <span className="team__title-meta">Program Manager</span>
                             </div>
                         </div>
                     </div>

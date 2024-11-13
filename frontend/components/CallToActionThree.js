@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 const CallToActionThree = () => {
     return (
@@ -9,7 +10,7 @@ const CallToActionThree = () => {
                         <div className="cta-item">
                             <h3 className="cta__title">Become an Volunteer</h3>
                             <p className="cta__desc">Join your hand with us for a better life and future</p>
-                            <a href="/volunteer" className="theme-btn">join us now</a>
+                            <Link href="/volunteer" className="theme-btn">join us now</Link>
                         </div>
                     </div>
                 </div>

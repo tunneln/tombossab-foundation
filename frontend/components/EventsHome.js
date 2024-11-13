@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 const EventsHome = () => {
     return (
@@ -27,7 +28,7 @@ const EventsHome = () => {
                             </span>
                                 </div>
                                 <div className="blog-inner-content">
-                                    <h3 className="blog__title"><a href="/events-detail">Save the planets</a></h3>
+                                    <h3 className="blog__title"><Link href="/events-detail">Save the planets</Link></h3>
                                     <ul className="blog__list">
                                         <li className="blog__dot-active">8:00am to 2:00pm</li>
                                         <li>San marcos</li>
@@ -47,7 +48,7 @@ const EventsHome = () => {
                             </span>
                                 </div>
                                 <div className="blog-inner-content">
-                                    <h3 className="blog__title"><a href="/events-detail">Play for the world</a></h3>
+                                    <h3 className="blog__title"><Link href="/events-detail">Play for the world</Link></h3>
                                     <ul className="blog__list">
                                         <li className="blog__dot-active">8:00am to 2:00pm</li>
                                         <li>San marcos</li>
@@ -67,7 +68,7 @@ const EventsHome = () => {
                             </span>
                                 </div>
                                 <div className="blog-inner-content">
-                                    <h3 className="blog__title"><a href="/events-detail">Water for charity</a></h3>
+                                    <h3 className="blog__title"><Link href="/events-detail">Water for charity</Link></h3>
                                     <ul className="blog__list">
                                         <li className="blog__dot-active">8:00am to 2:00pm</li>
                                         <li>San marcos</li>

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import CountUp from 'react-countup';
 import VisibilitySensor from 'react-visibility-sensor';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import Link from 'next/link';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -34,7 +35,7 @@ class MixerArea extends Component {
                                         <img src="/images/section-icon.png" alt="section-icon" />
                                     </div>
                                     <h2 className="section__title text__white">Fundraising for the people and causes that affect our community</h2>
-                                    <a href="/donate" className="theme-btn">start donation</a>
+                                    <Link href="/donate" className="theme-btn">start donation</Link>
                                 </div>
                             </div>
                         </div>

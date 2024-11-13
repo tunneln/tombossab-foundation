@@ -1,4 +1,5 @@
 import React,{useEffect} from 'react';
+import Link from 'next/link';
 
 const Gallery = () => {
 
@@ -8,8 +9,7 @@ const Gallery = () => {
             loop: true,
             autoplayVideos: true,
             beforeSlideLoad: (slide, data) => {
-                // Need to execute a script in the slide?
-                // You can do that here...
+                // For executing a script in the slide
             }
         });
 
@@ -22,9 +22,9 @@ const Gallery = () => {
                     <div className="col-lg-4 col-sm-6">
                         <div className="gallery-item">
                             <img src="/images/gallery-img4.jpg" alt="" />
-                            <a href="/images/gallery-img4.jpg" className="glightbox">
+                            <Link href="/images/gallery-img4.jpg" className="glightbox">
                                 <span className="gallery-icon"></span>
-                            </a>
+                            </Link>
                         </div>
                     </div>
                     <div className="col-lg-4 col-sm-6">

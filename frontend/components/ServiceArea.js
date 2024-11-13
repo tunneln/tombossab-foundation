@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 const ServiceArea = () => {
     return (
@@ -100,8 +101,7 @@ const ServiceArea = () => {
                 <div className="row">
                     <div className="col-lg-12">
                         <div className="button-shared">
-                            <a href="/donate" className="theme-btn">donate
-                                now</a>
+                            <Link href="/donate" className="theme-btn">donate now</Link>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import Link from 'next/link';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -72,53 +73,53 @@ const GalleryCarousel = () => {
                                 <SwiperSlide>
                                     <div className="gallery-item">
                                         <img src="/images/gallery-img.jpg" alt="" />
-                                            <a href="/images/gallery-img.jpg" className="glightbox">
-                                                <span className="gallery-icon"></span></a>
+                                            <Link href="/images/gallery-img.jpg" className="glightbox">
+                                                <span className="gallery-icon"></span></Link>
                                     </div>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <div className="gallery-item">
                                         <img src="/images/gallery-img2.jpg" alt="" />
-                                            <a href="/images/gallery-img2.jpg" className="glightbox">
-                                                <span className="gallery-icon"></span></a>
+                                            <Link href="/images/gallery-img2.jpg" className="glightbox">
+                                                <span className="gallery-icon"></span></Link>
                                     </div>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <div className="gallery-item">
                                         <img src="/images/gallery-img3.jpg" alt="" />
-                                            <a href="/images/gallery-img3.jpg" className="glightbox"> <span className="gallery-icon"></span></a>
+                                            <Link href="/images/gallery-img3.jpg" className="glightbox"> <span className="gallery-icon"></span></Link>
                                     </div>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <div className="gallery-item">
                                         <img src="/images/gallery-img.jpg" alt="" />
-                                            <a href="/images/gallery-img.jpg" className="glightbox">
-                                                <span className="gallery-icon"></span></a>
+                                            <Link href="/images/gallery-img.jpg" className="glightbox">
+                                                <span className="gallery-icon"></span></Link>
                                     </div>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <div className="gallery-item">
                                         <img src="/images/gallery-img2.jpg" alt="" />
-                                            <a href="/images/gallery-img2.jpg" className="glightbox"> <span className="gallery-icon"></span></a>
+                                            <Link href="/images/gallery-img2.jpg" className="glightbox"> <span className="gallery-icon"></span></Link>
                                     </div>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <div className="gallery-item">
                                         <img src="/images/gallery-img.jpg" alt="" />
-                                            <a href="/images/gallery-img.jpg" className="glightbox">
-                                                <span className="gallery-icon"></span></a>
+                                            <Link href="/images/gallery-img.jpg" className="glightbox">
+                                                <span className="gallery-icon"></span></Link>
                                     </div>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <div className="gallery-item">
                                         <img src="/images/gallery-img2.jpg" alt="" />
-                                            <a href="/images/gallery-img2.jpg" className="glightbox"> <span className="gallery-icon"></span></a>
+                                            <Link href="/images/gallery-img2.jpg" className="glightbox"> <span className="gallery-icon"></span></Link>
                                     </div>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <div className="gallery-item">
                                         <img src="/images/gallery-img3.jpg" alt="" />
-                                        <a href="/images/gallery-img3.jpg" className="glightbox"> <span className="gallery-icon"></span></a>
+                                        <Link href="/images/gallery-img3.jpg" className="glightbox"> <span className="gallery-icon"></span></Link>
                                     </div>
                                 </SwiperSlide>
                             </Swiper>

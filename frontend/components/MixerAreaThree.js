@@ -30,7 +30,7 @@ class MixerAreaThree extends Component {
                                     Sapien nunced amet ultrices, dolores sit
                                     ipsum velit purus aliquet, massa fringilla leo orci.
                                 </p>
-                                <a href="#" className="theme-btn">learn more</a>
+                                <Link href="#" className="theme-btn">learn more</Link>
                             </div>
                         </div>
                         <div className="col-lg-6">

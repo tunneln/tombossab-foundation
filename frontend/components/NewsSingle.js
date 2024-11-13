@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 const NewsSingle = () => {
     return (
@@ -188,8 +189,8 @@ const NewsSingle = () => {
                                         <img src="/images/author-avatar5.jpg" alt="" />
                                     </div>
                                     <div className="author__detail">
-                                        <h4 className="author__title author__title2"><a href="/single-news">Learn
-                                            how access to clean water</a></h4>
+                                        <h4 className="author__title author__title2"><Link href="/single-news">Learn
+                                            how access to clean water</Link></h4>
                                     </div>
                                 </div>
                                 <div className="author-box recent-donate-item">
@@ -197,8 +198,9 @@ const NewsSingle = () => {
                                         <img src="/images/author-avatar6.jpg" alt="" />
                                     </div>
                                     <div className="author__detail">
-                                        <h4 className="author__title author__title2"><a href="/single-news">Build
-                                            school for poor childrens</a></h4>
+                                        <h4 className="author__title author__title2">
+                                            <Link href="/single-news">Build school for poor childrens</Link>
+                                        </h4>
                                     </div>
                                 </div>
                                 <div className="author-box recent-donate-item">
@@ -206,8 +208,9 @@ const NewsSingle = () => {
                                         <img src="/images/author-avatar7.jpg" alt="" />
                                     </div>
                                     <div className="author__detail">
-                                        <h4 className="author__title author__title2"><a href="/single-news">Together
-                                            to help the world better</a></h4>
+                                        <h4 className="author__title author__title2">
+                                            <Link href="/single-news" className="theme-btn">Together to help the world better</Link>
+                                        </h4>
                                     </div>
                                 </div>
                             </div>

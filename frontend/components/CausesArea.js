@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 const CausesArea = () => {
     return (
@@ -30,7 +31,7 @@ const CausesArea = () => {
                                         <span className="fill" data-percentage="23"></span>
                                     </div>
                                     <div className="blog-inner-content">
-                                        <h3 className="blog__title"><a href="/causes-detail">Save Poor Childrens</a>
+                                        <h3 className="blog__title"><Link href="/causes-detail">Save Poor Childrens</Link>
                                         </h3>
                                         <p className="blog__desc">Aliq is notm hendr erit a augue insu image pellen
                                             tes.</p>
@@ -38,7 +39,7 @@ const CausesArea = () => {
                                             <li><i className="icon-target"></i> Goal: <span>$30,000</span></li>
                                             <li><i className="fa fa-line-chart"></i> Raised: <span>25,270</span></li>
                                         </ul>
-                                        <a href="/donate" className="theme-btn">donate now</a>
+                                        <Link href="/donate" className="theme-btn">donate now</Link>
                                     </div>
                                 </div>
                             </div>
@@ -57,7 +58,7 @@ const CausesArea = () => {
                                         <span className="fill" data-percentage="80"></span>
                                     </div>
                                     <div className="blog-inner-content">
-                                        <h3 className="blog__title"><a href="/causes-detail">They Want to Study</a>
+                                        <h3 className="blog__title"><Link href="/causes-detail">They Want to Study</Link>
                                         </h3>
                                         <p className="blog__desc">Aliq is notm hendr erit a augue insu image pellen
                                             tes.</p>
@@ -65,7 +66,7 @@ const CausesArea = () => {
                                             <li><i className="icon-target"></i> Goal: <span>$30,000</span></li>
                                             <li><i className="fa fa-line-chart"></i> Raised: <span>25,270</span></li>
                                         </ul>
-                                        <a href="/donate" className="theme-btn">donate now</a>
+                                        <Link href="/donate" className="theme-btn">donate now</Link>
                                     </div>
                                 </div>
                             </div>
@@ -83,15 +84,15 @@ const CausesArea = () => {
                                         <span className="fill" data-percentage="44"></span>
                                     </div>
                                     <div className="blog-inner-content">
-                                        <h3 className="blog__title"><a href="/causes-detail">Healthy Food for
-                                            All</a></h3>
+                                        <h3 className="blog__title"><Link href="/causes-detail">Healthy Food for
+                                            All</Link></h3>
                                         <p className="blog__desc">Aliq is notm hendr erit a augue insu image pellen
                                             tes.</p>
                                         <ul className="blog__list">
                                             <li><i className="icon-target"></i> Goal: <span>$30,000</span></li>
                                             <li><i className="fa fa-line-chart"></i> Raised: <span>25,270</span></li>
                                         </ul>
-                                        <a href="/donate" className="theme-btn">donate now</a>
+                                        <Link href="/donate" className="theme-btn">donate now</Link> 
                                     </div>
                                 </div>
                             </div>

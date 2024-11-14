@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ModalVideo from 'react-modal-video';
+import Link from 'next/link';
 
 class MixerAreaThree extends Component {
     constructor(){

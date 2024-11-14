@@ -12,8 +12,8 @@ const Gallery = () => {
                 // For executing a script in the slide
             }
         });
-
     });
+
     return (
         <section className="gallery-area2">
             <div className="container">

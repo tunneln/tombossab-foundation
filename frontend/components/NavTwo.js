@@ -60,7 +60,7 @@ class NavTwo extends Component {
                                             <ul className="d-flex align-items-center">
                                                 <li><a href="mailto:contact@tombossabfoundation.org"><i
                                                     className="fa fa-envelope"></i>contact@tombossabfoundation.org</a></li>
-                                                <li><a href="#"><i className="fa fa-phone-square"></i>927 392 7701</a>
+                                                <li><a href="tel:9723927701"><i className="fa fa-phone-square"></i>972 392 7701</a>
                                                 </li>
                                             </ul>
                                         </div>

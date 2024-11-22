@@ -31,10 +31,11 @@ class MixerArea extends Component {
                         <div className="row">
                             <div className="col-lg-8">
                                 <div className="section-heading mixer-heading">
+                                    <h2 className="section__title text__white">
                                     <div className="section-icon">
                                         <img src="/images/section-icon.png" alt="section-icon" />
                                     </div>
-                                    <h2 className="section__title text__white">Fundraising for the people and causes that affect our community</h2>
+                                        Fundraising for the people and causes that affect our community</h2>
                                     <Link href="/donate" className="theme-btn">start donation</Link>
                                 </div>
                             </div>

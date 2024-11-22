@@ -7,7 +7,7 @@ const HiwArea = () => {
             <div className="container">
                 <div className="row">
                     <div className="col">
-                       <Link href="/mission">
+                       <Link href="/about">
                         <div className="hiw-item">
                             <div className="hiw-item-img-box hiw-bg1">
                                 <figure>

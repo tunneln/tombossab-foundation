@@ -22,7 +22,7 @@ class EntryArea extends Component {
                                 <div className="section-icon">
                                     <img src="/images/section-icon.png" alt="section-icon" />
                                 </div>
-                                <h4 className="entry__title">Blah Blah Blah something nice</h4>
+                                <h4 className="entry__title">Invest in the lives of the children in your community</h4>
                             </div>
                         </div>
                         <div className="col-lg-9">

@@ -222,7 +222,7 @@ const NewsSingle = () => {
                                         <li><a href="#">charity</a></li>
                                         <li><a href="#">Fundrising</a></li>
                                         <li><a href="#">Donations</a></li>
-                                        <li><a href="#">Save Lifes</a></li>
+                                        <li><a href="#">Save Lives</a></li>
                                         <li><a href="#">Health</a></li>
                                         <li><a href="#">Education</a></li>
                                         <li><a href="#">Food</a></li>

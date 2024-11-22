@@ -34,10 +34,12 @@ const ClientsLogo = () => {
                                     },
                                     767:{
                                         slidesPerView: 3
-
                                     },
                                     575:{
                                         slidesPerView: 2
+                                    },
+                                    485:{
+                                        slidesPerView: 1
                                     }
                                 }}
                                 className="logoSwiper"

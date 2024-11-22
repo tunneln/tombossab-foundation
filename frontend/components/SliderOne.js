@@ -1,5 +1,6 @@
 import React,{ useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import Link from 'next/link';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -14,10 +15,11 @@ const SliderOne = () => {
             <div className="homepage-slide1">
             <Swiper
                 style={{
-                    '--swiper-pagination-color': 'darkmagenta',
+                    '--swiper-pagination-color': '#f1ae44',
                     '--swiper-pagination-bullet-size': '10px',
                     '--swiper-pagination-top': '0px',
                     '--swiper-pagination-bottom': '0px'
+
                 }}
                 spaceBetween={30}
                 centeredSlides={true}
@@ -25,10 +27,10 @@ const SliderOne = () => {
                     clickable: true,
                 }}
                 autoplay={{
-                    delay: 4500,
-                    disableOnInteraction: false,
+                    delay: 6000,
+                    disableOnInteraction: true,
                 }}
-                speed={2000}
+                speed={2500}
                 loop={true}
                 modules={[Autoplay, Pagination]}
                 className="frontpageSwiper"
@@ -39,12 +41,13 @@ const SliderOne = () => {
                             <div className="slide-item-tablecell">
                                 <div className="container">
                                     <div className="row">
-                                        <div className="col-md-7">
+                                        <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10">
                                             <div className="slider-heading">
                                                 <p className="slider__meta"></p>
-                                                <h2 className="slider__title">We are the Tombossa B Foundation</h2>
+                                                <h2 className="slider__desc"></h2>
                                             </div>
                                         </div>
+                                        <Link href="/donate" className="theme-btn slider-btn">Donate Now</Link>
                                     </div>
                                 </div>
                             </div>
@@ -57,19 +60,19 @@ const SliderOne = () => {
                             <div className="slide-item-tablecell">
                                 <div className="container">
                                     <div className="row">
-                                        <div className="col-md-7">
+                                        <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10">
                                             <div className="slider-heading">
-                                                <h2 className="slider__desc">The Tombossa B Foundation launches on the 1 year anniversary of Tombossa's passing</h2>
-                                                <a href="#" className="theme-btn">Watch Here</a>
+                                                {/* <h2 className="slider__desc">The Tombossa B Foundation launches on the 1 year anniversary of Tombossa's passing</h2> */}
                                             </div>
                                         </div>
+                                        <a href="#" className="theme-btn slider-btn">Watch Here</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </SwiperSlide>
-                <SwiperSlide>
+                {/* <SwiperSlide>
                     <div className="single-slide-item slide-bg3">
                         <div className="slide-item-table">
                             <div className="slide-item-tablecell">
@@ -87,7 +90,7 @@ const SliderOne = () => {
                             </div>
                         </div>
                     </div>
-                </SwiperSlide>
+                </SwiperSlide> */}
             </Swiper>
             </div>
         </section>

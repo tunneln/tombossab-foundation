@@ -162,6 +162,11 @@ a:hover {
     background-color: #e36955;
     color: #fff;
 }
+.slider-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
 /*=== section-heading ====*/
 .section-heading .section__title {
     font-size: 50px;
@@ -246,7 +251,7 @@ a:hover {
     container
 =====================================*/
 .container {
-    max-width: 1200px;
+    max-width: 1400px;
 }
 
 /*===================================
@@ -254,7 +259,7 @@ a:hover {
 =====================================*/
 .header-area .header-top-action {
     background: #f2f0ec;
-    line-height: 32px;
+    line-height: 0px;
     position: relative;
     z-index: 2;
 }
@@ -336,9 +341,9 @@ a:hover {
 
 /*=== header-top ====*/
 .header-area .header-top {
-    background-color: #fff;
+
 }
-.header-area .header-top .ostion-top-wrap {
+.header-area .header-top tion-top-wrap {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
@@ -351,6 +356,11 @@ a:hover {
     vertical-align: middle;
 }
 .header-area .header-top .ostion-top-wrap .ostion-logo a {
+    height: 120px;
+    display: table-cell;
+    vertical-align: middle;
+}
+.header-area .header-top .ostion-top-wrap .ostion-logo Link {
     height: 120px;
     display: table-cell;
     vertical-align: middle;
@@ -369,7 +379,7 @@ a:hover {
 }
 .header-area .header-top .ostion-top-wrap .ostion-menu .mobile-menu-toggle {
     position: absolute;
-    right: 15px;
+    right: 30px;
     top: 0;
     color: #232323;
     font-size: 21px;
@@ -492,6 +502,10 @@ a:hover {
 }
 .header-area .header-top .ostion-top-wrap .ostion-menu .ostion-menu-content .navigation-top .main-navigation ul li a:hover {
     color: #424242;
+}
+.pre-sticky-header {
+    /* color: black !important;
+    font-weight: 600 !important; */
 }
 .header-area .header-top .ostion-top-wrap .ostion-menu .ostion-menu-content .navigation-top .main-navigation ul li a:hover:after {
     right: auto;
@@ -823,6 +837,14 @@ a:hover {
     -o-transition: 0.7s ease;
     transition: 0.7s ease;
 }
+.header-semi-fixed {
+    background-color: rgba(255, 255, 255, 1);
+    left: 0;
+    position: relative;
+    right: 0;
+    width: 100%;
+    z-index: 998;
+}
 /*===================================
     HEADER AREA 2
 =====================================*/
@@ -905,7 +927,7 @@ a:hover {
     top: 0;
     left: -110px;
     z-index: -1;
-    background-color: rgba(134, 59, 174, 0.90);
+    background-color: rgba(238, 238, 238, 0);
     -webkit-transform: skew(-12deg,0deg);
     -moz-transform: skew(-12deg,0deg);
     -ms-transform: skew(-12deg,0deg);
@@ -913,19 +935,20 @@ a:hover {
     transform: skew(-12deg,0deg);
 }
 .slider-area .slide-bg1 {
-    background-image: url("../images/slider1.jpg");
+    background: url("../images/slider1.jpg") no-repeat center center fixed;
+    opacity: 0.8;
 }
 .slider-area .slide-bg2 {
-    background-image: url("../images/slider2.jpg");
+    background: url("../images/slider2.jpg") no-repeat center center fixed;
 }
 .slider-area .slide-bg3 {
-    background-image: url("../images/slider3.jpg");
+    background: url("../images/slider3.jpg") no-repeat center center fixed;
 }
 .slider-area .slide-bg4 {
-    background-image: url("../images/slider4.jpg");
+    background: url("../images/slider4.jpg") no-repeat center center fixed;
 }
 .slider-area .slide-bg5 {
-    background-image: url("../images/slider5.jpg");
+    background: url("../images/slider5.jpg") no-repeat center center fixed;
 }
 .slider-area .slide-item-table {
     display: table;
@@ -954,7 +977,9 @@ a:hover {
     margin-bottom: 47px;
 }
 .slider__desc {
-    font-size: 65px;
+    /* font-size: calc((var(--normal-text-size-value) - 1) * 1.2vw + 1rem); */
+    /* font-size: calc((var(10000) - 1) * 1.2vw + 1rem); */
+    font-size: 60px;
     color: #fff;
     font-weight: 700;
     margin-bottom: 47px;
@@ -1336,8 +1361,8 @@ a:hover {
     ENTRY AREA
 =====================================*/
 .entry-area {
-    padding-top: 60px;
-    padding-bottom: 60px;
+    padding-top: 30px;
+    padding-bottom: 30px;
     position: relative;
     border-bottom: 2px solid #f2f0ec;
 }
@@ -1345,7 +1370,7 @@ a:hover {
     content: "";
     position: absolute;
     display: block;
-    width: 733px;
+    width: 50%;
     height: 100%;
     top: 0;
     left: -110px;

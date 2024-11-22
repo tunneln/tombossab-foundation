@@ -17,15 +17,15 @@ class EntryArea extends Component {
             <section className="entry-area">
                 <div className="container">
                     <div className="row entry-static-wrap">
-                        <div className="col-lg-3">
+                        <div className="col-lg-4">
                             <div className="entry-static-box entry-static-box1">
                                 <div className="section-icon">
                                     <img src="/images/section-icon.png" alt="section-icon" />
                                 </div>
-                                <h4 className="entry__title">Invest in the lives of the children in your community</h4>
+                                <h4 className="entry__title">Together, giving hearts will create a stronger, more connected community</h4>
                             </div>
                         </div>
-                        <div className="col-lg-9">
+                        <div className="col-lg-8">
                             <div className="entry-static-box entry-static-box2 d-flex align-items-center">
                                 <div className="row">
                                     <div className="col-lg-4">

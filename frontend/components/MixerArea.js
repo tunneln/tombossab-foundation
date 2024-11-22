@@ -32,10 +32,11 @@ class MixerArea extends Component {
                             <div className="col-lg-8">
                                 <div className="section-heading mixer-heading">
                                     <h2 className="section__title text__white">
-                                    <div className="section-icon">
-                                        <img src="/images/section-icon.png" alt="section-icon" />
-                                    </div>
-                                        Fundraising for the people and causes that affect our community</h2>
+                                        <div className="section-icon">
+                                            <img src="/images/section-icon.png" alt="section-icon" />
+                                        </div>
+                                        Fundraising for the people and causes that affect our community
+                                    </h2>
                                     <Link href="/donate" className="theme-btn">start donation</Link>
                                 </div>
                             </div>
@@ -46,27 +47,27 @@ class MixerArea extends Component {
                 <section className="mixer-area2">
                     <div className="container">
                         <div className="row fun-content-wrap">
-                            <div className="col-lg-6">
+                            <div className="col-sm-6 col-lg-6">
                                 <div className="fun-content">
                                     <div className="fun-item fun-item1">
                                         <i className="icon-charity"></i>
                                         <h3 className="counter">
-                                            <VisibilitySensor onChange={this.onVisibilityChange} offset={{top:10}} delayedCall><CountUp end={this.state.startCounter ? 785000 : 0} /></VisibilitySensor>
+                                            <VisibilitySensor onChange={this.onVisibilityChange} offset={{top:10}} delayedCall><CountUp end={this.state.startCounter ? 20000 : 0} /></VisibilitySensor>
                                         </h3>
-                                        <p className="fun__text">raised by 6,388 people in 7 days</p>
+                                        <p className="fun__text">raised by 100 people in 7 days</p>
                                     </div>
                                 </div>
                                 <div className="fun-content">
                                     <div className="fun-item fun-item2">
                                         <i className="icon-cancer"></i>
                                         <h3 className="counter">
-                                            <VisibilitySensor onChange={this.onVisibilityChange} offset={{top:10}} delayedCall><CountUp end={this.state.startCounter ? 63000 : 0} /></VisibilitySensor>
+                                            <VisibilitySensor onChange={this.onVisibilityChange} offset={{top:10}} delayedCall><CountUp end={this.state.startCounter ? 20 : 0} /></VisibilitySensor>
                                         </h3>
                                         <p className="fun__text">volunteers are available to help you</p>
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-lg-6">
+                            <div className="col-sm-6 col-lg-6">
                                 <div className="fun-content-slide">
 
                                     <Swiper
@@ -80,7 +81,7 @@ class MixerArea extends Component {
                                         speed={3500}
                                         autoplay={{
                                             delay: 2500,
-                                            disableOnInteraction: false
+                                            disableOnInteraction: true
                                         }}
                                         modules={[Pagination, Autoplay]}
                                         className="mixerAreaSwiper"

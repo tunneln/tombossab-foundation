@@ -69,7 +69,7 @@ const Footer = () => {
                                 <ul className="contact__info">
                                     <li>7522 Overdale Drive <br />Dallas, TX 75254</li>
                                     <li><a href="tel:2142083936"><i className="fa fa-phone-square"></i> 214 208 3936</a></li>
-                                    <li><a href="mailto:contact@tombossabfoundation.org"><i className="fa fa-envelope" /> contact@tombossabfoundation.org</a></li>
+                                    <li><a href="mailto:contact@tombossabfoundation.org" className="lower"><i className="fa fa-envelope" /> contact@tombossabfoundation.org</a></li>
                                 </ul>
                                 <div className="footer__social">
                                     <ul>

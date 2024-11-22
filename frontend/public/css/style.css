@@ -940,6 +940,7 @@ a:hover {
 }
 .slider-area .slide-bg2 {
     background: url("../images/slider2.jpg") no-repeat center center fixed;
+    opacity: 0.9;
 }
 .slider-area .slide-bg3 {
     background: url("../images/slider3.jpg") no-repeat center center fixed;
@@ -1387,10 +1388,10 @@ a:hover {
 }
 .entry-area .entry-static-wrap .entry-static-box .entry__title {
     color: #fff;
-    font-size: 30px;
+    font-size: 1.3em;
     line-height: 36px;
     font-weight: 800;
-   padding-right: 50px;
+    padding-right: 50px;
 }
 .entry-area .entry-static-wrap .entry-static-box .entry-video-img {
     position: relative;
@@ -4558,6 +4559,9 @@ a:hover {
 }
 
 /*==== footer-area ===*/
+.lower {
+    text-transform: lowercase !important;
+}
 .footer-area {
     background-image: url("../images/footer-bg.jpg");
     background-size: cover;

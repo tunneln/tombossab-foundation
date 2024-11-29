@@ -14,7 +14,7 @@ const CausesDetail = () => {
                                 </div>
                                 <div className="blog-inner-content">
                                     <div className="inner-causes-box">
-                                        <h3 className="blog__title"><Link href="/causes-detail">Habesha Community Center</Link>
+                                        <h3 className="blog__title"><Link href="/causes-detail">Future Scholar Fund</Link>
                                         </h3>
                                         <ul className="blog__list">
                                             <li><i className="icon-target"></i> Goal: <span>$30,000</span></li>
@@ -22,7 +22,9 @@ const CausesDetail = () => {
                                         </ul>
                                     </div>
                                     <div className="inner-causes-btn">
-                                        <Link href="/donate" className="theme-btn">donate now</Link>
+                                        <Link href="https://donorbox.org/scholarship-fund-73?default_interval=o" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
+                                            <img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;Donate
+                                        </Link>
                                     </div>
                                 </div>
                                 <div className="blog-inner-content-2">
@@ -157,10 +159,9 @@ const CausesDetail = () => {
                                     </div>
                                     <div className="author__detail">
                                         <span className="author__meta">created april 11, 2018</span>
-                                        <h4 className="author__title">Organizer: <a href="#">Birkiti Kiflezion</a></h4>
+                                        <h4 className="author__title">Organizer: <Link href="/team">Birkiti Kiflezion</Link></h4>
                                         <ul className="author__list">
-                                            {/* <li><i className="fa fa-tag"></i> Education</li>
-                                            <li><i className="fa fa-map-marker"></i> Wrightwood, Canada</li> */}
+                                            <li><i className="fa fa-map-marker"></i> Dallas, TX</li>
                                         </ul>
                                     </div>
                                 </div>

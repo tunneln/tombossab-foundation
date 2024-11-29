@@ -10,7 +10,7 @@ const TeamArea = () => {
                             <div className="section-icon">
                                 <img src="/images/section-icon.png" alt="section-icon" />
                             </div>
-                            <h2 className="section__title">Our Volunteers</h2>
+                            <h2 className="section__title">Our Team</h2>
                             <p className="section__meta">meet us</p>
                         </div>
                     </div>
@@ -37,7 +37,7 @@ const TeamArea = () => {
                     <div className="col-lg-3 col-sm-6">
                         <div className="team-item team-item2">
                             <div className="team__img">
-                                <img src="/images/hanna.jpg" alt="team image" />
+                                <img src="/images/noel.jpg" alt="team image" />
                                     <div className="team__img-links">
                                         <ul>
                                             <li><a href="#"><i className="fa fa-twitter"></i></a></li>
@@ -47,8 +47,80 @@ const TeamArea = () => {
                                     </div>
                             </div>
                             <div className="team__title">
-                                <h3 className="team__title-title"><a href="#">Hanna Negusse</a></h3>
-                                <span className="team__title-meta">Marketing Assistant</span>
+                                <h3 className="team__title-title"><a href="#">Noel Negusse</a></h3>
+                                <span className="team__title-meta">Vice President</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-lg-3 col-sm-6">
+                        <div className="team-item team-item3">
+                            <div className="team__img">
+                                <img src="/images/milena.jpg" alt="team image" />
+                                    <div className="team__img-links">
+                                        <ul>
+                                            <li><a href="#"><i className="fa fa-twitter"></i></a></li>
+                                            <li><a href="#"><i className="fa fa-facebook"></i></a></li>
+                                            <li><a href="#"><i className="fa fa-instagram"></i></a></li>
+                                        </ul>
+                                    </div>
+                            </div>
+                            <div className="team__title">
+                                <h3 className="team__title-title"><a href="#">Milena Negusse</a></h3>
+                                <span className="team__title-meta">Secretary</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-lg-3 col-sm-6">
+                        <div className="team-item team-item4">
+                            <div className="team__img">
+                                <img src="/images/lula.jpg" alt="team image" />
+                                    <div className="team__img-links">
+                                        <ul>
+                                            <li><a href="#"><i className="fa fa-twitter"></i></a></li>
+                                            <li><a href="#"><i className="fa fa-facebook"></i></a></li>
+                                            <li><a href="#"><i className="fa fa-instagram"></i></a></li>
+                                        </ul>
+                                    </div>
+                            </div>
+                            <div className="team__title">
+                                <h3 className="team__title-title"><a href="#">Lula Gebresilassie</a></h3>
+                                <span className="team__title-meta">Treasurer</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-lg-3 col-sm-6">
+                        <div className="team-item team-item1">
+                            <div className="team__img">
+                                <img src="/images/ariana.jpg" alt="team image" />
+                                    <div className="team__img-links">
+                                        <ul>
+                                            <li><a href="#"><i className="fa fa-twitter"></i></a></li>
+                                            <li><a href="#"><i className="fa fa-facebook"></i></a></li>
+                                            <li><a href="#"><i className="fa fa-instagram"></i></a></li>
+                                        </ul>
+                                    </div>
+                            </div>
+                            <div className="team__title">
+                                <h3 className="team__title-title"><a href="#">Ariana Negusse</a></h3>
+                                <span className="team__title-meta">Marketing</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-lg-3 col-sm-6">
+                        <div className="team-item team-item2">
+                            <div className="team__img">
+                                <img src="/images/maru.jpg" alt="team image" />
+                                    <div className="team__img-links">
+                                        <ul>
+                                            <li><a href="#"><i className="fa fa-twitter"></i></a></li>
+                                            <li><a href="#"><i className="fa fa-facebook"></i></a></li>
+                                            <li><a href="#"><i className="fa fa-instagram"></i></a></li>
+                                        </ul>
+                                    </div>
+                            </div>
+                            <div className="team__title">
+                                <h3 className="team__title-title"><a href="#">Maru Kiflezion</a></h3>
+                                <span className="team__title-meta">Consultant</span>
                             </div>
                         </div>
                     </div>
@@ -73,7 +145,7 @@ const TeamArea = () => {
                     <div className="col-lg-3 col-sm-6">
                         <div className="team-item team-item4">
                             <div className="team__img">
-                                <img src="/images/ariana.jpg" alt="team image" />
+                                <img src="/images/hanna.jpg" alt="team image" />
                                     <div className="team__img-links">
                                         <ul>
                                             <li><a href="#"><i className="fa fa-twitter"></i></a></li>
@@ -83,8 +155,8 @@ const TeamArea = () => {
                                     </div>
                             </div>
                             <div className="team__title">
-                                <h3 className="team__title-title"><a href="#">Ariana Negusse</a></h3>
-                                <span className="team__title-meta">Marketing</span>
+                                <h3 className="team__title-title"><a href="#">Hanna Negusse</a></h3>
+                                <span className="team__title-meta">Marketing Assistant</span>
                             </div>
                         </div>
                     </div>

@@ -5,15 +5,15 @@ import PageHeader from "../components/PageHeader";
 import Footer from "../components/Footer";
 import Donate from "../components/Donate";
 
-const DonatePage = () => {
+const DonateNowPage = () => {
     return (
-        <Layout pageTitle="Tombossa B Foundation | Donate">
+        <Layout pageTitle="Tombossa B Foundation | Donate Now">
             <NavOne />
-            <PageHeader title="Donate" />
+            <PageHeader title="Donate Now" />
             <Donate />
             <Footer />
         </Layout>
     );
 };
 
-export default DonatePage;
+export default DonateNowPage;

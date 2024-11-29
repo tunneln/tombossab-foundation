@@ -1340,7 +1340,6 @@ a:hover {
 }
 .breadcrumb-area .breadcrumb-content .breadcrumb__list li.active__list-item:after {
     position: absolute;
-    content: '.';
     top: 0;
     right: 0;
     padding: 0 6px;
@@ -1362,8 +1361,8 @@ a:hover {
     ENTRY AREA
 =====================================*/
 .entry-area {
-    padding-top: 30px;
-    padding-bottom: 30px;
+    padding-top: 14px;
+    padding-bottom: 14px;
     position: relative;
     border-bottom: 2px solid #f2f0ec;
 }
@@ -2720,7 +2719,6 @@ a:hover {
 }
 .upcoming-event-area .blog-content-wrap .blog-content .blog-item .blog-inner-content .blog__list li.blog__dot-active:after {
     position: absolute;
-    content: '.';
     bottom: 3px;
     right: -13px;
     font-size: 18px;
@@ -2963,7 +2961,6 @@ a:hover {
 }
 .news-detail-area .blog-content-wrap .blog-content .blog-item .blog-inner-content .inner-causes-box .blog__list li.blog__dot-active:after {
     position: absolute;
-    content: '.';
     top: -2px;
     right: -3px;
     font-size: 16px;
@@ -3898,7 +3895,6 @@ a:hover {
 }
 .blog-area .recent-post-wrap .recent-item .news__content .news__content-list li.news__content-active__dot:after {
     position: absolute;
-    content: '.';
     top: -2px;
     right: -5px;
     font-size: 16px;

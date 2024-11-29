@@ -60,7 +60,7 @@ class NavTwo extends Component {
                                             <ul className="d-flex align-items-center">
                                                 <li><a href="mailto:contact@tombossabfoundation.org"><i
                                                     className="fa fa-envelope"></i>contact@tombossabfoundation.org</a></li>
-                                                <li><a href="tel:9723927701"><i className="fa fa-phone-square"></i>972 392 7701</a>
+                                                <li><a href="tel:2142083936"><i className="fa fa-phone-square"></i>214 208 3936</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -92,7 +92,9 @@ class NavTwo extends Component {
                                             </Link>
                                         </div>
                                         <div className="header-btn ml-auto">
-                                            <Link href="/donate" className="theme-btn">donate now</Link>
+                                            <Link href="https://donorbox.org/scholarship-fund-73?default_interval=o" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
+                                                <img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;Donate
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
@@ -107,7 +109,6 @@ class NavTwo extends Component {
                                                             <Link href="/causes">causes</Link>
                                                             <ul className="dropdown-menu-item">
                                                                 <li><Link href="/causes">causes</Link></li>
-                                                                <li><Link href="/donate">donate now</Link></li>
                                                             </ul>
                                                         </li>
                                                         <li><Link href="/events">events</Link></li>
@@ -148,7 +149,6 @@ class NavTwo extends Component {
                                     <ul className="side-sub-menu">
                                         <li><Link href="/causes">causes</Link></li>
                                         <li><Link href="/causes-detail">causes detail</Link></li>
-                                        <li><Link href="/donate">donate now</Link></li>
                                     </ul>
                                 </li>
                                 <li className="sidenav__item"><a href="#">event</a>
@@ -184,7 +184,9 @@ class NavTwo extends Component {
                                 <li><a href="#"><i className="fa fa-google-plus"></i></a></li>
                             </ul>
                             <div className="side-btn">
-                                <Link href="/donate" className="theme-btn">donate now</Link>
+                                <Link href="https://donorbox.org/scholarship-fund-73?default_interval=o" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
+                                    <img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;Donate
+                                </Link>
                             </div>
                         </div>
                     </div>

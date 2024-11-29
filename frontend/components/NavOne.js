@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Script from "next/script";
 
 const NavOne = () => {
 
@@ -40,10 +41,26 @@ const NavOne = () => {
     useEffect(() => {
         window.addEventListener("scroll", handleScroll);
         mobileMenu();
-        
+
+        // Configure Donorbox popup trigger
+        window.DonorBox = { widgetLinkClassName: 'custom-dbox-popup' };
+
+        // Dynamically load the inline script separately to avoid conflict
+        const stickyButtonScript = document.createElement('script');
+        stickyButtonScript.src = 'https://donorbox.org/install-popup-button.js';
+        stickyButtonScript.defer = true;
+        stickyButtonScript.id = 'donorbox-popup-button-installer';
+        stickyButtonScript.dataset.href = 'https://donorbox.org/scholarship-fund-73?default_interval=o';
+        stickyButtonScript.dataset.style = 'background: rgb(227, 105, 85); color: rgb(255, 255, 255); text-decoration: none; font-family: Verdana, sans-serif; display: none; font-size: 16px; padding: 8px 22px 8px 18px; border-radius: 0px 0px 5px 5px; gap: 8px; width: fit-content; line-height: 24px; position: fixed; top: 50%; transform-origin: center center; z-index: 9999; overflow: hidden; left: 20px; transform: translate(-50%, -50%) rotate(-90deg);';
+        stickyButtonScript.dataset.imgSrc = 'https://donorbox.org/images/white_logo.svg';
+        stickyButtonScript.dataset.reminderWidgetEnabled = true;
+
+        document.body.appendChild(stickyButtonScript);
+
         // Cleanup event listeners on unmount
         return () => {
             window.removeEventListener("scroll", handleScroll);
+            document.body.removeChild(stickyButtonScript);
         };
     }, []);
 
@@ -59,7 +76,7 @@ const NavOne = () => {
                                         <ul className="d-flex align-items-center">
                                             <li><a href="mailto:contact@tombossabfoundation.org"><i
                                                 className="fa fa-envelope"></i>contact@tombossabfoundation.org</a></li>
-                                            <li className="phone-header"><a href="tel:9723927701"><i className="fa fa-phone-square"></i>972 392 7701</a>
+                                            <li className="phone-header"><a href="tel:2142083936"><i className="fa fa-phone-square"></i>214 208 3936</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -92,7 +109,9 @@ const NavOne = () => {
                                         </Link>
                                     </div>
                                     <div className="header-btn ml-auto">
-                                        <Link href="/donate" className="theme-btn">donate now</Link>
+                                        <Link href="https://donorbox.org/scholarship-fund-73?default_interval=o" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
+                                            <img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;Donate
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
@@ -102,26 +121,19 @@ const NavOne = () => {
                                         <div className="navigation-top">
                                             <nav className="main-navigation">
                                                 <ul>
-                                                    <li ><Link className={`${sticky ? '' : 'pre-sticky-header'}`} href="/">Home</Link></li>
-                                                    <li>
-                                                        <Link href="/causes" className={`${sticky ? '' : 'pre-sticky-header'}`}>causes</Link>
-                                                        <ul className="dropdown-menu-item">
-                                                            <li><Link href="/causes">causes</Link></li>
-                                                            <li><Link href="/donate">donate now</Link></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li><Link href="/events" className={`${sticky ? '' : 'pre-sticky-header'}`}>events</Link></li>
-                                                    <li><Link href="/news" className={`${sticky ? '' : 'pre-sticky-header'}`}>news</Link></li>
-                                                    <li><a href="#" className={`${sticky ? '' : 'pre-sticky-header'}`}>pages</a>
-                                                        <ul className="dropdown-menu-item">
-                                                            <li><Link href="/about">about us</Link></li>
-                                                            <li><Link href="/gallery">gallery</Link></li>
-                                                            <li><Link href="/volunteer">become a volunteer</Link></li>
-                                                            <li><Link href="/team">our team</Link></li>
-                                                            <li><Link href="/sponsor">sponsors</Link></li>
-                                                        </ul>
-                                                    </li>
+                                                    <li ><Link className={`${sticky ? '' : 'pre-sticky-header'}`} href="/">home</Link></li>
+                                                    <li><Link href="/about" className={`${sticky ? '' : 'pre-sticky-header'}`}>about us</Link></li>
+                                                    <li> <Link href="/causes" className={`${sticky ? '' : 'pre-sticky-header'}`}>causes</Link> </li>
                                                     <li><Link href="/contact" className={`${sticky ? '' : 'pre-sticky-header'}`}>contact</Link></li>
+                                                    <li><a href="#" className={`${sticky ? '' : 'pre-sticky-header'}`}>get involved</a>
+                                                        <ul className="dropdown-menu-item">
+                                                            <li><Link href="/volunteer">become a volunteer</Link></li>
+                                                            <li><Link href="/events">events</Link></li>
+                                                            <li><Link href="/news">news</Link></li>
+                                                            <li><Link href="/gallery">gallery</Link></li>
+                                                            {/* <li><Link href="/sponsor">sponsors</Link></li> */}
+                                                        </ul>
+                                                    </li>
                                                 </ul>
                                             </nav>
                                         </div>
@@ -141,24 +153,18 @@ const NavOne = () => {
                     <div className="side-menu-wrap">
                         <ul className="side-menu-ul">
                             <li className="sidenav__item"><Link href="/">home</Link></li>
-                            <li className="sidenav__item"><Link href="/causes">causes</Link>
-                                <ul className="side-sub-menu">
-                                    <li><Link href="/causes">causes</Link></li>
-                                    <li><Link href="/donate">donate now</Link></li>
-                                </ul>
-                            </li>
-                            <li className="sidenav__item"><a href="/events">events</a></li>
-                            <li className="sidenav__item"><a href="/news">news</a></li>
-                            <li className="sidenav__item"><a href="#">pages</a>
-                                <ul className="side-sub-menu">
-                                    <li><Link href="/about">about us</Link></li>
-                                    <li><Link href="/gallery">gallery</Link></li>
-                                    <li><Link href="/volunteer">become a volunteer</Link></li>
-                                    <li><Link href="/team">our team</Link></li>
-                                    <li><Link href="/sponsor">sponsors</Link></li>
-                                </ul>
-                            </li>
+                            <li className="sidenav__item"><Link href="/about">about us</Link></li>
+                            <li className="sidenav__item"><Link href="/causes">causes</Link> </li>
                             <li className="sidenav__item"><Link href="/contact">contact</Link></li>
+                            <li className="sidenav__item"><Link href="#">get involved</Link>
+                                <ul className="side-sub-menu">
+                                    <li className="sidenav__item"><Link href="/volunteer">become a volunteer</Link></li>
+                                    <li className="sidenav__item"><Link href="/events">events</Link></li>
+                                    <li className="sidenav__item"><Link href="/news">news</Link></li>
+                                    <li className="sidenav__item"><Link href="/gallery">gallery</Link></li>
+                                    {/* <li className="sidenav__item"><Link href="/sponsor">sponsors</Link></li> */}
+                                </ul>
+                            </li>
                         </ul>
                         <ul className="side-social">
                             <li><a href="#"><i className="fa fa-twitter"></i></a></li>
@@ -167,7 +173,9 @@ const NavOne = () => {
                             <li><a href="#"><i className="fa fa-youtube-play"></i></a></li>
                         </ul>
                         <div className="side-btn">
-                            <Link href="/donate" className="theme-btn">donate now</Link>
+                            <Link href="https://donorbox.org/scholarship-fund-73?default_interval=o" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
+                                <img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;Donate
+                            </Link>
                         </div>
                     </div>
                 </div>

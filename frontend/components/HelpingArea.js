@@ -80,45 +80,20 @@ const HelpingArea = () => {
                                         <img src="/images/section-icon.png" alt="section-icon" />
                                     </div>
                                     <h2 className="section__title text__white">Make a Donation</h2>
-                                    <p className="section__meta text__white">donate us now</p>
+                                    <p className="section__meta text__white"><img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;donate</p>
                                 </div>
-                                <div className="form-shared">
-                                    <form action="#">
-                                        <div className="row">
-                                            <div className="col-lg-12">
-                                                <div className="form-group">
-                                                    <input type="text" className="form-control"
-                                                           placeholder="Insert Custom Value" />
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-12">
-                                                <div className="form-group">
-                                                    <input type="text" className="form-control" placeholder="Full Name" />
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-12">
-                                                <div className="form-group">
-                                                    <input type="email" className="form-control"
-                                                           placeholder="Email Address" />
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-12">
-                                                <div className="form-group">
-                                                    <input type="text" className="form-control" placeholder="Location" />
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-12">
-                                                <div className="form-group">
-                                                    <textarea className="textarea" name="message"
-                                                              placeholder="Leave a comment"></textarea>
-                                                </div>
-                                            </div>
-                                            <div className="col-lg-12">
-                                                <button className="theme-btn submit__btn">continue now</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
+                                <iframe
+                                    src="https://donorbox.org/embed/scholarship-fund-73?default_interval=o"
+                                    name="donorbox"
+                                    allowpaymentrequest="allowpaymentrequest"
+                                    seamless="seamless"
+                                    frameBorder={0}
+                                    scrolling="no"
+                                    height="900px"
+                                    width="100%"
+                                    style={{ maxWidth: 500, minWidth: 310, maxHeight: "none!important" }}
+                                    allow="payment"
+                                    />
                             </div>
                         </div>
                     </div>

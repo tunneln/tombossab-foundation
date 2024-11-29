@@ -10,8 +10,7 @@ const PageHeader = (props) => {
                         <div className="breadcrumb-content">
                             <h2 className="breadcrumb__title">{ props.title }</h2>
                             <ul className="breadcrumb__list">
-                                <li className="active__list-item"><Link href="/">home</Link></li>
-                                <li>{ props.title }</li>
+                                <li className="active__list-item"><Link href="/">home</Link> &nbsp;|&nbsp; { props.title }</li>
                             </ul>
                         </div>
                     </div>

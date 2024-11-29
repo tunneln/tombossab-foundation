@@ -1,7 +1,7 @@
 
-@media (max-width:2024px) {
-    /* .entry-area:after {
-        width: 539px;
+@media (max-width:3840px) {
+    /* .dbox-donation-button {
+        display: none !important;
     } */
 }
 
@@ -41,7 +41,6 @@
     .header-semi-fixed {
         background-color: rgba(255, 255, 255, 0);
     }
-    .header-btn,
     .header-top-action,
     .phone-header, .header-area .header-top .ostion-top-wrap .ostion-menu .ostion-menu-content {
         display: none;
@@ -204,6 +203,12 @@
 
 /*=== 1024px ===*/
 @media (max-width:1024px) {
+    .dbox-donation-button {
+        display: flex !important;
+    }
+    .header-btn {
+        display: none;
+    }
     .slider-area .slider-heading .slider__title {
         font-size: 86px;
         line-height: 94px;

@@ -13,7 +13,9 @@ const MixerAreaTwo = () => {
                             </div>
                             <h2 className="section__title text__white">Our fingerprints on the lives we touch never
                                 fade</h2>
-                            <Link href="/donate" className="theme-btn">start donation</Link>
+                            <Link href="https://donorbox.org/scholarship-fund-73?default_interval=o" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
+                                <img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;Donate
+                            </Link>
                         </div>
                     </div>
                 </div>

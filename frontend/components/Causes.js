@@ -20,7 +20,7 @@ const Causes = () => {
                                         <li><i className="icon-target"></i> Goal: <span>$30,000</span></li>
                                         <li><i className="fa fa-line-chart"></i> Raised: <span>25,270</span></li>
                                     </ul>
-                                    <Link href="/donate" className="theme-btn">donate now</Link>
+                                    <Link href="/donatenow" className="theme-btn"><img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;donate</Link>
                                 </div>
                             </div>
                         </div>
@@ -39,7 +39,7 @@ const Causes = () => {
                                         <li><i className="icon-target"></i> Goal: <span>$30,000</span></li>
                                         <li><i className="fa fa-line-chart"></i> Raised: <span>25,270</span></li>
                                     </ul>
-                                    <Link href="/donate" className="theme-btn">donate now</Link>
+                                    <Link href="/donatenow" className="theme-btn"><img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;donate</Link>
                                 </div>
                             </div>
                         </div>
@@ -58,7 +58,7 @@ const Causes = () => {
                                         <li><i className="icon-target"></i> Goal: <span>$30,000</span></li>
                                         <li><i className="fa fa-line-chart"></i> Raised: <span>25,270</span></li>
                                     </ul>
-                                    <Link href="/donate" className="theme-btn">donate now</Link>
+                                    <Link href="/donatenow" className="theme-btn"><img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;donate</Link>
                                 </div>
                             </div>
                         </div>
@@ -76,7 +76,7 @@ const Causes = () => {
                                         <li><i className="icon-target"></i> Goal: <span>$30,000</span></li>
                                         <li><i className="fa fa-line-chart"></i> Raised: <span>25,270</span></li>
                                     </ul>
-                                    <Link href="/donate" className="theme-btn">donate now</Link>
+                                    <Link href="/donatenow" className="theme-btn"><img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;donate</Link>
                                 </div>
                             </div>
                         </div>
@@ -94,7 +94,7 @@ const Causes = () => {
                                         <li><i className="icon-target"></i> Goal: <span>$30,000</span></li>
                                         <li><i className="fa fa-line-chart"></i> Raised: <span>25,270</span></li>
                                     </ul>
-                                    <Link href="/donate" className="theme-btn">donate now</Link>
+                                    <Link href="/donatenow" className="theme-btn"><img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;donate</Link>
                                 </div>
                             </div>
                         </div>
@@ -113,7 +113,7 @@ const Causes = () => {
                                         <li><i className="icon-target"></i> Goal: <span>$30,000</span></li>
                                         <li><i className="fa fa-line-chart"></i> Raised: <span>25,270</span></li>
                                     </ul>
-                                    <Link href="/donate" className="theme-btn">donate now</Link>
+                                    <Link href="/donatenow" className="theme-btn"><img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;donate</Link>
                                 </div>
                             </div>
                         </div>

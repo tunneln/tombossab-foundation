@@ -71,7 +71,7 @@ const EventsDetail = () => {
                                     <li><span>Starting Time:</span> 8:00AM to 2:00PM</li>
                                     <li><span>Date:</span>9 March, 2019</li>
                                     <li><span>Category:</span>Health</li>
-                                    <li><span>Phone:</span>972 392 7701</li>
+                                    <li><span>Phone:</span>214 208 3936</li>
                                     <li><span>Website:</span>Info@event.com</li>
                                     <li><span>Location:</span>8 Street, San Marcos London D29, UK</li>
                                 </ul>

@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-const CausesDetail = () => {
+const CauseDetails = (props) => {
     return (
         <section className="causes-detail-area">
             <div className="container">
@@ -14,7 +14,7 @@ const CausesDetail = () => {
                                 </div>
                                 <div className="blog-inner-content">
                                     <div className="inner-causes-box">
-                                        <h3 className="blog__title"><Link href="/causes-detail">Future Scholar Fund</Link>
+                                        <h3 className="blog__title"><Link href="#">{ props.title }</Link> 
                                         </h3>
                                         <ul className="blog__list">
                                             <li><i className="icon-target"></i> Goal: <span>$30,000</span></li>
@@ -235,4 +235,4 @@ const CausesDetail = () => {
     );
 };
 
-export default CausesDetail;
+export default CauseDetails;

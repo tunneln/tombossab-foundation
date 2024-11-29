@@ -26,7 +26,7 @@ const Donate = () => {
                                         <img src="/images/img15.jpg" alt="" />
                                     </div>
                                     <div className="blog-inner-content">
-                                        <h3 className="blog__title"><Link href="/causes-detail">Future Scholar Fund</Link>
+                                        <h3 className="blog__title"><Link href="#">Future Scholar Fund</Link>
                                         </h3>
                                         <p className="blog__desc">Aliq is notm hendr erit a augue insu image pellen tes.</p>
                                     </div>
@@ -38,7 +38,7 @@ const Donate = () => {
                                         <img src="/images/img15.jpg" alt="" />
                                     </div>
                                     <div className="blog-inner-content">
-                                        <h3 className="blog__title"><Link href="/causes-detail">Mental Wellness Fund</Link>
+                                        <h3 className="blog__title"><Link href="#">Mental Wellness Fund</Link>
                                         </h3>
                                         <p className="blog__desc">Aliq is notm hendr erit a augue insu image pellen tes.</p>
                                     </div>

@@ -148,7 +148,7 @@ class NavTwo extends Component {
                                     <span className="menu-plus-icon"></span>
                                     <ul className="side-sub-menu">
                                         <li><Link href="/causes">causes</Link></li>
-                                        <li><Link href="/causes-detail">causes detail</Link></li>
+                                        <li><Link href="#">causes detail</Link></li>
                                     </ul>
                                 </li>
                                 <li className="sidenav__item"><a href="#">event</a>

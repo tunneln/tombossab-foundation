@@ -2,7 +2,8 @@ import React from 'react';
 import Layout from "../components/Layout";
 import NavOne from "../components/NavOne";
 import PageHeader from "../components/PageHeader";
-import Causes from "../components/Causes";
+import LatestCauses from "../components/LatestCauses";
+import PastCauses from "../components/PastCauses";
 import Footer from "../components/Footer";
 
 const CausesPage = () => {
@@ -10,7 +11,8 @@ const CausesPage = () => {
         <Layout pageTitle="Tombossa B Foundation | Causes">
             <NavOne />
             <PageHeader title="Causes" />
-            <Causes />
+            <LatestCauses />
+            <PastCauses />
             <Footer />
         </Layout>
     );

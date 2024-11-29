@@ -8,7 +8,7 @@ import MakeWorldArea from "../components/MakeWorldArea";
 import ClientsLogo from "../components/ClientsLogo";
 import DonateArea from "../components/DonateArea";
 import MixerAreaThree from "../components/MixerAreaThree";
-import CausesArea from "../components/CausesArea";
+import LatestCauses from "../components/LatestCauses";
 import CategoryArea from "../components/CategoryArea";
 import GalleryCarousel from "../components/GalleryCarousel";
 import Pricing from "../components/Pricing";
@@ -26,7 +26,7 @@ const HomePageTwo = () => {
             <ClientsLogo />
             <DonateArea />
             <MixerAreaThree />
-            <CausesArea />
+            <LatestCauses />
             <CategoryArea />
             <GalleryCarousel />
             <Pricing />

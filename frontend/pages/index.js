@@ -7,7 +7,7 @@ import EntryArea from "../components/EntryArea";
 import HiwArea from "../components/HiwArea";
 import ServiceArea from "../components/ServiceArea";
 import MixerArea from "../components/MixerArea";
-import CausesArea from "../components/CausesArea";
+import LatestCauses from "../components/LatestCauses";
 import ClientsLogo from "../components/ClientsLogo";
 import HelpingArea from "../components/HelpingArea";
 import TeamArea from "../components/TeamArea";
@@ -25,7 +25,7 @@ const HomePage = () => {
           <HiwArea />
           <ServiceArea />
           <MixerArea />
-          <CausesArea />
+          <LatestCauses />
           <ClientsLogo />
           <HelpingArea />
           <TeamArea />

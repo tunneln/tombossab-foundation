@@ -13,7 +13,7 @@ const Causes = () => {
                                     <img src="/images/img1.jpg" alt="" />
                                 </div>
                                 <div className="blog-inner-content">
-                                    <h3 className="blog__title"><Link href="/causes-detail">Habesha Community Center</Link>
+                                    <h3 className="blog__title"><Link>Habesha Community Center</Link>
                                     </h3>
                                     <p className="blog__desc">Aliq is notm hendr erit a augue insu image pellen tes.</p>
                                     <ul className="blog__list">

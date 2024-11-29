@@ -12,7 +12,7 @@ const Layout = (props) => {
                 <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
             </Head>
 
-            {props.children}
+            { props.children }
 
 
             <script src="/plugins/accordion.min.js"></script>

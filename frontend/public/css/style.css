@@ -2137,7 +2137,7 @@ a:hover {
     background-color: #f2f0ec;
 }
 .causes-area .blog-content-wrap .blog-content .blog-item .blog-inner-content .blog__title {
-   font-size: 26px;
+    font-size: 26px;
     font-weight: 900;
     margin-bottom: 40px;
 }
@@ -2235,6 +2235,14 @@ a:hover {
 .causes-area2 .blog-content-wrap {
     margin-top: 0;
 }
+/*=============================
+   PAST CAUSES AREA
+ =============================*/
+.past-causes-area {
+    padding-top: 0;
+    padding-bottom: 120px;
+}
+
 /*=============================
    CAUSES DETAIL AREA
  =============================*/

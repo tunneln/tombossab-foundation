@@ -62,7 +62,7 @@ const SliderOne = () => {
                                         <div className="slider-heading">
                                             <h3 className="slider__desc">The Tombossa B Foundation launches on the first anniversary of Tombossa's passing</h3>
                                         </div>
-                                        <Link href="#" className="theme-btn slider-btn">Watch Here</Link>
+                                        <Link href="https://www.youtube.com/channel/UCk9Ct2P7rT32HovvbzwqQP" className="theme-btn slider-btn">Watch Here</Link>
                                     </div>
                                 </div>
                             </div>

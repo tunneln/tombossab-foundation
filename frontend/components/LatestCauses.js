@@ -34,7 +34,7 @@ const LatestCauses = () => {
                                         <ul className="blog__list">
                                             <li><i className="icon-target"></i> Goal: <span>$50,000</span></li>
                                         </ul>
-                                        <Link href="https://donorbox.org/scholarship-fund-73?default_interval=o" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
+                                        <Link href="/donatenow" className="theme-btn">
                                             Donate Now
                                         </Link>
                                     </div>
@@ -56,7 +56,7 @@ const LatestCauses = () => {
                                         <ul className="blog__list">
                                             <li><i className="icon-target"></i> Goal: <span>$10,000</span></li>
                                         </ul>
-                                        <Link href="https://donorbox.org/scholarship-fund-73?default_interval=o" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
+                                        <Link href="/donatenow" className="theme-btn">
                                             Donate Now
                                         </Link>
                                     </div>

@@ -1794,7 +1794,7 @@ a:hover {
 .mixer-area2 .fun-content-slide {
     background-color: #e36955;
     margin-top: -300px;
-    padding: 115px 0 100px 110px;
+    padding: 115px 0 100px 120px;
     position: relative;
     z-index: 1;
 }
@@ -3259,14 +3259,16 @@ a:hover {
 }
 /*=== helping-form ===*/
 .helping-area2 .helping-form {
-    background-color: #863bae;
-    padding: 120px 0 120px 120px;
+    /* background-color: rgba(134, 59, 174, 0.5); */
+    background-color: #9E62BE;
+    padding: 70px 0 0 120px;
     position: relative;
     z-index: 1;
     margin-top: -361px;
 }
 .helping-area2:after {
-    background-color: #863bae;
+    /* background-color: rgba(134, 59, 174, 0.5); */
+    background-color: #9E62BE;
     margin-top: -261px;
     height: 971px;
 }

@@ -50,7 +50,7 @@ class MixerArea extends Component {
                     <div className="container">
                         <div className="row fun-content-wrap">
                             <div className="col-sm-6 col-lg-6">
-                                <div className="fun-content">
+                                {/* <div className="fun-content">
                                     <div className="fun-item fun-item1">
                                         <i className="icon-charity"></i>
                                         <h3 className="counter">
@@ -58,7 +58,7 @@ class MixerArea extends Component {
                                         </h3>
                                         <p className="fun__text">raised by 100 people in 7 days</p>
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className="fun-content">
                                     <div className="fun-item fun-item2">
                                         <i className="icon-cancer"></i>
@@ -81,6 +81,7 @@ class MixerArea extends Component {
                                         }}
                                         loop={true}
                                         speed={3500}
+                                        spaceBetween={15}
                                         autoplay={{
                                             delay: 2500,
                                             disableOnInteraction: true

@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 
 const Donate = () => {
+
     return (
         <section className="donate-area2">
             <div className="container">
@@ -15,7 +16,7 @@ const Donate = () => {
                     scrolling="no"
                     height="900px"
                     width="100%"
-                    style={{ maxWidth: 500, minWidth: 310, maxHeight: "none!important" }}
+                    style={{ 'maxWidth': '500px', 'minWidth': '310px', 'maxHeight': "none!important" }}
                     allow="payment"
                     />
                     <div className="ml-auto">

@@ -40,11 +40,7 @@ const HelpingArea = () => {
                         <div className="col-lg-6">
                             <div className="helping-text-box">
                                 <p className="helping__text">
-                                    Aliq is notm hendr erit a augue insu image pellen tes que
-                                    id erat quis simply free text sollicitud. Lorem ipsum dolor sit amet,
-                                    consectetur adipiscing ullam blandit hendrerit faucibus suspendisse.
-                                    Dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                    tempor incidi labore et dolore magna aliqua enim ad minim veniam.
+                                    Your support is not just a gift—it's a lifeline that helps ensure a brighter, healthier future for the next generation. Thank you for being a part of this important journey. Through you, our communities youths are empowered to overcome challenges, build resilience, and reach their full potential.
                                 </p>
                             </div>
                         </div>
@@ -63,13 +59,9 @@ const HelpingArea = () => {
                                     <div className="section-icon">
                                         <img src="/images/section-icon.png" alt="section-icon" />
                                     </div>
-                                    <h2 className="section__title">Charity activities are taking place around the
-                                        world</h2>
+                                    <h2 className="section__title">Our Vision</h2>
                                     <p className="section__desc">
-                                        Aliq is notm hendr erit a augue insu image pellen tes que id erat
-                                        quis simply free text sollicitud. Lorem ipsum dolor
-                                        sit not amet, consectetur adipiscing ullam
-                                        blandit simply free text hendrerit faucibus suspendisse.
+                                        Our nonprofit is committed to providing support to children and young adults in the Eritrean and East African community by offering access to educational resources, mental wellness programs, and mentorship opportunities. We aim to empower the next generation through scholarships, mental health initiatives, and community-driven projects that foster personal growth, resilience, and long-term success. By creating a network of support, we help these youth navigate challenges and unlock their full potential. 
                                     </p>
                                 </div>
                             </div>

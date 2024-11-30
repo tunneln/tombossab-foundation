@@ -19,7 +19,7 @@ const PastCauses = () => {
                     </div>
                     <div className="row blog-content-wrap">
                         <div className="col-lg-4">
-                            <h3 className="blog__title">No past causes yet</h3>
+                            <h3 className="blog__title">No past causes yet!</h3>
                         </div>
                     </div>
                 </div>

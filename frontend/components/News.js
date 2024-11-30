@@ -5,8 +5,10 @@ const News = () => {
     return (
         <section className="blog-area blog-area2">
             <div className="container">
+                <h3 className="news__content-title" style={{'text-align': 'center'}}>Coming Soon!</h3>
                 <div className="row recent-post-wrap">
-                    <div className="col-lg-6 col-sm-6">
+                    
+                    {/* <div className="col-lg-6 col-sm-6">
                         <div className="recent-item">
                             <div className="recent__img">
                                 <span className="meta__date-date">09 mar, 2019</span>
@@ -137,7 +139,7 @@ const News = () => {
                                 <Link href="/single-news" className="theme-btn">read more</Link>
                             </div>
                         </div>
-                    </div>
+                    </div>  */}
                 </div>
             </div>
         </section>

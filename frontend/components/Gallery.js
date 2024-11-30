@@ -17,9 +17,9 @@ const Gallery = () => {
     return (
         <section className="gallery-area2">
             <div className="container">
-                <div className="row">
-
-                    <div className="col-lg-4 col-sm-6">
+                <h3 className="news__content-title" style={{'text-align': 'center'}}>Coming Soon!</h3>
+                    <div className="row">
+                    {/* <div className="col-lg-4 col-sm-6">
                         <div className="gallery-item">
                             <img src="/images/gallery-img4.jpg" alt="" />
                             <Link href="/images/gallery-img4.jpg" className="glightbox">
@@ -82,7 +82,7 @@ const Gallery = () => {
                                 <a href="images/gallery-img12.jpg" className="glightbox">
                                     <span className="gallery-icon"></span></a>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </section>

@@ -3,8 +3,8 @@ import Link from 'next/link';
 
 const PageHeader = (props) => {
     return (
-        <section className="breadcrumb-area">
-            <div className="container">
+        <section className="breadcrumb-area" style={{'backgroundImage': `url(${props.imgUrl})`}}>
+            <div className="container" >
                 <div className="row">
                     <div className="col-lg-12">
                         <div className="breadcrumb-content">

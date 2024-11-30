@@ -22,9 +22,9 @@ const TeamArea = () => {
                                 <img src="/images/birkiti.jpg" alt="team image" />
                                     <div className="team__img-links">
                                         <ul>
-                                            <li><a href="#"><i className="fa fa-twitter"></i></a></li>
-                                            <li><a href="#"><i className="fa fa-facebook"></i></a></li>
-                                            <li><a href="#"><i className="fa fa-instagram"></i></a></li>
+                                            <li><a href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
+                                            <li><a href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
+                                            <li><a href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
                                         </ul>
                                     </div>
                             </div>
@@ -40,9 +40,9 @@ const TeamArea = () => {
                                 <img src="/images/noel.jpg" alt="team image" />
                                     <div className="team__img-links">
                                         <ul>
-                                            <li><a href="#"><i className="fa fa-twitter"></i></a></li>
-                                            <li><a href="#"><i className="fa fa-facebook"></i></a></li>
-                                            <li><a href="#"><i className="fa fa-instagram"></i></a></li>
+                                            <li><a href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
+                                            <li><a href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
+                                            <li><a href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
                                         </ul>
                                     </div>
                             </div>
@@ -58,9 +58,9 @@ const TeamArea = () => {
                                 <img src="/images/milena.jpg" alt="team image" />
                                     <div className="team__img-links">
                                         <ul>
-                                            <li><a href="#"><i className="fa fa-twitter"></i></a></li>
-                                            <li><a href="#"><i className="fa fa-facebook"></i></a></li>
-                                            <li><a href="#"><i className="fa fa-instagram"></i></a></li>
+                                            <li><a href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
+                                            <li><a href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
+                                            <li><a href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
                                         </ul>
                                     </div>
                             </div>
@@ -76,9 +76,9 @@ const TeamArea = () => {
                                 <img src="/images/lula.jpg" alt="team image" />
                                     <div className="team__img-links">
                                         <ul>
-                                            <li><a href="#"><i className="fa fa-twitter"></i></a></li>
-                                            <li><a href="#"><i className="fa fa-facebook"></i></a></li>
-                                            <li><a href="#"><i className="fa fa-instagram"></i></a></li>
+                                            <li><a href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
+                                            <li><a href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
+                                            <li><a href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
                                         </ul>
                                     </div>
                             </div>
@@ -94,9 +94,9 @@ const TeamArea = () => {
                                 <img src="/images/ariana.jpg" alt="team image" />
                                     <div className="team__img-links">
                                         <ul>
-                                            <li><a href="#"><i className="fa fa-twitter"></i></a></li>
-                                            <li><a href="#"><i className="fa fa-facebook"></i></a></li>
-                                            <li><a href="#"><i className="fa fa-instagram"></i></a></li>
+                                            <li><a href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
+                                            <li><a href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
+                                            <li><a href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
                                         </ul>
                                     </div>
                             </div>
@@ -112,9 +112,9 @@ const TeamArea = () => {
                                 <img src="/images/maru.jpg" alt="team image" />
                                     <div className="team__img-links">
                                         <ul>
-                                            <li><a href="#"><i className="fa fa-twitter"></i></a></li>
-                                            <li><a href="#"><i className="fa fa-facebook"></i></a></li>
-                                            <li><a href="#"><i className="fa fa-instagram"></i></a></li>
+                                            <li><a href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
+                                            <li><a href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
+                                            <li><a href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
                                         </ul>
                                     </div>
                             </div>
@@ -130,14 +130,14 @@ const TeamArea = () => {
                                 <img src="/images/thomas.jpg" alt="team image" />
                                     <div className="team__img-links">
                                         <ul>
-                                            <li><a href="#"><i className="fa fa-twitter"></i></a></li>
-                                            <li><a href="#"><i className="fa fa-facebook"></i></a></li>
-                                            <li><a href="#"><i className="fa fa-instagram"></i></a></li>
+                                            <li><a href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
+                                            <li><a href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
+                                            <li><a href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
                                         </ul>
                                     </div>
                             </div>
                             <div className="team__title">
-                                <h3 className="team__title-title"><a href="#">Thomas Negusse</a></h3>
+                                <h3 className="team__title-title"><a href="#">Thomas Dawit</a></h3>
                                 <span className="team__title-meta">Program Manager</span>
                             </div>
                         </div>
@@ -148,9 +148,9 @@ const TeamArea = () => {
                                 <img src="/images/hanna.jpg" alt="team image" />
                                     <div className="team__img-links">
                                         <ul>
-                                            <li><a href="#"><i className="fa fa-twitter"></i></a></li>
-                                            <li><a href="#"><i className="fa fa-facebook"></i></a></li>
-                                            <li><a href="#"><i className="fa fa-instagram"></i></a></li>
+                                            <li><a href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
+                                            <li><a href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
+                                            <li><a href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
                                         </ul>
                                     </div>
                             </div>

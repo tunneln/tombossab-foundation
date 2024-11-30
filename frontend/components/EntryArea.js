@@ -17,7 +17,7 @@ class EntryArea extends Component {
             <section className="entry-area">
                 <div className="container">
                     <div className="row entry-static-wrap">
-                        <div className="col-lg-4">
+                        <div className="col-lg-4" style={{'paddingLeft': '45px'}}>
                             <div className="entry-static-box entry-static-box1">
                                 <div className="section-icon">
                                     <img src="/images/section-icon.png" alt="section-icon" />

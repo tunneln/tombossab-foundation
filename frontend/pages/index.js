@@ -12,7 +12,7 @@ import ClientsLogo from "../components/ClientsLogo";
 import HelpingArea from "../components/HelpingArea";
 import TeamArea from "../components/TeamArea";
 import CallToAction from "../components/CallToAction";
-import BlogHome from "../components/BlogHome";
+import EventsHome from '../components/EventsHome';
 import Map from "../components/Map";
 import CallToActionTwo from "../components/CallToActionTwo";
 
@@ -30,7 +30,7 @@ const HomePage = () => {
           <HelpingArea />
           <TeamArea />
           <CallToAction />
-          <BlogHome />
+          <EventsHome />
           <Map />
           <CallToActionTwo />
           <Footer />

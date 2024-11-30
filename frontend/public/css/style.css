@@ -164,8 +164,8 @@ a:hover {
 }
 .slider-btn {
     position: absolute;
-    bottom: 20px;
-    right: 20px;
+    bottom: 18px;
+    right: 18px;
 }
 /*=== section-heading ====*/
 .section-heading .section__title {
@@ -913,7 +913,9 @@ a:hover {
     background-position: center center;
     background-size: cover;
     color: #fff;
-    height: 840px;
+    /* height: 840px; */
+    height: 80vh;
+    width: 100vw;
     position: relative;
     z-index: 1;
     overflow: hidden;
@@ -922,8 +924,10 @@ a:hover {
     content: "";
     position: absolute;
     display: block;
-    width: 852px;
-    height: 100%;
+    /* width: 852px; */
+    /* height: 100%; */
+    width: 100vw;
+    height: 80vh;
     top: 0;
     left: -110px;
     z-index: -1;
@@ -936,17 +940,23 @@ a:hover {
 }
 .slider-area .slide-bg1 {
     background: url("../images/slider1.jpg") no-repeat center center fixed;
-    opacity: 0.8;
+    opacity: 0.75;
+    background-size: 100vw;
 }
 .slider-area .slide-bg2 {
     background: url("../images/slider2.jpg") no-repeat center center fixed;
-    opacity: 0.9;
+    opacity: 0.75;
+    background-size: 100vw;
 }
 .slider-area .slide-bg3 {
     background: url("../images/slider3.jpg") no-repeat center center fixed;
+    opacity: 0.75;
+    background-size: 100vw;
 }
 .slider-area .slide-bg4 {
     background: url("../images/slider4.jpg") no-repeat center center fixed;
+    opacity: 0.75;
+    background-size: 100vw;
 }
 .slider-area .slide-bg5 {
     background: url("../images/slider5.jpg") no-repeat center center fixed;
@@ -978,12 +988,13 @@ a:hover {
     margin-bottom: 47px;
 }
 .slider__desc {
-    /* font-size: calc((var(--normal-text-size-value) - 1) * 1.2vw + 1rem); */
-    /* font-size: calc((var(10000) - 1) * 1.2vw + 1rem); */
-    font-size: 60px;
+    font-size: 2.6em;
     color: #fff;
-    font-weight: 700;
-    margin-bottom: 47px;
+    font-weight: 850;
+    position: absolute;
+    padding-left: 45px;
+    padding-right: 25%;
+    bottom: 71px;
 }
 /*=== owl-nav ===*/
 .slider-area .homepage-slide1 .owl-dots {

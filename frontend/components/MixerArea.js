@@ -93,9 +93,9 @@ class MixerArea extends Component {
                                             <div className="fun-slide-item">
                                                 <div className="icon-quote">“</div>
                                                 <h3 className="funslide__text">
-                                                    No one has ever become poor from giving. 
+                                                    We make a living by what we get, but we make a life by what we give.
                                                 </h3>
-                                                <p className="funslide__name">Anne Frank</p>
+                                                <p className="funslide__name">Maya Angelou</p>
                                             </div>
                                         </SwiperSlide>
                                         <SwiperSlide>
@@ -112,9 +112,18 @@ class MixerArea extends Component {
                                             <div className="fun-slide-item">
                                                 <div className="icon-quote">“</div>
                                                 <h3 className="funslide__text">
-                                                    We make a living by what we get. We make a life by what we give. 
+                                                    The best way to find yourself is to lose yourself in the service of others.
                                                 </h3>
-                                                <p className="funslide__name">Winston Churchill</p>
+                                                <p className="funslide__name">Mahatma Gandhi</p>
+                                            </div>
+                                        </SwiperSlide>
+                                        <SwiperSlide>
+                                            <div className="fun-slide-item">
+                                                <div className="icon-quote">“</div>
+                                                <h3 className="funslide__text">
+                                                    We are each other's harvest; we are each other's business; we are each other's magnitude and bond.
+                                                </h3>
+                                                <p className="funslide__name">Gwendolyn Brooks</p>
                                             </div>
                                         </SwiperSlide>
                                     </Swiper>

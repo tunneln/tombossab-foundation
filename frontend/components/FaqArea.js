@@ -28,25 +28,47 @@ class FaqArea extends Component {
                         <div className="col-lg-6">
                             <div className="accordion-container">
                                 <div className="ac">
-                                    <h2 className="ac-q" tabIndex="0">Make a difference in the life of a child</h2>
+                                    <h2 className="ac-q" tabIndex="0">How do I apply for a scholarship?</h2>
                                     <div className="ac-a">
-                                        <p className="accordion__content-desc">Suspendisse finibus urna mauris, vitae consequat quam blandit vel. Vestibulum leo ligula, molestie ullamcorper vulputate vitae sodales commodo nisl. Nulla facilisi. Pellentesque est metus. There are many variations of eration in some form.
+                                        <p className="accordion__content-desc">
+                                            As we are still taking our first steps as a foundation, we won't be opening applcations until the end of 2025 at the earliest.
                                         </p>
                                     </div>
                                 </div>
 
                                 <div className="ac">
-                                    <h2 className="ac-q" tabIndex="0">Let’s do the right thing now</h2>
+                                    <h2 className="ac-q" tabIndex="0">What is the overall vision for the foundation</h2>
                                     <div className="ac-a">
-                                        <p className="accordion__content-desc">Suspendisse finibus urna mauris, vitae consequat quam blandit vel. Vestibulum leo ligula, molestie ullamcorper vulputate vitae sodales commodo nisl. Nulla facilisi. Pellentesque est metus. There are many variations of eration in some form.
+                                        <p className="accordion__content-desc">
+                                            While there's much we can say here, our primary objective can be summed up as the following:<br/><br/>
+                                            To enhance the strength and well-being of the Eritrean and East African youth community by providing accessible resources and financial aid
                                         </p>
                                     </div>
                                 </div>
 
                                 <div className="ac">
-                                    <h2 className="ac-q" tabIndex="0">Join your hand with us for a better life</h2>
+                                    <h2 className="ac-q" tabIndex="0">How can I support the foundation?</h2>
                                     <div className="ac-a">
-                                        <p className="accordion__content-desc">Suspendisse finibus urna mauris, vitae consequat quam blandit vel. Vestibulum leo ligula, molestie ullamcorper vulputate vitae sodales commodo nisl. Nulla facilisi. Pellentesque est metus. There are many variations of eration in some form.
+                                        <p className="accordion__content-desc">
+                                            You can support by making a donation, volunteering, or spreading the word about our mission. More information can be found in the Get Involved navigation tab!
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="ac">
+                                    <h2 className="ac-q" tabIndex="0">Do you offer support beyond scholarships?</h2>
+                                    <div className="ac-a">
+                                        <p className="accordion__content-desc">
+                                            Yes, we also provide mentorship, mental wellness resources, and community programs aimed at supporting holistic student success.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="ac">
+                                    <h2 className="ac-q" tabIndex="0">What does the 'B' in Tombossa B Foundation stand for?</h2>
+                                    <div className="ac-a">
+                                        <p className="accordion__content-desc">
+                                            The 'B' stands for Birkiti. As the president of the foundation and wife of Tombossa, Birkiti created this organization to honor her late husband and his commitment to helping the Eritrean community.
                                         </p>
                                     </div>
                                 </div>

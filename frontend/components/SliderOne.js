@@ -41,11 +41,8 @@ const SliderOne = () => {
                             <div className="slide-item-tablecell">
                                 <div className="container">
                                     <div className="row">
-                                        <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-                                            <div className="slider-heading">
-                                                <p className="slider__meta"></p>
-                                                <h2 className="slider__desc"></h2>
-                                            </div>
+                                        <div className="slider-heading">
+                                            <h3 className="slider__desc">Empowering Eritrean and East African communities through education, support, and opportunity.</h3>
                                         </div>
                                         <Link href="/donatenow" className="theme-btn slider-btn custom-dbox-popup" data-reminder-widget-enabled="true">
                                             <img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;Donate
@@ -62,12 +59,10 @@ const SliderOne = () => {
                             <div className="slide-item-tablecell">
                                 <div className="container">
                                     <div className="row">
-                                        <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-                                            <div className="slider-heading">
-                                                {/* <h2 className="slider__desc">The Tombossa B Foundation launches on the 1 year anniversary of Tombossa's passing</h2> */}
-                                            </div>
+                                        <div className="slider-heading">
+                                            <h3 className="slider__desc">The Tombossa B Foundation launches on the first anniversary of Tombossa's passing</h3>
                                         </div>
-                                        <a href="#" className="theme-btn slider-btn">Watch Here</a>
+                                        <Link href="#" className="theme-btn slider-btn">Watch Here</Link>
                                     </div>
                                 </div>
                             </div>

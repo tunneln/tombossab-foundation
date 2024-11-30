@@ -3,6 +3,38 @@ import React, { useState, useEffect } from 'react';
 const Footer = () => {
     const [scrollBtn, setScrollBtn] = useState(false);
 
+    const [formData, setFormData] = useState({
+        email: '',
+      });
+    
+      const handleChange = (e) => {
+        setFormData({
+          ...formData,
+          [e.target.name]: e.target.value,
+        });
+      };
+
+      const handleSubmit = async (e) => {
+        e.preventDefault(); // Prevents page reload on form submission
+    
+        try {
+          const response = await fetch('/api/send-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData),
+          });
+    
+          if (response.ok) {
+            alert('Email sent successfully!');
+          } else {
+            alert('Error sending email.');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Error sending email.');
+        }
+      }; 
+
     useEffect(() => {
         const handleScroll = () => {
             if (window.scrollY > 100) {
@@ -39,12 +71,12 @@ const Footer = () => {
                                 </div>
                                 <div className="newsletter-form">
                                     <div className="form-shared">
-                                        <form action="#">
+                                        <form action={handleSubmit} method="post">
                                             <div className="row">
                                                 <div className="col-lg-9">
                                                     <div className="form-group">
                                                         <input type="email" className="form-control"
-                                                               placeholder="Email address" />
+                                                            value={formData.email} onChange={handleChange} placeholder="Email address" required/>
                                                     </div>
                                                 </div>
                                                 <div className="col-lg-3">
@@ -73,10 +105,10 @@ const Footer = () => {
                                 </ul>
                                 <div className="footer__social">
                                     <ul>
-                                        <li><a href="#"><i className="fa fa-twitter"></i></a></li>
-                                        <li><a href="#"><i className="fa fa-facebook"></i></a></li>
-                                        <li><a href="#"><i className="fa fa-instagram"></i></a></li>
-                                        <li><a href="#"><i className="fa fa-youtube-play"></i></a></li>
+                                        <li><a href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
+                                        <li><a href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
+                                        <li><a href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
+                                        <li><a href="https://www.youtube.com/channel/UCk9Ct2P7rT32HovvbzwqQPw"><i className="fa fa-youtube-play"></i></a></li>
                                     </ul>
                                 </div>
                             </div>

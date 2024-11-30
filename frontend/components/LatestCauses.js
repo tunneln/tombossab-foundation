@@ -29,8 +29,7 @@ const LatestCauses = () => {
                                     <div className="blog-inner-content">
                                         <h3 className="blog__title"><Link href="#">Future Scholar Fund</Link>
                                         </h3>
-                                        <p className="blog__desc">Aliq is notm hendr erit a augue insu image pellen
-                                            tes.</p>
+                                        <p className="blog__desc"> Empowering Eritrean and East African youth via scholarships and prep resources to unlock education and potential. </p>
                                         <ul className="blog__list">
                                             <li><i className="icon-target"></i> Goal: <span>$50,000</span></li>
                                         </ul>
@@ -51,8 +50,7 @@ const LatestCauses = () => {
                                     <div className="blog-inner-content">
                                         <h3 className="blog__title"><Link href="#">Mental Wellness Fund</Link>
                                         </h3>
-                                        <p className="blog__desc">Aliq is notm hendr erit a augue insu image pellen
-                                            tes.</p>
+                                        <p className="blog__desc"> Providing essential resources to support mental wellness and resilience for Eritrean and East African youth </p>
                                         <ul className="blog__list">
                                             <li><i className="icon-target"></i> Goal: <span>$10,000</span></li>
                                         </ul>

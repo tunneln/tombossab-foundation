@@ -47,7 +47,7 @@ const SliderOne = () => {
                                                 <h2 className="slider__desc"></h2>
                                             </div>
                                         </div>
-                                        <Link href="https://donorbox.org/scholarship-fund-73?default_interval=o" className="theme-btn slider-btn custom-dbox-popup" data-reminder-widget-enabled="true">
+                                        <Link href="/donatenow" className="theme-btn slider-btn custom-dbox-popup" data-reminder-widget-enabled="true">
                                             <img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;Donate
                                         </Link>
                                     </div>

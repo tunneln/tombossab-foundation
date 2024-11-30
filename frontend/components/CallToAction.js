@@ -13,7 +13,7 @@ const CallToAction = () => {
                             </div>
                             <h2 className="section__title text__white">The helping hand we extend to the lives we touch never
                                 fade</h2>
-                            <Link href="https://donorbox.org/scholarship-fund-73?default_interval=o" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
+                            <Link href="/donatenow" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
                                 <img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;Donate
                             </Link>
                         </div>

@@ -93,7 +93,7 @@ const ServiceArea = () => {
                 <div className="row">
                     <div className="col-lg-12">
                         <div className="button-shared">
-                            <Link href="https://donorbox.org/scholarship-fund-73?default_interval=o" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
+                            <Link href="/donatenow" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
                                 <img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;Donate
                             </Link>
                         </div>

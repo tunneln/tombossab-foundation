@@ -1,6 +1,7 @@
 import React from 'react';
 
 const HelpingArea = () => {
+
     return (
         <div>
             <section className="mixer-area helping-area">
@@ -79,21 +80,15 @@ const HelpingArea = () => {
                                     <div className="section-icon">
                                         <img src="/images/section-icon.png" alt="section-icon" />
                                     </div>
-                                    <h2 className="section__title text__white">Make a Donation</h2>
-                                    <p className="section__meta text__white"><img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;donate</p>
+                                    <h2 className="section__title text__white" style={{'paddingBottom': '30px'}}>Recent Donations!</h2>
                                 </div>
-                                <iframe
-                                    src="https://donorbox.org/embed/scholarship-fund-73?default_interval=o"
-                                    name="donorbox"
-                                    allowpaymentrequest="allowpaymentrequest"
-                                    seamless="seamless"
+                                <iframe 
                                     frameBorder={0}
-                                    scrolling="no"
-                                    height="900px"
-                                    width="100%"
-                                    style={{ maxWidth: 500, minWidth: 310, maxHeight: "none!important" }}
-                                    allow="payment"
-                                    />
+                                    name="donorbox" 
+                                    scrolling="auto" 
+                                    seamless="seamless" 
+                                    src="https://donorbox.org/embed/scholarship-fund-73?only_donor_wall=true&donor_wall_color=%2363ae3b" 
+                                    style={{ 'width': '100%', 'maxWidth': '500px', 'minWidth': '310px', 'minHeight': '345px' }}/> 
                             </div>
                         </div>
                     </div>

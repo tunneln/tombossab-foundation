@@ -37,7 +37,7 @@ class MixerArea extends Component {
                                         </div>
                                         Fundraising for the people and causes that affect our community
                                     </h2>
-                                    <Link href="https://donorbox.org/scholarship-fund-73?default_interval=o" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
+                                    <Link href="/donatenow" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
                                         <img src="https://donorbox.org/images/white_logo.svg"/> &nbsp; donate
                                     </Link>
                                 </div>

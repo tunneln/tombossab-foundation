@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import Script from "next/script";
+import { useDonorboxScript } from "../hooks/useDonorboxScript";
 
 const NavOne = () => {
+    useDonorboxScript();
 
     const RGBA_CONSTANT = 'rgba(168, 150, 119, 0.11)';
     const [sticky, setSticky] = useState(false);
@@ -42,25 +43,9 @@ const NavOne = () => {
         window.addEventListener("scroll", handleScroll);
         mobileMenu();
 
-        // Configure Donorbox popup trigger
-        window.DonorBox = { widgetLinkClassName: 'custom-dbox-popup' };
-
-        // Dynamically load the inline script separately to avoid conflict
-        const stickyButtonScript = document.createElement('script');
-        stickyButtonScript.src = 'https://donorbox.org/install-popup-button.js';
-        stickyButtonScript.defer = true;
-        stickyButtonScript.id = 'donorbox-popup-button-installer';
-        stickyButtonScript.dataset.href = 'https://donorbox.org/scholarship-fund-73?default_interval=o';
-        stickyButtonScript.dataset.style = 'background: rgb(227, 105, 85); color: rgb(255, 255, 255); text-decoration: none; font-family: Verdana, sans-serif; display: none; font-size: 16px; padding: 8px 22px 8px 18px; border-radius: 0px 0px 5px 5px; gap: 8px; width: fit-content; line-height: 24px; position: fixed; top: 50%; transform-origin: center center; z-index: 9999; overflow: hidden; left: 20px; transform: translate(-50%, -50%) rotate(-90deg);';
-        stickyButtonScript.dataset.imgSrc = 'https://donorbox.org/images/white_logo.svg';
-        stickyButtonScript.dataset.reminderWidgetEnabled = true;
-
-        document.body.appendChild(stickyButtonScript);
-
         // Cleanup event listeners on unmount
         return () => {
             window.removeEventListener("scroll", handleScroll);
-            document.body.removeChild(stickyButtonScript);
         };
     }, []);
 
@@ -109,7 +94,7 @@ const NavOne = () => {
                                         </Link>
                                     </div>
                                     <div className="header-btn ml-auto">
-                                        <Link href="https://donorbox.org/scholarship-fund-73?default_interval=o" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
+                                        <Link href="/donatenow" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
                                             <img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;Donate
                                         </Link>
                                     </div>
@@ -173,7 +158,7 @@ const NavOne = () => {
                             <li><a href="#"><i className="fa fa-youtube-play"></i></a></li>
                         </ul>
                         <div className="side-btn">
-                            <Link href="https://donorbox.org/scholarship-fund-73?default_interval=o" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
+                            <Link href="/donatenow" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
                                 <img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;Donate
                             </Link>
                         </div>

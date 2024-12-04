@@ -1,25 +1,19 @@
 package org.tombossabfoundation.backend.controllers;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-
-@RestController
+@Controller
 public class HelloController {
-   
-    @RequestMapping(value = {"/", "/**/{path:[^\\.]*}"})
-    public String index() {
-        return "index.html";
-    } 
 
-    // @RequestMapping("/{path:[^\\.]+}/**")
-    // public String forward() {
-    //     return "forward:/index.html";
-    // } 
+    // Logger logger = LoggerFactory.getLogger(HelloController.class);
 
-    // @GetMapping(value = "/{path:^(?!api).*}")
-    // public String requestPage(@PathVariable("page") String page) {
-    //     String htmlPage = "/"+page;
-    //     return htmlPage;
-    // }
+    @RequestMapping("/{page:^(?!.*[.].*$).*$}")
+    public String requestPage(@PathVariable("page") String page) {
+        String htmlPage = "/"+page+".html";
+        // logger.info("forwarding request to {}", htmlPage);
+        return htmlPage;
+    }
+
 }

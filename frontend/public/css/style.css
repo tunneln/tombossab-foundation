@@ -185,6 +185,9 @@ a:hover {
 .section-heading .text__white {
     color: #fff;
 }
+.section-heading .text__black {
+    color: black;
+}
 /*=== section-icon ====*/
 .section-icon {
     margin-bottom: 9px;
@@ -1002,10 +1005,10 @@ a:hover {
 }
 .slider__box {
     background-color: rgba(227, 105, 85, 1);
-    border-top: 50px solid rgba(227, 105, 85, 1); 
-    border-right: 30px solid rgba(227, 105, 85, 1); 
-    border-bottom: 50px solid rgba(227, 105, 85, 1); 
-    border-left: 40px solid rgba(227, 105, 85, 1); 
+    border-top: 55px solid rgba(227, 105, 85, 1); 
+    border-right: 37px solid rgba(227, 105, 85, 1); 
+    border-bottom: 58px solid rgba(227, 105, 85, 1); 
+    border-left: 37px solid rgba(227, 105, 85, 1); 
 }
 /*=== owl-nav ===*/
 .slider-area .homepage-slide1 .owl-dots {
@@ -3281,18 +3284,18 @@ a:hover {
 }
 /*=== helping-form ===*/
 .helping-area2 .helping-form {
-    /* background-color: rgba(134, 59, 174, 0.5); */
-    background-color: #9E62BE;
-    padding: 70px 0 0 120px;
+    /* background-color: rgba(134, 59, 174, 1); */
+    background-color: #dac3e6;
+    padding: 70px 60px 70px 120px;
     position: relative;
     z-index: 1;
     margin-top: -361px;
 }
 .helping-area2:after {
-    /* background-color: rgba(134, 59, 174, 0.5); */
-    background-color: #9E62BE;
+    /* background-color: rgba(134, 59, 174, 1); */
+    background-color: #dac3e6;
     margin-top: -261px;
-    height: 971px;
+    height: 1172px;
 }
 .helping-area2 .helping-form .form-shared {
     margin-top: 51px;

@@ -50,20 +50,20 @@ class MixerArea extends Component {
                     <div className="container">
                         <div className="row fun-content-wrap">
                             <div className="col-sm-6 col-lg-6">
-                                {/* <div className="fun-content">
+                                <div className="fun-content">
                                     <div className="fun-item fun-item1">
                                         <i className="icon-charity"></i>
                                         <h3 className="counter">
-                                            <VisibilitySensor onChange={this.onVisibilityChange} offset={{top:10}} delayedCall><CountUp end={this.state.startCounter ? 20000 : 0} /></VisibilitySensor>
+                                            <VisibilitySensor onChange={this.onVisibilityChange} offset={{top:10}} delayedCall><CountUp end={this.state.startCounter ? 10906.41 : 0} /></VisibilitySensor>
                                         </h3>
-                                        <p className="fun__text">raised by 100 people in 7 days</p>
+                                        <p className="fun__text">raised by 73 people in 5 days</p>
                                     </div>
-                                </div> */}
+                                </div>
                                 <div className="fun-content">
                                     <div className="fun-item fun-item2">
                                         <i className="icon-cancer"></i>
                                         <h3 className="counter">
-                                            <VisibilitySensor onChange={this.onVisibilityChange} offset={{top:10}} delayedCall><CountUp end={this.state.startCounter ? 20 : 0} /></VisibilitySensor>
+                                            <VisibilitySensor onChange={this.onVisibilityChange} offset={{top:10}} delayedCall><CountUp end={this.state.startCounter ? 52 : 0} /></VisibilitySensor>
                                         </h3>
                                         <p className="fun__text">volunteers are available to help you</p>
                                     </div>

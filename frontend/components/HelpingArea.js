@@ -7,7 +7,7 @@ const HelpingArea = () => {
             <section className="mixer-area helping-area">
                 <div className="container">
                     <div className="row">
-                        <div className="col-lg-6">
+                        <div className="col-sm-6 col-lg-6">
                             <div className="section-heading mixer-heading">
                                 <div className="section-icon">
                                     <img src="/images/section-icon.png" alt="section-icon" />
@@ -37,7 +37,7 @@ const HelpingArea = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-lg-6">
+                        <div className="col-sm-6 col-lg-6">
                             <div className="helping-text-box">
                                 <p className="helping__text">
                                     Your support is not just a gift—it's a lifeline that helps ensure a brighter, healthier future for the next generation. Thank you for being a part of this important journey. Through you, our communities youths are empowered to overcome challenges, build resilience, and reach their full potential.
@@ -50,7 +50,7 @@ const HelpingArea = () => {
             <section className="mixer-area2 helping-area2">
                 <div className="container">
                     <div className="row fun-content-wrap">
-                        <div className="col-lg-6">
+                        <div className="col-sm-6 col-lg-6">
                             <div className="fun-content">
                                 <div className="fun-item fun-item1">
                                     <img src="/images/helping-img.jpg" alt="" />
@@ -66,21 +66,22 @@ const HelpingArea = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-lg-6">
-                            <div className="helping-form">
-                                <div className="section-heading">
+                        <div className="col-sm-6 col-lg-6">
+                            <div className="helping-form" >
+                                <div className="section-heading" style={{}}>
                                     <div className="section-icon">
                                         <img src="/images/section-icon.png" alt="section-icon" />
                                     </div>
-                                    <h2 className="section__title text__white" style={{'paddingBottom': '30px'}}>Recent Donations!</h2>
+                                    <h2 className="section__title text__black" style={{'paddingBottom': '30px'}}>Recent Donations</h2>
                                 </div>
                                 <iframe 
                                     frameBorder={0}
                                     name="donorbox" 
-                                    scrolling="auto" 
+                                    scrolling="no" 
                                     seamless="seamless" 
-                                    src="https://donorbox.org/embed/scholarship-fund-73?only_donor_wall=true&donor_wall_color=%2363ae3b" 
-                                    style={{ 'width': '100%', 'maxWidth': '500px', 'minWidth': '310px', 'minHeight': '345px' }}/> 
+                                    src="https://donorbox.org/embed/scholarship-fund-73?only_donor_wall=true&donor_wall_color=%2376b854" 
+                                    style={{ 'width': '100%', 'maxWidth': '600px', 'minWidth': '310px', 'maxHeight': '835px', 'minHeight': '835px' }}
+                                /> 
                             </div>
                         </div>
                     </div>

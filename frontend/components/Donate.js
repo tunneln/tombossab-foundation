@@ -24,7 +24,7 @@ const Donate = () => {
                             <div className="side-widget blog-content">
                                 <div className="blog-item">
                                     <div className="blog-img">
-                                        <img src="/images/img15.jpg" alt="" />
+                                        <img src="/images/img1.jpg" alt="" />
                                     </div>
                                     <div className="blog-inner-content">
                                         <h3 className="blog__title"><Link href="#">Future Scholar Fund</Link>

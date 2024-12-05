@@ -27,7 +27,7 @@ const SliderOne = () => {
                     clickable: true,
                 }}
                 autoplay={{
-                    delay: 6000,
+                    delay: 7000,
                     disableOnInteraction: true,
                 }}
                 speed={2500}
@@ -44,7 +44,9 @@ const SliderOne = () => {
                                 <div className="container">
                                     <div className="row">
                                         <div className="slider-heading">
-                                            <h3 className="slider__desc">Empowering Eritrean and East African communities through education, support, and opportunity.</h3>
+                                            <h3 className="slider__desc">
+                                                <div className="slider__box">Empowering Eritrean and East African communities through education, support, and opportunity</div>
+                                            </h3>
                                         </div>
                                         <Link href="/about" className="theme-btn slider-btn">
                                             About Us 
@@ -62,7 +64,9 @@ const SliderOne = () => {
                                 <div className="container">
                                     <div className="row">
                                         <div className="slider-heading">
-                                            <h3 className="slider__desc">The Tombossa B Foundation launches on the first anniversary of Tombossa's passing</h3>
+                                            <h3 className="slider__desc">
+                                                <div className="slider__box">The Tombossa B Foundation launches on the anniversary of Tombossa's passing</div>
+                                            </h3>
                                         </div>
                                         <Link href="https://www.youtube.com/channel/UCk9Ct2P7rT32HovvbzwqQP" className="theme-btn slider-btn">Watch Here</Link>
                                     </div>

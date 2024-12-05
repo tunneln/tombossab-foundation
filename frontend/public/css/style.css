@@ -914,8 +914,8 @@ a:hover {
     background-size: cover;
     color: #fff;
     /* height: 840px; */
-    height: calc(100dvh - 158px);
-    width: 100vw;
+    height: calc(100svh - 158px);
+    width: 100svw;
     position: relative;
     z-index: 1;
     overflow: hidden;
@@ -926,8 +926,8 @@ a:hover {
     display: block;
     /* width: 852px; */
     /* height: 100%; */
-    width: 100vw;
-    height: calc(100dvh - 158px);
+    width: 100svw;
+    height: calc(100svh - 158px);
     top: 0;
     left: -110px;
     z-index: -1;
@@ -941,22 +941,22 @@ a:hover {
 .slider-area .slide-bg1 {
     background: url("../images/slider1.jpg") no-repeat center center fixed;
     opacity: 0.75;
-    background-size: 100vw;
+    background-size: 100dvw;
 }
 .slider-area .slide-bg2 {
     background: url("../images/slider2.jpg") no-repeat center center fixed;
     opacity: 0.70;
-    background-size: 100vw;
+    background-size: 100dvw;
 }
 .slider-area .slide-bg3 {
     background: url("../images/slider3.jpg") no-repeat center center fixed;
     opacity: 0.75;
-    background-size: 100vw;
+    background-size: 100dvw;
 }
 .slider-area .slide-bg4 {
     background: url("../images/slider4.jpg") no-repeat center center fixed;
     opacity: 0.75;
-    background-size: 100vw;
+    background-size: 100dvw;
 }
 .slider-area .slide-bg5 {
     background: url("../images/slider5.jpg") no-repeat center center fixed;
@@ -988,12 +988,12 @@ a:hover {
     margin-bottom: 47px;
 }
 .slider__desc {
-    font-size: 4em;
+    font-size: 4.5em;
     color: #fff;
     font-weight: 850;
     position: absolute;
     padding-left: 45px;
-    padding-right: 25%;
+    padding-right: 20%;
     bottom: 80px;
     line-height: 1.15;
 }

@@ -36,7 +36,7 @@
     }
     .slider-area .single-slide-item:after,
     .slider-area .single-slide-item {
-        height: calc(100dvh - 120px);
+        height: calc(100svh - 120px);
     }
     .mixer-area2 .fun-content-slide, .helping-area2 .helping-form {
         padding-top: 50px;
@@ -80,40 +80,40 @@
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover;
-        min-width: 100vw;
-        min-height: 100vh;
+        min-width: 100svw;
+        min-height: 100svh;
     }
     .slider-area .slide-bg2 {
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover;
-        min-width: 100vw;
-        min-height: 100vh;
+        min-width: 100svw;
+        min-height: 100svh;
     }
     .slider-area .slide-bg3 {
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover;
-        min-width: 100vw;
-        min-height: 100vh;
+        min-width: 100svw;
+        min-height: 100svh;
     }
     .slider-area .slide-bg4 {
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover;
-        min-width: 100vw;
-        min-height: 100vh;
+        min-width: 100svw;
+        min-height: 100svh;
     }
     .slider-area .slide-bg5 {
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
         background-size: cover;
-        min-width: 100vw;
-        min-height: 100vh;
+        min-width: 100svw;
+        min-height: 100svh;
     }
     .slider-area .single-slide-item:after {
         width: 578px;

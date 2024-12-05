@@ -6,7 +6,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
-import { Pagination, Autoplay } from 'swiper/modules';
+import { FreeMode, Pagination, Autoplay } from 'swiper/modules';
 
 const SliderOne = () => {
 
@@ -21,7 +21,7 @@ const SliderOne = () => {
                     '--swiper-pagination-bottom': '0px'
 
                 }}
-                spaceBetween={30}
+                spaceBetween={5}
                 centeredSlides={true}
                 pagination={{
                     clickable: true,
@@ -32,6 +32,8 @@ const SliderOne = () => {
                 }}
                 speed={2500}
                 loop={true}
+                longSwipes={true}
+                shortSwipes={false}
                 modules={[Autoplay, Pagination]}
                 className="frontpageSwiper"
             >

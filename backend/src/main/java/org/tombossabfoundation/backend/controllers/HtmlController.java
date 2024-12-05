@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class HelloController {
+public class HtmlController {
 
     // Logger logger = LoggerFactory.getLogger(HelloController.class);
 

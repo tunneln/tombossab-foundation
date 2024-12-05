@@ -31,7 +31,6 @@ export const useDonorboxScript = () => {
                 popupScript.dataset.reminderWidgetEnabled = true;
                 popupScript.dataset.style = 'background: rgb(227, 105, 85); color: rgb(255, 255, 255); text-decoration: none; font-family: Verdana, sans-serif; display: none; font-size: 16px; padding: 8px 22px 8px 18px; border-radius: 0px 0px 5px 5px; gap: 8px; width: fit-content; line-height: 24px; position: fixed; top: 50%; transform-origin: center center; z-index: 9999; overflow: hidden; left: 20px; transform: translate(-50%, -50%) rotate(-90deg);';
                 popupScript.dataset.imgSrc = 'https://donorbox.org/images/white_logo.svg';
-                popupScript.dataset.redirect = false;
 
                 document.body.appendChild(popupScript);    
             }
@@ -40,10 +39,7 @@ export const useDonorboxScript = () => {
         };
         
         handleRouteChange();
-        // router.events.on('routeChangeComplete', handleRouteChange);
         
-        return () => {
-            // router.events.off('routeChangeComplete', handleRouteChange);
-        };
+        return () => { };
       }, []);
 };

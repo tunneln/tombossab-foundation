@@ -914,7 +914,7 @@ a:hover {
     background-size: cover;
     color: #fff;
     /* height: 840px; */
-    height: 80vh;
+    height: calc(100dvh - 158px);
     width: 100vw;
     position: relative;
     z-index: 1;
@@ -927,7 +927,7 @@ a:hover {
     /* width: 852px; */
     /* height: 100%; */
     width: 100vw;
-    height: 80vh;
+    height: calc(100dvh - 158px);
     top: 0;
     left: -110px;
     z-index: -1;
@@ -945,7 +945,7 @@ a:hover {
 }
 .slider-area .slide-bg2 {
     background: url("../images/slider2.jpg") no-repeat center center fixed;
-    opacity: 0.75;
+    opacity: 0.70;
     background-size: 100vw;
 }
 .slider-area .slide-bg3 {
@@ -988,13 +988,14 @@ a:hover {
     margin-bottom: 47px;
 }
 .slider__desc {
-    font-size: 2.6em;
+    font-size: 4em;
     color: #fff;
     font-weight: 850;
     position: absolute;
     padding-left: 45px;
     padding-right: 25%;
-    bottom: 71px;
+    bottom: 80px;
+    line-height: 1.15;
 }
 /*=== owl-nav ===*/
 .slider-area .homepage-slide1 .owl-dots {

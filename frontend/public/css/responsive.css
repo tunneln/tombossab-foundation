@@ -34,6 +34,10 @@
     .mixer-area2:after {
         display: none;
     }
+    .slider-area .single-slide-item:after,
+    .slider-area .single-slide-item {
+        height: calc(100dvh - 120px);
+    }
     .mixer-area2 .fun-content-slide, .helping-area2 .helping-form {
         padding-top: 50px;
         padding-left: 50px;
@@ -43,6 +47,9 @@
 }
 
 @media (max-width:1366px) {
+    .slider__desc {
+        font-size: 62px;
+    }
     .hiw-area {
         padding-top: 0px;
     }
@@ -148,6 +155,9 @@
 
 /*=== 1199px ===*/
 @media (max-width:1199px) {
+    .slider__desc {
+        font-size: 52px;
+    }
     .mixer-area2:after {
         display: none;
     }
@@ -234,9 +244,6 @@
         font-size: 86px;
         line-height: 94px;
     }
-    .slider__desc {
-        font-size: 51px;
-    }
     .slider-area .single-slide-item:after {
         width: 426px;
     }
@@ -306,7 +313,7 @@
         /* padding-top: 0; */
     }
     .slider__desc {
-        font-size: 41px;
+        font-size: 42px;
         padding-right: 10%;
     }
     .slider-area .single-slide-item:after {
@@ -520,7 +527,7 @@
         line-height: 90px;
     }
     .slider__desc {
-        font-size: 32px;
+        font-size: 33px;
         padding-right: 10%;
     }
     .hiw-area .col {
@@ -612,7 +619,7 @@
 ------------------------------*/
 @media (max-width:575px) {
     .slider__desc {
-        font-size: 24px;
+        font-size: 26px;
         padding-right: 12%;
     }
     .header-area .header-top-action .top-action-content:before {
@@ -680,7 +687,7 @@
         line-height: 80px;
     }
     .slider__desc {
-        font-size: 22px;
+        font-size: 24px;
     }
     .slider-area2 .single-slide-item {
         height: 1024px;
@@ -696,9 +703,6 @@
     .slider-area .slider-heading .slider__title {
         font-size: 55px;
         line-height: 70px;
-    }
-    .slider__desc {
-        font-size: 20px;
     }
     .slider-area2 .single-slide-item {
         height: 1024px;
@@ -805,9 +809,12 @@
 }
 
 /*-----------------------------
-    375px
+    381px
 ------------------------------*/
-@media (max-width:375px) {
+@media (max-width:381px) {
+    .slider__desc {
+        font-size: 22px;
+    }
     .section-heading .section__title {
         font-size: 36px;
         line-height: 38px;

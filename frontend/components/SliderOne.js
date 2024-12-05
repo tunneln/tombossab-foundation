@@ -46,8 +46,8 @@ const SliderOne = () => {
                                         <div className="slider-heading">
                                             <h3 className="slider__desc">Empowering Eritrean and East African communities through education, support, and opportunity.</h3>
                                         </div>
-                                        <Link href="/donatenow" className="theme-btn slider-btn custom-dbox-popup" data-reminder-widget-enabled="true">
-                                            <img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;Donate
+                                        <Link href="/about" className="theme-btn slider-btn">
+                                            About Us 
                                         </Link>
                                     </div>
                                 </div>

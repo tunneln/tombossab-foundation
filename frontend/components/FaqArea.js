@@ -6,8 +6,6 @@ class FaqArea extends Component {
         new Accordion('.accordion-container');
     }
 
-
-
     render() {
         return (
             <section className="faq-area">
@@ -18,7 +16,7 @@ class FaqArea extends Component {
                                 <div className="section-icon">
                                     <img src="/images/section-icon.png" alt="section-icon" />
                                 </div>
-                                <h2 className="section__title">Have any Question?</h2>
+                                <h2 className="section__title">Have any Questions?</h2>
                                 <p className="section__meta">frequently asked questions</p>
                             </div>
                             <div className="faq-img-box">
@@ -41,7 +39,7 @@ class FaqArea extends Component {
                                     <div className="ac-a">
                                         <p className="accordion__content-desc">
                                             While there's much we can say here, our primary objective can be summed up as the following:<br/><br/>
-                                            To enhance the strength and well-being of the Eritrean and East African youth community by providing accessible resources and financial aid
+                                            To enhance the strength and well-being of the Eritrean and East African youth community by providing accessible resources and financial aid.
                                         </p>
                                     </div>
                                 </div>

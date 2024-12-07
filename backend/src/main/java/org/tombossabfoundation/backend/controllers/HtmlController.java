@@ -15,5 +15,5 @@ public class HtmlController {
         // logger.info("forwarding request to {}", htmlPage);
         return htmlPage;
     }
-
+        
 }

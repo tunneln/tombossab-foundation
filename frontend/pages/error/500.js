@@ -1,8 +1,8 @@
 import React from 'react';
-import Layout from "../components/Layout";
-import NavOne from "../components/NavOne";
-import Footer from "../components/Footer";
-import Error from "../components/Error";
+import Layout from "../../components/Layout";
+import NavOne from "../../components/NavOne";
+import Footer from "../../components/Footer";
+import Error from "../../components/Error";
 
 const ErrorPage = () => {
     return (

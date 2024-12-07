@@ -45,7 +45,7 @@ const SliderOne = () => {
                                     <div className="row">
                                         <div className="slider-heading">
                                             <h3 className="slider__desc">
-                                                <div className="slider__box">Empowering Eritrean and East African communities through education, support, and opportunity</div>
+                                                <div className="slider__box">Empowering Eritrean and East African communities through education, support, and opportunity.</div>
                                             </h3>
                                         </div>
                                         <Link href="/about" className="theme-btn slider-btn">
@@ -65,10 +65,10 @@ const SliderOne = () => {
                                     <div className="row">
                                         <div className="slider-heading">
                                             <h3 className="slider__desc">
-                                                <div className="slider__box">The Tombossa B Foundation launches on the memorial of Tombossa's passing</div>
+                                                <div className="slider__box">The Tombossa B Foundation launches on the memorial of Tombossa's passing.</div>
                                             </h3>
                                         </div>
-                                        <Link href="https://www.youtube.com/channel/UCk9Ct2P7rT32HovvbzwqQP" className="theme-btn slider-btn">Watch Here</Link>
+                                        <Link href="https://www.youtube.com/@TombossaBFoundation" className="theme-btn slider-btn">Watch Here</Link>
                                     </div>
                                 </div>
                             </div>

@@ -30,9 +30,9 @@ const SliderOne = () => {
                     delay: 7000,
                     disableOnInteraction: true,
                 }}
-                speed={2500}
+                speed={3500}
                 loop={true}
-                longSwipes={true}
+                longSwipes={false}
                 shortSwipes={false}
                 modules={[Autoplay, Pagination]}
                 className="frontpageSwiper"

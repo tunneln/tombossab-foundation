@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+
 import { useDonorboxScript } from "../hooks/useDonorboxScript";
 
 const NavOne = () => {
@@ -94,7 +95,7 @@ const NavOne = () => {
                                         </Link>
                                     </div>
                                     <div className="header-btn ml-auto">
-                                        <Link href="https://donorbox.org/scholarship-fund-73?default_interval=o" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
+                                        <Link href="/donatenow" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
                                             <img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;Donate
                                         </Link>
                                     </div>

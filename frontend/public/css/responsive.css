@@ -630,6 +630,9 @@
     575px
 ------------------------------*/
 @media (max-width:575px) {
+    .mobile-about-banner {
+        display: none; 
+    }
     .slider__desc {
         font-size: 24px;
     }

@@ -16,7 +16,7 @@ const SliderOne = () => {
             <Swiper
                 style={{
                     '--swiper-pagination-color': '#f1ae44',
-                    '--swiper-pagination-bullet-size': '10px',
+                    '--swiper-pagination-bullet-size': '18px',
                     '--swiper-pagination-top': '0px',
                     '--swiper-pagination-bottom': '0px'
 
@@ -27,17 +27,14 @@ const SliderOne = () => {
                     clickable: true,
                 }}
                 autoplay={{
-                    delay: 7000,
-                    disableOnInteraction: true,
+                    delay: 7000
                 }}
                 speed={3500}
                 loop={true}
-                longSwipes={false}
-                shortSwipes={false}
                 modules={[Autoplay, Pagination]}
                 className="frontpageSwiper"
             >
-                <SwiperSlide>
+                <SwiperSlide className='swiper-no-swiping'>
                     <div className="single-slide-item slide-bg1">
                         <div className="slide-item-table">
                             <div className="slide-item-tablecell">
@@ -57,7 +54,7 @@ const SliderOne = () => {
                         </div>
                     </div>
                 </SwiperSlide>
-                <SwiperSlide>
+                <SwiperSlide className='swiper-no-swiping'>
                     <div className="single-slide-item slide-bg2">
                         <div className="slide-item-table">
                             <div className="slide-item-tablecell">
@@ -68,7 +65,7 @@ const SliderOne = () => {
                                                 <div className="slider__box">The Tombossa B Foundation launches on the memorial of Tombossa's passing.</div>
                                             </h3>
                                         </div>
-                                        <Link href="/gallery" className="theme-btn slider-btn">Event Photos</Link>
+                                        <Link href="/gallery" className="theme-btn slider-btn">Photos</Link>
                                     </div>
                                 </div>
                             </div>

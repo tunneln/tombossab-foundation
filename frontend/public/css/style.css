@@ -943,12 +943,12 @@ a:hover {
 }
 .slider-area .slide-bg1 {
     background: url("../images/slider1.jpg") no-repeat center center fixed;
-    opacity: 0.95;
+    filter: brightness(95%);
     background-size: 100dvw;
 }
 .slider-area .slide-bg2 {
     background: url("../images/slider2.jpg") no-repeat center center fixed;
-    opacity: 0.95;
+    filter: brightness(95%);
     background-size: 100dvw;
 }
 .slider-area .slide-bg3 {

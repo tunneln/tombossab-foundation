@@ -48,10 +48,10 @@ const Contact = () => {
                             <h2 className="section__title">Get in Touch With Us</h2>
                             <p className="section__meta">Write a message</p>
                             <ul className="section__list">
-                                <li><a href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
-                                <li><a href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
-                                <li><a href="https://www.youtube.com/channel/UCk9Ct2P7rT32HovvbzwqQPw"><i className="fa fa-youtube-play"></i></a></li>
-                                <li><a href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
+                                <li><a rel="noopener noreferrer" target="_blank" href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
+                                <li><a rel="noopener noreferrer" target="_blank" href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
+                                <li><a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/@TombossaBFoundation"><i className="fa fa-youtube-play"></i></a></li>
+                                <li><a rel="noopener noreferrer" target="_blank" href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
                             </ul>
                         </div>
                     </div>

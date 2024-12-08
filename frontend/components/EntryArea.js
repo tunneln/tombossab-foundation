@@ -30,8 +30,8 @@ class EntryArea extends Component {
                                 <div className="row">
                                     <div className="col-lg-4">
                                         <div className="entry-video-img">
-                                            <img src="/images/entry-video-img.jpg" alt="entry-video-img" />
-                                            <ModalVideo channel='youtube' isOpen={this.state.isOpen} videoId='dQw4w9WgXcQ' onClose={this.handleModal} />
+                                            <img src="/images/entry-video-img.png" alt="entry-video-img.jpg" />
+                                            <ModalVideo channel='youtube' isOpen={this.state.isOpen} videoId='pOK_yA0WG98' onClose={this.handleModal} />
                                                 <div onClick={this.handleModal} className="mfp-iframe video-play-btn"
                                                    title="Play Video"><i className="fa fa-play"></i>
                                                 </div>
@@ -40,7 +40,8 @@ class EntryArea extends Component {
                                     <div className="col-lg-8">
                                         <div className="entry-video-text">
                                             <h4 className="entry__title">Continuing Tombossa's legacy one child at a time</h4>
-                                            <p className="entry__text">Watch us as we speak about our mission</p>
+                                            <p className="entry__text">Watch as we officially announce the inauguration of the Tombossa B Foundation</p>
+                                            {/* Watch us as we speak about our mission */}
                                         </div>
                                     </div>
                                 </div>

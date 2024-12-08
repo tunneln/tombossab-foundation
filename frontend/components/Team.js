@@ -11,9 +11,9 @@ const Team = () => {
                                 <img src="/images/birkiti.jpg" alt="team image" />
                                     <div className="team__img-links">
                                         <ul>
-                                            <li><a href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
-                                            <li><a href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
-                                            <li><a href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
                                         </ul>
                                     </div>
                             </div>
@@ -29,9 +29,9 @@ const Team = () => {
                                 <img src="/images/noel.jpg" alt="team image" />
                                     <div className="team__img-links">
                                         <ul>
-                                            <li><a href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
-                                            <li><a href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
-                                            <li><a href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
                                         </ul>
                                     </div>
                             </div>
@@ -47,9 +47,9 @@ const Team = () => {
                                 <img src="/images/milena.jpg" alt="team image" />
                                     <div className="team__img-links">
                                         <ul>
-                                            <li><a href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
-                                            <li><a href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
-                                            <li><a href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
                                         </ul>
                                     </div>
                             </div>
@@ -65,9 +65,9 @@ const Team = () => {
                                 <img src="/images/lula.jpg" alt="team image" />
                                     <div className="team__img-links">
                                         <ul>
-                                            <li><a href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
-                                            <li><a href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
-                                            <li><a href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
                                         </ul>
                                     </div>
                             </div>
@@ -83,9 +83,9 @@ const Team = () => {
                                 <img src="/images/ariana.jpg" alt="team image" />
                                     <div className="team__img-links">
                                         <ul>
-                                            <li><a href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
-                                            <li><a href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
-                                            <li><a href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
                                         </ul>
                                     </div>
                             </div>
@@ -101,9 +101,9 @@ const Team = () => {
                                 <img src="/images/maru.jpg" alt="team image" />
                                     <div className="team__img-links">
                                         <ul>
-                                            <li><a href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
-                                            <li><a href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
-                                            <li><a href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
                                         </ul>
                                     </div>
                             </div>
@@ -119,9 +119,9 @@ const Team = () => {
                                 <img src="/images/thomas.jpg" alt="team image" />
                                     <div className="team__img-links">
                                         <ul>
-                                            <li><a href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
-                                            <li><a href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
-                                            <li><a href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
                                         </ul>
                                     </div>
                             </div>
@@ -137,9 +137,9 @@ const Team = () => {
                                 <img src="/images/hanna.jpg" alt="team image" />
                                     <div className="team__img-links">
                                         <ul>
-                                            <li><a href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
-                                            <li><a href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
-                                            <li><a href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
                                         </ul>
                                     </div>
                             </div>

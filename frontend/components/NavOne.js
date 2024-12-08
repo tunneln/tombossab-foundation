@@ -71,10 +71,10 @@ const NavOne = () => {
                                 <div className="top-action-content info-action-content">
                                     <div className="info-box info-box-2 d-flex align-items-center justify-content-end">
                                         <ul className="top-action-list d-flex align-items-center">
-                                            <li><a href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
-                                            <li><a href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
-                                            <li><a href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
-                                            <li><a href="https://www.youtube.com/channel/UCk9Ct2P7rT32HovvbzwqQPw"><i className="fa fa-youtube-play"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
+                                            <li><a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/@TombossaBFoundation"><i className="fa fa-youtube-play"></i></a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -94,7 +94,7 @@ const NavOne = () => {
                                         </Link>
                                     </div>
                                     <div className="header-btn ml-auto">
-                                        <Link href="/donatenow" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
+                                        <Link href="https://donorbox.org/scholarship-fund-73?default_interval=o" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
                                             <img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;Donate
                                         </Link>
                                     </div>
@@ -152,10 +152,10 @@ const NavOne = () => {
                             </li>
                         </ul>
                         <ul className="side-social">
-                            <li><a href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
-                            <li><a href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
-                            <li><a href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
-                            <li><a href="https://www.youtube.com/@TombossaBFoundation"><i className="fa fa-youtube-play"></i></a></li>
+                            <li><a rel="noopener noreferrer" target="_blank" href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
+                            <li><a rel="noopener noreferrer" target="_blank" href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
+                            <li><a rel="noopener noreferrer" target="_blank" href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
+                            <li><a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/@TombossaBFoundation"><i className="fa fa-youtube-play"></i></a></li>
                         </ul>
                         <div className="side-btn">
                             <Link href="/donatenow" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">

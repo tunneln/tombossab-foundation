@@ -70,10 +70,10 @@ class NavTwo extends Component {
                                     <div className="top-action-content info-action-content">
                                         <div className="info-box info-box-2 d-flex align-items-center justify-content-end">
                                             <ul className="top-action-list d-flex align-items-center">
-                                                <li><a href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
-                                                <li><a href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
-                                                <li><a href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
-                                                <li><a href="https://www.youtube.com/channel/UCk9Ct2P7rT32HovvbzwqQPw"><i className="fa fa-youtube-play"></i></a></li>
+                                                <li><a rel="noopener noreferrer" target="_blank" href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
+                                                <li><a rel="noopener noreferrer" target="_blank" href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
+                                                <li><a rel="noopener noreferrer" target="_blank" href="https://www.instagram.com/tombossabfoundation"><i className="fa fa-instagram"></i></a></li>
+                                                <li><a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/@TombossaBFoundation"><i className="fa fa-youtube-play"></i></a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -178,9 +178,9 @@ class NavTwo extends Component {
                                 <li className="sidenav__item"><Link href="/contact">contact</Link></li>
                             </ul>
                             <ul className="side-social">
-                                <li><a href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
-                                <li><a href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
-                                <li><a href="https://www.youtube.com/channel/UCk9Ct2P7rT32HovvbzwqQPw"><i className="fa fa-youtube-play"></i></a></li>
+                                <li><a rel="noopener noreferrer" target="_blank" href="https://www.facebook.com/share/g/14WErFWRzR/"><i className="fa fa-facebook"></i></a></li>
+                                <li><a rel="noopener noreferrer" target="_blank" href="https://x.com/TombossaBFound"><i className="fa fa-twitter"></i></a></li>
+                                <li><a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/@TombossaBFoundation"><i className="fa fa-youtube-play"></i></a></li>
                                 <li><a href="#"><i className="fa fa-google-plus"></i></a></li>
                             </ul>
                             <div className="side-btn">

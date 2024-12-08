@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 
 const Contact = () => {
+    const router = useRouter();
 
     const [formData, setFormData] = useState({
         name: '',
@@ -16,26 +18,32 @@ const Contact = () => {
         });
       };
 
-      const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault(); // Prevents page reload on form submission
     
         try {
-          const response = await fetch('/api/send-email', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData),
-          });
-    
-          if (response.ok) {
-            alert('Email sent successfully!');
-          } else {
-            alert('Error sending email.');
-          }
+            const response = await fetch("/api/emails/send", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    to: "contact@tombossabfoundation.org",
+                    subject: "Official Contact Message From " + formData.name,
+                    body: "-Contact Informaion-\nPhone: " + formData.phone + " | Email: " + formData.email +  "\n\n-Message-\n" + formData.message,
+                }),
+                });
+            
+            if (!response.ok)
+                throw new Error(`Error: ${response.statusText}`);
+
+            alert('Message sent successfully!');
+            router.reload();
         } catch (error) {
-          console.error('Error:', error);
-          alert('Error sending email.');
+            console.error("Failed to send email:", error);
+            alert('Error sending message.');
         }
-      }; 
+    }; 
     
     return (
         <section className="contact-area">
@@ -58,7 +66,7 @@ const Contact = () => {
                     </div>
                     <div className="col-lg-6">
                         <div className="form-shared">
-                            <form onSumbit={handleSubmit} method="post">
+                            <form onSubmit={handleSubmit} method="post">
                                 <div className="row">
                                     <div className="col-lg-6 col-sm-6 form-group">
                                         <input className="form-control" type="text" name="name" placeholder="Full Name" 

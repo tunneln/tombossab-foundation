@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
 const Volunteer = () => {
+
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         phone: '',
         address: '',
-        dob: '',
         job: '',
         message: '',
       });
@@ -18,27 +18,39 @@ const Volunteer = () => {
         });
       };
 
-      const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault(); // Prevents page reload on form submission
     
         try {
-          const response = await fetch('/api/send-email', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData),
-          });
-    
-          if (response.ok) {
-            alert('Email sent successfully!');
-          } else {
-            alert('Error sending email.');
-          }
+            const response = await fetch("/api/emails/send", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    to: "contact@tombossabfoundation.org",
+                    subject: "Volunteer Form From " + formData.name,
+                    body: "Name: " + formData.name + "\nPhone: " + formData.phone + "\nEmail: " + formData.email + "\nOccupation: " + formData.job + "\nAddress: " + formData.address + "\nMessage: " + formData.message,
+                }),
+                });
+            
+            if (!response.ok)
+                throw new Error(`Error: ${response.statusText}`);
+
+            alert('Volunteer registration form received successfully!');
+            setFormData({
+                    name: '',
+                    email: '',
+                    phone: '',
+                    address: '',
+                    job: '',
+                    message: '',
+                });
         } catch (error) {
-          console.error('Error:', error);
-          alert('Error sending email.');
+            console.error("Failed to send email:", error);
+            alert('Failed to receive volunteer registration form');
         }
-      }; 
-    
+    }; 
 
     return (
         <section className="contact-form-area register-area">
@@ -85,41 +97,35 @@ const Volunteer = () => {
                     </div>
                     <div className="col-lg-6">
                         <div className="form-shared">
-                            <form onSumbit={handleSubmit} method="post">
+                            <form onSubmit={handleSubmit} method="post">
                                 <div className="row">
                                     <div className="col-lg-12">
                                         <div className="form-group">
-                                            <input type="text" className="form-control" placeholder="Full Name" 
+                                            <input type="text" className="form-control" placeholder="Full Name" name="name"
                                                 value={formData.name} onChange={handleChange} required/>
                                         </div>
                                     </div>
                                     <div className="col-lg-12">
                                         <div className="form-group">
-                                            <input type="email" className="form-control" placeholder="Email Address" 
+                                            <input type="email" className="form-control" placeholder="Email Address" name="email"
                                                 value={formData.email} onChange={handleChange} required/>
                                         </div>
                                     </div>
                                     <div className="col-lg-12">
                                         <div className="form-group">
-                                            <input type="number" className="form-control" placeholder="Phone Number" 
+                                            <input type="number" className="form-control" placeholder="Phone Number" name="phone"
                                                 value={formData.phone} onChange={handleChange} required/>
                                         </div>
                                     </div>
                                     <div className="col-lg-12">
                                         <div className="form-group">
-                                            <input type="text" className="form-control" placeholder="Address" 
+                                            <input type="text" className="form-control" placeholder="Address" name="address"
                                                 value={formData.address} onChange={handleChange} />
                                         </div>
                                     </div>
                                     <div className="col-lg-12">
                                         <div className="form-group">
-                                            <input type="text" className="form-control" placeholder="Date of Birth" 
-                                                value={formData.dob} onChange={handleChange} />
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-12">
-                                        <div className="form-group">
-                                            <input type="text" className="form-control" placeholder="Occupation" 
+                                            <input type="text" className="form-control" placeholder="Occupation" name="job"
                                                 value={formData.job} onChange={handleChange} />
                                         </div>
                                     </div>

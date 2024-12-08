@@ -1,4 +1,4 @@
-package org.tombossabfoundation.backend.controllers;
+package org.tombossabfoundation.backend.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;

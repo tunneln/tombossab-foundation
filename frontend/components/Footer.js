@@ -14,26 +14,32 @@ const Footer = () => {
         });
       };
 
-      const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault(); // Prevents page reload on form submission
     
         try {
-          const response = await fetch('/api/send-email', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData),
-          });
-    
-          if (response.ok) {
-            alert('Email sent successfully!');
-          } else {
-            alert('Error sending email.');
-          }
+            const response = await fetch("/api/emails/send", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    to: "contact@tombossabfoundation.org",
+                    subject: "New Newsletter Subscription (temporary)",
+                    body: "Email: " + formData.email,
+                }),
+                });
+            
+            if (!response.ok)
+                throw new Error(`Error: ${response.statusText}`);
+
+            alert('Successfully enrolled in subscription');
+            setFormData({email: ''}) ;
         } catch (error) {
-          console.error('Error:', error);
-          alert('Error sending email.');
+            console.error("Failed to send email:", error);
+            alert('Failed to enroll in subscription');
         }
-      }; 
+    }; 
 
     useEffect(() => {
         const handleScroll = () => {
@@ -71,12 +77,12 @@ const Footer = () => {
                                 </div>
                                 <div className="newsletter-form">
                                     <div className="form-shared">
-                                        <form action={handleSubmit} method="post">
+                                        <form onSubmit={handleSubmit} method="post">
                                             <div className="row">
                                                 <div className="col-lg-9">
                                                     <div className="form-group">
-                                                        <input type="email" className="form-control"
-                                                            value={formData.email} onChange={handleChange} placeholder="Email address" required/>
+                                                        <input type="email" className="form-control" name="email"
+                                                            value={formData.email} onChange={handleChange} placeholder="Email address" required />
                                                     </div>
                                                 </div>
                                                 <div className="col-lg-3">

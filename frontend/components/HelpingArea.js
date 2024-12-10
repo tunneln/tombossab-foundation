@@ -68,19 +68,19 @@ const HelpingArea = () => {
                         </div>
                         <div className="col-sm-6 col-lg-6">
                             <div className="helping-form" >
-                                <div className="section-heading" style={{}}>
+                                <div className="section-heading">
                                     <div className="section-icon">
                                         <img src="/images/section-icon.png" alt="section-icon" />
                                     </div>
-                                    <h2 className="section__title text__black" style={{'paddingBottom': '30px'}}>Recent Donations</h2>
+                                    <h2 className="section__title text__black" style={{'paddingBottom': '30px'}}>Recent Donors</h2>
                                 </div>
                                 <iframe 
                                     frameBorder={0}
                                     name="donorbox" 
                                     scrolling="no" 
                                     seamless="seamless" 
-                                    src="https://donorbox.org/embed/scholarship-fund-73?only_donor_wall=true&donor_wall_color=%2376b854" 
-                                    style={{ 'width': '100%', 'maxWidth': '600px', 'minWidth': '310px', 'maxHeight': '835px', 'minHeight': '835px' }}
+                                    src="https://donorbox.org/embed/scholarship-fund-73?only_donor_wall=true&donor_wall_color=%237c3bae" 
+                                    style={{ 'width': '100%', 'maxWidth': '600px', 'minWidth': '220px', 'maxHeight': '675px', 'minHeight': '675px' }}
                                 /> 
                             </div>
                         </div>

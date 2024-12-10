@@ -48,11 +48,11 @@ const AboutArea = () => {
                                     <i>A Legacy of Resilience, Family, and Service</i>
                                 </p>
                                 <p className="section__desc">
-                                Tombossa Dawit Negusse was a man of extraordinary character, admired for his deep commitment to family, entrepreneurship, and community service. His life was defined by resilience, compassion, and dedication—qualities that made him a successful individual and an inspiring leader. Born in Addis Ababa, Ethiopia, in 1964 to loving parents Tsegeweini and Dawit Negusse, his early years were shaped by strong family values and a deep sense of duty. His family later returned to Asmara, Eritrea, where these values were further ingrained through close-knit bonds and the importance of education and hard work.
+                                Tombossa Dawit Negusse was a man of extraordinary character, admired for his deep commitment to family, entrepreneurship, and community service. Born in Addis Ababa, Ethiopia, in 1964 to loving parents Tsegeweini and Dawit Negusse, his early years were shaped by strong family values and a deep sense of duty. His family later returned to Asmara, Eritrea, where these values were further ingrained through close-knit bonds and the importance of education and hard work.
                                 </p><p className="section__desc">
-                                As a teenager, Tombossa and his family—his parents and five siblings—fled the turmoil of war in Eritrea. Their journey took them to Sudan and eventually to Oklahoma, USA, in pursuit of safety and a better future. This period of upheaval highlighted Tombossa's resilience and adaptability. In Oklahoma, he excelled academically, completing high school, college, and postgraduate studies despite the challenges of displacement.
+                                As a teenager, Tombossa and his family — parents and six siblings — fled the turmoil of war in Eritrea. Their journey took them to Sudan and eventually to Oklahoma, USA, in pursuit of safety and a better future. This period of upheaval highlighted Tombossa's resilience and adaptability as he excelled academically in Oklahoma, completing high school, college, and postgraduate studies despite the challenges of displacement.
                                 </p><p className="section__desc">
-                                Tombossa initially pursued a master’s degree in agricultural engineering at Oklahoma State University, showcasing his diverse interests and intellectual curiosity. Even during his studies, his entrepreneurial drive was evident. His connection to Eritrea remained strong, and after completing his education, he spent a pivotal year working with Eritrean freedom fighters. This experience profoundly shaped his character, deepening his commitment to social and economic development.
+                                Tombossa pursued a master’s degree in agricultural engineering at Oklahoma State University, showcasing his diverse interests and intellectual curiosity. Even during his studies, his entrepreneurial drive was evident. His connection to Eritrea remained strong, and after completing his education, he spent a pivotal year working with Eritrean freedom fighters. This experience profoundly shaped his character, deepening his commitment to social and economic development.
                                 </p><p className="section__desc">
                                 Upon returning to the United States, Tombossa’s life took a transformative turn. In Dallas, Texas, he met Bibi, the love of his life, in what felt like a fateful encounter at a hair salon. Their immediate and deep connection led to a year of dating, followed by a proposal during a family visit to Asmara, and a wedding in Eritrea. Together, they built a life centered on love, family, and shared dreams, raising three children—Noel, Milena, and Ariana—who were their greatest pride and joy.
                                 </p><p className="section__desc">
@@ -69,7 +69,6 @@ const AboutArea = () => {
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>

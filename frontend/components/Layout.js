@@ -14,13 +14,15 @@ const Layout = (props) => {
                 <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <meta name="description" content="Empowering Eritrean and East African communities through education, support, and opportunity." />
+                <meta property="image" content="/images/link-preview.png" />
 
                 {/* <!-- Open Graph / Facebook --> */}
-                <meta property="og:type" content="website" />
-                <meta property="og:url" content="https://tombossabfoundation.org/" />
                 <meta property="og:title" content="Tombossa B Foundation" />
+                <meta property="og:url" content="https://tombossabfoundation.org/" />
+                <meta property="og:image" itemprop="image" content="https://tombossabfoundation.org/images/link-preview.png" />
+                <meta property="og:image:secure_url" itemprop="image" content="https://tombossabfoundation.org/images/link-preview.png" />
+                <meta property="og:type" content="website" />
                 <meta property="og:description" content="Empowering Eritrean and East African communities through education, support, and opportunity." />
-                <meta property="og:image" content="/images/link-preview.png" />
 
                 {/* <!-- Twitter --> */}
                 <meta property="twitter:card" content="summary_large_image" />

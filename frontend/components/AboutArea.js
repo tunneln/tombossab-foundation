@@ -5,11 +5,11 @@ const AboutArea = () => {
         <section className="about-area">
             <div className="container">
                 <div className="row">
-                    <div className="col-lg-12 mobile-about-banner" style={{'paddingBottom': '20px'}}>
+                    {/* <div className="col-lg-12 mobile-about-banner" style={{'paddingBottom': '20px'}}>
                         <div className="about-large-img">
                             <img src="/images/about-img.jpg" alt="" />
                         </div>
-                    </div>
+                    </div> */}
                     <div className="col-lg-5">
                         <div className="about-semi-img">
                             <img src="/images/about-img2.jpg" alt="" />
@@ -29,7 +29,7 @@ const AboutArea = () => {
                             </div>
                         </div>
                     </div>
-
+                    <hr></hr>
                     <div className="col-lg-5">
                         <div className="about-semi-img">
                             <img src="/images/about-img3.jpg" alt="" />

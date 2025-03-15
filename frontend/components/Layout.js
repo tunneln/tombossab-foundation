@@ -19,8 +19,8 @@ const Layout = (props) => {
                 {/* <!-- Open Graph / Facebook --> */}
                 <meta property="og:title" content="Tombossa B Foundation" />
                 <meta property="og:url" content="https://tombossabfoundation.org/" />
-                <meta property="og:image" itemprop="image" content="https://tombossabfoundation.org/images/link-preview.png" />
-                <meta property="og:image:secure_url" itemprop="image" content="https://tombossabfoundation.org/images/link-preview.png" />
+                <meta property="og:image" itemProp="image" content="https://tombossabfoundation.org/images/link-preview.png" />
+                <meta property="og:image:secure_url" itemProp="image" content="https://tombossabfoundation.org/images/link-preview.png" />
                 <meta property="og:type" content="website" />
                 <meta property="og:description" content="Empowering Eritrean and East African communities through education, support, and opportunity." />
 

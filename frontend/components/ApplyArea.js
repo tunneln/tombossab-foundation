@@ -62,10 +62,10 @@ const ApplyArea = () => {
 
                         <h3 className="section__desc"> Application Process </h3> <br/>
                         <ol style={{'paddingLeft': '40px'}}>
-                            <li style={{'paddingLeft': '10px'}}> <b>Deadline:</b> All application materials must be submitted by <b>May 31st</b>. </li>
+                            <li style={{'paddingLeft': '10px'}}> <b>Deadline:</b> All application materials must be submitted by <b>July 4th</b>. </li>
                             <li style={{'paddingLeft': '10px'}}> <b>Submission:</b> Applications documents may be submitted <a href="https://forms.gle/vAoHkZkdNo8gZmGH8" target="_blank" rel="noopener noreferrer"><b>here</b></a> or via email to <a href="mailto:apply@tombossabfoundation.org" className="lower"><b>apply@tombossabfoundation.org</b></a>. </li>
                             <li style={{'paddingLeft': '10px'}}> <b>Selection Process:</b> Applications will be reviewed by a scholarship committee, and finalists may be invited for an interview. </li>
-                            <li style={{'paddingLeft': '10px'}}> <b>Notification:</b> Scholarship recipients will be notified by <b>July 18.</b> </li>
+                            <li style={{'paddingLeft': '10px'}}> <b>Notification:</b> Scholarship recipients will be notified by <b>Aug 1st.</b> </li>
                         </ol> 
                         <br />
                         <Link  href="https://forms.gle/vAoHkZkdNo8gZmGH8" target="_blank" rel="noopener noreferrer" className="theme-btn">

@@ -17,35 +17,40 @@ const Events = () => {
                             </span>
                                 </div>
                                 <div className="blog-inner-content">
-                                    <h3 className="blog__title"><Link href="#">Tombossa's Memorial</Link></h3>
+                                    <h3 className="blog__title">Tombossa's Memorial</h3>
                                     <ul className="blog__list">
                                         <li className="blog__dot-active">11:00am to 2:00pm</li>
-                                        <li>Dallas, TX</li>
+                                        <li style={{'font-size': '11px'}}>High Point Center</li>
+                                        <li className="blog__dot-venue">Dallas, TX</li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {/* <div className="col-lg-4">
+                    <div className="col-lg-4">
                         <div className="blog-content">
                             <div className="blog-item blog-item2">
                                 <div className="blog-img">
-                                    <img src="/images/img8.jpg" alt="" />
+                                    <Link href="/events-detail">
+                                        <img src="/images/img8.jpg" alt="" />
+                                    </Link>
                             <span className="blog__tag blog__tag2">
-                                <span className="date__num-text">9</span>
-                                <span className="date__mon-text">mar</span>
+                                <span className="date__num-text">26</span>
+                                <span className="date__mon-text">jul</span>
                             </span>
                                 </div>
                                 <div className="blog-inner-content">
-                                    <h3 className="blog__title"><Link href="/events-detail">Play for the world</Link></h3>
+                                    <h3 className="blog__title"><Link href="/events-detail">Community Field Day</Link></h3>
                                     <ul className="blog__list">
-                                        <li className="blog__dot-active">8:00am to 2:00pm</li>
-                                        <li>San marcos</li>
+                                        <li className="blog__dot-active">3:00pm to 9:00pm</li>
+                                        <li style={{'font-size': '11px'}}>Cottonwood Park</li>
+                                        <li className="blog__dot-venue">Richardson, TX</li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
+{/* 
                     <div className="col-lg-4">
                         <div className="blog-content">
                             <div className="blog-item blog-item3">

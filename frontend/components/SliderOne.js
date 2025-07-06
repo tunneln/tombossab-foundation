@@ -35,6 +35,24 @@ const SliderOne = () => {
                 className="frontpageSwiper"
             >
                 <SwiperSlide className='swiper-no-swiping'>
+                    <div className="single-slide-item slide-bg2">
+                        <div className="slide-item-table">
+                            <div className="slide-item-tablecell">
+                                <div className="container">
+                                    <div className="row">
+                                        <div className="slider-heading">
+                                            <h3 className="slider__desc">
+                                                <div className="slider__box">Community Field Day—Join Us July 26 for a Fun-Filled Day of Games, Food, and Community Impact at Cottonwood Park!</div>
+                                            </h3>
+                                        </div>
+                                        <Link href="/events-detail" className="theme-btn slider-btn">Read More</Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </SwiperSlide>
+                <SwiperSlide className='swiper-no-swiping'>
                     <div className="single-slide-item slide-bg1">
                         <div className="slide-item-table">
                             <div className="slide-item-tablecell">
@@ -48,24 +66,6 @@ const SliderOne = () => {
                                         <Link href="/about" className="theme-btn slider-btn">
                                             About Us 
                                         </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide className='swiper-no-swiping'>
-                    <div className="single-slide-item slide-bg2">
-                        <div className="slide-item-table">
-                            <div className="slide-item-tablecell">
-                                <div className="container">
-                                    <div className="row">
-                                        <div className="slider-heading">
-                                            <h3 className="slider__desc">
-                                                <div className="slider__box">The Tombossa B Foundation launches on the memorial of Tombossa's passing.</div>
-                                            </h3>
-                                        </div>
-                                        <Link href="/gallery" className="theme-btn slider-btn">Photos</Link>
                                     </div>
                                 </div>
                             </div>

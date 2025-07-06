@@ -2756,8 +2756,13 @@ a:hover {
     right: -13px;
     font-size: 18px;
 }
+.upcoming-event-area .blog-content-wrap .blog-content .blog-item .blog-inner-content .blog__list li.blog__dot-venue {
+    left: 131px;
+    float: left;
+    font-size: 11px;
+}
 .upcoming-event-area .blog-content-wrap .blog-content .blog-item .blog-inner-content .blog__list li:first-child {
-    padding-left: 0;
+    padding-left: 2px;
 }
 
 .upcoming-event-area .blog-content-wrap .blog-content .blog-item2 .blog-inner-content .blog__list li {

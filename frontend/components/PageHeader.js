@@ -10,7 +10,9 @@ const PageHeader = (props) => {
                         <div className="breadcrumb-content">
                             <h2 className="breadcrumb__title">{ props.title }</h2>
                             <ul className="breadcrumb__list">
-                                <li className="active__list-item" style={{ whiteSpace: 'pre' }}><Link href="/">home</Link> &nbsp;|&nbsp; { props.title }</li>
+                                {props.prev ? 
+                                <li className="active__list-item" style={{ whiteSpace: 'pre' }}><Link href="/">home</Link> &nbsp;|&nbsp; <Link href={ props.link }>{ props.prev }</Link> &nbsp;|&nbsp; { props.title }</li> :
+                                <li className="active__list-item" style={{ whiteSpace: 'pre' }}><Link href="/">home</Link> &nbsp;|&nbsp; { props.title }</li>}
                             </ul>
                         </div>
                     </div>

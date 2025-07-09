@@ -8,11 +8,11 @@ import MakeWorldArea from "../components/MakeWorldArea";
 import ClientsLogo from "../components/ClientsLogo";
 import DonateArea from "../components/DonateArea";
 import MixerAreaThree from "../components/MixerAreaThree";
-import LatestCauses from "../components/LatestCauses";
+import Causes from "../components/Causes";
 import CategoryArea from "../components/CategoryArea";
 import GalleryCarousel from "../components/GalleryCarousel";
 import Pricing from "../components/Pricing";
-import EventsHome from "../components/EventsHome";
+import Events from "../components/Events";
 import VolunteerArea from "../components/VolunteerArea";
 import CallToActionThree from "../components/CallToActionThree";
 
@@ -26,11 +26,11 @@ const HomePageTwo = () => {
             <ClientsLogo />
             <DonateArea />
             <MixerAreaThree />
-            <LatestCauses />
+            <Causes />
             <CategoryArea />
             <GalleryCarousel />
             <Pricing />
-            <EventsHome />
+            <Events />
             <VolunteerArea />
             <CallToActionThree />
             <Footer />

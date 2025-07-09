@@ -7,14 +7,15 @@ import EntryArea from "../components/EntryArea";
 import HiwArea from "../components/HiwArea";
 import ServiceArea from "../components/ServiceArea";
 import MixerArea from "../components/MixerArea";
-import LatestCauses from "../components/LatestCauses";
+import Causes from "../components/Causes";
 import ClientsLogo from "../components/ClientsLogo";
 import HelpingArea from "../components/HelpingArea";
 import TeamArea from "../components/TeamArea";
 import CallToAction from "../components/CallToAction";
-import EventsHome from '../components/EventsHome';
+import Events from '../components/Events';
 import Map from "../components/Map";
 import CallToActionTwo from "../components/CallToActionTwo";
+import FaqArea from "../components/FaqArea";
 
 const HomePage = () => {
     return (
@@ -25,13 +26,14 @@ const HomePage = () => {
           <HiwArea />
           <ServiceArea />
           <MixerArea />
-          <LatestCauses />
+          <Events />
           <ClientsLogo />
           <HelpingArea />
           <TeamArea />
           <CallToAction />
-          <EventsHome />
+          <Causes />
           <Map />
+          <FaqArea />
           <CallToActionTwo />
           <Footer />
         </Layout>

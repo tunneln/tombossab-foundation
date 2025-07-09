@@ -22,7 +22,7 @@ const EventsDetail = () => {
                     <div className="col-lg-8">
                         <div className="event-detail-content">
                             <div className="event-detail-item">
-                                <h3 className="event__title">Community Field Day</h3>
+                                <h3 className="event__title">Community Field Day Fundraiser</h3>
                                 <p className="event__text">
                                     The Tombossa B Foundation will be holding its first annual fundraising event on <b>July 26th, 2025</b>! 
                                     Please join us at <b>Cottonwood Park</b> in Richardson, TX for an exciting, action-packed field day filled with games, prizes, food, and fun for all ages!

@@ -9,14 +9,24 @@ const NavOne = () => {
     const RGBA_CONSTANT = 'rgba(168, 150, 119, 0.11)';
     const [sticky, setSticky] = useState(false);
     const [logoBgColor, setLogoBgColor] = useState('rgba(255, 255, 255, 0)');
-
+    const [logoSrc, setLogoSrc] = useState("/images/logo2.png");
+    const [whiteNav, setWhiteNav] = useState(false);
+    
     // Scroll handler
     const handleScroll = () => {
         if (window.scrollY > 100) {
             setSticky(true);
             setLogoBgColor('rgba(255, 255, 255, 0)');
+            setLogoSrc("/images/logo.png");
+            setWhiteNav(false);
         } else {
             setSticky(false);
+            if (window.location.pathname == '/') { 
+                setLogoSrc("/images/logo2.png");
+                setWhiteNav(true);
+            } else {
+                setWhiteNav(false);
+            }
         }
     };
 
@@ -41,6 +51,14 @@ const NavOne = () => {
 
     // Setup event listeners on mount
     useEffect(() => {
+        if (window.location.pathname != '/')
+            setLogoSrc("images/logo.png");
+
+        if (logoSrc == "/images/logo2.png" && getComputedStyle(document.getElementById('white-logo')).display == "block")
+            setWhiteNav(true);
+        else
+            setWhiteNav(false);
+
         window.addEventListener("scroll", handleScroll);
         mobileMenu();
 
@@ -90,8 +108,10 @@ const NavOne = () => {
                                 <div className="logo-action d-flex align-items-center">
                                     <div className="ostion-logo">
                                         <Link href="/">
-                                                <img src="/images/logo.png" alt="Tombossa B Foundation" title="Tombossa B Foundation" 
-                                                    style={{'backgroundColor': logoBgColor}} />
+                                            <img id="white-logo" src={logoSrc} alt="Tombossa B Foundation" title="Tombossa B Foundation" 
+                                                style={{'backgroundColor': logoBgColor}} />
+                                            <img id="black-logo" src="/images/logo.png" alt="Tombossa B Foundation" title="Tombossa B Foundation" 
+                                                style={{'backgroundColor': logoBgColor}} />
                                         </Link>
                                     </div>
                                     <div className="header-btn ml-auto">
@@ -126,7 +146,7 @@ const NavOne = () => {
                                         </div>
                                     </div>
                                     <div className="mobile-menu-toggle">
-                                        <i className="fa fa-bars fa-2x"></i>
+                                        <i className={`fa fa-bars fa-2x fa-white ${whiteNav ? 'white-nav-bar' : ''}`} aria-hidden="true"></i>
                                     </div>
                                 </div>
                             </div>

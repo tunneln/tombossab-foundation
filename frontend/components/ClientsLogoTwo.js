@@ -44,32 +44,32 @@ const ClientsLogoTwo = () => {
                             >
                                 <SwiperSlide>
                                     <div className="client-logo-item">
-                                        <img src="/images/client-logo.png" alt="brand image" />
+                                        <img src="/images/logo-client.png" alt="brand image" />
                                     </div>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <div className="client-logo-item">
-                                        <img src="/images/client-logo.png" alt="brand image" />
+                                        <img src="/images/logo-client.png" alt="brand image" />
                                     </div>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <div className="client-logo-item">
-                                        <img src="/images/client-logo.png" alt="brand image" />
+                                        <img src="/images/logo-client.png" alt="brand image" />
                                     </div>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <div className="client-logo-item">
-                                        <img src="/images/client-logo.png" alt="brand image" />
+                                        <img src="/images/logo-client.png" alt="brand image" />
                                     </div>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <div className="client-logo-item">
-                                        <img src="/images/client-logo.png" alt="brand image" />
+                                        <img src="/images/logo-client.png" alt="brand image" />
                                     </div>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <div className="client-logo-item">
-                                        <img src="/images/client-logo.png" alt="brand image" />
+                                        <img src="/images/logo-client.png" alt="brand image" />
                                     </div>
                                 </SwiperSlide>
                             </Swiper>

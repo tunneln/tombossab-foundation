@@ -15,7 +15,7 @@ const ClientsLogo = () => {
                     <div className="col-md-12">
                         <div className="client-logo">
                             <Swiper
-                                slidesPerView={5}
+                                slidesPerView={3}
                                 loop={true}
                                 spaceBetween={30}
                                 speed={5000}
@@ -27,13 +27,13 @@ const ClientsLogo = () => {
                                 modules={[FreeMode, Autoplay]}
                                 breakpoints={{
                                     1499:{
-                                        slidesPerView: 5
+                                        slidesPerView: 2
                                     },
                                     991:{
-                                        slidesPerView: 3
+                                        slidesPerView: 2
                                     },
                                     767:{
-                                        slidesPerView: 3
+                                        slidesPerView: 2
                                     },
                                     575:{
                                         slidesPerView: 2
@@ -46,32 +46,17 @@ const ClientsLogo = () => {
                             >
                                 <SwiperSlide>
                                     <div className="client-logo-item">
-                                        <img src="/images/client-logo.png" alt="brand image" />
+                                        <img src="/images/logo-client.png" alt="brand image" />
                                     </div>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <div className="client-logo-item">
-                                        <img src="/images/client-logo.png" alt="brand image" />
+                                        <img src="/images/logo-heb.png" alt="brand image" />
                                     </div>
                                 </SwiperSlide>
                                 <SwiperSlide>
                                     <div className="client-logo-item">
-                                        <img src="/images/client-logo.png" alt="brand image" />
-                                    </div>
-                                </SwiperSlide>
-                                <SwiperSlide>
-                                    <div className="client-logo-item">
-                                        <img src="/images/client-logo.png" alt="brand image" />
-                                    </div>
-                                </SwiperSlide>
-                                <SwiperSlide>
-                                    <div className="client-logo-item">
-                                        <img src="/images/client-logo.png" alt="brand image" />
-                                    </div>
-                                </SwiperSlide>
-                                <SwiperSlide>
-                                    <div className="client-logo-item">
-                                        <img src="/images/client-logo.png" alt="brand image" />
+                                        <img src="/images/logo-client.png" alt="brand image" />
                                     </div>
                                 </SwiperSlide>
                             </Swiper>

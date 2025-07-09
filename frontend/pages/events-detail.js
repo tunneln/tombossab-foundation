@@ -7,9 +7,9 @@ import EventsDetail from "../components/EventsDetail";
 
 const EventsDetailPage = () => {
     return (
-        <Layout pageTitle="Tombossa B Foundation | Events Detail">
+        <Layout pageTitle="Tombossa B Foundation | Event Details">
             <NavOne />
-            <PageHeader title="Events Detail" />
+            <PageHeader prev="Events" link="/events" title="Community Field Day" />
             <EventsDetail />
             <Footer />
         </Layout>

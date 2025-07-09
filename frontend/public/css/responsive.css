@@ -51,6 +51,12 @@
 }
 
 @media (max-width:1366px), (max-aspect-ratio: 4/3) {
+    #white-logo {
+        display: block;
+    }
+    #black-logo {
+        display: none;
+    }
     .slider__desc {
         padding-left: 33%;
     }
@@ -383,9 +389,6 @@
         line-height: 30px;
     }
     /*== .service-area ==*/
-    .service-area .heart-icon {
-        display: none;
-    }
     .service-area .service-wrap .service-item .service-item-inner .service-content {
         padding-right: 0;
         padding-left: 0;
@@ -457,6 +460,9 @@
     .about-area .about-heading {
         padding-left: 0;
         padding-top: 60px;
+    }
+    .about-area .apply-heading {
+        padding-top: 0px;
     }
     .faq-area .faq-img-box {
         margin-right: 0;
@@ -631,7 +637,8 @@
 ------------------------------*/
 @media (max-width:575px) {
     .mobile-about-banner {
-        display: none; 
+        display: none;
+        margin-bottom: -60px;
     }
     .slider__desc {
         font-size: 24px;
@@ -963,7 +970,6 @@
         padding-left: 10px;
     }
     .upcoming-event-area2 .blog-content-wrap .blog-content .blog-item .blog-inner-content .blog__list li.blog__dot-active:after {
-        right: -10px;
     }
     /*=== .event-detail-area  ===*/
     .event-detail-area .event-detail-content .event__title {

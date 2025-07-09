@@ -343,6 +343,15 @@ a:hover {
 }
 
 /*=== header-top ====*/
+#white-logo {
+    display: none;
+}
+#black-logo {
+    display: block;
+}
+.white-nav-bar {
+    color: white;
+}
 .header-area .header-top {
 
 }
@@ -907,6 +916,9 @@ a:hover {
 /*===================================
         SLIDER AREA
  =====================================*/
+.logo-img {
+    src: "/images/logo.png";
+}
 .slider-area  {
     position: relative;
     z-index: 1;
@@ -1176,8 +1188,8 @@ a:hover {
     MAKE WORLD AREA
 =====================================*/
 .make-world-area {
-    padding-top: 119px;
-    padding-bottom: 119px;
+    padding-top: 90px;
+    padding-bottom: 90px;
     background-color: #f2f0ec;
 }
 .make-world-area .world-static-wrap {
@@ -1573,7 +1585,7 @@ a:hover {
     height: 100%;
     z-index: 1;
     padding-top: 90px;
-    padding-bottom: 120px;
+    padding-bottom: 90px;
 }
 /*=== heart-icon ===*/
 .service-area .heart-icon {
@@ -1716,7 +1728,7 @@ a:hover {
     SERVICE AREA 2
 =====================================*/
 .service-area2 {
-    padding-top: 120px;
+    padding-top: 90px;
 }
 .service-area2 .heart-icon-1 {
     top: 30px;
@@ -1748,8 +1760,8 @@ a:hover {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    padding-top: 120px;
-    padding-bottom: 120px;
+    padding-top: 90px;
+    padding-bottom: 90px;
 }
 .mixer-area:after {
     position: absolute;
@@ -2000,8 +2012,8 @@ a:hover {
     ABOUT AREA
 =====================================*/
 .about-area {
-    padding-top: 120px;
-    padding-bottom: 120px;
+    padding-top: 90px;
+    padding-bottom: 90px;
 }
 .about-area .about-large-img {
     margin-bottom: 60px;
@@ -2013,6 +2025,9 @@ a:hover {
 .about-area .about-heading {
     padding-left: 30px;
 }
+.about-area .apply-heading {
+    padding-left: 0px;
+}
 .about-area .about-heading .section-heading .section__desc {
     line-height: 30px;
     margin-top: 45px;
@@ -2021,8 +2036,8 @@ a:hover {
     FAQ AREA
 =====================================*/
 .faq-area {
-    padding-top: 120px;
-    padding-bottom: 120px;
+    padding-top: 90px;
+    padding-bottom: 90px;
     background-color: #f2f0ec;
 }
 .faq-area .faq-img-box {
@@ -2109,7 +2124,7 @@ a:hover {
     CAUSES AREA
 =====================================*/
 .causes-area {
-    padding-top: 120px;
+    padding-top: 90px;
     padding-bottom: 90px;
 }
 .causes-area .blog-content-wrap {
@@ -2265,15 +2280,15 @@ a:hover {
  =============================*/
 .past-causes-area {
     padding-top: 0;
-    padding-bottom: 120px;
+    padding-bottom: 90px;
 }
 
 /*=============================
    CAUSES DETAIL AREA
  =============================*/
 .causes-detail-area {
-    padding-top: 120px;
-    padding-bottom: 120px;
+    padding-top: 90px;
+    padding-bottom: 90px;
 }
 .causes-detail-area .blog-content-wrap .blog-content .blog-item .blog-img img {
     width: 100%;
@@ -2742,29 +2757,22 @@ a:hover {
     margin-bottom: 0;
 }
 .upcoming-event-area .blog-content-wrap .blog-content .blog-item .blog-inner-content .blog__list li {
-    padding-left: 14px;
+    padding-left: 2px;
     display: inline-block;
     margin-bottom: 0;
     color: #50bac3;
     text-transform: uppercase;
-    font-size: 12px;
+    font-size: 11px;
     letter-spacing: 1px;
 }
 .upcoming-event-area .blog-content-wrap .blog-content .blog-item .blog-inner-content .blog__list li.blog__dot-active:after {
     position: absolute;
     bottom: 3px;
-    right: -13px;
     font-size: 18px;
 }
-.upcoming-event-area .blog-content-wrap .blog-content .blog-item .blog-inner-content .blog__list li.blog__dot-venue {
-    left: 131px;
-    float: left;
-    font-size: 11px;
-}
-.upcoming-event-area .blog-content-wrap .blog-content .blog-item .blog-inner-content .blog__list li:first-child {
+/* .upcoming-event-area .blog-content-wrap .blog-content .blog-item .blog-inner-content .blog__list li:first-child {
     padding-left: 2px;
-}
-
+} */
 .upcoming-event-area .blog-content-wrap .blog-content .blog-item2 .blog-inner-content .blog__list li {
     color: #e36955;
 }
@@ -2790,8 +2798,8 @@ a:hover {
     EVENT DETAIL AREA
 =============================*/
 .event-detail-area {
-    padding-top: 120px;
-    padding-bottom: 120px;
+    padding-top: 90px;
+    padding-bottom: 90px;
 }
 .event-detail-area .blog-content {
     margin-bottom: 58px;
@@ -3144,8 +3152,8 @@ a:hover {
     CLIENTLOGO AREA
 =====================================*/
 .clientlogo-area {
-    padding-top: 118px;
-    padding-bottom: 110px;
+    padding-top: 90px;
+    padding-bottom: 90px;
     text-align: center;
 }
 .clientlogo-area .client-logo .owl-item .client-logo-item {
@@ -3167,8 +3175,8 @@ a:hover {
 =====================================*/
 .clientlogo-area2 {
     background-color: #f2f0ec;
-    padding-top: 148px;
-    padding-bottom: 141px;
+    padding-top: 90px;
+    padding-bottom: 90px;
 }
 
 /*===================================
@@ -3262,7 +3270,7 @@ a:hover {
     HELPING-AREA 2
 =====================================*/
 .helping-area2 {
-    padding-top: 100px;
+    padding-top: 90px;
 }
 .helping-area2 .fun-content {
     margin-right: 70px;
@@ -3299,8 +3307,8 @@ a:hover {
 .helping-area2:after {
     /* background-color: rgba(134, 59, 174, 1); */
     background-color: #dac3e6;
-    margin-top: -261px;
-    height: 952px;
+    margin-top: -271px;
+    height: 951px;
 }
 .helping-area2 .helping-form .form-shared {
     margin-top: 51px;
@@ -3360,8 +3368,8 @@ a:hover {
 .gallery-area {
     position: relative;
     z-index: 1;
-    padding-top: 120px;
-    padding-bottom: 112px;
+    padding-top: 90px;
+    padding-bottom: 90px;
 }
 .gallery-area:before,
 .gallery-area:after {
@@ -3528,7 +3536,7 @@ a:hover {
    GALLERY AREA
  =============================*/
 .gallery-area2 {
-    padding-top: 120px;
+    padding-top: 90px;
     padding-bottom: 90px;
 }
 .gallery-area2 .gallery-item {
@@ -3546,7 +3554,7 @@ a:hover {
  =============================*/
 .package-area {
     background-color: #f2f0ec;
-    padding-top: 120px;
+    padding-top: 90px;
     padding-bottom: 90px;
 }
 .package-area .package-content {
@@ -3639,7 +3647,7 @@ a:hover {
    TEAM AREA
  =============================*/
 .team-area {
-    padding-top: 119px;
+    padding-top: 90px;
     padding-bottom: 90px;
 }
 .team-area .team-content-wrap {
@@ -3755,8 +3763,8 @@ a:hover {
    SPONSOR AREA
  =============================*/
 .sponsor-area {
-    padding-top: 120px;
-    padding-bottom: 120px;
+    padding-top: 90px;
+    padding-bottom: 90px;
 }
 .sponsor-area .sponsor-wrap {
     border-bottom: 2px solid #f2f0ec;
@@ -3837,7 +3845,7 @@ a:hover {
     BLOG AREA
 =====================================*/
 .blog-area {
-    padding-top: 120px;
+    padding-top: 90px;
     padding-bottom: 60px;
 }
 .blog-area .recent-post-wrap {
@@ -4049,8 +4057,8 @@ a:hover {
    CTA AREA 2
 =============================*/
 .cta-area2 {
-    padding-top: 110px;
-    padding-bottom: 120px;
+    padding-top: 90px;
+    padding-bottom: 90px;
     background-color: #f1ae44;
     position: relative;
     z-index: 1;
@@ -4101,8 +4109,8 @@ a:hover {
    contact-area
  =============================*/
 .contact-area {
-    padding-top: 120px;
-    padding-bottom: 120px;
+    padding-top: 90px;
+    padding-bottom: 90px;
 }
 .contact-area .section__desc {
     line-height: 30px;
@@ -4299,8 +4307,8 @@ a:hover {
    contact-form-area
  =============================*/
 .contact-form-area {
-    padding-top: 120px;
-    padding-bottom: 120px;
+    padding-top: 90px;
+    padding-bottom: 90px;
 }
 .contact-form-area .form-shared-wrap {
     margin-top: 51px;
@@ -4605,11 +4613,11 @@ a:hover {
     background-attachment: fixed;
     position: relative;
     z-index: 1;
-    padding-top: 120px;
+    padding-top: 90px;
     overflow: hidden;
 }
 .footer-area .footer-top {
-    padding-top: 92px;
+    padding-top: 90px;
     padding-bottom: 100px;
 }
 .footer-area .footer-widget-wrap .footer-item a,

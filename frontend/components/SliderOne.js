@@ -16,7 +16,7 @@ const SliderOne = () => {
             <Swiper
                 style={{
                     '--swiper-pagination-color': '#f1ae44',
-                    '--swiper-pagination-bullet-size': '18px',
+                    '--swiper-pagination-bullet-size': '16px',
                     '--swiper-pagination-top': '0px',
                     '--swiper-pagination-bottom': '0px'
 

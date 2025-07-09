@@ -41,7 +41,7 @@ const AboutArea = () => {
                                 <div className="section-icon">
                                     <img src="/images/section-icon.png" alt="section-icon" />
                                 </div>
-                                <h2 className="section__title">About Tombossa Negusse</h2>
+                                <h2 className="section__title">Who was <br /> Tombossa Negusse</h2>
                                 <p className="section__meta">A Biography</p>
                                 <p className="section__desc">
                                     <b>In Memory of Tombossa Dawit Negusse</b> <br />

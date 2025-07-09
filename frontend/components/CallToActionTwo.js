@@ -8,10 +8,16 @@ const CallToActionTwo = () => {
                 <div className="row">
                     <div className="col-lg-6 col-sm-6">
                         <div className="cta-item cta-item1">
+                            <h3 className="cta__title">Consider donating your time</h3>
+                            <Link href="/volunteer" className="theme-btn">become a volunteer</Link> 
+                        </div>
+                    </div>
+                    {/* <div className="col-lg-6 col-sm-6">
+                        <div className="cta-item cta-item2">
                             <h3 className="cta__title">Sponsor a project</h3>
                             <Link href="#" className="theme-btn">become a sponsor</Link>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="col-lg-6 col-sm-6">
                         <div className="cta-item cta-item2">
                             <h3 className="cta__title">Take a look at our causes</h3>

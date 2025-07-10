@@ -6,9 +6,6 @@
 }
 
 @media (max-width:1440px) {
-
-}
-@media (max-width:1440px) {
     .give-area .container-fluid {
         padding-right: 30px;
         padding-left: 30px;
@@ -996,5 +993,23 @@
     }
     .footer-area {
         background-attachment: inherit;
+    }
+}
+
+@media (min-width:2724px) {
+    .mixer-area2:after {
+        width: 1250px;
+    }
+}
+
+@media (min-width:3670px) {
+    .mixer-area2:after {
+        width: 1770px;
+    }
+}
+
+@media (min-width:4710px) {
+    .mixer-area2:after {
+        display: none;
     }
 }

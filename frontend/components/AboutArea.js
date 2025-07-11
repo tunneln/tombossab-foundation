@@ -24,7 +24,7 @@ const AboutArea = () => {
                                 <h2 className="section__title">Discover the Tombossa B Foundation</h2>
                                 <p className="section__meta">Our Mission Statement</p>
                                 <p className="section__desc">
-                                The mission of the Tombossa B Foundation is to honor Tombossa’s enduring legacy by uplifting and empowering our Eritrean and East African communities. With unwavering dedication, we provide financial aid, vital resources, and mental health support to create transformative opportunities for underserved youth. Our goal is to ensure that every young person has access to quality education, personal growth, and the tools they need to thrive. Through our commitment to sustainable initiatives, we foster resilient communities that not only preserve their rich heritage but also open doors to endless possibilities, paving the way for a brighter, more hopeful future.
+                                The mission of the Tombossa B Foundation is to honor Tombossa’s enduring legacy by uplifting and empowering our Eritrean and East African communities. With unwavering dedication, we will provide financial aid, vital resources, and mental health support to create transformative opportunities for under-served youth. Through our commitment to sustainable initiatives, we foster resilient communities that not only preserve their rich heritage but also open doors to endless possibilities, paving the way for a brighter, more hopeful future.
                                 </p>
                             </div>
                         </div>

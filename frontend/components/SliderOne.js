@@ -72,6 +72,24 @@ const SliderOne = () => {
                         </div>
                     </div>
                 </SwiperSlide>
+                <SwiperSlide className='swiper-no-swiping'>
+                    <div className="single-slide-item slide-bg-recipients">
+                        <div className="slide-item-table">
+                            <div className="slide-item-tablecell">
+                                <div className="container">
+                                    <div className="row">
+                                        <div className="slider-heading">
+                                            <h3 className="slider__desc">
+                                                <div className="slider__box">Meet our scholarship award recipients — students making a difference in their communities.</div>
+                                            </h3>
+                                        </div>
+                                        <Link href="/award-recipients" className="theme-btn slider-btn">Meet Our Scholars</Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </SwiperSlide>
                 {/* <SwiperSlide>
                     <div className="single-slide-item slide-bg3">
                         <div className="slide-item-table">

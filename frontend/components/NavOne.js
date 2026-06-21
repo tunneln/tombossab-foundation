@@ -130,7 +130,13 @@ const NavOne = () => {
                                                     <li ><Link className={`${sticky ? '' : 'pre-sticky-header'}`} href="/">home</Link></li>
                                                     <li><Link href="/about" className={`${sticky ? '' : 'pre-sticky-header'}`}>about us</Link></li>
                                                     <li> <Link href="/causes" className={`${sticky ? '' : 'pre-sticky-header'}`}>causes</Link> </li>
-                                                    <li><Link href="/apply" className={`${sticky ? '' : 'pre-sticky-header'}`}>scholarship</Link></li>
+                                                    <li>
+                                                        <a href="#" className={`${sticky ? '' : 'pre-sticky-header'}`}>scholarship</a>
+                                                        <ul className="dropdown-menu-item">
+                                                            <li><Link href="/apply">apply now</Link></li>
+                                                            <li><Link href="/award-recipients">award recipients</Link></li>
+                                                        </ul>
+                                                    </li>
                                                     <li><a href="#" className={`${sticky ? '' : 'pre-sticky-header'}`}>get involved</a>
                                                         <ul className="dropdown-menu-item">
                                                             <li><Link href="/volunteer">become a volunteer</Link></li>
@@ -162,7 +168,12 @@ const NavOne = () => {
                             <li className="sidenav__item"><Link href="/">home</Link></li>
                             <li className="sidenav__item"><Link href="/about">about us</Link></li>
                             <li className="sidenav__item"><Link href="/causes">causes</Link> </li>
-                            <li className="sidenav__item"><Link href="/apply">scholarship</Link></li>
+                            <li className="sidenav__item"><a href="#">scholarship</a>
+                                <ul className="side-sub-menu">
+                                    <li className="sidenav__item"><Link href="/apply">apply now</Link></li>
+                                    <li className="sidenav__item"><Link href="/award-recipients">award recipients</Link></li>
+                                </ul>
+                            </li>
                             <li className="sidenav__item"><Link href="#">get involved</Link>
                                 <ul className="side-sub-menu">
                                     <li className="sidenav__item"><Link href="/volunteer">become a volunteer</Link></li>

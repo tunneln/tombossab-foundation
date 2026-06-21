@@ -112,6 +112,13 @@ class NavTwo extends Component {
                                                             </ul>
                                                         </li>
                                                         <li><Link href="/events">events</Link></li>
+                                                        <li>
+                                                            <a href="#">scholarship</a>
+                                                            <ul className="dropdown-menu-item">
+                                                                <li><Link href="/apply">apply now</Link></li>
+                                                                <li><Link href="/award-recipients">award recipients</Link></li>
+                                                            </ul>
+                                                        </li>
                                                         <li><Link href="/news">news</Link></li>
                                                         <li><a href="#">pages</a>
                                                             <ul className="dropdown-menu-item">
@@ -173,6 +180,13 @@ class NavTwo extends Component {
                                         <li><Link href="/volunteer">become a volunteer</Link></li>
                                         <li><Link href="/team">our team</Link></li>
                                         <li><Link href="/sponsor">sponsors</Link></li>
+                                    </ul>
+                                </li>
+                                <li className="sidenav__item"><a href="#">scholarship</a>
+                                    <span className="menu-plus-icon"></span>
+                                    <ul className="side-sub-menu">
+                                        <li><Link href="/apply">apply now</Link></li>
+                                        <li><Link href="/award-recipients">award recipients</Link></li>
                                     </ul>
                                 </li>
                                 <li className="sidenav__item"><Link href="/contact">contact</Link></li>

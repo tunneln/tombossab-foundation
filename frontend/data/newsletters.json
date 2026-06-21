@@ -1,0 +1,38 @@
+[
+  {
+    "id": "march-2026",
+    "title": "March 2026 Newsletter",
+    "issue": "Issue #1",
+    "date": "2026-03",
+    "month": "March",
+    "year": "2026",
+    "headline": "Breaking Barriers to Mental Health Care",
+    "blurb": "Our inaugural issue explores the mental health gap for East African communities and how culturally responsive, community-centered care can help close it.",
+    "cover": "/newsletters/march-2026-cover.jpg",
+    "file": "/newsletters/march-2026-newsletter.pdf"
+  },
+  {
+    "id": "april-2026",
+    "title": "April 2026 Newsletter",
+    "issue": "Issue #1",
+    "date": "2026-04",
+    "month": "April",
+    "year": "2026",
+    "headline": "Six Unmet Needs in the Habesha Diaspora",
+    "blurb": "A look at the critical gaps facing Ethiopian and Eritrean communities living abroad — and why we must build culturally rooted solutions for them now.",
+    "cover": "/newsletters/april-2026-cover.jpg",
+    "file": "/newsletters/april-2026-newsletter.pdf"
+  },
+  {
+    "id": "june-2026",
+    "title": "June 2026 Newsletter",
+    "issue": "Issue #1",
+    "date": "2026-06",
+    "month": "June",
+    "year": "2026",
+    "headline": "Meet Our June Guest Speaker: Dr. Yacob Tekie",
+    "blurb": "Get to know Dr. Yacob Tekie, guest speaker for our Coffee & Women Empowerment gathering, plus mental health resources for our community.",
+    "cover": "/newsletters/june-2026-cover.jpg",
+    "file": "/newsletters/june-2026-newsletter.pdf"
+  }
+]

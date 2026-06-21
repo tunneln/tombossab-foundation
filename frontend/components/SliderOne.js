@@ -42,10 +42,10 @@ const SliderOne = () => {
                                     <div className="row">
                                         <div className="slider-heading">
                                             <h3 className="slider__desc">
-                                                <div className="slider__box">Community Field Day—Join Us July 26 for a Fun-Filled Day of Games, Food, and Community Impact at Cottonwood Park!</div>
+                                                <div className="slider__box">Coffee &amp; Women Empowerment—Join Us June 27, 2–6PM for Coffee, Conversation &amp; Encouragement with guest speaker Dr. Yacob Tekie!</div>
                                             </h3>
                                         </div>
-                                        <Link href="/events-detail" className="theme-btn slider-btn">Read More</Link>
+                                        <Link href="/coffee-women-empowerment" className="theme-btn slider-btn">Read More</Link>
                                     </div>
                                 </div>
                             </div>

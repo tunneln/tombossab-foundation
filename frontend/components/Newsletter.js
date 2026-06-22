@@ -4,17 +4,17 @@ const Newsletter = ({ newsletters = [] }) => {
     return (
         <section className="blog-area blog-area2">
             <div className="container">
-                <div className="row">
-                    <div className="col-lg-8 mx-auto">
-                        <div className="section-heading blog-heading text-center">
-                            <div className="section-icon">
-                                <img src="/images/section-icon.png" alt="section-icon" />
-                            </div>
-                            <h2 className="section__title">Our Newsletters</h2>
-                            <p className="section__meta">stay connected</p>
-                        </div>
-                    </div>
-                </div>
+                {/*<div className="row">*/}
+                {/*    <div className="col-lg-8 mx-auto">*/}
+                {/*        <div className="section-heading blog-heading text-center">*/}
+                {/*            <div className="section-icon">*/}
+                {/*                <img src="/images/section-icon.png" alt="section-icon" />*/}
+                {/*            </div>*/}
+                {/*            <h2 className="section__title">Our Newsletter</h2>*/}
+                {/*            <p className="section__meta">stay connected</p>*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
 
                 <div className="row recent-post-wrap">
                     {newsletters.map((item) => (

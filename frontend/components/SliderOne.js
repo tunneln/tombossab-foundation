@@ -35,24 +35,6 @@ const SliderOne = () => {
                 className="frontpageSwiper"
             >
                 <SwiperSlide className='swiper-no-swiping'>
-                    <div className="single-slide-item slide-bg2">
-                        <div className="slide-item-table">
-                            <div className="slide-item-tablecell">
-                                <div className="container">
-                                    <div className="row">
-                                        <div className="slider-heading">
-                                            <h3 className="slider__desc">
-                                                <div className="slider__box">Coffee &amp; Women Empowerment—Join Us June 27, 2–6PM for Coffee, Conversation &amp; Encouragement with guest speaker Dr. Yacob Tekie!</div>
-                                            </h3>
-                                        </div>
-                                        <Link href="/coffee-women-empowerment" className="theme-btn slider-btn">Read More</Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide className='swiper-no-swiping'>
                     <div className="single-slide-item slide-bg1">
                         <div className="slide-item-table">
                             <div className="slide-item-tablecell">
@@ -73,6 +55,27 @@ const SliderOne = () => {
                     </div>
                 </SwiperSlide>
                 <SwiperSlide className='swiper-no-swiping'>
+                    <div className="single-slide-item" style={{
+                        background: 'url("/images/coffee-women-empowerment.jpg") no-repeat center center',
+                        backgroundSize: 'cover'
+                    }}>
+                        <div className="slide-item-table">
+                            <div className="slide-item-tablecell">
+                                <div className="container">
+                                    <div className="row">
+                                        <div className="slider-heading">
+                                            <h3 className="slider__desc">
+                                                <div className="slider__box">Coffee &amp; Women Empowerment—Join Us June 27, 2–6PM for Coffee, Conversation &amp; Encouragement with guest speaker Dr. Yacob Tekie!</div>
+                                            </h3>
+                                        </div>
+                                        <Link href="/coffee-women-empowerment" className="theme-btn slider-btn">Read More</Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </SwiperSlide>
+                <SwiperSlide className='swiper-no-swiping'>
                     <div className="single-slide-item slide-bg-recipients">
                         <div className="slide-item-table">
                             <div className="slide-item-tablecell">
@@ -84,6 +87,27 @@ const SliderOne = () => {
                                             </h3>
                                         </div>
                                         <Link href="/award-recipients" className="theme-btn slider-btn">Meet Our Scholars</Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </SwiperSlide>
+                <SwiperSlide className='swiper-no-swiping'>
+                    <div className="single-slide-item" style={{
+                        background: 'url("/newsletters/june-2026-cover.jpg") no-repeat center center',
+                        backgroundSize: 'cover'
+                    }}>
+                        <div className="slide-item-table">
+                            <div className="slide-item-tablecell">
+                                <div className="container">
+                                    <div className="row">
+                                        <div className="slider-heading">
+                                            <h3 className="slider__desc">
+                                                <div className="slider__box">Read our June Newsletter — featuring guest speaker Dr. Yacob Tekie and mental health resources for our community.</div>
+                                            </h3>
+                                        </div>
+                                        <a href="/newsletters/june-2026-newsletter.pdf" target="_blank" rel="noopener noreferrer" className="theme-btn slider-btn">Read Here!</a>
                                     </div>
                                 </div>
                             </div>

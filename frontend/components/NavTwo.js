@@ -119,7 +119,6 @@ class NavTwo extends Component {
                                                                 <li><Link href="/award-recipients">award recipients</Link></li>
                                                             </ul>
                                                         </li>
-                                                        <li><Link href="/news">news</Link></li>
                                                         <li><a href="#">pages</a>
                                                             <ul className="dropdown-menu-item">
                                                                 <li><Link href="/about">about us</Link></li>
@@ -163,13 +162,6 @@ class NavTwo extends Component {
                                     <ul className="side-sub-menu">
                                         <li><Link href="/events">events</Link></li>
                                         <li><Link href="/events-detail">events detail</Link></li>
-                                    </ul>
-                                </li>
-                                <li className="sidenav__item"><a href="#">news</a>
-                                    <span className="menu-plus-icon"></span>
-                                    <ul className="side-sub-menu">
-                                        <li><Link href="/news">news</Link></li>
-                                        <li><Link href="/single-news">news detail</Link></li>
                                     </ul>
                                 </li>
                                 <li className="sidenav__item"><a href="#">pages</a>

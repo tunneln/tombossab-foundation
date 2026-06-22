@@ -13,9 +13,9 @@ export async function getStaticProps() {
 
 const NewsletterPage = ({ newsletters }) => {
     return (
-        <Layout pageTitle="Tombossa B Foundation | Newsletters">
+        <Layout pageTitle="Tombossa B Foundation | Newsletter">
             <NavOne />
-            <PageHeader title="Newsletters" />
+            <PageHeader title="Newsletter" />
             <Newsletter newsletters={newsletters} />
             <Footer />
         </Layout>

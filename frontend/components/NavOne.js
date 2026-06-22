@@ -141,9 +141,8 @@ const NavOne = () => {
                                                         <ul className="dropdown-menu-item">
                                                             <li><Link href="/volunteer">become a volunteer</Link></li>
                                                             <li><Link href="/contact">contact us</Link></li>
-                                                            <li><Link href="/newsletter">newsletters</Link></li>
+                                                            <li><Link href="/newsletter">newsletter</Link></li>
                                                             <li><Link href="/events">events</Link></li>
-                                                            <li><Link href="/news">news</Link></li>
                                                             <li><Link href="/gallery">gallery</Link></li>
                                                             {/* <li><Link href="/sponsor">sponsors</Link></li> */}
                                                         </ul>
@@ -179,9 +178,8 @@ const NavOne = () => {
                                 <ul className="side-sub-menu">
                                     <li className="sidenav__item"><Link href="/volunteer">become a volunteer</Link></li>
                                     <li className="sidenav__item"><Link href="/contact">contact us</Link></li>
-                                    <li className="sidenav__item"><Link href="/newsletter">newsletters</Link></li>
+                                    <li className="sidenav__item"><Link href="/newsletter">newsletter</Link></li>
                                     <li className="sidenav__item"><Link href="/events">events</Link></li>
-                                    <li className="sidenav__item"><Link href="/news">news</Link></li>
                                     <li className="sidenav__item"><Link href="/gallery">gallery</Link></li>
                                     {/* <li className="sidenav__item"><Link href="/sponsor">sponsors</Link></li> */}
                                 </ul>

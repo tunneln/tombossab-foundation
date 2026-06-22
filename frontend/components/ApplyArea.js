@@ -37,7 +37,7 @@ const ApplyArea = () => {
                                 <h3 className="section__desc"> Scholarship Benefits </h3> <br/> 
                                 <p> <b>Recipients of the East African Youth Scholarship will receive:</b> </p> <br/>
                                 <div style={{'paddingLeft': '40px'}}>
-                                    <li> Award of <b>$2,000 per academic semester. </b> Up to $4000 a year contigent upon continued eligibility for two semesters.</li>
+                                    <li> Award of <b>$2,000 per academic semester. </b> Up to $4000 a year contingent upon continued eligibility for two semesters.</li>
                                         <ul> 
                                             <li style={{'paddingLeft': '40px'}}> Applications must be resubmitted every two semesters.</li>
                                         </ul>
@@ -50,7 +50,7 @@ const ApplyArea = () => {
                                     <ol style={{'paddingLeft': '40px'}}>
                                         <li style={{'paddingLeft': '10px'}}> <b>Completed Resume:</b> Be sure to provide accurate and up-to-date personal and academic information. </li>
                                         <li style={{'paddingLeft': '10px'}}> <b>Personal Statement (500 - 750 words):</b> Share your story, including: </li>
-                                            <ul style={{'paddingLeft': '40px'}}>
+                                        <ul style={{'paddingLeft': '40px'}}>
                                                 <li> Your East African heritage and its significance to your goals.</li>
                                                 <li> Why you chose a STEM or Business field.</li>
                                                 <li> Your career aspirations and how this scholarship will help you achieve them.</li>
@@ -64,7 +64,7 @@ const ApplyArea = () => {
                                 <h3 className="section__desc"> Application Process </h3> <br/>
                                 <ol style={{'paddingLeft': '40px'}}>
                                     <li style={{'paddingLeft': '10px'}}> <b>Deadline:</b> All application materials must be submitted by <b>July 4th</b>. </li>
-                                    <li style={{'paddingLeft': '10px'}}> <b>Submission:</b> Applications documents may be submitted <a href="https://forms.gle/vAoHkZkdNo8gZmGH8" target="_blank" rel="noopener noreferrer"><b>here</b></a> or via email to <a href="mailto:apply@tombossabfoundation.org" className="lower"><b>apply@tombossabfoundation.org</b></a>. </li>
+                                    <li style={{'paddingLeft': '10px'}}> <b>Submission:</b> Application documents may be submitted <a href="https://forms.gle/vAoHkZkdNo8gZmGH8" target="_blank" rel="noopener noreferrer"><b>here</b></a> or via email to <a href="mailto:apply@tombossabfoundation.org" className="lower"><b>apply@tombossabfoundation.org</b></a>. </li>
                                     <li style={{'paddingLeft': '10px'}}> <b>Selection Process:</b> Applications will be reviewed by a scholarship committee, and finalists may be invited for an interview. </li>
                                     <li style={{'paddingLeft': '10px'}}> <b>Notification:</b> Scholarship recipients will be notified by <b>Aug 1st.</b> </li>
                                 </ol> 
@@ -75,7 +75,7 @@ const ApplyArea = () => {
 
                                 <hr />
                                 <h3 className="section__desc"> Questions </h3> <br/>
-                                <p> <b>For questions or additional information, you contact us at:</b> </p> <br/>
+                                <p> <b>For questions or additional information, you can contact us at:</b> </p> <br/>
                                 <div style={{'paddingLeft': '40px'}}>
                                     <li> <a href="mailto:contact@tombossabfoundation.org" className="lower"><i className="fa fa-envelope" /> contact@tombossabfoundation.org</a></li>
                                     <li> <a href="tel:2142083936"><i className="fa fa-phone-square" /> 214 208 3936</a> </li>

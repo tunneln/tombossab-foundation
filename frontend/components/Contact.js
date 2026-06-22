@@ -30,7 +30,7 @@ const Contact = () => {
                 body: JSON.stringify({
                     to: "contact@tombossabfoundation.org",
                     subject: "Official Contact Message From " + formData.name,
-                    body: "-Contact Informaion-\nPhone: " + formData.phone + " | Email: " + formData.email +  "\n\n-Message-\n" + formData.message,
+                    body: "-Contact Information-\nPhone: " + formData.phone + " | Email: " + formData.email +  "\n\n-Message-\n" + formData.message,
                 }),
                 });
             

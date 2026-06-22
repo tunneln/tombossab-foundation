@@ -34,7 +34,7 @@ const EventsDetail = () => {
                                     All proceeds go toward supporting youth scholarships and mental health resources in our East African communities. Admission is free, but donations are warmly encouraged—every dollar helps change a life.     
                                 </p>
                                 <p className="event__text">
-                                    <a href="https://lu.ma/5uc1kjtq">RSVP now</a> to help us plan—and come ready to play with a purpose!                                
+                                    <a href="https://lu.ma/5uc1kjtq" target="_blank" rel="noopener noreferrer">RSVP now</a> to help us plan—and come ready to play with a purpose!                                
                                 </p>
                             </div>
                             <div className="event-detail-item">

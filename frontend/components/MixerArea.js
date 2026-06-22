@@ -105,7 +105,7 @@ class MixerArea extends Component {
                                                     Every man must decide whether he will walk in the light
                                                     of creative altruism or in the darkness of destructive selfishness.
                                                 </h3>
-                                                <p className="funslide__name">Martin Luther King, jr</p>
+                                                <p className="funslide__name">Martin Luther King, Jr.</p>
                                             </div>
                                         </SwiperSlide>
                                         <SwiperSlide>

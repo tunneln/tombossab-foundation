@@ -40,7 +40,7 @@ const HelpingArea = () => {
                         <div className="col-sm-6 col-lg-6">
                             <div className="helping-text-box">
                                 <p className="helping__text">
-                                    Your support is not just a gift—it's a lifeline that helps ensure a brighter, healthier future for the next generation. Thank you for being a part of this important journey. Through you, our communities youths are empowered to overcome challenges, build resilience, and reach their full potential.
+                                    Your support is not just a gift—it's a lifeline that helps ensure a brighter, healthier future for the next generation. Thank you for being a part of this important journey. Through you, our community's youth are empowered to overcome challenges, build resilience, and reach their full potential.
                                 </p>
                             </div>
                         </div>

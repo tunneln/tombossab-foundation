@@ -29,13 +29,13 @@ class FaqArea extends Component {
                                     <h2 className="ac-q" tabIndex="0">How do I apply for a scholarship?</h2>
                                     <div className="ac-a">
                                         <p className="accordion__content-desc">
-                                            As we are still taking our first steps as a foundation, we won't be opening applcations until the end of 2025 at the earliest.
+                                            As we are still taking our first steps as a foundation, we won't be opening applications until the end of 2025 at the earliest.
                                         </p>
                                     </div>
                                 </div>
 
                                 <div className="ac">
-                                    <h2 className="ac-q" tabIndex="0">What is the overall vision for the foundation</h2>
+                                    <h2 className="ac-q" tabIndex="0">What is the overall vision for the foundation?</h2>
                                     <div className="ac-a">
                                         <p className="accordion__content-desc">
                                             While there's much we can say here, our primary objective can be summed up as the following:<br/><br/>

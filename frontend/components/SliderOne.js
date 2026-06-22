@@ -76,7 +76,7 @@ const SliderOne = () => {
                     </div>
                 </SwiperSlide>
                 <SwiperSlide className='swiper-no-swiping'>
-                    <div className="single-slide-item slide-bg-recipients">
+                    <div className="single-slide-item slide-bg2">
                         <div className="slide-item-table">
                             <div className="slide-item-tablecell">
                                 <div className="container">

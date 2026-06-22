@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/noelnegusse/Git/tombossab-foundation/frontend/pages/.claude/hooks/turn-counter.sh"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/noelnegusse/Git/tombossab-foundation/frontend/pages/.claude/hooks/session-start.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

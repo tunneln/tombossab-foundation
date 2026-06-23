@@ -58,10 +58,10 @@
         padding-left: 33%;
     }
     .slider__box {
-        border-top: 50px solid rgba(227, 105, 85, 1); 
-        border-right: 29px solid rgba(227, 105, 85, 1); 
-        border-bottom: 53px solid rgba(227, 105, 85, 1); 
-        border-left: 33px solid rgba(227, 105, 85, 1); 
+        border-top: 50px solid rgba(227, 105, 85, 1);
+        border-right: 29px solid rgba(227, 105, 85, 1);
+        border-bottom: 53px solid rgba(227, 105, 85, 1);
+        border-left: 33px solid rgba(227, 105, 85, 1);
     }
     .hiw-area {
         padding-top: 0px;
@@ -89,6 +89,7 @@
         color: black;
     }
     .slider-area .slide-bg1 {
+        background: url("../images/slider1-mobile.jpg") no-repeat center center fixed;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -97,6 +98,7 @@
         min-height: 100svh;
     }
     .slider-area .slide-bg2 {
+        background: url("../images/slider2-mobile.jpg") no-repeat center center fixed;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -105,6 +107,7 @@
         min-height: 100svh;
     }
     .slider-area .slide-bg3 {
+        background: url("../images/slider3-tablet.jpg") no-repeat center center fixed;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -113,6 +116,7 @@
         min-height: 100svh;
     }
     .slider-area .slide-bg4 {
+        background: url("../images/slider4-tablet.jpg") no-repeat center center fixed;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -293,6 +297,15 @@
     }
     .give-area .give-progress-box {
         height: 320px;
+    }
+    .slider-area .slide-bg2 {
+        background: url("../images/slider2-mobile.jpg") no-repeat center center fixed;
+    }
+    .slider-area .slide-bg3 {
+        background: url("../images/slider3-mobile.jpg") no-repeat center center fixed;
+    }
+    .slider-area .slide-bg4 {
+        background: url("../images/slider4-mobile.jpg") no-repeat center center fixed;
     }
 }
 

@@ -10,7 +10,7 @@ const Newsletter = ({ newsletters = [] }) => {
                 {/*            <div className="section-icon">*/}
                 {/*                <img src="/images/section-icon.png" alt="section-icon" />*/}
                 {/*            </div>*/}
-                {/*            <h2 className="section__title">Our Newsletter</h2>*/}
+                {/*            <h2 className="section__title">Our Newsletters</h2>*/}
                 {/*            <p className="section__meta">stay connected</p>*/}
                 {/*        </div>*/}
                 {/*    </div>*/}

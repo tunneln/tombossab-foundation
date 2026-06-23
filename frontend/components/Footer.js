@@ -72,7 +72,7 @@ const Footer = () => {
                                     <div className="section-icon">
                                         <img src="/images/section-icon.png" alt="section-icon" />
                                     </div>
-                                    <h2 className="section__title text__white">Newsletter</h2>
+                                    <h2 className="section__title text__white">Newsletters</h2>
                                     <p className="section__meta">stay updated</p>
                                 </div>
                                 <div className="newsletter-form">

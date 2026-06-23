@@ -1,32 +1,5 @@
 [
   {
-    "id": "elim-girma-2025",
-    "slug": "elim-girma",
-    "name": "Elim Girma",
-    "year": "2025",
-    "cohort": "2025–2026",
-    "scholarship": "East African Youth Scholarship",
-    "headline": "Protecting Communities Through Cyber Innovation",
-    "photo": "/recipients/elim-girma.jpg",
-    "photoAlt": "Elim Girma, 2025 East African Youth Scholarship recipient",
-    "heritage": "First-generation Eritrean-American",
-    "school": "",
-    "major": "Cybersecurity",
-    "highlights": [
-      "Top 10% of her class",
-      "Student-organization leader",
-      "Future Cybersecurity Analyst"
-    ],
-    "blurb": "A first-generation Eritrean-American channeling her talents toward a career as a Cybersecurity Analyst, driven to shield others from digital threats.",
-    "story": [
-      "For our selection committee, Elim Girma's application was a standout — an immediate choice for the East African Youth Scholarship. She graduated in the top 10% of her class while leading numerous student organizations, pairing exceptional communication skills with a fierce work ethic.",
-      "A first-generation Eritrean-American, Elim is channeling her talents toward a career as a Cybersecurity Analyst. For her, this scholarship is far more than a door to higher education; it's a vote of confidence that lets her deepen her studies, build professional networks, and step into a new independence.",
-      "Driven by a calling to shield others from digital threats, Elim is moving into a career where her leadership will safeguard data and uplift her community."
-    ],
-    "quote": "Growing up, higher education has always been the goal. I'm inspired to help people through cybersecurity, and I knew the Tombossa B Foundation was just the right place to do so.",
-    "quoteAttribution": "Elim Girma"
-  },
-  {
     "id": "mattania-biniam-2025",
     "slug": "mattania-biniam",
     "name": "Mattania Biniam",
@@ -40,9 +13,9 @@
     "school": "Southern Methodist University",
     "major": "Management Science",
     "highlights": [
-      "4.2 weighted GPA",
-      "Church youth leader",
-      "Varsity basketball captain"
+      "4.2 Weighted GPA",
+      "Church Youth Leader",
+      "Varsity Basketball Captain"
     ],
     "blurb": "An Eritrean-American headed to SMU to study Management Science, with a vision to use data and analytics to make a positive impact on the world.",
     "story": [
@@ -52,5 +25,32 @@
     ],
     "quote": "I wanted to be part of a community that understands both my heritage and my dreams. It's not just financial help — it's encouragement, and a reminder that my community believes in me.",
     "quoteAttribution": "Mattania Biniam"
+  },
+  {
+    "id": "elim-girma-2025",
+    "slug": "elim-girma",
+    "name": "Elim Girma",
+    "year": "2025",
+    "cohort": "2025–2026",
+    "scholarship": "East African Youth Scholarship",
+    "headline": "Protecting Communities Through Cyber Innovation",
+    "photo": "/recipients/elim-girma.jpg",
+    "photoAlt": "Elim Girma, 2025 East African Youth Scholarship recipient",
+    "heritage": "First-generation Eritrean-American",
+    "school": "Texas Tech University",
+    "major": "Cybersecurity Analyst",
+    "highlights": [
+      "Top 10% of Class",
+      "Student-Organization Leader",
+      "Future Cybersecurity Analyst"
+    ],
+    "blurb": "A first-generation Eritrean-American channeling her talents toward a career as a Cybersecurity Analyst at Texas Tech University, driven to shield others from digital threats.",
+    "story": [
+      "For our selection committee, Elim Girma's application was a standout choice for the East African Youth Scholarship. She graduated in the top 10% of her class while leading numerous student organizations, pairing exceptional communication skills with a fierce work ethic.",
+      "A first-generation Eritrean-American, Elim is heading to Texas Tech University to pursue a career as a Cybersecurity Analyst. For her, this scholarship is far more than a door to higher education; it's a vote of confidence that lets her deepen her studies, build professional networks, and step into a new independence.",
+      "Driven by a calling to shield others from digital threats, Elim is moving into a career where her leadership will safeguard data and uplift her community."
+    ],
+    "quote": "Growing up, higher education has always been the goal. I'm inspired to help people through cybersecurity, and I knew the Tombossa B Foundation was just the right place to do so.",
+    "quoteAttribution": "Elim Girma"
   }
 ]

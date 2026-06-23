@@ -40,7 +40,7 @@ const RecipientCard = ({ recipient }) => {
                             <img
                                 src={photo}
                                 alt={photoAlt || `${name}, ${year} recipient`}
-                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                style={{ width: '100%', height: '125%', objectFit: 'cover' }}
                             />
                         </div>
                         <div style={{ marginTop: '1rem' }}>

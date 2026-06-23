@@ -10,7 +10,8 @@ const CoffeeEventDetail = () => {
                         <div className="blog-content text-center">
                             <div className="blog-item">
                                 <div className="blog-img">
-                                    <img src="/images/coffee-women-empowerment.jpg" alt="Coffee & Women Empowerment Event" />
+                                    <img src="/images/coffee-women-empowerment.jpg" className="image_full" alt="Coffee & Women Empowerment Event" />
+                                    <img src="/images/coffee-women-empowerment-poster.jpg" className="image_mobile" alt="Coffee & Women Empowerment Event Mobile" />
                                     <span className="blog__tag">
                                         <span className="date__num-text">27</span>
                                         <span className="date__mon-text">jun</span>

@@ -314,6 +314,12 @@
     .slider-area .slide-bg4 {
         /*background: url("../images/slider5-mobile.jpg") no-repeat center center fixed;*/
     }
+    .image_full {
+        display: none;
+    }
+    .image_mobile {
+        display: block;
+    }
 }
 
 /* @media (min-width:320px) and (max-width:1199px) {

@@ -14,7 +14,7 @@ export async function getStaticProps() {
 
 const AwardRecipientsPage = ({ recipients }) => {
     return (
-        <Layout pageTitle="Tombossa B Foundation | Award Recipients">
+        <Layout pageTitle="Tombossa B Foundation | Scholarship | Award Recipients">
             <NavOne />
             <PageHeader title="Award Recipients" />
             <section className="team-area">
@@ -25,9 +25,10 @@ const AwardRecipientsPage = ({ recipients }) => {
                                 <div className="section-icon">
                                     <img src="/images/section-icon.png" alt="section-icon" />
                                 </div>
-                                <h2 className="section__title">Scholarship Award Recipients</h2>
+                                {/*<h2 className="section__title">Scholarship Award Recipients</h2>*/}
                                 <p className="section__meta">celebrating our scholars</p>
                             </div>
+                            <br />
                             <p style={{ color: '#666', fontSize: '1.05rem', lineHeight: 1.75, marginBottom: '2.75rem' }}>
                                 Every recipient is a story of heritage, drive, and community. Meet the
                                 students our scholarship is proud to support.

@@ -8,11 +8,11 @@ import Footer from "../components/Footer";
 
 const ApplyPage = () => {
     return (
-        <Layout pageTitle="Tombossa B Foundation | Scholarship Program">
+        <Layout pageTitle="Tombossa B Foundation | Scholarship | Apply Now">
             <NavOne />
-            <PageHeader title="Scholarship Program" />
+            <PageHeader title="Scholarship Application" />
             <ApplyArea />
-            <Map /> 
+            <Map />
             <Footer />
         </Layout>
     );

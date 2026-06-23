@@ -42,7 +42,7 @@ const SliderOne = () => {
                                     <div className="row">
                                         <div className="slider-heading">
                                             <h3 className="slider__desc">
-                                                <div className="slider__box">Coffee &amp; Women Empowerment — Join Us June 27, 2–6PM for Coffee, Conversation &amp; Encouragement with guest speaker Dr. Yacob Tekie!</div>
+                                                <div className="slider__box">Coffee &amp; Women Empowerment — Join us June 27, 2–6PM with guest speaker Dr. Yacob Tekie!</div>
                                             </h3>
                                         </div>
                                         <Link href="/coffee-women-empowerment" className="theme-btn slider-btn">Learn More</Link>
@@ -60,7 +60,7 @@ const SliderOne = () => {
                                     <div className="row">
                                         <div className="slider-heading">
                                             <h3 className="slider__desc">
-                                                <div className="slider__box">Meet our 2025 scholarship award recipients! Learn how they're making a difference in their communities.</div>
+                                                <div className="slider__box">Meet our scholarship award recipients! Learn how they're making a difference in their communities.</div>
                                             </h3>
                                         </div>
                                         <Link href="/award-recipients" className="theme-btn slider-btn">Meet Our Scholars</Link>

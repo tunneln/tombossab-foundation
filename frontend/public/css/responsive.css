@@ -89,7 +89,7 @@
         color: black;
     }
     .slider-area .slide-bg1 {
-        background: url("../images/slider1-mobile.jpg") no-repeat center center fixed;
+        background: url("../images/slider1-tablet.jpg") no-repeat center center fixed;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -98,7 +98,7 @@
         min-height: 100svh;
     }
     .slider-area .slide-bg2 {
-        background: url("../images/slider2-mobile.jpg") no-repeat center center fixed;
+        background: url("../images/slider2-tablet.jpg") no-repeat center center fixed;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -125,6 +125,7 @@
         min-height: 100svh;
     }
     .slider-area .slide-bg5 {
+        /*background: url("../images/slider5-tablet.jpg") no-repeat center center fixed;*/
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -299,6 +300,9 @@
         height: 320px;
     }
     .slider-area .slide-bg2 {
+        background: url("../images/slider1-mobile.jpg") no-repeat center center fixed;
+    }
+    .slider-area .slide-bg2 {
         background: url("../images/slider2-mobile.jpg") no-repeat center center fixed;
     }
     .slider-area .slide-bg3 {
@@ -306,6 +310,9 @@
     }
     .slider-area .slide-bg4 {
         background: url("../images/slider4-mobile.jpg") no-repeat center center fixed;
+    }
+    .slider-area .slide-bg4 {
+        /*background: url("../images/slider5-mobile.jpg") no-repeat center center fixed;*/
     }
 }
 

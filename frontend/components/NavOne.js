@@ -129,7 +129,7 @@ const NavOne = () => {
                                                 <ul>
                                                     <li ><Link className={`${sticky ? '' : 'pre-sticky-header'}`} href="/">home</Link></li>
                                                     <li><Link href="/about" className={`${sticky ? '' : 'pre-sticky-header'}`}>about us</Link></li>
-                                                    <li> <Link href="/causes" className={`${sticky ? '' : 'pre-sticky-header'}`}>causes</Link> </li>
+                                                    <li> <Link href="/events" className={`${sticky ? '' : 'pre-sticky-header'}`}>events</Link> </li>
                                                     <li>
                                                         <a href="#" className={`${sticky ? '' : 'pre-sticky-header'}`}>scholarship</a>
                                                         <ul className="dropdown-menu-item">
@@ -141,8 +141,8 @@ const NavOne = () => {
                                                         <ul className="dropdown-menu-item">
                                                             <li><Link href="/volunteer">become a volunteer</Link></li>
                                                             <li><Link href="/contact">contact us</Link></li>
-                                                            <li><Link href="/newsletter">newsletter</Link></li>
-                                                            <li><Link href="/events">events</Link></li>
+                                                            <li><Link href="/newsletters">newsletters</Link></li>
+                                                            <li><Link href="/causes">causes</Link></li>
                                                             <li><Link href="/gallery">gallery</Link></li>
                                                             {/* <li><Link href="/sponsor">sponsors</Link></li> */}
                                                         </ul>
@@ -167,7 +167,7 @@ const NavOne = () => {
                         <ul className="side-menu-ul">
                             <li className="sidenav__item"><Link href="/">home</Link></li>
                             <li className="sidenav__item"><Link href="/about">about us</Link></li>
-                            <li className="sidenav__item"><Link href="/causes">causes</Link> </li>
+                            <li className="sidenav__item"><Link href="/events">events</Link> </li>
                             <li className="sidenav__item"><a href="#">scholarship</a>
                                 <ul className="side-sub-menu">
                                     <li className="sidenav__item"><Link href="/apply">apply now</Link></li>
@@ -178,8 +178,8 @@ const NavOne = () => {
                                 <ul className="side-sub-menu">
                                     <li className="sidenav__item"><Link href="/volunteer">become a volunteer</Link></li>
                                     <li className="sidenav__item"><Link href="/contact">contact us</Link></li>
-                                    <li className="sidenav__item"><Link href="/newsletter">newsletter</Link></li>
-                                    <li className="sidenav__item"><Link href="/events">events</Link></li>
+                                    <li className="sidenav__item"><Link href="/newsletters">newsletters</Link></li>
+                                    <li className="sidenav__item"><Link href="/causes">causes</Link></li>
                                     <li className="sidenav__item"><Link href="/gallery">gallery</Link></li>
                                     {/* <li className="sidenav__item"><Link href="/sponsor">sponsors</Link></li> */}
                                 </ul>

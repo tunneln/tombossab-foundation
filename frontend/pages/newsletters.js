@@ -11,15 +11,15 @@ export async function getStaticProps() {
     return { props: { newsletters } };
 }
 
-const NewsletterPage = ({ newsletters }) => {
+const NewslettersPage = ({ newsletters }) => {
     return (
-        <Layout pageTitle="Tombossa B Foundation | Newsletter">
+        <Layout pageTitle="Tombossa B Foundation | Newsletters">
             <NavOne />
-            <PageHeader title="Newsletter" />
+            <PageHeader title="Newsletters" />
             <Newsletter newsletters={newsletters} />
             <Footer />
         </Layout>
     );
 };
 
-export default NewsletterPage;
+export default NewslettersPage;

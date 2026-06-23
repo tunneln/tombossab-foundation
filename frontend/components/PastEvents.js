@@ -56,7 +56,7 @@ const PastEvents = () => {
                             </span>
                                 </div>
                                 <div className="blog-inner-content">
-                                    <h3 className="blog__title">Tombossa's Memorial</h3>
+                                    <h3 className="blog__title">Memorial of Tombossa Negusse | Foundation Inauguration</h3>
                                     <ul className="blog__list">
                                         <li className="blog__dot-active">11:00am to 2:00pm &nbsp;&nbsp;</li>
                                         <li className="blog__dot-active">High Point Center &nbsp;</li>

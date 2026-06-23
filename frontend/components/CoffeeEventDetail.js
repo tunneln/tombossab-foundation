@@ -9,14 +9,8 @@ const CoffeeEventDetail = () => {
                     <div className="col-lg-12">
                         <div className="blog-content text-center">
                             <div className="blog-item">
-                                <div className="blog-img" style={{ display: 'inline-block', position: 'relative' }}>
-                                    <a href="/images/coffee-women-empowerment.jpg" target="_blank" rel="noopener noreferrer">
-                                        <img
-                                            src="/images/coffee-women-empowerment.jpg"
-                                            alt="Coffee & Women Empowerment event poster"
-                                            style={{ maxWidth: '480px', width: '100%', height: 'auto', borderRadius: '6px' }}
-                                        />
-                                    </a>
+                                <div className="blog-img">
+                                    <img src="/images/coffee-women-empowerment.jpg" alt="Coffee & Women Empowerment Event" />
                                     <span className="blog__tag">
                                         <span className="date__num-text">27</span>
                                         <span className="date__mon-text">jun</span>
@@ -28,30 +22,33 @@ const CoffeeEventDetail = () => {
                     <div className="col-lg-8">
                         <div className="event-detail-content">
                             <div className="event-detail-item">
-                                <h3 className="event__title">Coffee &amp; Women Empowerment</h3>
+                                <h3 className="event__title">Coffee &amp; Women Empowerment Gathering</h3>
                                 <p className="event__text">
-                                    The Tombossa B Foundation invites you to <b>Coffee &amp; Women Empowerment</b>, a warm coffee gathering for women to
-                                    come together, talk, and support each other&rsquo;s well-being. Join us on <b>Saturday, June 27th, 2025</b> from <b>2PM to 6PM</b> at
-                                    <b> 7522 Overdale Dr., Dallas, TX 75254</b> for an afternoon of coffee, conversation, and encouragement.
+                                    We are honored to welcome <b>Dr. Yacob Tekie</b>, founder of Tesfa-House Psychotherapy & Consulting, as
+                                    our guest speaker for our first ever Women&rsquo;s Empowerment & Coffee Gathering. <b>Dr. Tekie</b> is a
+                                    licensed psychologist, educator, and advocate whose work promotes mental health, resilience, and healing
+                                    within diverse, multicultural communities. Through <b>Tesfa-House</b>, he provides compassionate, evidence-based,
+                                    culturally sensitive care while working to reduce stigma and expand access to mental health services. We encourage
+                                    our community to explore the resources and educational materials available through his organization.
                                 </p>
                                 <p className="event__text">
-                                    We&rsquo;re honored to welcome our guest speaker, <b>Dr. Yacob Tekie</b>, who will share insight and encouragement to
-                                    uplift and empower the women in our community. Life can be heavy sometimes, and having a safe space to share and
-                                    listen can make a big difference&mdash;come find that space with us.
+                                    The Tombossa B Foundation invites you to <b>Coffee &amp; Women Empowerment</b>, a warm gathering for women to come
+                                    together, talk, and support each other&rsquo;s well-being. Join us on <b>Saturday, June 27th, 2025</b> from <b>2PM to 6PM </b>
+                                    at <b>7522 Overdale Drive</b> for an inspiring afternoon of connection, conversation, and community.
                                 </p>
                                 <p className="event__text">
-                                    Whether you come to listen, to share, or simply to enjoy a cup of coffee in good company, you are welcome here.
-                                    Bring a friend, bring yourself, and let&rsquo;s lift one another up.
+                                    Whether you come to listen, to share, or simply to enjoy a cup of coffee in good company, you are welcome here. Bring a friend,
+                                    bring yourself, and let&rsquo;s lift one another up. Life can be heavy sometimes, and having a safe space to share and listen can
+                                    make a big difference&mdash;come find that space with us.
                                 </p>
                             </div>
                             <div className="event-detail-item">
                                 <h3 className="event__title event__title2">What to Expect</h3>
                                 <ul style={{'listStyleType': 'disc', 'paddingLeft': '21px'}}>
-                                    <li>An encouraging talk from our guest speaker, Dr. Yacob Tekie.</li>
                                     <li>Coffee, refreshments, and a welcoming, judgment-free space.</li>
-                                    <li>Open conversation focused on women&rsquo;s well-being and community support.</li>
+                                    <li>An encouraging talk from our guest speaker, Dr. Yacob Tekie.</li>
+                                    <li>Open conversation on personal growth, well-being, and empowerment.</li>
                                     <li>An opportunity to connect with other women in the East African community.</li>
-                                    <li>All women are welcome&mdash;feel free to bring a friend.</li>
                                 </ul>
                             </div>
                         </div>

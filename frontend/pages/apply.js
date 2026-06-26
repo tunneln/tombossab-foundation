@@ -8,7 +8,7 @@ import Footer from "../components/Footer";
 
 const ApplyPage = () => {
     return (
-        <Layout pageTitle="Tombossa B Foundation | Scholarship | Apply Now">
+        <Layout pageTitle="Tombossa B Foundation | Scholarship | Application">
             <NavOne />
             <PageHeader title="Scholarship Application" />
             <ApplyArea />

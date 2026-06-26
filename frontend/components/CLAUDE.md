@@ -26,7 +26,7 @@ Reusable UI, one component per site section. ~40 components; you should not need
 
 - Section with a heading block: `Events.js`, `TeamArea.js`.
 - Card rendered from a data object: `RecipientCard.js`.
-- Detail/inner page body with a sidebar + `Map`: `CoffeeEventDetail.js`, `EventsDetail.js`.
+- Detail/inner page body with a sidebar + `Map`: `CoffeeWomenEmpowermentEventDetail.js`, `CommunityFieldDay2025EventDetail.js`.
 <!-- claude-token-guard-start -->
 ## Token Hygiene (managed by claude-token-guard)
 Project root: /Users/noelnegusse/Git/tombossab-foundation/frontend/components

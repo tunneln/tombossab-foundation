@@ -1,7 +1,7 @@
 import React from 'react';
 import Map from "./Map";
 
-const EventsDetail = () => {
+const CommunityFieldDay2025EventDetail = () => {
     return (
         <section className="event-detail-area">
             <div className="container">
@@ -89,4 +89,4 @@ const EventsDetail = () => {
     );
 };
 
-export default EventsDetail;
+export default CommunityFieldDay2025EventDetail;

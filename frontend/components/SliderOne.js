@@ -45,7 +45,7 @@ const SliderOne = () => {
                                                 <div className="slider__box">Coffee &amp; Women Empowerment — Join us June 27, 2–6PM with guest speaker Dr. Yacob Tekie!</div>
                                             </h3>
                                         </div>
-                                        <Link href="/coffee-women-empowerment" className="theme-btn slider-btn">Learn More</Link>
+                                        <Link href="/events/coffee-women-empowerment-1" className="theme-btn slider-btn">Learn More</Link>
                                     </div>
                                 </div>
                             </div>

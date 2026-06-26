@@ -9,9 +9,16 @@ const NavOne = () => {
     const router = useRouter();
 
     const logoBgColor = 'rgba(255, 255, 255, 0)';
+    // A fresh load always starts at the top of the page, so the nav begins in
+    // its "white" state only on the home page (over the dark hero). Deriving
+    // the initial values from the route — instead of hardcoding the dark logo —
+    // keeps the statically-exported HTML correct for each page and avoids a
+    // post-hydration flash. router.pathname is identical between export and
+    // client hydration, so there's no markup mismatch.
+    const startsWhite = router.pathname === '/';
     const [sticky, setSticky] = useState(false);
-    const [logoSrc, setLogoSrc] = useState("/images/logo.png");
-    const [whiteNav, setWhiteNav] = useState(false);
+    const [logoSrc, setLogoSrc] = useState(startsWhite ? "/images/logo-white.png" : "/images/logo.png");
+    const [whiteNav, setWhiteNav] = useState(startsWhite);
 
     // The nav uses its "white" treatment (white logo + white hamburger icon)
     // ONLY at the top of the home page, where it sits over the dark hero.

@@ -59,7 +59,7 @@ const Events = () => {
                         </span>
                             </div>
                             <div className="blog-inner-content">
-                                <h3 className="blog__title"><Link href="/events-detail">Water for charity</Link></h3>
+                                <h3 className="blog__title"><Link href="/events">Water for charity</Link></h3>
                                 <ul className="blog__list">
                                     <li className="blog__dot-active">8:00am to 2:00pm</li>
                                     <li>San marcos</li>
@@ -79,7 +79,7 @@ const Events = () => {
                         </span>
                             </div>
                             <div className="blog-inner-content">
-                                <h3 className="blog__title"><Link href="/events-detail">Help for education</Link></h3>
+                                <h3 className="blog__title"><Link href="/events">Help for education</Link></h3>
                                 <ul className="blog__list">
                                     <li className="blog__dot-active">8:00am to 2:00pm</li>
                                     <li>San marcos</li>
@@ -99,7 +99,7 @@ const Events = () => {
                         </span>
                             </div>
                             <div className="blog-inner-content">
-                                <h3 className="blog__title"><Link href="/events-detail">Protect eco system</Link></h3>
+                                <h3 className="blog__title"><Link href="/events">Protect eco system</Link></h3>
                                 <ul className="blog__list">
                                     <li className="blog__dot-active">8:00am to 2:00pm</li>
                                     <li>San marcos</li>
@@ -119,7 +119,7 @@ const Events = () => {
                         </span>
                             </div>
                             <div className="blog-inner-content">
-                                <h3 className="blog__title"><Link href="/events-detail">Fight for right cause</Link>
+                                <h3 className="blog__title"><Link href="/events">Fight for right cause</Link>
                                 </h3>
                                 <ul className="blog__list">
                                     <li className="blog__dot-active">8:00am to 2:00pm</li>

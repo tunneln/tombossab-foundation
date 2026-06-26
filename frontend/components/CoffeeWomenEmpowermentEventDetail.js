@@ -1,7 +1,7 @@
 import React from 'react';
 import Map from "./Map";
 
-const CoffeeEventDetail = () => {
+const CoffeeWomenEmpowermentEventDetail = () => {
     return (
         <section className="event-detail-area">
             <div className="container">
@@ -78,4 +78,4 @@ const CoffeeEventDetail = () => {
     );
 };
 
-export default CoffeeEventDetail;
+export default CoffeeWomenEmpowermentEventDetail;

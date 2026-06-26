@@ -25,7 +25,7 @@ const Events = () => {
                         <div className="blog-content">
                             <div className="blog-item blog-item1">
                                 <div className="blog-img">
-                                    <Link href="/coffee-women-empowerment">
+                                    <Link href="/events/coffee-women-empowerment-1">
                                         <img src="/images/coffee-women-empowerment-poster.jpg" alt="Coffee & Women Empowerment Poster" />
                                     </Link>
                                     <span className="blog__tag blog__tag1">
@@ -35,7 +35,7 @@ const Events = () => {
                                 </div>
                                 <div className="blog-inner-content">
                                     <h3 className="blog__title">
-                                        <Link href="/coffee-women-empowerment">Coffee &amp; Women Empowerment</Link>
+                                        <Link href="/events/coffee-women-empowerment-1">Coffee &amp; Women Empowerment</Link>
                                     </h3>
                                     <ul className="blog__list">
                                         <li className="blog__dot-active">2:00pm to 6:00pm &nbsp;&nbsp;</li>

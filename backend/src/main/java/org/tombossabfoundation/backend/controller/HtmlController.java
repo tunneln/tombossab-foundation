@@ -15,5 +15,13 @@ public class HtmlController {
         // logger.info("forwarding request to {}", htmlPage);
         return htmlPage;
     }
-        
+
+    // Event sub-pages live under /events/<slug> (frontend pages/events/) and map
+    // to the exported /events/<slug>.html. The single-segment mapping above
+    // can't match a nested path, so event pages need their own mapping.
+    @RequestMapping("/events/{page:^(?!.*[.].*$).*$}")
+    public String requestEventPage(@PathVariable("page") String page) {
+        return "/events/"+page+".html";
+    }
+
 }

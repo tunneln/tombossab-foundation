@@ -24,7 +24,7 @@ const PastEvents = () => {
                         <div className="blog-content">
                             <div className="blog-item blog-item1">
                                 <div className="blog-img">
-                                    <Link href="/events-detail">
+                                    <Link href="/events/community-field-day-2025">
                                         <img src="/images/img8.jpg" alt="Community Field Day" />
                                     </Link>
                             <span className="blog__tag blog__tag1">
@@ -34,7 +34,7 @@ const PastEvents = () => {
                                 </div>
                                 <div className="blog-inner-content">
                                     <h3 className="blog__title">
-                                        <Link href="/events-detail">Community Field Day</Link>
+                                        <Link href="/events/community-field-day-2025">Community Field Day</Link>
                                     </h3>
                                     <ul className="blog__list">
                                         <li className="blog__dot-active">3:30pm to 9:00pm &nbsp;&nbsp;</li>

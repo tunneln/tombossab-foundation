@@ -6,7 +6,6 @@ import Footer from "../components/Footer";
 import Contact from "../components/Contact";
 import Map from "../components/Map";
 
-
 const ContactPage = () => {
     return (
         <Layout pageTitle="Tombossa B Foundation | Contact">

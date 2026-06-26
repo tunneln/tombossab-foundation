@@ -39,6 +39,7 @@ The Maven build (`backend/pom.xml`) couples them: it builds the frontend and cop
 ## Git
 
 - Do **not** add `Co-Authored-By` trailers to commit messages.
+- Commit messages should be as concise as possible
 <!-- claude-token-guard-start -->
 ## Token Hygiene (managed by claude-token-guard)
 Project root: /Users/noelnegusse/Git/tombossab-foundation

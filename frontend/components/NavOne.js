@@ -1,33 +1,27 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import { useDonorboxScript } from "../hooks/useDonorboxScript";
 
 const NavOne = () => {
     useDonorboxScript();
+    const router = useRouter();
 
-    const RGBA_CONSTANT = 'rgba(168, 150, 119, 0.11)';
+    const logoBgColor = 'rgba(255, 255, 255, 0)';
     const [sticky, setSticky] = useState(false);
-    const [logoBgColor, setLogoBgColor] = useState('rgba(255, 255, 255, 0)');
-    const [logoSrc, setLogoSrc] = useState("/images/logo2.png");
+    const [logoSrc, setLogoSrc] = useState("/images/logo.png");
     const [whiteNav, setWhiteNav] = useState(false);
-    
-    // Scroll handler
-    const handleScroll = () => {
-        if (window.scrollY > 100) {
-            setSticky(true);
-            setLogoBgColor('rgba(255, 255, 255, 0)');
-            setLogoSrc("/images/logo.png");
-            setWhiteNav(false);
-        } else {
-            setSticky(false);
-            if (window.location.pathname == '/') { 
-                setLogoSrc("/images/logo2.png");
-                setWhiteNav(true);
-            } else {
-                setWhiteNav(false);
-            }
-        }
+
+    // The nav uses its "white" treatment (white logo + white hamburger icon)
+    // ONLY at the top of the home page, where it sits over the dark hero.
+    // On every other page — and on the home page once scrolled — it goes dark.
+    const syncNav = () => {
+        const scrolled = window.scrollY > 100;
+        const atHomeTop = window.location.pathname === '/' && !scrolled;
+        setSticky(scrolled);
+        setLogoSrc(atHomeTop ? "/images/logo-white.png" : "/images/logo.png");
+        setWhiteNav(atHomeTop);
     };
 
     // Mobile menu toggle logic
@@ -49,24 +43,24 @@ const NavOne = () => {
         }
     };
 
-    // Setup event listeners on mount
+    // Wire up listeners once on mount.
     useEffect(() => {
-        if (window.location.pathname != '/')
-            setLogoSrc("images/logo.png");
-
-        if (logoSrc == "/images/logo2.png" && getComputedStyle(document.getElementById('white-logo')).display == "block")
-            setWhiteNav(true);
-        else
-            setWhiteNav(false);
-
-        window.addEventListener("scroll", handleScroll);
+        window.addEventListener("scroll", syncNav);
         mobileMenu();
 
         // Cleanup event listeners on unmount
         return () => {
-            window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener("scroll", syncNav);
         };
     }, []);
+
+    // Re-sync on client-side navigation. NavOne stays mounted across route
+    // changes, so the mount effect above never re-runs — without this, the nav
+    // would keep the previous page's colors (e.g. a white hamburger from the
+    // home hero turning invisible on a light inner page).
+    useEffect(() => {
+        syncNav();
+    }, [router.pathname]);
 
     return (
         <div>
@@ -108,7 +102,7 @@ const NavOne = () => {
                                 <div className="logo-action d-flex align-items-center">
                                     <div className="ostion-logo">
                                         <Link href="/">
-                                            <img id="white-logo" src={logoSrc} alt="Tombossa B Foundation" title="Tombossa B Foundation" 
+                                            <img id="white-logo" src={logoSrc} alt="Tombossa B Foundation" title="Tombossa B Foundation"
                                                 style={{'backgroundColor': logoBgColor}} />
                                             <img id="black-logo" src="/images/logo.png" alt="Tombossa B Foundation" title="Tombossa B Foundation" 
                                                 style={{'backgroundColor': logoBgColor}} />

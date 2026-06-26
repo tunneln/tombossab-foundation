@@ -20,11 +20,12 @@ Reusable UI, one component per site section. ~40 components; you should not need
 ## Props patterns
 
 - Most section components take no props and are dropped straight into a page (`Events`, `PastEvents`, `TeamArea`).
-- Reusable pieces take simple props: `PageHeader` → `title`, optional `prev` + `link` (breadcrumb), `imgUrl`. `RecipientCard` → `recipient`. Data-list components receive their array as a prop from the page (`Newsletter` → `newsletters`) — the page loads the data, the component just renders it.
+- Reusable pieces take simple props: `PageHeader` → `title`, optional `prev` + `link` (breadcrumb), `imgUrl`. `RecipientCard` → `recipient`. Data-list section components receive their array as a prop from the page (`Newsletter` → `newsletters`, `AwardRecipients` → `recipients`) — the page loads/sorts the data, the section component renders it (and maps a per-item card where there is one, e.g. `AwardRecipients` → `RecipientCard`).
 
 ## Good analogs to copy
 
 - Section with a heading block: `Events.js`, `TeamArea.js`.
+- Data-driven list section (array prop from a page's `getStaticProps`): `Newsletter.js`, `AwardRecipients.js`.
 - Card rendered from a data object: `RecipientCard.js`.
 - Detail/inner page body with a sidebar + `Map`: `CoffeeWomenEmpowermentEventDetail.js`, `CommunityFieldDay2025EventDetail.js`.
 <!-- claude-token-guard-start -->

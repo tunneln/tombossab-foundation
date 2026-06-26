@@ -1345,6 +1345,10 @@ a:hover {
     background-color: #e36955;
     padding: 0 30px 0 35px;
     line-height: 49px;
+    /* Never let the bar exceed its column, so a long trail can't push the
+       page wider than the viewport on mobile. */
+    max-width: 100%;
+    box-sizing: border-box;
 }
 .breadcrumb-area .breadcrumb-content .breadcrumb__list:after {
     content: "";
@@ -1382,6 +1386,15 @@ a:hover {
 }
 .breadcrumb-area .breadcrumb-content .breadcrumb__list li:last-child {
     padding-right: 0;
+}
+/* The whole trail lives in one .active__list-item kept on a single line
+   (white-space: pre). Clip it and ellipsize the trailing crumb (the current
+   page, already shown in the <h2> above) instead of overflowing. */
+.breadcrumb-area .breadcrumb-content .breadcrumb__list li.active__list-item {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .breadcrumb-area .breadcrumb-content .breadcrumb__list li.active__list-item:after {
     position: absolute;

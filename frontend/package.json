@@ -25,6 +25,7 @@
     "webpack-merge": "^6.0.1"
   },
   "devDependencies": {
+    "playwright": "^1.61.1",
     "url-loader": "^4.0.0"
   }
 }

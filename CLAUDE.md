@@ -20,10 +20,10 @@ The Maven build (`backend/pom.xml`) couples them: it builds the frontend and cop
 - Pages live in `frontend/pages/` (file = route). A standard page is `Layout → NavOne → PageHeader → [section components] → Footer`. See `pages/causes.js`, `pages/award-recipients.js`.
 - One component per section in `frontend/components/`.
 - Data-driven pages: JSON in `frontend/data/` + `getStaticProps`, sorted in the page. See `award-recipients.js` + `data/recipients.json`, and `newsletter.js` + `data/newsletters.json`.
-- Brand accent is gold `#f1ae44`. Reuse the template's classes (`theme-btn`, `section-heading`, `blog-item`, `recent-item`, `slide-bg*`) instead of writing bespoke CSS.
+- Brand accent is gold `#f1ae44`. Reuse the existing shared classes (`theme-btn`, `section-heading`, `blog-item`, `recent-item`, `slide-bg*`) instead of writing bespoke CSS.
 - Use plain `<img>`, not `next/image`. Static assets go in `frontend/public/` (e.g. `images/`, `newsletters/`).
 - Link to PDFs / static files with `<a href="..." target="_blank" rel="noopener noreferrer">`.
-- The live site's nav is `NavOne.js`. `NavTwo.js` is only used by the `index2.js` template demo — low stakes.
+- The live site's nav is `NavOne.js`.
 - Homepage slider is `components/SliderOne.js` (Swiper). Slides use `slide-bg*` CSS classes or an inline `background` image.
 
 ## Gotchas

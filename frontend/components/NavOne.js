@@ -8,7 +8,6 @@ const NavOne = () => {
     useDonorboxScript();
     const router = useRouter();
 
-    const logoBgColor = 'rgba(255, 255, 255, 0)';
     // A fresh load always starts at the top of the page, so the nav begins in
     // its "white" state only on the home page (over the dark hero). Deriving
     // the initial values from the route — instead of hardcoding the dark logo —
@@ -104,15 +103,13 @@ const NavOne = () => {
                 </div>
                 <div className={`header-top header-menu-action ${sticky ? 'header-fixed' : 'header-semi-fixed'}`}>
                     <div className="container">
-                        <div className="row ostion-top-wrap">
+                        <div className="row header-row">
                             <div className="col-lg-5 col-sm-5 site-branding">
                                 <div className="logo-action d-flex align-items-center">
-                                    <div className="ostion-logo">
+                                    <div className="brand-logo">
                                         <Link href="/">
-                                            <img id="white-logo" src={logoSrc} alt="Tombossa B Foundation" title="Tombossa B Foundation"
-                                                style={{'backgroundColor': logoBgColor}} />
-                                            <img id="black-logo" src="/images/logo.png" alt="Tombossa B Foundation" title="Tombossa B Foundation" 
-                                                style={{'backgroundColor': logoBgColor}} />
+                                            <img id="white-logo" src={logoSrc} alt="Tombossa B Foundation" title="Tombossa B Foundation" />
+                                            <img id="black-logo" src="/images/logo.png" alt="Tombossa B Foundation" title="Tombossa B Foundation" />
                                         </Link>
                                     </div>
                                     <div className="header-btn ml-auto">
@@ -122,9 +119,9 @@ const NavOne = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-lg-7 col-sm-7 ostion-menu">
-                                <div className="ostion-menu-innner">
-                                    <div className="ostion-menu-content">
+                            <div className="col-lg-7 col-sm-7 primary-nav">
+                                <div className="nav-inner">
+                                    <div className="nav-content">
                                         <div className="navigation-top">
                                             <nav className="main-navigation">
                                                 <ul>

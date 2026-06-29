@@ -44,10 +44,6 @@ export async function getStaticProps() {
 ```
 
 See `award-recipients.js` (sorts `recipients.json` by year desc) and `newsletter.js` (sorts `newsletters.json` by `date` string desc). Note: static export means **no `getServerSideProps` / no API routes** — build-time only.
-
-## Don't treat as real
-
-`index2.js` is a leftover template demo (uses `NavTwo`). The live home page is `index.js`.
 <!-- claude-token-guard-start -->
 ## Token Hygiene (managed by claude-token-guard)
 Project root: /Users/noelnegusse/Git/tombossab-foundation/frontend/pages

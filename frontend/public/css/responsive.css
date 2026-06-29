@@ -74,10 +74,10 @@
         background-color: rgba(255, 255, 255, 0);
     }
     .header-top-action,
-    .phone-header, .header-area .header-top .ostion-top-wrap .ostion-menu .ostion-menu-content {
+    .phone-header, .header-area .header-top .header-row .primary-nav .nav-content {
         display: none;
     }
-    .header-area .header-top .ostion-top-wrap .ostion-menu .mobile-menu-toggle {
+    .header-area .header-top .header-row .primary-nav .mobile-menu-toggle {
         display: block;
         top: 50%;
         -webkit-transform: translateY(-50%);
@@ -117,15 +117,6 @@
     }
     .slider-area .slide-bg4 {
         background: url("../images/slider4-tablet.jpg") no-repeat center center fixed;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
-        min-width: 100svw;
-        min-height: 100svh;
-    }
-    .slider-area .slide-bg5 {
-        /*background: url("../images/slider5-tablet.jpg") no-repeat center center fixed;*/
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -310,9 +301,6 @@
     }
     .slider-area .slide-bg4 {
         background: url("../images/slider4-mobile.jpg") no-repeat center center fixed;
-    }
-    .slider-area .slide-bg4 {
-        /*background: url("../images/slider5-mobile.jpg") no-repeat center center fixed;*/
     }
     .image_full {
         display: none;
@@ -672,13 +660,13 @@
     .header-area .header-top-action .top-action-content:after {
         display: none;
     }
-    .header-area .header-top .ostion-top-wrap .ostion-menu {
+    .header-area .header-top .header-row .primary-nav {
        height: auto;
     }
     .header-area .header-top-action .top-action-content .info-box.d-flex {
         justify-content: center !important;
     }
-    .header-area .header-top .ostion-top-wrap .ostion-menu .mobile-menu-toggle {
+    .header-area .header-top .header-row .primary-nav .mobile-menu-toggle {
         display: block;
         top: 0;
         margin-top: -78px;

@@ -9,7 +9,6 @@ const CoffeeWomenEmpowermentPage = () => {
     return (
         <Layout pageTitle="Tombossa B Foundation | Events | Coffee & Women Empowerment">
             <NavOne />
-            {/* Need to fix mobile banner overflow before implementing this */}
             <PageHeader link="/events" prev="Events" title="Coffee & Women Empowerment" />
             <CoffeeWomenEmpowermentEventDetail />
             <Footer />

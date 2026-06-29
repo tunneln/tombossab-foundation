@@ -12,7 +12,6 @@ const AwardRecipients = ({ recipients = [] }) => {
                             <div className="section-icon">
                                 <img src="/images/section-icon.png" alt="section-icon" />
                             </div>
-                            {/*<h2 className="section__title">Scholarship Award Recipients</h2>*/}
                             <p className="section__meta">celebrating our scholars</p>
                         </div>
                         <br />

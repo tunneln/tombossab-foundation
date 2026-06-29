@@ -77,11 +77,6 @@ const Volunteer = () => {
                                 <p className="form__desc">
                                     Reach out and learn how we can make a difference together!
                                 </p>
-                                {/* <ul className="form__list">
-                                    <li><i className="fa fa-check"></i> Eos ei nisl graecis vix aperiri consequat</li>
-                                    <li><i className="fa fa-check"></i> Alienum phaedrum torquatos</li>
-                                    <li><i className="fa fa-check"></i> Dius lorem tincidunt vixat</li>
-                                </ul> */}
                                 <div className="contact-us-box">
                                     <div className="contact__item">
                                         <h4>Call us</h4>

@@ -41,7 +41,6 @@ class EntryArea extends Component {
                                         <div className="entry-video-text">
                                             <h4 className="entry__title">Continuing Tombossa's legacy one child at a time</h4>
                                             <p className="entry__text">Watch as we officially announce the inauguration of the Tombossa B Foundation</p>
-                                            {/* Watch us as we speak about our mission */}
                                         </div>
                                     </div>
                                 </div>

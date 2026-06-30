@@ -1,7 +1,7 @@
 // Visual screenshot harness for the static export.
 //
 // Usage:
-//   npm run build                         # produce frontend/out
+//   npm run export                        # produce frontend/out
 //   node scripts/shoot.mjs <label> [paths...]
 //
 // Serves frontend/out over a tiny local HTTP server (so absolute /css, /images
@@ -11,15 +11,14 @@
 // Output: <SHOT_OUT or ./.shots>/<label>/<page>__<viewport>.png
 //
 // Example: node scripts/shoot.mjs before / /about /sponsor
-import http from 'node:http';
-import { readFile, mkdir } from 'node:fs/promises';
-import { existsSync, statSync } from 'node:fs';
+import { mkdir } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
+import { OUT_DIR, createServer } from './serve-out.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const OUT_DIR = path.resolve(__dirname, '../out');
 const SHOT_BASE = process.env.SHOT_OUT || path.resolve(__dirname, '../.shots');
 const PORT = Number(process.env.SHOT_PORT || 5099);
 
@@ -33,42 +32,15 @@ const VIEWPORTS = [
   { name: 'desktop', width: 1600, height: 900,  dsf: 1 },  // -> desktop image
 ];
 
-const MIME = {
-  '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript',
-  '.mjs': 'text/javascript', '.json': 'application/json', '.svg': 'image/svg+xml',
-  '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png',
-  '.webp': 'image/webp', '.gif': 'image/gif', '.ico': 'image/x-icon',
-  '.woff': 'font/woff', '.woff2': 'font/woff2', '.ttf': 'font/ttf',
-  '.eot': 'application/vnd.ms-fontobject', '.pdf': 'application/pdf',
-};
-
-function resolveFile(urlPath) {
-  let p = decodeURIComponent(urlPath.split('?')[0]);
-  if (p.endsWith('/')) p += 'index.html';
-  let file = path.join(OUT_DIR, p);
-  if (existsSync(file) && statSync(file).isFile()) return file;
-  if (existsSync(file + '.html')) return file + '.html';        // clean URL -> .html
-  if (existsSync(path.join(file, 'index.html'))) return path.join(file, 'index.html');
-  return null;
-}
-
-const server = http.createServer(async (req, res) => {
-  const file = resolveFile(req.url);
-  if (!file) { res.writeHead(404); res.end('404'); return; }
-  try {
-    const body = await readFile(file);
-    res.writeHead(200, { 'Content-Type': MIME[path.extname(file)] || 'application/octet-stream' });
-    res.end(body);
-  } catch { res.writeHead(500); res.end('500'); }
-});
+const server = createServer();
 
 async function main() {
   if (!existsSync(OUT_DIR)) {
-    console.error(`No ${OUT_DIR}. Run "npm run build" first.`);
+    console.error(`No ${OUT_DIR}. Run "npm run export" first.`);
     process.exit(1);
   }
-  await new Promise((r) => server.listen(PORT, r));
-  console.log(`serving ${OUT_DIR} at http://localhost:${PORT}`);
+  await new Promise((r) => server.listen(PORT, '127.0.0.1', r));
+  console.log(`serving ${OUT_DIR} at http://127.0.0.1:${PORT}`);
 
   const browser = await chromium.launch();
   const results = [];
@@ -81,14 +53,14 @@ async function main() {
     // Deterministic + offline: only allow same-origin assets; abort external
     // (Google Fonts, Donorbox) so runs don't hang on the network and are repeatable.
     await page.route('**', (r) => {
-      r.request().url().startsWith(`http://localhost:${PORT}`) ? r.continue() : r.abort();
+      r.request().url().startsWith(`http://127.0.0.1:${PORT}`) ? r.continue() : r.abort();
     });
     for (const route of pages) {
       const name = route === '/' ? 'home' : route.replace(/^\//, '').replace(/\//g, '-');
       const dir = path.join(SHOT_BASE, label);
       await mkdir(dir, { recursive: true });
       const dest = path.join(dir, `${name}__${vp.name}.png`);
-      await page.goto(`http://localhost:${PORT}${route}`, { waitUntil: 'load', timeout: 30000 });
+      await page.goto(`http://127.0.0.1:${PORT}${route}`, { waitUntil: 'load', timeout: 30000 });
       await page.waitForTimeout(2000); // let the first slide's background paint
       await page.screenshot({ path: dest }); // viewport (above the fold) — where hero fill shows
       results.push(dest);

@@ -4774,3 +4774,115 @@ html {
     position: relative !important;
 	margin-top: -26px;
 }
+
+/* ===== Donate modal + floating tab (self-hosted, replaces Donorbox popup) ===== */
+.donate-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.donate-modal {
+    position: relative;
+    width: 100%;
+    /* The embed form's natural width is ~424px. The iframe below is rendered 24px
+       wider than the visible box (to clip ~12px of white side padding each side),
+       so the box is capped at 400px → iframe = 424px = the form's natural width,
+       which fills with no gutter. Mobile is narrower, so the form reflows smaller. */
+    max-width: 400px;
+    height: min(90vh, 760px);
+    background: #ffffff;
+    border-radius: 6px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    /* visible so the close button can sit outside the box (on the backdrop). The
+       inner frame does the vertical clipping (below) via a definite flex height. */
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Fills the modal's height (flex) and clips the over-wide iframe so the embed's
+   white side padding is trimmed and a tall form scrolls inside instead of overflowing. */
+.donate-modal-frame {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+    border-radius: 6px;
+}
+
+.donate-modal-iframe {
+    /* 24px wider than the frame and pulled left so ~12px of the embed's white padding
+       is clipped each side (12px < the embed's padding, so no form content is cut). */
+    width: calc(100% + 24px);
+    margin-left: -12px;
+    /* +6/-6 likewise clips the embed's thin white top margin so the coral header
+       reaches the modal's top edge (removes the thin white line). */
+    height: calc(100% + 6px);
+    margin-top: -6px;
+    border: 0;
+    display: block;
+}
+
+.donate-modal-close {
+    position: absolute;
+    /* Just outside the top-right corner, on the darkened backdrop (like the
+       original Donorbox popup), so it doesn't overlap the embed's own controls. */
+    top: -16px;
+    right: -16px;
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 50%;
+    background: #e36955;
+    color: #ffffff;
+    font-size: 22px;
+    line-height: 34px;
+    text-align: center;
+    cursor: pointer;
+    z-index: 2;
+    padding: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.donate-modal-close:hover {
+    background: #f1ae44;
+}
+
+/* Fixed side tab, mirroring the old Donorbox-injected button. Hidden on desktop;
+   shown only at <=1024px (where the header donate button hides), so each viewport
+   has exactly one donate CTA — header button on desktop, side tab on mobile/tablet. */
+.donate-floating {
+    position: fixed;
+    top: 25%;
+    left: 20px;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    transform-origin: center center;
+    z-index: 9990;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    background: #e36955;
+    color: #ffffff;
+    font-size: 16px;
+    line-height: 24px;
+    padding: 8px 22px 8px 18px;
+    border-radius: 0 0 5px 5px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.donate-floating:hover {
+    background: #f1ae44;
+    color: #ffffff;
+}
+
+.donate-floating img {
+    width: 16px;
+    height: 14px;
+}

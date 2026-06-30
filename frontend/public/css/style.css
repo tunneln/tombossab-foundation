@@ -4787,15 +4787,29 @@ html {
     padding: 16px;
 }
 
-.donate-modal {
+/* Owns the column's definite height and width: the white box flexes to fill the
+   space above the disclaimer, so the box (and the iframe sized off it) shrink to
+   fit a short screen instead of pushing the disclaimer off the bottom. */
+.donate-modal-wrap {
     position: relative;
     width: 100%;
-    /* The embed form's natural width is ~424px. The iframe below is rendered 24px
-       wider than the visible box (to clip ~12px of white side padding each side),
-       so the box is capped at 400px → iframe = 424px = the form's natural width,
-       which fills with no gutter. Mobile is narrower, so the form reflows smaller. */
+    /* The embed form's natural width is ~424px. The iframe is rendered 24px wider
+       than the visible box (to clip ~12px of white side padding each side), so the
+       box is capped at 400px → iframe = 424px = the form's natural width, which
+       fills with no gutter. Mobile is narrower, so the form reflows smaller. */
     max-width: 400px;
-    height: min(90vh, 760px);
+    height: min(90vh, 800px);
+    display: flex;
+    flex-direction: column;
+}
+
+.donate-modal {
+    position: relative;
+    /* Fill the wrapper minus the disclaimer; min-height:0 lets the box shrink so the
+       tall form scrolls inside instead of overflowing on short screens. The definite
+       flex height is what lets the iframe's percentage height resolve (see frame). */
+    flex: 1 1 auto;
+    min-height: 0;
     background: #ffffff;
     border-radius: 6px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
@@ -4804,6 +4818,16 @@ html {
     overflow: visible;
     display: flex;
     flex-direction: column;
+}
+
+/* Tax-deductibility notice on the backdrop below the white box. */
+.donate-modal-disclaimer {
+    flex: 0 0 auto;
+    margin: 14px 0 0;
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
 }
 
 /* Fills the modal's height (flex) and clips the over-wide iframe so the embed's

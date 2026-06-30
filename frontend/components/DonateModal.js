@@ -33,28 +33,37 @@ const DonateModal = ({ isOpen, onClose }) => {
             aria-modal="true"
             aria-label="Donate to Tombossa B Foundation"
         >
-            <div className="donate-modal" onClick={(e) => e.stopPropagation()}>
-                <button
-                    type="button"
-                    className="donate-modal-close"
-                    onClick={onClose}
-                    aria-label="Close donation form"
-                >
-                    &times;
-                </button>
-                {/* Inner frame clips the slightly-overwide iframe (see CSS) to trim
-                    the embed's white side padding; the outer modal stays overflow:visible
-                    so the close button can sit outside on the backdrop. */}
-                <div className="donate-modal-frame">
-                    <iframe
-                        title="Donate to Tombossa B Foundation"
-                        className="donate-modal-iframe"
-                        src={EMBED_SRC}
-                        name="donorbox"
-                        allow="payment"
-                        frameBorder={0}
-                    />
+            <div className="donate-modal-wrap" onClick={(e) => e.stopPropagation()}>
+                <div className="donate-modal">
+                    <button
+                        type="button"
+                        className="donate-modal-close"
+                        onClick={onClose}
+                        aria-label="Close donation form"
+                    >
+                        &times;
+                    </button>
+                    {/* Inner frame clips the slightly-overwide iframe (see CSS) to trim
+                        the embed's white side padding; the outer modal stays overflow:visible
+                        so the close button can sit outside on the backdrop. */}
+                    <div className="donate-modal-frame">
+                        <iframe
+                            title="Donate to Tombossa B Foundation"
+                            className="donate-modal-iframe"
+                            src={EMBED_SRC}
+                            name="donorbox"
+                            allow="payment"
+                            frameBorder={0}
+                        />
+                    </div>
                 </div>
+                {/* Tax-deductibility notice on the backdrop below the box, mirroring
+                    the original Donorbox popup. */}
+                <p className="donate-modal-disclaimer">
+                    The Tombossa B Foundation is a 501(c)(3) charitable organization and
+                    contributions are tax-deductible for income, gift, and estate taxes.
+                    Our EIN is 99-4436179.
+                </p>
             </div>
         </div>,
         document.body

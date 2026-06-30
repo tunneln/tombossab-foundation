@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
+import DonateButton from './DonateButton';
 
 const ServiceArea = () => {
     return (
@@ -93,9 +93,7 @@ const ServiceArea = () => {
                 <div className="row">
                     <div className="col-lg-12">
                         <div className="button-shared">
-                            <Link href="/donatenow" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
-                                <img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;Donate
-                            </Link>
+                            <DonateButton className="theme-btn" />
                         </div>
                     </div>
                 </div>

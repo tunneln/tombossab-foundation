@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
+import DonateButton from './DonateButton';
 
 const CallToAction = () => {
     return (
@@ -13,9 +13,7 @@ const CallToAction = () => {
                             </div>
                             <h2 className="section__title text__white">The helping hand we extend to the lives we touch never
                                 fades</h2>
-                            <Link href="/donatenow" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
-                                <img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;Donate
-                            </Link>
+                            <DonateButton className="theme-btn" />
                         </div>
                     </div>
                 </div>

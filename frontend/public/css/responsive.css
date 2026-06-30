@@ -246,8 +246,9 @@
 
 /*=== 1024px ===*/
 @media (max-width:1024px) {
-    .dbox-donation-button {
-        display: flex !important;
+    /* Show the fixed side donate tab where the header donate button hides. */
+    .donate-floating {
+        display: inline-flex;
     }
     .header-btn {
         display: none;

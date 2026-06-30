@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
+import DonateButton from './DonateButton';
 
 const MixerAreaTwo = () => {
     return (
@@ -13,9 +13,7 @@ const MixerAreaTwo = () => {
                             </div>
                             <h2 className="section__title text__white">Our fingerprints on the lives we touch never
                                 fade</h2>
-                            <Link href="/donatenow" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
-                                <img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;Donate
-                            </Link>
+                            <DonateButton className="theme-btn" />
                         </div>
                     </div>
                 </div>

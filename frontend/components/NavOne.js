@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import { useDonorboxScript } from "../hooks/useDonorboxScript";
+import DonateButton from "./DonateButton";
 
 const NavOne = () => {
-    useDonorboxScript();
     const router = useRouter();
 
     // A fresh load always starts at the top of the page, so the nav begins in
@@ -113,9 +112,7 @@ const NavOne = () => {
                                         </Link>
                                     </div>
                                     <div className="header-btn ml-auto">
-                                        <Link href="/donatenow" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
-                                            <img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;Donate
-                                        </Link>
+                                        <DonateButton className="theme-btn" />
                                     </div>
                                 </div>
                             </div>
@@ -190,13 +187,13 @@ const NavOne = () => {
                             <li><a rel="noopener noreferrer" target="_blank" href="https://www.youtube.com/@TombossaBFoundation"><i className="fa fa-youtube-play"></i></a></li>
                         </ul>
                         <div className="side-btn">
-                            <Link href="/donatenow" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
-                                <img src="https://donorbox.org/images/white_logo.svg"/> &nbsp;Donate
-                            </Link>
+                            <DonateButton className="theme-btn" />
                         </div>
                     </div>
                 </div>
             </header>
+            {/* Always-visible fixed donate tab (replaces Donorbox's injected popup button). */}
+            <DonateButton className="donate-floating" />
         </div>
     );
 };

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import CountUp from 'react-countup';
 import VisibilitySensor from 'react-visibility-sensor';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import Link from 'next/link';
+import DonateButton from './DonateButton';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -37,9 +37,7 @@ class MixerArea extends Component {
                                         </div>
                                         Fundraising for the people and causes that affect our community
                                     </h2>
-                                    <Link href="/donatenow" className="theme-btn custom-dbox-popup" data-reminder-widget-enabled="true">
-                                        <img src="https://donorbox.org/images/white_logo.svg"/> &nbsp; donate
-                                    </Link>
+                                    <DonateButton className="theme-btn" />
                                 </div>
                             </div>
                         </div>

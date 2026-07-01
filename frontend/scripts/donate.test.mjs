@@ -282,3 +282,27 @@ test('close button sits outside the modal (above its top edge)', async () => {
     await ctx.close();
   }
 });
+
+// Layout guard: the close button must be fully ON screen at every viewport. The
+// button overhangs the box's TOP edge, so on a nearly-full-height mobile modal the
+// overlay's centering used to push it above the viewport top — leaving no visible
+// way to close (the original mobile bug). The fix top-aligns the dialog on small
+// screens and sizes it in dvh (the *visible* viewport), so the button stays on screen.
+for (const vp of VIEWPORTS.filter((v) => v.mobile).concat([{ name: 'se', w: 375, h: 667, mobile: true }])) {
+  test(`${vp.name}: close button is fully within the viewport`, async () => {
+    const { ctx, page } = await openHome(vp);
+    try {
+      await page.click('.donate-floating');
+      await waitOpen(page);
+      const c = await page.locator('.donate-modal-close').evaluate((el) => {
+        const r = el.getBoundingClientRect();
+        return { top: r.top, bottom: r.bottom, left: r.left, right: r.right, vw: window.innerWidth, vh: window.innerHeight };
+      });
+      assert.ok(c.top >= 0, `close button top (${Math.round(c.top)}) must be on screen (>= 0)`);
+      assert.ok(c.bottom <= c.vh, `close button bottom (${Math.round(c.bottom)}) must be within the ${c.vh}px viewport`);
+      assert.ok(c.left >= 0 && c.right <= c.vw, `close button must be within the ${c.vw}px width (left ${Math.round(c.left)}, right ${Math.round(c.right)})`);
+    } finally {
+      await ctx.close();
+    }
+  });
+}

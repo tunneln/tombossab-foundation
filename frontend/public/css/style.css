@@ -4804,7 +4804,12 @@ html {
        box is capped at 400px → iframe = 424px = the form's natural width, which
        fills with no gutter. Mobile is narrower, so the form reflows smaller. */
     max-width: 400px;
+    /* dvh tracks the *visible* viewport (shrinks when the mobile address bar is
+       shown); vh is the fallback for older browsers. Plain vh alone measures the
+       largest viewport, so 90vh could exceed the visible area on mobile and, with
+       the overlay centering, clip the close button off the top edge. */
     height: min(90vh, 800px);
+    height: min(90dvh, 800px);
     display: flex;
     flex-direction: column;
 }

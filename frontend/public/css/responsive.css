@@ -548,6 +548,18 @@
     767px
 ------------------------------*/
 @media (max-width:767px) {
+    /* On mobile the modal is nearly full-height, so the overlay's centering pushed
+       the close button (which overhangs the box top) off the top edge. Pin the
+       dialog to the top with clearance for the button, and let the overlay scroll
+       as a safety net on very short screens. */
+    .donate-modal-overlay {
+        align-items: flex-start;
+        overflow-y: auto;
+        padding-top: 28px;
+    }
+    .donate-modal-wrap {
+        height: min(85dvh, 800px);
+    }
     .slider-area .single-slide-item .col-md-7 {
         -ms-flex: 0 0 100%;
         flex: 0 0 100%;

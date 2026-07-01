@@ -306,3 +306,28 @@ for (const vp of VIEWPORTS.filter((v) => v.mobile).concat([{ name: 'se', w: 375,
     }
   });
 }
+
+// Layout guard: the embed form is ~705px tall to its Next button — taller than a
+// phone once the browser toolbars show. On mobile the modal box must fill nearly the
+// whole viewport so as much of the form as possible is visible. This guards the fix
+// that pulls the legal notice OUT of the box's height budget (absolute, below the
+// box): a regression that puts it back in flow would shrink the form area and fail here.
+for (const vp of VIEWPORTS.filter((v) => v.w <= 767).concat([{ name: 'se', w: 375, h: 667, mobile: true }])) {
+  test(`${vp.name}: embed frame fills most of the viewport height`, async () => {
+    const { ctx, page } = await openHome(vp);
+    try {
+      await page.click('.donate-floating');
+      await waitOpen(page);
+      const { frameH, discInFlow, vh } = await page.evaluate(() => ({
+        frameH: document.querySelector('.donate-modal-frame').getBoundingClientRect().height,
+        // The disclaimer must be out of normal flow so it can't subtract from the box height.
+        discInFlow: getComputedStyle(document.querySelector('.donate-modal-disclaimer')).position === 'static',
+        vh: window.innerHeight,
+      }));
+      assert.equal(discInFlow, false, 'disclaimer must be out of flow (absolute) so it does not steal form height');
+      assert.ok(frameH >= 0.9 * vh, `embed frame (${Math.round(frameH)}px) should fill >= 90% of the ${vh}px viewport`);
+    } finally {
+      await ctx.close();
+    }
+  });
+}

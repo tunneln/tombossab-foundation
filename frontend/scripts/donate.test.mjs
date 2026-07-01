@@ -136,15 +136,65 @@ for (const { name, close } of CLOSERS) {
     try {
       await page.click('.header-btn .donate-btn');
       await page.waitForTimeout(500);
-      assert.equal(await page.locator('.donate-modal-overlay').count(), 1, 'modal should be open');
+      assert.equal(await page.locator('.donate-modal-overlay').isVisible(), true, 'modal should be open');
       await close(page);
       await page.waitForTimeout(300);
-      assert.equal(await page.locator('.donate-modal-overlay').count(), 0, `should close via ${name}`);
+      assert.equal(await page.locator('.donate-modal-overlay').isVisible(), false, `should hide via ${name}`);
+      // Closing hides the modal but must NOT tear down the iframe — that is what
+      // preserves the donor's in-progress form for when they reopen.
+      assert.equal(await page.locator(`iframe[src*="${MODAL_EMBED}"]`).count(), 1, 'embed iframe should stay mounted after close');
     } finally {
       await ctx.close();
     }
   });
 }
+
+// Persistence: the modal keeps the SAME iframe element across a close/reopen, so a
+// donor's in-progress form is not reset. We tag the element after first open and
+// assert the tag is still there after reopening (a torn-down iframe would lose it).
+test('reopening the modal reuses the same iframe (form state persists)', async () => {
+  const { ctx, page } = await openHome(VIEWPORTS[0]);
+  try {
+    await page.click('.header-btn .donate-btn');
+    await page.waitForTimeout(500);
+    await page.$eval('.donate-modal-iframe', (el) => { el.dataset.persistTag = 'kept'; });
+
+    await page.click('.donate-modal-close');
+    await page.waitForTimeout(300);
+    await page.click('.header-btn .donate-btn');
+    await page.waitForTimeout(300);
+
+    assert.equal(await page.locator('.donate-modal-overlay').isVisible(), true, 'modal should reopen');
+    const tag = await page.$eval('.donate-modal-iframe', (el) => el.dataset.persistTag);
+    assert.equal(tag, 'kept', 'reopened modal must reuse the same iframe element');
+  } finally {
+    await ctx.close();
+  }
+});
+
+// Persistence across pages: the single app-level modal survives client-side
+// navigation, so the tagged iframe is still there after moving to another page.
+test('modal iframe persists across client-side navigation', async () => {
+  const { ctx, page } = await openHome(VIEWPORTS[0]);
+  try {
+    await page.click('.header-btn .donate-btn');
+    await page.waitForTimeout(500);
+    await page.$eval('.donate-modal-iframe', (el) => { el.dataset.persistTag = 'across-nav'; });
+    await page.click('.donate-modal-close');
+    await page.waitForTimeout(200);
+
+    // Client-side route change via a nav <Link> (not a full reload).
+    await page.click('.main-navigation a[href="/about"]');
+    await page.waitForFunction(() => location.pathname.startsWith('/about'), { timeout: 10000 });
+
+    await page.click('.header-btn .donate-btn');
+    await page.waitForTimeout(300);
+    const tag = await page.$eval('.donate-modal-iframe', (el) => el.dataset.persistTag);
+    assert.equal(tag, 'across-nav', 'iframe (and its state) must survive a client-side page change');
+  } finally {
+    await ctx.close();
+  }
+});
 
 test('Donorbox widget.js / install-popup-button.js are no longer loaded', async () => {
   const { ctx, page } = await openHome(VIEWPORTS[0]);

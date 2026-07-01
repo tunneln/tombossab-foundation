@@ -1,16 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useDonate } from './DonateProvider';
 
-// Same campaign the /donatenow page embeds. The iframe is only rendered while
-// the modal is open (this component returns null when closed), so it makes no
-// network request until a visitor actually opens it.
+// Same campaign the /donatenow page embeds.
 const EMBED_SRC = 'https://donorbox.org/embed/scholarship-fund-73?language=en-us';
 
-const DonateModal = ({ isOpen, onClose }) => {
-    // Close on Escape and lock background scroll while the modal is open.
+const DonateModal = () => {
+    const { isOpen, close } = useDonate();
+
+    // Once opened, the iframe stays mounted (hidden via CSS when closed) instead of
+    // unmounting, so the donor's in-progress form state survives closing and
+    // reopening — and, because this single modal lives at the app root, across
+    // client-side page navigations too.
+    const [everOpened, setEverOpened] = useState(false);
+    useEffect(() => { if (isOpen) setEverOpened(true); }, [isOpen]);
+
+    // Escape-to-close and background scroll lock apply only while open.
     useEffect(() => {
         if (!isOpen) return;
-        const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+        const onKey = (e) => { if (e.key === 'Escape') close(); };
         document.addEventListener('keydown', onKey);
         const prevOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
@@ -18,27 +26,28 @@ const DonateModal = ({ isOpen, onClose }) => {
             document.removeEventListener('keydown', onKey);
             document.body.style.overflow = prevOverflow;
         };
-    }, [isOpen, onClose]);
+    }, [isOpen, close]);
 
-    // Rendering nothing when closed keeps the iframe (and its request) lazy and
-    // also makes this safe for the static export — the portal only runs after a
-    // client-side open, never during SSR/export.
-    if (!isOpen) return null;
+    // Nothing in the DOM until the first open: keeps the embed request lazy and
+    // keeps the static export's server-rendered output clean (the portal only runs
+    // after a client-side open, never during SSR/export).
+    if (!everOpened) return null;
 
     return createPortal(
         <div
-            className="donate-modal-overlay"
-            onClick={onClose}
+            className={`donate-modal-overlay${isOpen ? ' is-open' : ''}`}
+            onClick={close}
             role="dialog"
             aria-modal="true"
             aria-label="Donate to Tombossa B Foundation"
+            aria-hidden={isOpen ? undefined : true}
         >
             <div className="donate-modal-wrap" onClick={(e) => e.stopPropagation()}>
                 <div className="donate-modal">
                     <button
                         type="button"
                         className="donate-modal-close"
-                        onClick={onClose}
+                        onClick={close}
                         aria-label="Close donation form"
                     >
                         &times;

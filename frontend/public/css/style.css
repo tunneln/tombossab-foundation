@@ -4781,10 +4781,16 @@ html {
     inset: 0;
     background: rgba(0, 0, 0, 0.6);
     z-index: 99999;
-    display: flex;
+    /* Hidden (not unmounted) when closed so the embedded form's state survives
+       reopening. .is-open reveals it — see DonateModal. */
+    display: none;
     align-items: center;
     justify-content: center;
     padding: 16px;
+}
+
+.donate-modal-overlay.is-open {
+    display: flex;
 }
 
 /* Owns the column's definite height and width: the white box flexes to fill the

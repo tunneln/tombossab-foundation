@@ -91,7 +91,10 @@ const DonateModal = () => {
                             title="Donate to Tombossa B Foundation"
                             className="donate-modal-iframe"
                             src={EMBED_SRC}
-                            name="donorbox"
+                            // Unique name (not the default "donorbox") so this persistent
+                            // iframe doesn't collide with the home page's donor-wall embed,
+                            // which also uses name="donorbox".
+                            name="donorbox-modal"
                             allow="payment"
                             frameBorder={0}
                         />

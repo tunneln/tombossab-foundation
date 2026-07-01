@@ -242,6 +242,30 @@ test('modal fits within a short viewport (iPhone SE) without overflowing the scr
   }
 });
 
+// Visual guard for the embed-padding clip: the iframe must overhang its (overflow:
+// hidden) frame on every trimmed edge — left, right, top — so the embed's white
+// padding is clipped and the coral header reaches the modal edges with no gutter.
+// Fails if the negative-margin offsets in style.css are weakened or dropped.
+// (Offline: this pins OUR geometry; it can't see Donorbox's own padding, which is
+// not loaded here — a Donorbox-side padding change would still need a manual look.)
+test('modal iframe overhangs its frame on all trimmed edges (no white gutter)', async () => {
+  const { ctx, page } = await openHome(VIEWPORTS[0]);
+  try {
+    await page.click('.header-btn .donate-btn');
+    await waitOpen(page);
+    const g = await page.evaluate(() => {
+      const f = document.querySelector('.donate-modal-frame').getBoundingClientRect();
+      const i = document.querySelector('.donate-modal-iframe').getBoundingClientRect();
+      return { fl: f.left, fr: f.right, ft: f.top, il: i.left, ir: i.right, it: i.top };
+    });
+    assert.ok(g.il <= g.fl, `iframe must overhang frame left (iframe ${Math.round(g.il)} <= frame ${Math.round(g.fl)})`);
+    assert.ok(g.ir >= g.fr, `iframe must overhang frame right (iframe ${Math.round(g.ir)} >= frame ${Math.round(g.fr)})`);
+    assert.ok(g.it <= g.ft, `iframe must overhang frame top (iframe ${Math.round(g.it)} <= frame ${Math.round(g.ft)})`);
+  } finally {
+    await ctx.close();
+  }
+});
+
 // Layout guard: the close button sits outside the modal's top edge (on the backdrop),
 // so it can't overlap the embed's own header controls.
 test('close button sits outside the modal (above its top edge)', async () => {

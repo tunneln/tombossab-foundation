@@ -551,14 +551,23 @@
     /* On mobile the modal is nearly full-height, so the overlay's centering pushed
        the close button (which overhangs the box top) off the top edge. Pin the
        dialog to the top with clearance for the button, and let the overlay scroll
-       as a safety net on very short screens. */
+       as a safety net on very short screens. Take nearly the whole viewport so as
+       much of the tall embed form as possible shows before any scrolling, instead
+       of leaving dead backdrop below the box. Keep 16px sides so the close button's
+       right overhang stays on screen. */
     .donate-modal-overlay {
         align-items: flex-start;
         overflow-y: auto;
-        padding-top: 28px;
+        padding: 20px 16px 10px;
     }
     .donate-modal-wrap {
-        height: min(85dvh, 800px);
+        height: min(94dvh, 900px);
+    }
+    /* Compact the legal notice on mobile so it costs the form less height. */
+    .donate-modal-disclaimer {
+        font-size: 12px;
+        line-height: 1.4;
+        margin-top: 8px;
     }
     .slider-area .single-slide-item .col-md-7 {
         -ms-flex: 0 0 100%;

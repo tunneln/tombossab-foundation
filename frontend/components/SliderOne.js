@@ -35,17 +35,19 @@ const SliderOne = () => {
                 className="frontpageSwiper"
             >
                 <SwiperSlide className='swiper-no-swiping'>
-                    <div className="single-slide-item slide-bg2">
+                    <div className="single-slide-item slide-bg1">
                         <div className="slide-item-table">
                             <div className="slide-item-tablecell">
                                 <div className="container">
                                     <div className="row">
                                         <div className="slider-heading">
                                             <h3 className="slider__desc">
-                                                <div className="slider__box">Coffee &amp; Women Empowerment — Join us June 27, 2–6PM with guest speaker Dr. Yacob Tekie!</div>
+                                                <div className="slider__box">Empowering Eritrean and East African communities through education, wellness, and opportunity.</div>
                                             </h3>
                                         </div>
-                                        <Link href="/events/coffee-women-empowerment-1" className="theme-btn slider-btn">Learn More</Link>
+                                        <Link href="/about" className="theme-btn slider-btn">
+                                            About Us
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
@@ -89,19 +91,17 @@ const SliderOne = () => {
                     </div>
                 </SwiperSlide>
                 <SwiperSlide className='swiper-no-swiping'>
-                    <div className="single-slide-item slide-bg1">
+                    <div className="single-slide-item slide-bg2">
                         <div className="slide-item-table">
                             <div className="slide-item-tablecell">
                                 <div className="container">
                                     <div className="row">
                                         <div className="slider-heading">
                                             <h3 className="slider__desc">
-                                                <div className="slider__box">Empowering Eritrean and East African communities through education, wellness, and opportunity.</div>
+                                                <div className="slider__box">Coffee &amp; Women Empowerment — Join us June 27, 2–6PM with guest speaker Dr. Yacob Tekie!</div>
                                             </h3>
                                         </div>
-                                        <Link href="/about" className="theme-btn slider-btn">
-                                            About Us
-                                        </Link>
+                                        <Link href="/events/coffee-women-empowerment-1" className="theme-btn slider-btn">Learn More</Link>
                                     </div>
                                 </div>
                             </div>
@@ -109,6 +109,7 @@ const SliderOne = () => {
                     </div>
                 </SwiperSlide>
             </Swiper>
+
             </div>
         </section>
     );

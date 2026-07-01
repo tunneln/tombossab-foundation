@@ -291,9 +291,9 @@
     .give-area .give-progress-box {
         height: 320px;
     }
-    .slider-area .slide-bg2 {
-        background: url("../images/slider1-mobile.jpg") no-repeat center center fixed;
-    }
+    /*.slider-area .slide-bg1 {*/
+    /*    background: url("../images/slider1-mobile.jpg") no-repeat center center fixed;*/
+    /*}*/
     .slider-area .slide-bg2 {
         background: url("../images/slider2-mobile.jpg") no-repeat center center fixed;
     }

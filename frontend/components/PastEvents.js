@@ -24,6 +24,31 @@ const PastEvents = () => {
                         <div className="blog-content">
                             <div className="blog-item blog-item1">
                                 <div className="blog-img">
+                                    <Link href="/events/coffee-women-empowerment-1">
+                                        <img src="/images/coffee-women-empowerment.jpg" alt="Coffee & Women Empowerment" />
+                                    </Link>
+                                    <span className="blog__tag blog__tag3">
+                                        <span className="date__num-text">27</span>
+                                        <span className="date__mon-text">Jun 2026</span>
+                                    </span>
+                                </div>
+                                <div className="blog-inner-content">
+                                    <h3 className="blog__title">
+                                        <Link href="/events/coffee-women-empowerment-1">Coffee &amp; Women Empowerment</Link>
+                                    </h3>
+                                    <ul className="blog__list">
+                                        <li className="blog__dot-active">2:00pm to 6:00pm &nbsp;&nbsp;</li>
+                                        <li className="blog__dot-active">7522 Overdale Dr. &nbsp;</li>
+                                        <li className="blog__dot-active">Dallas, TX</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-lg-4">
+                        <div className="blog-content">
+                            <div className="blog-item blog-item1">
+                                <div className="blog-img">
                                     <Link href="/events/community-field-day-2025">
                                         <img src="/images/img8.jpg" alt="Community Field Day" />
                                     </Link>

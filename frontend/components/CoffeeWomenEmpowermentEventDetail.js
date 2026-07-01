@@ -34,7 +34,7 @@ const CoffeeWomenEmpowermentEventDetail = () => {
                                 </p>
                                 <p className="event__text">
                                     The Tombossa B Foundation invites you to <b>Coffee &amp; Women Empowerment</b>, a warm gathering for women to come
-                                    together, talk, and support each other&rsquo;s well-being. Join us on <b>Saturday, June 27th, 2025</b> from <b>2PM to 6PM </b>
+                                    together, talk, and support each other&rsquo;s well-being. Join us on <b>Saturday, June 27th, 2026</b> from <b>2PM to 6PM </b>
                                     at <b>7522 Overdale Drive</b> for an inspiring afternoon of connection, conversation, and community.
                                 </p>
                                 <p className="event__text">
@@ -60,7 +60,7 @@ const CoffeeWomenEmpowermentEventDetail = () => {
                                 <h3 className="event__title">Event Details</h3>
                                 <ul className="event__list">
                                     <li><span>Starting Time:</span> 2:00PM to 6:00PM</li>
-                                    <li><span>Date:</span>27 June, 2025</li>
+                                    <li><span>Date:</span>27 June, 2026</li>
                                     <li><span>Guest Speaker:</span>Dr. Yacob Tekie</li>
                                     <li><span>Category:</span>Community &amp; Empowerment</li>
                                     <li><span>Phone:</span>214 208 3936</li>

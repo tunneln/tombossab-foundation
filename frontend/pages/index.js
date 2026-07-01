@@ -12,7 +12,7 @@ import ClientsLogo from "../components/ClientsLogo";
 import HelpingArea from "../components/HelpingArea";
 import TeamArea from "../components/TeamArea";
 import CallToAction from "../components/CallToAction";
-import Events from '../components/Events';
+import EventsSection from '../components/EventsSection';
 import Map from "../components/Map";
 import CallToActionTwo from "../components/CallToActionTwo";
 import FaqArea from "../components/FaqArea";
@@ -26,7 +26,7 @@ const HomePage = () => {
           <HiwArea />
           <ServiceArea />
           <MixerArea />
-          <Events />
+          <EventsSection />
           <ClientsLogo />
           <HelpingArea />
           <TeamArea />

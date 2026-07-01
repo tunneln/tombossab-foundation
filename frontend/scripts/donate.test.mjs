@@ -11,7 +11,7 @@ import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
 import { chromium } from 'playwright';
-import { OUT_DIR, startServer } from './serve-out.mjs';
+import { OUT_DIR, startServer, blockExternal } from './serve-out.mjs';
 
 // Distinguishes the MODAL embed from the donor-wall embed already on the home page.
 const MODAL_EMBED = 'donorbox.org/embed/scholarship-fund-73?language=en-us';
@@ -45,21 +45,26 @@ async function openHome(vp) {
   const page = await ctx.newPage();
   const popups = [];
   page.on('popup', (p) => popups.push(p.url()));
-  await page.route('**', (r) => (r.request().url().startsWith(origin) ? r.continue() : r.abort()));
+  await blockExternal(page, origin);
   await page.goto(`${origin}/`, { waitUntil: 'load', timeout: 30000 });
   return { ctx, page, popups };
 }
 
 // Tap the primary Donate CTA the way a user on this viewport would reach it.
+// (page.click auto-waits for actionability, incl. the side menu's slide-in to settle.)
 async function tapDonate(page, vp) {
   if (vp.mobile) {
     await page.click('.mobile-menu-toggle');
-    await page.waitForTimeout(600); // side menu slide-in
     await page.click('.side-nav-container .donate-btn');
   } else {
     await page.click('.header-btn .donate-btn');
   }
 }
+
+// Wait on the modal's actual state rather than a fixed sleep.
+const overlay = (page) => page.locator('.donate-modal-overlay');
+const waitOpen = (page) => overlay(page).waitFor({ state: 'visible' });
+const waitClosed = (page) => overlay(page).waitFor({ state: 'hidden' });
 
 // Core fix: every viewport opens an in-page modal, never a new tab or navigation.
 for (const vp of VIEWPORTS) {
@@ -72,7 +77,7 @@ for (const vp of VIEWPORTS) {
 
       const urlBefore = page.url();
       await tapDonate(page, vp);
-      await page.waitForTimeout(800);
+      await waitOpen(page);
 
       assert.equal(await page.locator('.donate-modal-overlay').count(), 1, 'modal should open in-page');
       assert.equal(await page.locator(`iframe[src*="${MODAL_EMBED}"]`).count(), 1, 'embed iframe should mount on open');
@@ -91,7 +96,7 @@ for (const vp of VIEWPORTS.filter((v) => v.mobile)) {
     try {
       const urlBefore = page.url();
       await page.click('.donate-floating');
-      await page.waitForTimeout(800);
+      await waitOpen(page);
       assert.equal(await page.locator('.donate-modal-overlay').count(), 1, 'floating tab should open modal');
       assert.equal(page.url(), urlBefore, 'must NOT navigate away');
       assert.deepEqual(popups, [], 'must NOT open a new tab');
@@ -135,10 +140,10 @@ for (const { name, close } of CLOSERS) {
     const { ctx, page } = await openHome(VIEWPORTS[0]);
     try {
       await page.click('.header-btn .donate-btn');
-      await page.waitForTimeout(500);
+      await waitOpen(page);
       assert.equal(await page.locator('.donate-modal-overlay').isVisible(), true, 'modal should be open');
       await close(page);
-      await page.waitForTimeout(300);
+      await waitClosed(page);
       assert.equal(await page.locator('.donate-modal-overlay').isVisible(), false, `should hide via ${name}`);
       // Closing hides the modal but must NOT tear down the iframe — that is what
       // preserves the donor's in-progress form for when they reopen.
@@ -156,13 +161,13 @@ test('reopening the modal reuses the same iframe (form state persists)', async (
   const { ctx, page } = await openHome(VIEWPORTS[0]);
   try {
     await page.click('.header-btn .donate-btn');
-    await page.waitForTimeout(500);
+    await waitOpen(page);
     await page.$eval('.donate-modal-iframe', (el) => { el.dataset.persistTag = 'kept'; });
 
     await page.click('.donate-modal-close');
-    await page.waitForTimeout(300);
+    await waitClosed(page);
     await page.click('.header-btn .donate-btn');
-    await page.waitForTimeout(300);
+    await waitOpen(page);
 
     assert.equal(await page.locator('.donate-modal-overlay').isVisible(), true, 'modal should reopen');
     const tag = await page.$eval('.donate-modal-iframe', (el) => el.dataset.persistTag);
@@ -178,17 +183,17 @@ test('modal iframe persists across client-side navigation', async () => {
   const { ctx, page } = await openHome(VIEWPORTS[0]);
   try {
     await page.click('.header-btn .donate-btn');
-    await page.waitForTimeout(500);
+    await waitOpen(page);
     await page.$eval('.donate-modal-iframe', (el) => { el.dataset.persistTag = 'across-nav'; });
     await page.click('.donate-modal-close');
-    await page.waitForTimeout(200);
+    await waitClosed(page);
 
     // Client-side route change via a nav <Link> (not a full reload).
     await page.click('.main-navigation a[href="/about"]');
     await page.waitForFunction(() => location.pathname.startsWith('/about'), { timeout: 10000 });
 
     await page.click('.header-btn .donate-btn');
-    await page.waitForTimeout(300);
+    await waitOpen(page);
     const tag = await page.$eval('.donate-modal-iframe', (el) => el.dataset.persistTag);
     assert.equal(tag, 'across-nav', 'iframe (and its state) must survive a client-side page change');
   } finally {
@@ -225,7 +230,7 @@ test('modal fits within a short viewport (iPhone SE) without overflowing the scr
   const { ctx, page } = await openHome({ name: 'se', w: 375, h: 667, mobile: true });
   try {
     await page.click('.donate-floating');
-    await page.waitForTimeout(800);
+    await waitOpen(page);
     const box = await page.locator('.donate-modal').evaluate((el) => {
       const r = el.getBoundingClientRect();
       return { top: r.top, bottom: r.bottom, height: r.height, vh: window.innerHeight };
@@ -243,7 +248,7 @@ test('close button sits outside the modal (above its top edge)', async () => {
   const { ctx, page } = await openHome(VIEWPORTS[0]);
   try {
     await page.click('.header-btn .donate-btn');
-    await page.waitForTimeout(800);
+    await waitOpen(page);
     const { modalTop, closeTop } = await page.evaluate(() => ({
       modalTop: document.querySelector('.donate-modal').getBoundingClientRect().top,
       closeTop: document.querySelector('.donate-modal-close').getBoundingClientRect().top,

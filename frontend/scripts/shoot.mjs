@@ -16,7 +16,7 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
-import { OUT_DIR, createServer } from './serve-out.mjs';
+import { OUT_DIR, createServer, blockExternal } from './serve-out.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SHOT_BASE = process.env.SHOT_OUT || path.resolve(__dirname, '../.shots');
@@ -50,11 +50,7 @@ async function main() {
       deviceScaleFactor: vp.dsf,
     });
     const page = await ctx.newPage();
-    // Deterministic + offline: only allow same-origin assets; abort external
-    // (Google Fonts, Donorbox) so runs don't hang on the network and are repeatable.
-    await page.route('**', (r) => {
-      r.request().url().startsWith(`http://127.0.0.1:${PORT}`) ? r.continue() : r.abort();
-    });
+    await blockExternal(page, `http://127.0.0.1:${PORT}`);
     for (const route of pages) {
       const name = route === '/' ? 'home' : route.replace(/^\//, '').replace(/\//g, '-');
       const dir = path.join(SHOT_BASE, label);

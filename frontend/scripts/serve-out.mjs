@@ -58,3 +58,12 @@ export async function startServer(outDir = OUT_DIR, port = 0) {
   const actualPort = server.address().port;
   return { server, port: actualPort, origin: `http://127.0.0.1:${actualPort}` };
 }
+
+// Make a Playwright page offline + deterministic: allow only same-origin requests
+// (the exported site's own /css, /images) and abort everything external (Google
+// Fonts, Donorbox) so runs don't hang on the network and stay repeatable.
+export async function blockExternal(page, origin) {
+  await page.route('**', (route) =>
+    route.request().url().startsWith(origin) ? route.continue() : route.abort()
+  );
+}

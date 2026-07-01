@@ -11,7 +11,7 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
-import { OUT_DIR, startServer } from './serve-out.mjs';
+import { OUT_DIR, startServer, blockExternal } from './serve-out.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = path.resolve(__dirname, '../public');
@@ -42,7 +42,7 @@ after(async () => {
 async function openPage(route) {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
   const page = await ctx.newPage();
-  await page.route('**', (r) => (r.request().url().startsWith(origin) ? r.continue() : r.abort()));
+  await blockExternal(page, origin);
   await page.goto(`${origin}${route}`, { waitUntil: 'load', timeout: 30000 });
   return { ctx, page };
 }

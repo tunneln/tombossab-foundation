@@ -1,0 +1,31 @@
+# Local development dependencies for the backend.
+#   docker compose -f docker-compose.dev.yml up -d
+# Postgres matches application-local.properties; Mailpit catches outbound
+# mail (SMTP :1025, web UI http://localhost:8025).
+name: tombossab-dev
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: tombossa
+      POSTGRES_USER: tombossa
+      POSTGRES_PASSWORD: tombossa
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata-dev:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tombossa -d tombossa"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  pgdata-dev:

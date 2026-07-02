@@ -4,3 +4,17 @@
 
 # misc
 .DS_Store
+*.log
+
+# secrets — real env files live only on the box / in Vercel
+.env
+.env.*
+!.env.example
+!*.env.example
+
+# build artifacts (belt-and-braces over frontend/.gitignore and backend/.gitignore)
+node_modules/
+target/
+frontend/out/
+frontend/.next/
+frontend/.shots/

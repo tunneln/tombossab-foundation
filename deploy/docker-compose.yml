@@ -1,0 +1,61 @@
+# Production stack for the Lightsail box. Lives at /opt/tombossab/deploy with
+# a real .env next to it (see .env.example). Postgres is on an internal-only
+# network with no published ports; Caddy is the sole ingress and owns TLS.
+name: tombossab
+
+services:
+  app:
+    image: ghcr.io/tunneln/tombossab-backend:latest
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - internal
+      - web
+    mem_limit: 768m
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-tombossa}
+      POSTGRES_USER: ${POSTGRES_USER:-tombossa}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set in .env}
+    command: postgres -c shared_buffers=128MB
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tombossa} -d ${POSTGRES_DB:-tombossa}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    mem_limit: 512m
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - web
+
+networks:
+  internal:
+    internal: true
+  web:
+
+volumes:
+  pgdata:
+  caddy_data:
+  caddy_config:

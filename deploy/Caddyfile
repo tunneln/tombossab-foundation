@@ -1,0 +1,5 @@
+api.tombossabfoundation.org {
+	encode gzip
+	reverse_proxy app:8080
+	header Strict-Transport-Security "max-age=31536000; includeSubDomains"
+}

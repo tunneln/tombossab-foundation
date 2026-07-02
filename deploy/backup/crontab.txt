@@ -1,0 +1,4 @@
+# Nightly Postgres backup at 08:00 UTC (~3am Dallas). Install on the box with:
+#   crontab -l | cat - crontab.txt | crontab -
+# Bucket should have a 30-day expiry lifecycle rule (see deploy/RUNBOOK.md).
+0 8 * * * /opt/tombossab/deploy/backup/pg-backup.sh >> /var/log/tombossab-backup.log 2>&1

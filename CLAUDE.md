@@ -1,78 +1,45 @@
 # Tombossa B Foundation
 
-Nonprofit website. Monorepo with two parts:
+Nonprofit website. Decoupled monorepo:
 
-- `frontend/` — Next.js 13 site, **statically exported** to `frontend/out/`.
-- `backend/` — Spring Boot 3 / Java 21. Serves the exported static site and exposes a small email API.
+- `frontend/` — Next.js 15 App Router (React 19), hosted on Vercel. Public pages are SSG + ISR.
+- `backend/` — Spring Boot 3.5 / Java 21 API + PostgreSQL 16 (Flyway). Runs in Docker Compose behind Caddy on Lightsail at `api.tombossabfoundation.org`.
+- `deploy/` — production compose stack, Caddyfile, backups, and the cutover RUNBOOK.
+- CI/CD: `.github/workflows/ci.yml` tests both sides; `deploy.yml` ships the backend image (GHCR → SSH → compose up → ISR revalidate ping).
 
-The Maven build (`backend/pom.xml`) couples them: it builds the frontend and copies `frontend/out/` into the backend's `static/`.
-
-> **Heads-up:** a refactor to decouple these (Vercel-hosted frontend + standalone Spring Boot + a database) is planned. The build coupling and the static-export constraints below are expected to change — keep this file lean and update it after that lands.
+Design rationale for the architecture lives in `docs/refactor-plan.md`.
 
 ## Commands
 
-- Frontend dev: `cd frontend && npm run dev` (http://localhost:3000)
-- Frontend build: `cd frontend && npm run build`
-- Full jar (builds frontend too): from `backend/`, `./mvnw package`
+- Frontend dev: `cd frontend && npm run dev` (http://localhost:3000 — renders committed fixtures; prefix `API_BASE_URL=http://localhost:8080 NEXT_PUBLIC_API_BASE_URL=http://localhost:8080` to use the local API)
+- Frontend build + tests: `cd frontend && npm run build && npm test`
+- Local backend deps: `docker compose -f docker-compose.dev.yml up -d` (Postgres :5432, Mailpit UI :8025)
+- Backend run: `cd backend && ./mvnw spring-boot:run -Dspring-boot.run.profiles=local`
+- Backend tests: `./mvnw test` (no Docker) · `./mvnw verify` (adds integration tests; needs Docker — macOS/colima env vars in TESTING.md)
+
+## Data flow — the one rule that matters
+
+Content (recipients, newsletters, events) lives in Postgres, seeded by versioned Flyway migrations. `frontend/lib/api.js` fetches it with ISR caching (`tags: ['content']`, revalidate 3600) and falls back to the committed JSON in `frontend/data/` whenever `API_BASE_URL` is unset (CI, tests, local dev) or the fetch fails. **A content change = a new Flyway seed migration + the matching fixture update in the same PR.** The backend deploy workflow POSTs the frontend's secret-protected `/api/revalidate` so changes appear immediately.
 
 ## Frontend conventions
 
-- Pages live in `frontend/pages/` (file = route). A standard page is `Layout → NavOne → PageHeader → [section components] → Footer`. See `pages/causes.js`, `pages/award-recipients.js`.
-- One component per section in `frontend/components/`.
-- Data-driven pages: JSON in `frontend/data/` + `getStaticProps`, sorted in the page. See `award-recipients.js` + `data/recipients.json`, and `newsletter.js` + `data/newsletters.json`.
-- Brand accent is gold `#f1ae44`. Reuse the existing shared classes (`theme-btn`, `section-heading`, `blog-item`, `recent-item`, `slide-bg*`) instead of writing bespoke CSS.
-- Use plain `<img>`, not `next/image`. Static assets go in `frontend/public/` (e.g. `images/`, `newsletters/`).
-- Link to PDFs / static files with `<a href="..." target="_blank" rel="noopener noreferrer">`.
-- The live site's nav is `NavOne.js`.
-- Homepage slider is `components/SliderOne.js` (Swiper). Slides use `slide-bg*` CSS classes or an inline `background` image.
-
-## Gotchas
-
-- Static export ⇒ **no SSR, no Next API routes, no runtime data** (until the planned refactor).
-- To generate PDF cover thumbnails, use macOS `qlmanage` — ImageMagick here lacks ghostscript and can't rasterize PDFs.
-- `HtmlController` maps clean URLs to the exported files (`/about` → `/about.html`).
+- Routes in `frontend/app/` (see `app/CLAUDE.md`). Standard page: `NavOne → PageHeader → [section components] → Footer`, plus `export const metadata = { title: 'Tombossa B Foundation | X' }`.
+- One component per section in `frontend/components/` — server components by default, `"use client"` only for interactivity (see `components/CLAUDE.md`).
+- Brand accent gold `#f1ae44`. Reuse the shared classes (`theme-btn`, `section-heading`, `blog-item`, `recent-item`, `slide-bg*`) instead of bespoke CSS. Site styling is runtime CSS under `public/css` whose order is load-bearing — managed in `app/layout.js`, do not convert to bundler imports.
+- Plain `<img>`, never `next/image`. Static assets in `frontend/public/`; PDF/static links get `<a target="_blank" rel="noopener noreferrer">`.
+- Nav is `NavOne.js`; homepage slider is `SliderOne.js` (`slide-bg*` classes in style.css + responsive.css, never inline backgrounds).
+- New page ⇒ add its ROUTES entry in `frontend/scripts/render.test.mjs` (the coverage guard fails the suite otherwise).
 
 ## Backend
 
-- `POST /api/emails/send` with `{ to, subject, body }` → `EmailService` (SMTP). Config in `application.properties`; the SMTP password is injected and left blank in the repo.
+See `backend/CLAUDE.md`. Public surface: `GET /api/{recipients,newsletters,events}`, `POST /api/{contact,volunteer,subscriptions}`. Security is closed-by-default (`anyRequest().denyAll()`), CORS-allowlisted to the production domains, POSTs rate-limited per IP. Swagger at `/swagger-ui`.
+
+## Gotchas
+
+- PDF cover thumbnails: use macOS `qlmanage` — ImageMagick here lacks ghostscript and can't rasterize PDFs.
+- Vercel preview deploys are deliberately NOT in the backend CORS allowlist — previews render fixtures.
 
 ## Git
 
 - Do **not** add `Co-Authored-By` trailers to commit messages.
-- Commit messages should be as concise as possible
-<!-- claude-token-guard-start -->
-## Token Hygiene (managed by claude-token-guard)
-Project root: /Users/noelnegusse/Git/tombossab-foundation
-Language: Unknown
-
-
-- Never say 'continue where you left off' after a rate limit (P2).
-  Instead: start fresh with a one-paragraph summary of last completed file.
-- Run /clear between unrelated tasks and at turn 30 (P3/P6).
-- Run /compact before resuming sessions longer than 20 turns.
-- Keep .claudeignore updated — node_modules/, dist/, .git/, build/ must be excluded (P7).
-- Only connect MCP servers you need for this task. Disconnect others (P8).
-<!-- claude-token-guard-end -->
-
-## Stable Context
-
-<!-- stable-context: do not remove this section -->
-### Project
-This is **claude-token-guard** — a CLI tool that audits Claude Code projects
-for token hygiene anti-patterns and provides real-time monitoring via
-`ctg watch` and `ctg dashboard`.
-
-### Key Commands
-- `ctg audit` — scan for anti-patterns
-- `ctg fix --auto` — apply all safe fixes
-- `ctg watch` — live token monitoring (terminal)
-- `ctg dashboard` — live browser dashboard
-- `ctg test` — run anti-pattern test scenarios
-
-### Architecture
-- `bin/ctg.js` — CLI entry point
-- `src/audit.js` — pattern detection (P1–P10)
-- `src/fixer.js` — auto-fix implementations
-- `src/monitor.js` — JSONL tail + spike detection
-- `src/dashboard.js` — SSE server + browser UI
-- `src/reporter.js` — formatted audit output
+- Commit messages should be as concise as possible.

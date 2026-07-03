@@ -1,52 +1,38 @@
 # backend/
 
-Spring Boot 3.3 / Java 21. Serves the exported frontend as static resources and exposes a small email API. Package root: `org.tombossabfoundation.backend`.
+Spring Boot 3.5 / Java 21 / PostgreSQL 16 + Flyway. Standalone JSON API for the Vercel frontend; ships as a Docker image (see `../deploy/`). Package root: `org.tombossabfoundation.backend`.
 
-> **Refactor-fragile:** a planned refactor adds a database and more endpoints, and decouples the frontend (it will no longer be served from here). Expect this folder to grow and this file to need rewriting — keep additions minimal until then.
+## Layout (domain-oriented)
 
-## Layout & conventions
+- `content/{recipient,newsletter,event}` — public read side. Each package: Entity, Repository, Service, Controller, Response record. **Response field names mirror `frontend/data/*.json` exactly** — the fixtures are the API's contract.
+- `engagement/{contact,volunteer,subscription}` — public write side: submissions are persisted first, then a notification email is sent (best-effort).
+- `notification/` — `@Async("mailExecutor")` outbound mail. From = the SMTP account (SPF/DMARC-correct), Reply-To = the submitter.
+- `config/` — `SecurityConfig` (closed by default — new endpoints are added ABOVE `anyRequest().denyAll()`), CORS + rate-limit `@ConfigurationProperties`, async executor, OpenAPI info.
+- `common/` — `ApiExceptionHandler` (RFC-9457 ProblemDetail; validation failures carry an `errors` field map) and `StatusResponse`.
 
-- `controller/` — web entry points; `service/` — business logic injected with `@Autowired`.
-- `@RestController` for JSON APIs (`EmailController`); `@Controller` for view/URL forwarding (`HtmlController`, which maps clean URLs like `/about` → `/about.html`).
-- Current API: `POST /api/emails/send` with body `{ to, subject, body }` → `EmailService` (SMTP via `JavaMailSender`).
-- Config in `src/main/resources/application.properties`; the SMTP password is left blank in the repo and injected at runtime — never commit a real secret here.
+## API
 
-## Build
+| Endpoint | Behavior |
+|---|---|
+| `GET /api/recipients` / `newsletters` / `events` | Seeded content, newest first (recipients tie-break within a year: seed order) |
+| `POST /api/contact`, `POST /api/volunteer` | 202 + `{status:"accepted"}`; persisted, then emailed |
+| `POST /api/subscriptions` | 201 new / 200 duplicate (idempotent); email normalized lowercase |
 
-- `./mvnw package` builds the frontend (via `frontend-maven-plugin`), copies `../frontend/out/` into `static/`, and produces the runnable jar.
-<!-- claude-token-guard-start -->
-## Token Hygiene (managed by claude-token-guard)
-Project root: /Users/noelnegusse/Git/tombossab-foundation/backend
-Language: Java
+Swagger UI at `/swagger-ui`; health at `/actuator/health` (the only actuator endpoint exposed). POSTs are rate-limited 5/min/IP (bucket4j; `X-Forwarded-For`-aware — Caddy sets it).
 
+## Add an endpoint (recipe)
 
-- Never say 'continue where you left off' after a rate limit (P2).
-  Instead: start fresh with a one-paragraph summary of last completed file.
-- Run /clear between unrelated tasks and at turn 30 (P3/P6).
-- Run /compact before resuming sessions longer than 20 turns.
-- Keep .claudeignore updated — node_modules/, dist/, .git/, build/ must be excluded (P7).
-- Only connect MCP servers you need for this task. Disconnect others (P8).
-<!-- claude-token-guard-end -->
+1. Request/Response as records; jakarta validation annotations on request fields.
+2. Entity + Repository + Service (`@Transactional`) in its domain package (a new feature area = a new sibling package).
+3. Thin `@RestController`; open the exact path deliberately in `SecurityConfig` — `denyAll()` stays last.
+4. Tests: `@WebMvcTest` slice with `@Import(SecurityConfig.class)` + `@MockitoBean` service; DB coverage in a `*IT` (Testcontainers).
 
-## Stable Context
+## Database
 
-<!-- stable-context: do not remove this section -->
-### Project
-This is **claude-token-guard** — a CLI tool that audits Claude Code projects
-for token hygiene anti-patterns and provides real-time monitoring via
-`ctg watch` and `ctg dashboard`.
+Flyway migrations in `src/main/resources/db/migration/` — never edit an applied `V*`, always add the next number. Content seed migrations must update the matching `frontend/data/*.json` fixture in the same PR. `ddl-auto=validate`: entities must match the migrated schema exactly.
 
-### Key Commands
-- `ctg audit` — scan for anti-patterns
-- `ctg fix --auto` — apply all safe fixes
-- `ctg watch` — live token monitoring (terminal)
-- `ctg dashboard` — live browser dashboard
-- `ctg test` — run anti-pattern test scenarios
+## Profiles & config
 
-### Architecture
-- `bin/ctg.js` — CLI entry point
-- `src/audit.js` — pattern detection (P1–P10)
-- `src/fixer.js` — auto-fix implementations
-- `src/monitor.js` — JSONL tail + spike detection
-- `src/dashboard.js` — SSE server + browser UI
-- `src/reporter.js` — formatted audit output
+- default — no datasource configured (slice/unit tests run without Docker).
+- `local` — `../docker-compose.dev.yml` Postgres + Mailpit (:8025 UI), CORS adds localhost:3000, relaxed rate limit.
+- `prod` — env-injected `DB_URL`/`DB_USER`/`DB_PASSWORD`/`SMTP_PASSWORD` (from `deploy/.env` on the box). Never commit a secret.

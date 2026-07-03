@@ -1,111 +1,66 @@
 # Testing
 
-Two independent suites, one per part of the monorepo. Neither talks to the network
-or a real mail server, so both are safe to run anywhere and in CI.
+Two independent suites, one per deployable. Both are hermetic — no live network,
+no real mail server, no shared state — so they run anywhere and in CI
+(`.github/workflows/ci.yml` runs both on every push/PR).
 
-| Suite | Runner | Location | What it needs |
-|-------|--------|----------|---------------|
-| Frontend | Node's built-in test runner + Playwright | `frontend/scripts/*.test.mjs` | a fresh static export in `frontend/out/` |
-| Backend | JUnit 5 (Spring Boot Test) | `backend/src/test/java/**` | JDK 21 |
-
-## Running
-
-### Frontend
-
-The functional tests run against the **exported** site, so build it first:
+## Frontend (`frontend/`)
 
 ```bash
 cd frontend
-npm run build && npm run export     # produces frontend/out/
-npm test                            # runs every scripts/*.test.mjs
+npm run build     # hermetic: no API_BASE_URL -> pages render the committed fixtures
+npm test          # node --test scripts/*.test.mjs
 ```
 
-`npm test` is `node --test scripts/*.test.mjs`, so **any new `*.test.mjs` file is
-picked up automatically** — no config to touch. To run one file:
-`node --test scripts/data.test.mjs`.
+Node's built-in test runner + Playwright. Tests serve the production build via
+`next start` (`scripts/next-server.mjs`) and block all external requests.
 
-`data.test.mjs` is pure (no browser, no export) and runs on its own in
-milliseconds; the rest launch headless Chromium against a tiny in-process file
-server (`serve-out.mjs`) with all external requests blocked (offline + deterministic).
+| Suite | Covers |
+|---|---|
+| `data.test.mjs` | Fixture integrity (recipients/newsletters/events): shape, unique ids/slugs, date formats, assets exist, newest-first ordering |
+| `render.test.mjs` | Every route serves 200 with the exact `<title>`, `html[lang]`, shared chrome, meta tags; legacy 308 redirects; unknown route 404; **coverage guard** — a prerendered route missing from ROUTES fails |
+| `links.test.mjs` | No dead internal links; `target="_blank"` ⇒ `rel="noopener"`; rendered list ordering; PDF links resolve |
+| `form.test.mjs` | Contact/volunteer/subscription forms post their exact structured payloads to the right endpoints (open-relay shape must never return) and surface the success alert |
+| `donate.test.mjs` | Self-hosted donate modal behavior at desktop/tablet/mobile |
+| `images.test.mjs` | Every local `<img>` decodes; 1 MB budget (gallery exempt); entry-video JPEG swap |
 
-### Backend
+Screenshots: `node scripts/shoot.mjs <label> [routes...]` → `.shots/<label>/<page>__<viewport>.png`
+(4 viewports). Diff labels with ImageMagick `magick compare -metric RMSE`.
 
-A plain `./mvnw test` also **builds the whole frontend first** — the Maven build
-couples the two parts (the `frontend-maven-plugin` + antrun copy are bound to
-`generate-resources`, which runs before `test`). That's correct for producing the
-jar, but slow for a backend-only change. To run just the Java tests, invoke the
-goals directly so the lifecycle (and the frontend build) is skipped:
+## Backend (`backend/`)
 
 ```bash
 cd backend
-mvn -q resources:resources compiler:compile resources:testResources compiler:testCompile surefire:test
+./mvnw test      # unit + @WebMvcTest slices — no Docker needed
+./mvnw verify    # adds *IT integration tests — Docker required (Testcontainers)
 ```
 
-> If `./mvnw` fails with a Maven-distribution SHA-256 error, the wrapper's pinned
-> distribution checksum is stale — use a system `mvn` (3.9.x, JDK 21) as above, or
-> fix `.mvn/wrapper/maven-wrapper.properties`.
+macOS note: Docker here runs via **colima**; Testcontainers needs these env vars
+(add them to your shell profile):
 
-## What's covered
+```bash
+export DOCKER_HOST="unix://$HOME/.colima/default/docker.sock"
+export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/var/run/docker.sock
+```
 
-### Frontend
-- **`data.test.mjs`** — *unit.* Integrity of `data/recipients.json` and
-  `data/newsletters.json`: required fields, unique ids/slugs/dates, valid
-  `year` / `YYYY-MM` formats, month↔date consistency, and that every referenced
-  photo / cover / PDF actually exists under `public/`. Also pins the newest-first
-  ordering contract each page's `getStaticProps` relies on.
-- **`render.test.mjs`** — *functional.* Every user-facing route serves via **both**
-  its clean URL and its `.html` file (the mapping the backend provides), has the
-  exact `<title>` (and the naming convention), and renders the shared chrome
-  (NavOne, Footer, a donate CTA, viewport + description meta, the PageHeader banner
-  on inner pages). A coverage guard fails if a new page is exported without a test.
-- **`links.test.mjs`** — *functional.* No dead internal links on any core page;
-  every `target="_blank"` link carries `rel="noopener"`; the data-driven lists
-  render newest-first; newsletter PDF links resolve.
-- **`donate.test.mjs`, `images.test.mjs`** — pre-existing functional suites for the
-  self-hosted donate modal and the image-weight/asset budget.
+Conventions:
 
-### Backend
-- **`EmailControllerTest`** — `@WebMvcTest` slice (service mocked). Pins the
-  `POST /api/emails/send` HTTP contract the frontend newsletter form depends on:
-  status codes, confirmation body, request-body → service mapping, malformed JSON → 400.
-- **`HtmlControllerTest`** — `@WebMvcTest` slice for the clean-URL forwarding
-  (`/about` → `/about.html`), nested event pages, the two legacy 301 redirects, and
-  the dot-exclusion rule that lets real static files pass through.
-- **`EmailServiceTest`** — pure Mockito unit. Verifies the `SimpleMailMessage` is
-  assembled from the arguments and sent. (It also pins that the service currently
-  sets `From == To`; see the note in the test — brittle if reused for user-facing mail.)
-- **`TombossaBFoundationApplicationTests`** — context-loads smoke test.
+- `*Test` (surefire): one `@WebMvcTest` slice per controller with
+  `@Import(SecurityConfig.class)` + `@MockitoBean` service — pins the HTTP
+  contract, validation errors, and the security policy (denyAll, CORS
+  preflights, 405s). Pure Mockito units for `NotificationService` and the
+  rate-limit filter.
+- `*IT` (failsafe): `AbstractPostgresIT` provides a singleton Postgres
+  container. `ContentRepositoryIT` (`@DataJpaTest` against the real Flyway
+  schema + seeds), `ApplicationIT` (full stack over HTTP with GreenMail:
+  form POST → DB row → received email; seeded content end-to-end).
 
-## Conventions for new tests
+## Full-stack local run (manual E2E)
 
-- **Frontend unit** (pure data / helpers): add a `*.test.mjs` using `node:test` +
-  `node:assert/strict`, no browser. Model it on `data.test.mjs`.
-- **Frontend functional** (anything rendered): reuse `serve-out.mjs`
-  (`startServer` + `blockExternal`) so tests stay offline and hermetic. Model it on
-  `render.test.mjs`.
-- **Backend**: prefer thin slices (`@WebMvcTest` for controllers, plain Mockito for
-  services) over `@SpringBootTest` so tests stay fast and never touch SMTP/DB.
-  Name files `*Test.java` (Surefire's default) and mirror the `main/` package path.
+```bash
+docker compose -f docker-compose.dev.yml up -d          # Postgres + Mailpit (UI :8025)
+cd backend && ./mvnw spring-boot:run -Dspring-boot.run.profiles=local
+cd frontend && API_BASE_URL=http://localhost:8080 NEXT_PUBLIC_API_BASE_URL=http://localhost:8080 npm run dev
+```
 
-## After the planned refactor (Vercel frontend + standalone backend + DB)
-
-The suites were written to survive the split:
-
-- The frontend tests are **already hermetic** and drive the exported site directly,
-  so they move to a Vercel-hosted frontend unchanged.
-- The backend tests are **slices**, so decoupling the frontend won't break them —
-  **except `HtmlControllerTest`**, which is intentionally tied to today's
-  "backend serves the static site" design and should retire with `HtmlController`
-  when the frontend leaves.
-- When the database and new endpoints land, add `@DataJpaTest` for repositories and
-  `@WebMvcTest` (mocked service) for the new controllers, keeping one broader
-  `@SpringBootTest` integration test per feature. Use an in-memory DB (H2) and, for
-  email, an in-JVM SMTP fake (e.g. GreenMail) rather than a live server.
-
-## Known gaps / good next tests
-
-- No page ships an `<h1>` or an `<html lang>` — both are SEO/a11y wins and would
-  make natural assertions once fixed.
-- The `contact`, `apply`, and footer-newsletter forms have no tests for
-  client-side validation or their submit path to `POST /api/emails/send`.
-- No automated accessibility pass (e.g. axe-core against the exported pages).
+Forms land in Postgres and appear in Mailpit; content pages render from the API.

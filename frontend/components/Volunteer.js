@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { API_BASE_URL } from '../lib/client-config';
 
 const Volunteer = () => {
 
@@ -24,15 +25,19 @@ const Volunteer = () => {
         e.preventDefault(); // Prevents page reload on form submission
     
         try {
-            const response = await fetch("/api/emails/send", {
+            // Structured fields only — the backend decides recipient and wording.
+            const response = await fetch(`${API_BASE_URL}/api/volunteer`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    to: "contact@tombossabfoundation.org",
-                    subject: "Volunteer Form From " + formData.name,
-                    body: "Name: " + formData.name + "\nPhone: " + formData.phone + "\nEmail: " + formData.email + "\nOccupation: " + formData.job + "\nAddress: " + formData.address + "\nMessage: " + formData.message,
+                    name: formData.name,
+                    email: formData.email,
+                    phone: formData.phone,
+                    address: formData.address,
+                    job: formData.job,
+                    message: formData.message,
                 }),
                 });
             

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../lib/client-config';
 
 const Footer = () => {
     const [scrollBtn, setScrollBtn] = useState(false);
@@ -20,15 +21,14 @@ const Footer = () => {
         e.preventDefault(); // Prevents page reload on form submission
     
         try {
-            const response = await fetch("/api/emails/send", {
+            // Subscribers are first-class records now (newsletter_subscriber table).
+            const response = await fetch(`${API_BASE_URL}/api/subscriptions`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    to: "contact@tombossabfoundation.org",
-                    subject: "New Newsletter Subscription (temporary)",
-                    body: "Email: " + formData.email,
+                    email: formData.email,
                 }),
                 });
             

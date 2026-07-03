@@ -6,12 +6,11 @@
 // Donorbox embed never actually loads — but the <iframe> element (with its
 // src) is still created, which is all these assertions need.
 //
-// Prereq: npm run build && npm run export   (then: node --test scripts/donate.test.mjs, or npm test)
+// Prereq: npm run build   (then: node --test scripts/donate.test.mjs, or npm test)
 import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync } from 'node:fs';
 import { chromium } from 'playwright';
-import { OUT_DIR, startServer, blockExternal } from './serve-out.mjs';
+import { startServer, blockExternal } from './next-server.mjs';
 
 // Distinguishes the MODAL embed from the donor-wall embed already on the home page.
 const MODAL_EMBED = 'donorbox.org/embed/scholarship-fund-73?language=en-us';
@@ -26,8 +25,7 @@ const VIEWPORTS = [
 let server, origin, browser;
 
 before(async () => {
-  assert.ok(existsSync(OUT_DIR), 'frontend/out missing — run "npm run build && npm run export" first');
-  ({ server, origin } = await startServer(OUT_DIR, 0));
+  ({ server, origin } = await startServer());
   browser = await chromium.launch();
 });
 

@@ -1,9 +1,10 @@
-// Content-integrity unit tests for the data-driven pages.
+// Content-integrity unit tests for the data fixtures.
 //
-// Pure Node — no browser, no export/build needed (run these anywhere, fast).
-// They guard the JSON that getStaticProps reads in pages/award-recipients.js and
-// pages/newsletters.js: a missing field, a duplicate id, or a mistyped photo/pdf
-// path would otherwise ship a broken page with no compile-time warning.
+// Pure Node — no browser, no build needed (run these anywhere, fast).
+// The JSON files in data/ do double duty: they are the hermetic build/test
+// fixtures AND the fallback lib/api.js serves when the backend is unreachable,
+// so they must stay shape-identical to the API responses. Content rule: every
+// backend Flyway seed migration updates its fixture here in the same PR.
 //
 //   node --test scripts/data.test.mjs      (or, with the rest: npm test)
 import test from 'node:test';
@@ -24,6 +25,7 @@ const hasDuplicates = (values) => new Set(values).size !== values.length;
 
 const recipients = readJson('recipients.json');
 const newsletters = readJson('newsletters.json');
+const events = readJson('events.json');
 
 // ---------------------------------------------------------------------------
 // recipients.json  (pages/award-recipients.js -> components/RecipientCard.js)
@@ -118,5 +120,49 @@ test('newsletters: page sort (date desc) yields newest-first order', () => {
   const dates = sorted.map((n) => n.date);
   for (let i = 1; i < dates.length; i++) {
     assert.ok(dates[i - 1] >= dates[i], `not sorted desc by date at index ${i}: ${dates}`);
+  }
+});
+
+// ---------------------------------------------------------------------------
+// events.json  (app/events + EventsSection -> Events / PastEvents cards)
+// ---------------------------------------------------------------------------
+test('events: file is a non-empty array', () => {
+  assert.ok(Array.isArray(events), 'events.json must be a JSON array');
+  assert.ok(events.length > 0, 'events.json must not be empty');
+});
+
+test('events: slugs are unique (null slug = no detail page, allowed)', () => {
+  const slugs = events.map((e) => e.slug).filter((s) => s !== null);
+  assert.equal(hasDuplicates(slugs), false, 'duplicate event slug');
+  for (const s of slugs) assert.equal(typeof s, 'string', 'slug must be a string or null');
+});
+
+// imageAlt is required-present but may be blank (decorative images).
+const EVENT_REQUIRED = ['title', 'eventDate', 'timeLabel', 'venue', 'city', 'image'];
+for (const [i, e] of events.entries()) {
+  const which = e.title || `#${i}`;
+  test(`events[${i}] (${which}): has all required fields`, () => {
+    for (const field of EVENT_REQUIRED) {
+      assert.equal(typeof e[field], 'string', `${field} must be a string`);
+      assert.ok(e[field].trim().length > 0, `${field} must not be blank`);
+    }
+    assert.equal(typeof e.imageAlt, 'string', 'imageAlt must be a string (may be empty)');
+    assert.match(e.eventDate, /^\d{4}-\d{2}-\d{2}$/, 'eventDate must be YYYY-MM-DD (cards derive the date badge from it)');
+    const parsed = new Date(`${e.eventDate}T00:00:00Z`);
+    assert.ok(!Number.isNaN(parsed.getTime()), `eventDate is not a real date: ${e.eventDate}`);
+  });
+
+  test(`events[${i}] (${which}): card image exists in public/`, () => {
+    assert.ok(e.image.startsWith('/images/'), `image should live under /images/, got ${e.image}`);
+    assert.ok(existsSync(publicPath(e.image)), `missing asset: public${e.image}`);
+  });
+}
+
+// Ordering contract: lib/api.js sorts events newest-first by eventDate.
+test('events: sort (eventDate desc) yields newest-first order', () => {
+  const sorted = [...events].sort((a, b) => b.eventDate.localeCompare(a.eventDate));
+  const dates = sorted.map((e) => e.eventDate);
+  for (let i = 1; i < dates.length; i++) {
+    assert.ok(dates[i - 1] >= dates[i], `not sorted desc by eventDate at index ${i}: ${dates}`);
   }
 });

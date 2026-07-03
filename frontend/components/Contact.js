@@ -1,9 +1,8 @@
+"use client";
+
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
 
 const Contact = () => {
-    const router = useRouter();
-
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -38,7 +37,7 @@ const Contact = () => {
                 throw new Error(`Error: ${response.statusText}`);
 
             alert('Message sent successfully!');
-            router.reload();
+            window.location.reload();
         } catch (error) {
             console.error("Failed to send email:", error);
             alert('Error sending message.');

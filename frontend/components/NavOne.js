@@ -1,19 +1,21 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 
 import DonateButton from "./DonateButton";
 
 const NavOne = () => {
-    const router = useRouter();
+    const pathname = usePathname();
 
     // A fresh load always starts at the top of the page, so the nav begins in
     // its "white" state only on the home page (over the dark hero). Deriving
     // the initial values from the route — instead of hardcoding the dark logo —
-    // keeps the statically-exported HTML correct for each page and avoids a
-    // post-hydration flash. router.pathname is identical between export and
+    // keeps the statically-generated HTML correct for each page and avoids a
+    // post-hydration flash. usePathname() is identical between prerender and
     // client hydration, so there's no markup mismatch.
-    const startsWhite = router.pathname === '/';
+    const startsWhite = pathname === '/';
     const [sticky, setSticky] = useState(false);
     const [logoSrc, setLogoSrc] = useState(startsWhite ? "/images/logo-white.png" : "/images/logo.png");
     const [whiteNav, setWhiteNav] = useState(startsWhite);
@@ -65,7 +67,7 @@ const NavOne = () => {
     // home hero turning invisible on a light inner page).
     useEffect(() => {
         syncNav();
-    }, [router.pathname]);
+    }, [pathname]);
 
     return (
         <div>

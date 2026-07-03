@@ -1,0 +1,32 @@
+[
+  {
+    "slug": "coffee-women-empowerment-1",
+    "title": "Coffee & Women Empowerment",
+    "eventDate": "2026-06-27",
+    "timeLabel": "2:00pm to 6:00pm",
+    "venue": "7522 Overdale Dr.",
+    "city": "Dallas, TX",
+    "image": "/images/coffee-women-empowerment.jpg",
+    "imageAlt": "Coffee & Women Empowerment"
+  },
+  {
+    "slug": "community-field-day-2025",
+    "title": "Community Field Day",
+    "eventDate": "2025-07-26",
+    "timeLabel": "3:30pm to 9:00pm",
+    "venue": "Cottonwood Park",
+    "city": "Richardson, TX",
+    "image": "/images/img8.jpg",
+    "imageAlt": "Community Field Day"
+  },
+  {
+    "slug": null,
+    "title": "Memorial of Tombossa Negusse | Foundation Inauguration",
+    "eventDate": "2024-11-30",
+    "timeLabel": "11:00am to 2:00pm",
+    "venue": "High Point Center",
+    "city": "Dallas, TX",
+    "image": "/images/img7.jpg",
+    "imageAlt": ""
+  }
+]

@@ -1,24 +1,23 @@
-// Per-route health checks for the static export.
+// Per-route health checks for the production build.
 //
 // For every page the site ships, this asserts the "shell" every route must have:
-// it serves (via both the clean URL and the .html file — the two ways the backend
-// HtmlController exposes it), carries the right <title>, and renders the shared
-// chrome (nav, footer, a donate CTA, the required meta tags). It also fails if a
-// NEW page is exported without a matching entry here, so route coverage can't
-// silently rot.
+// it serves at its clean URL, carries the right <title>, declares the document
+// language, and renders the shared chrome (nav, footer, a donate CTA, the
+// required meta tags). It also fails if a NEW page is prerendered without a
+// matching entry here, so route coverage can't silently rot.
 //
-// Prereq: build the export first, then run:
-//   npm run build && npm run export
+// Prereq: build first (no API_BASE_URL -> hermetic fixture content), then run:
+//   npm run build
 //   node --test scripts/render.test.mjs      (or: npm test)
 import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { readdir } from 'node:fs/promises';
-import { existsSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import { chromium } from 'playwright';
-import { OUT_DIR, startServer, blockExternal } from './serve-out.mjs';
+import { FRONTEND_DIR, startServer, blockExternal } from './next-server.mjs';
 
 // The full set of user-facing routes and their exact titles. Home is bare; every
-// other page follows the "Tombossa B Foundation | X" convention (pages/CLAUDE.md).
+// other page follows the "Tombossa B Foundation | X" convention (app/CLAUDE.md).
 // Titles are the DECODED form (Playwright's page.title() unescapes &amp; etc.).
 const ROUTES = [
   { path: '/',                                  title: 'Tombossa B Foundation',                                     home: true },
@@ -38,15 +37,10 @@ const ROUTES = [
   { path: '/events/community-field-day-2025',   title: 'Tombossa B Foundation | Events | Community Field Day' },
 ];
 
-// The clean URL "/about" and the exported file "/about.html" must both resolve —
-// this is exactly the mapping the backend HtmlController provides in production.
-const htmlPath = (route) => (route === '/' ? '/index.html' : `${route}.html`);
-
 let server, origin, browser;
 
 before(async () => {
-  assert.ok(existsSync(OUT_DIR), 'frontend/out missing — run "npm run build && npm run export" first');
-  ({ server, origin } = await startServer(OUT_DIR, 0));
+  ({ server, origin } = await startServer());
   browser = await chromium.launch();
 });
 
@@ -64,12 +58,9 @@ async function openPage(route) {
 }
 
 for (const route of ROUTES) {
-  test(`${route.path}: serves via clean URL and .html, with shared page chrome`, async () => {
-    // Both access paths resolve (mirrors HtmlController's clean-URL mapping).
+  test(`${route.path}: serves via clean URL, with shared page chrome`, async () => {
     const clean = await fetch(`${origin}${route.path}`);
     assert.equal(clean.status, 200, `clean URL ${route.path} should serve 200`);
-    const asFile = await fetch(`${origin}${htmlPath(route.path)}`);
-    assert.equal(asFile.status, 200, `${htmlPath(route.path)} should serve 200`);
 
     const { ctx, page } = await openPage(route.path);
     try {
@@ -81,12 +72,15 @@ for (const route of ROUTES) {
         assert.ok((await page.title()).startsWith('Tombossa B Foundation | '), 'inner pages must be "Tombossa B Foundation | ..."');
       }
 
+      // The document declares its language (accessibility contract).
+      assert.equal(await page.locator('html').getAttribute('lang'), 'en', 'html[lang] must be "en"');
+
       // Shared chrome present exactly once (NavOne + Footer), plus a donate CTA.
       assert.equal(await page.locator('.header-area').count(), 1, 'NavOne header must be present');
       assert.equal(await page.locator('.footer-area').count(), 1, 'Footer must be present');
       assert.ok(await page.locator('.donate-btn').count() >= 1, 'a donate CTA must be present');
 
-      // Required <head> meta (Layout.js). Responsive + SEO description ship on every page.
+      // Required <head> meta. Responsive + SEO description ship on every page.
       assert.equal(await page.locator('meta[name="viewport"]').count(), 1, 'viewport meta required');
       assert.equal(await page.locator('meta[name="description"]').count(), 1, 'description meta required');
 
@@ -102,20 +96,31 @@ for (const route of ROUTES) {
   });
 }
 
-// Coverage guard: if a new top-level page is exported, it must have a ROUTES entry
-// above (so it gets the checks). Excludes Next's error pages, which have no chrome.
-test('every exported top-level page is covered by ROUTES', async () => {
-  const known = new Set(ROUTES.map((r) => (r.path === '/' ? 'index' : r.path.replace(/^\//, ''))));
-  const ignore = new Set(['404']); // Next's framework 404, no NavOne/Footer
-  const files = await readdir(OUT_DIR);
-  const uncovered = files
-    .filter((f) => f.endsWith('.html'))
-    .map((f) => f.replace(/\.html$/, ''))
-    .filter((name) => !known.has(name) && !ignore.has(name));
-  assert.deepEqual(uncovered, [], `exported pages with no ROUTES entry (add them): ${uncovered.join(', ')}`);
+// The legacy URLs the old backend 301'd must keep redirecting (next.config.mjs).
+// Next emits 308 (the modern permanent-redirect status).
+test('legacy event URLs permanently redirect to the event page', async () => {
+  for (const legacy of ['/coffee-women-empowerment', '/events-detail']) {
+    const res = await fetch(`${origin}${legacy}`, { redirect: 'manual' });
+    assert.equal(res.status, 308, `${legacy} should permanently redirect`);
+    assert.equal(res.headers.get('location'), '/events/coffee-women-empowerment-1', `${legacy} redirect target`);
+  }
 });
 
-// A miss must 404, not fall through to some page — guards the server/route contract.
+// Coverage guard: every prerendered route must have a ROUTES entry above (so it
+// gets the checks). Reads the build's own manifest, so a new page can't ship
+// unchecked. Excludes Next's framework not-found route.
+test('every prerendered route is covered by ROUTES', () => {
+  const manifest = JSON.parse(
+    readFileSync(path.join(FRONTEND_DIR, '.next', 'prerender-manifest.json'), 'utf8'));
+  const known = new Set(ROUTES.map((r) => r.path));
+  const ignore = new Set(['/_not-found']);
+  const uncovered = Object.keys(manifest.routes)
+    .filter((route) => !known.has(route) && !ignore.has(route))
+    .sort();
+  assert.deepEqual(uncovered, [], `prerendered routes with no ROUTES entry (add them): ${uncovered.join(', ')}`);
+});
+
+// A miss must 404 (App Router serves not-found.js with a real 404 status).
 test('an unknown route returns 404', async () => {
   const res = await fetch(`${origin}/this-page-does-not-exist`);
   assert.equal(res.status, 404);

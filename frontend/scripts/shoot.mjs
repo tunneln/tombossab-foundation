@@ -1,22 +1,21 @@
-// Visual screenshot harness for the static export.
+// Visual screenshot harness for the production build.
 //
 // Usage:
-//   npm run export                        # produce frontend/out
+//   npm run build                         # produce frontend/.next
 //   node scripts/shoot.mjs <label> [paths...]
 //
-// Serves frontend/out over a tiny local HTTP server (so absolute /css, /images
-// paths resolve) and screenshots each path at four viewports that exercise all
-// three responsive image branches (mobile <=1024, tablet 1025-1366, desktop >1366).
+// Serves the build via `next start` (scripts/next-server.mjs) and screenshots
+// each path at four viewports that exercise all three responsive image branches
+// (mobile <=1024, tablet 1025-1366, desktop >1366).
 //
 // Output: <SHOT_OUT or ./.shots>/<label>/<page>__<viewport>.png
 //
 // Example: node scripts/shoot.mjs before / /about /sponsor
 import { mkdir } from 'node:fs/promises';
-import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
-import { OUT_DIR, createServer, blockExternal } from './serve-out.mjs';
+import { startServer, blockExternal } from './next-server.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SHOT_BASE = process.env.SHOT_OUT || path.resolve(__dirname, '../.shots');
@@ -32,15 +31,9 @@ const VIEWPORTS = [
   { name: 'desktop', width: 1600, height: 900,  dsf: 1 },  // -> desktop image
 ];
 
-const server = createServer();
-
 async function main() {
-  if (!existsSync(OUT_DIR)) {
-    console.error(`No ${OUT_DIR}. Run "npm run export" first.`);
-    process.exit(1);
-  }
-  await new Promise((r) => server.listen(PORT, '127.0.0.1', r));
-  console.log(`serving ${OUT_DIR} at http://127.0.0.1:${PORT}`);
+  const { server, origin } = await startServer(PORT);
+  console.log(`serving production build at ${origin}`);
 
   const browser = await chromium.launch();
   const results = [];
@@ -50,13 +43,13 @@ async function main() {
       deviceScaleFactor: vp.dsf,
     });
     const page = await ctx.newPage();
-    await blockExternal(page, `http://127.0.0.1:${PORT}`);
+    await blockExternal(page, origin);
     for (const route of pages) {
       const name = route === '/' ? 'home' : route.replace(/^\//, '').replace(/\//g, '-');
       const dir = path.join(SHOT_BASE, label);
       await mkdir(dir, { recursive: true });
       const dest = path.join(dir, `${name}__${vp.name}.png`);
-      await page.goto(`http://127.0.0.1:${PORT}${route}`, { waitUntil: 'load', timeout: 30000 });
+      await page.goto(`${origin}${route}`, { waitUntil: 'load', timeout: 30000 });
       await page.waitForTimeout(2000); // let the first slide's background paint
       await page.screenshot({ path: dest }); // viewport (above the fold) — where hero fill shows
       results.push(dest);
@@ -69,4 +62,4 @@ async function main() {
   results.forEach((r) => console.log('  ' + r));
 }
 
-main().catch((e) => { console.error(e); server.close(); process.exit(1); });
+main().catch((e) => { console.error(e); process.exit(1); });

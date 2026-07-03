@@ -21,7 +21,6 @@ jobs:
       - run: npm ci
       # No API env vars: the build must stay hermetic (fixture-rendered).
       - run: npm run build
-      - run: npm run export
       - run: npx playwright install --with-deps chromium
       - run: npm test
 

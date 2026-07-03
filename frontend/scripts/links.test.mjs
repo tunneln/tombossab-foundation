@@ -1,21 +1,21 @@
-// Link-graph and content-ordering checks for the static export.
+// Link-graph and content-ordering checks against the production build.
 //
-// Three things that break silently in a static site: an internal link pointing at
-// a route that no longer exports (dead link), an external link missing its
-// security rel (tab-nabbing / referrer leak), and a data-driven list rendering in
-// the wrong order after a sort regression. This covers all three end-to-end
-// against the real exported HTML.
+// Three things that break silently: an internal link pointing at a route that no
+// longer exists (dead link), an external link missing its security rel
+// (tab-nabbing / referrer leak), and a data-driven list rendering in the wrong
+// order after a sort regression. This covers all three end-to-end against the
+// real served HTML.
 //
-// Prereq: build the export first, then run:
-//   npm run build && npm run export
+// Prereq: build first, then run:
+//   npm run build
 //   node --test scripts/links.test.mjs      (or: npm test)
 import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
-import { OUT_DIR, startServer, blockExternal, resolveFile } from './serve-out.mjs';
+import { startServer, blockExternal } from './next-server.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.resolve(__dirname, '../data');
@@ -32,8 +32,7 @@ const PAGES = [
 let server, origin, browser;
 
 before(async () => {
-  assert.ok(existsSync(OUT_DIR), 'frontend/out missing — run "npm run build && npm run export" first');
-  ({ server, origin } = await startServer(OUT_DIR, 0));
+  ({ server, origin } = await startServer());
   browser = await chromium.launch();
 });
 
@@ -50,10 +49,12 @@ async function openPage(route) {
   return { ctx, page };
 }
 
-// Every site-internal <a href="/..."> must resolve to a real exported file (page
-// or asset). "#" anchors and mailto:/tel:/external links are out of scope here.
+// Every site-internal <a href="/..."> must resolve to a real page or asset (an
+// HTTP status < 400; permanent redirects count as alive). "#" anchors and
+// mailto:/tel:/external links are out of scope here.
 test('no dead internal links on any core page', async () => {
   const dead = [];
+  const seen = new Map(); // href -> alive? (dedupe across pages)
   for (const route of PAGES) {
     const { ctx, page } = await openPage(route);
     const hrefs = await page.$$eval('a[href^="/"]', (els) =>
@@ -61,8 +62,12 @@ test('no dead internal links on any core page', async () => {
     await ctx.close();
     for (const href of hrefs) {
       const bare = href.split('#')[0].split('?')[0];
-      if (bare === '' || resolveFile(bare)) continue;
-      dead.push(`${route} -> ${href}`);
+      if (bare === '') continue;
+      if (!seen.has(bare)) {
+        const res = await fetch(`${origin}${bare}`, { redirect: 'manual' });
+        seen.set(bare, res.status < 400);
+      }
+      if (!seen.get(bare)) dead.push(`${route} -> ${href}`);
     }
   }
   assert.deepEqual(dead, [], `dead internal links:\n  ${dead.join('\n  ')}`);
@@ -84,9 +89,9 @@ test('every target="_blank" link carries rel="noopener"', async () => {
   assert.deepEqual(offenders, [], `_blank links missing rel="noopener":\n  ${offenders.join('\n  ')}`);
 });
 
-// Data-driven ORDER (the outcome of the page's getStaticProps sort), checked
-// against the source data independently of how the page sorts — so it catches a
-// sort regression without merely re-implementing the comparator.
+// Data-driven ORDER (the outcome of the page's data sort), checked against the
+// source fixture independently of how the page sorts — so it catches a sort
+// regression without merely re-implementing the comparator.
 test('/award-recipients renders recipients newest-year first', async () => {
   const yearByName = new Map(readJson('recipients.json').map((r) => [r.name, Number(r.year)]));
   const { ctx, page } = await openPage('/award-recipients');
@@ -122,6 +127,7 @@ test('/newsletters renders issues newest-date first, and each PDF link resolves'
 
   assert.ok(pdfs.length > 0, 'expected newsletter PDF links');
   for (const href of pdfs) {
-    assert.ok(resolveFile(href.split('?')[0]), `newsletter PDF link points at a missing file: ${href}`);
+    const res = await fetch(`${origin}${href.split('?')[0]}`, { method: 'HEAD' });
+    assert.equal(res.status, 200, `newsletter PDF link points at a missing file: ${href}`);
   }
 });

@@ -1,17 +1,16 @@
-// Asset regression tests for the static export — guards the site-wide image
-// recompress (q85) and the entry-video PNG->JPEG swap from silently regressing.
+// Asset regression tests — guards the site-wide image recompress (q85) and the
+// entry-video PNG->JPEG swap from silently regressing.
 //
-// Prereq: build the export first, then run the tests:
-//   npm run build && npm run export
+// Prereq: build first, then run the tests:
+//   npm run build
 //   node --test scripts/images.test.mjs      (or: npm test)
 import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { readdir, stat } from 'node:fs/promises';
-import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
-import { OUT_DIR, startServer, blockExternal } from './serve-out.mjs';
+import { startServer, blockExternal } from './next-server.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = path.resolve(__dirname, '../public');
@@ -28,8 +27,7 @@ const isGallery = (name) => name.startsWith('gallery-img');
 let server, origin, browser;
 
 before(async () => {
-  assert.ok(existsSync(OUT_DIR), 'frontend/out missing — run "npm run build && npm run export" first');
-  ({ server, origin } = await startServer(OUT_DIR, 0));
+  ({ server, origin } = await startServer());
   browser = await chromium.launch();
 });
 

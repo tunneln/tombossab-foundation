@@ -37,7 +37,9 @@ public class RateLimitFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
 		if (buckets.size() > MAX_TRACKED_CLIENTS) {
-			buckets.clear();
+			// Evict only idle clients (bucket fully refilled) so currently
+			// throttled clients keep their limit — never wipe every bucket.
+			buckets.values().removeIf(b -> b.getAvailableTokens() >= properties.capacity());
 		}
 		Bucket bucket = buckets.computeIfAbsent(clientIp(request), ip -> newBucket());
 		if (bucket.tryConsume(1)) {

@@ -14,7 +14,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
-import { FRONTEND_DIR, startServer, blockExternal } from './next-server.mjs';
+import { FRONTEND_DIR, startServer, openPage } from './next-server.mjs';
 
 // The full set of user-facing routes and their exact titles. Home is bare; every
 // other page follows the "Tombossa B Foundation | X" convention (app/CLAUDE.md).
@@ -49,20 +49,12 @@ after(async () => {
   server?.close();
 });
 
-async function openPage(route) {
-  const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
-  const page = await ctx.newPage();
-  await blockExternal(page, origin);
-  await page.goto(`${origin}${route}`, { waitUntil: 'load', timeout: 30000 });
-  return { ctx, page };
-}
-
 for (const route of ROUTES) {
   test(`${route.path}: serves via clean URL, with shared page chrome`, async () => {
     const clean = await fetch(`${origin}${route.path}`);
     assert.equal(clean.status, 200, `clean URL ${route.path} should serve 200`);
 
-    const { ctx, page } = await openPage(route.path);
+    const { ctx, page } = await openPage(browser, origin, route.path);
     try {
       assert.equal(await page.title(), route.title, 'page <title> mismatch');
       // The naming convention itself: home is bare, everything else is prefixed.

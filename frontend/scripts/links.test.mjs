@@ -15,7 +15,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
-import { startServer, blockExternal } from './next-server.mjs';
+import { startServer, openPage } from './next-server.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.resolve(__dirname, '../data');
@@ -41,13 +41,6 @@ after(async () => {
   server?.close();
 });
 
-async function openPage(route) {
-  const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
-  const page = await ctx.newPage();
-  await blockExternal(page, origin);
-  await page.goto(`${origin}${route}`, { waitUntil: 'load', timeout: 30000 });
-  return { ctx, page };
-}
 
 // Every site-internal <a href="/..."> must resolve to a real page or asset (an
 // HTTP status < 400; permanent redirects count as alive). "#" anchors and
@@ -56,7 +49,7 @@ test('no dead internal links on any core page', async () => {
   const dead = [];
   const seen = new Map(); // href -> alive? (dedupe across pages)
   for (const route of PAGES) {
-    const { ctx, page } = await openPage(route);
+    const { ctx, page } = await openPage(browser, origin, route);
     const hrefs = await page.$$eval('a[href^="/"]', (els) =>
       [...new Set(els.map((a) => a.getAttribute('href')))]);
     await ctx.close();
@@ -79,7 +72,7 @@ test('no dead internal links on any core page', async () => {
 test('every target="_blank" link carries rel="noopener"', async () => {
   const offenders = [];
   for (const route of PAGES) {
-    const { ctx, page } = await openPage(route);
+    const { ctx, page } = await openPage(browser, origin, route);
     const bad = await page.$$eval('a[target="_blank"]', (els) =>
       els.filter((a) => !(a.getAttribute('rel') || '').includes('noopener'))
          .map((a) => a.getAttribute('href')));
@@ -94,7 +87,7 @@ test('every target="_blank" link carries rel="noopener"', async () => {
 // regression without merely re-implementing the comparator.
 test('/award-recipients renders recipients newest-year first', async () => {
   const yearByName = new Map(readJson('recipients.json').map((r) => [r.name, Number(r.year)]));
-  const { ctx, page } = await openPage('/award-recipients');
+  const { ctx, page } = await openPage(browser, origin, '/award-recipients');
   const names = await page.$$eval('.team-area h3', (els) =>
     els.map((h) => h.textContent.split(':')[0].trim()));
   await ctx.close();
@@ -111,7 +104,7 @@ test('/award-recipients renders recipients newest-year first', async () => {
 
 test('/newsletters renders issues newest-date first, and each PDF link resolves', async () => {
   const dateByHeadline = new Map(readJson('newsletters.json').map((n) => [n.headline, n.date]));
-  const { ctx, page } = await openPage('/newsletters');
+  const { ctx, page } = await openPage(browser, origin, '/newsletters');
   const headlines = await page.$$eval('.news__content-title a', (els) => els.map((a) => a.textContent.trim()));
   const pdfs = await page.$$eval('a[href$=".pdf"]', (els) => [...new Set(els.map((a) => a.getAttribute('href')))]);
   await ctx.close();

@@ -25,7 +25,7 @@ Content (recipients, newsletters, events) lives in Postgres, seeded by versioned
 
 - Routes in `frontend/app/` (see `app/CLAUDE.md`). Standard page: `NavOne → PageHeader → [section components] → Footer`, plus `export const metadata = { title: 'Tombossa B Foundation | X' }`.
 - One component per section in `frontend/components/` — server components by default, `"use client"` only for interactivity (see `components/CLAUDE.md`).
-- Brand accent gold `#f1ae44`. Reuse the shared classes (`theme-btn`, `section-heading`, `blog-item`, `recent-item`, `slide-bg*`) instead of bespoke CSS. Site styling is runtime CSS under `public/css` whose order is load-bearing — managed in `app/layout.js`, do not convert to bundler imports.
+- Brand accent gold `#f1ae44`. Reuse the shared classes (`theme-btn`, `section-heading`, `blog-item`, `recent-item`, `slide-bg*`) instead of bespoke CSS. Site styling is runtime CSS under `public/` (`css/` + `plugins/`) whose order is load-bearing — managed in `app/layout.js`, do not convert to bundler imports.
 - Plain `<img>`, never `next/image`. Static assets in `frontend/public/`; PDF/static links get `<a target="_blank" rel="noopener noreferrer">`.
 - Nav is `NavOne.js`; homepage slider is `SliderOne.js` (`slide-bg*` classes in style.css + responsive.css, never inline backgrounds).
 - New page ⇒ add its ROUTES entry in `frontend/scripts/render.test.mjs` (the coverage guard fails the suite otherwise).

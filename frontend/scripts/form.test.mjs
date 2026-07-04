@@ -9,7 +9,7 @@
 import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
-import { startServer, blockExternal } from './next-server.mjs';
+import { startServer, openPage } from './next-server.mjs';
 
 let server, origin, browser;
 
@@ -22,14 +22,6 @@ after(async () => {
   await browser?.close();
   server?.close();
 });
-
-async function openPage(route) {
-  const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
-  const page = await ctx.newPage();
-  await blockExternal(page, origin);
-  await page.goto(`${origin}${route}`, { waitUntil: 'load', timeout: 30000 });
-  return { ctx, page };
-}
 
 // Intercept the form's POST (registered after blockExternal, so it wins) and
 // answer like the real backend would. Returns the capture object.
@@ -59,7 +51,7 @@ function nextDialog(page) {
 }
 
 test('contact form posts structured fields to /api/contact', async () => {
-  const { ctx, page } = await openPage('/contact');
+  const { ctx, page } = await openPage(browser, origin, '/contact');
   try {
     const captured = await interceptPost(page, 'contact', 202, { status: 'accepted' });
     await page.fill('.contact-area form input[name="name"]', 'Test User');
@@ -85,7 +77,7 @@ test('contact form posts structured fields to /api/contact', async () => {
 });
 
 test('volunteer form posts structured fields (blank optionals included) to /api/volunteer', async () => {
-  const { ctx, page } = await openPage('/volunteer');
+  const { ctx, page } = await openPage(browser, origin, '/volunteer');
   try {
     const captured = await interceptPost(page, 'volunteer', 202, { status: 'accepted' });
     await page.fill('.register-area form input[name="name"]', 'Vol Unteer');
@@ -112,7 +104,7 @@ test('volunteer form posts structured fields (blank optionals included) to /api/
 });
 
 test('footer newsletter signup posts the email to /api/subscriptions', async () => {
-  const { ctx, page } = await openPage('/');
+  const { ctx, page } = await openPage(browser, origin, '/');
   try {
     const captured = await interceptPost(page, 'subscriptions', 201, { status: 'subscribed' });
     await page.fill('.newsletter-form form input[name="email"]', 'reader@example.com');

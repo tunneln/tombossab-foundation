@@ -124,7 +124,8 @@ plus the two legacy redirects on the new site:
 - Anything wrong after step 6: point apex DNS back at the Lightsail IP —
   nginx + old jar are still installed until you remove them (keep them for a
   grace week).
-- Backend-only trouble: `docker compose pull app && docker compose up -d`
-  with the previous image tag (`ghcr.io/tunneln/tombossab-backend:<old-sha>`).
+- Backend-only trouble: pin the previous image and re-up (each deploy pushes a
+  `:<sha>` tag alongside `:latest`, so the compose file reads `APP_IMAGE_TAG`):
+  `APP_IMAGE_TAG=<old-sha> docker compose up -d --pull always`.
 - Content page trouble on Vercel: instant rollback to any previous deployment
   in the Vercel dashboard.

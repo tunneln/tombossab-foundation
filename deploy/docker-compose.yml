@@ -5,7 +5,8 @@ name: tombossab
 
 services:
   app:
-    image: ghcr.io/tunneln/tombossab-backend:latest
+    # Defaults to :latest; set APP_IMAGE_TAG=<sha> to pin a prior image (rollback).
+    image: ghcr.io/tunneln/tombossab-backend:${APP_IMAGE_TAG:-latest}
     restart: unless-stopped
     env_file: .env
     environment:

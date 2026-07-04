@@ -17,6 +17,10 @@ const BASE = process.env.API_BASE_URL;
 async function fromApi(path, tag) {
     const res = await fetch(`${BASE}${path}`, {
         next: { revalidate: 3600, tags: ['content', tag] },
+        // Bound the wait so a hung (accepting-but-silent) backend can't stall a
+        // build or revalidation — a timeout throws and getContent() falls back
+        // to the committed fixture.
+        signal: AbortSignal.timeout(5000),
     });
     if (!res.ok) throw new Error(`GET ${path} -> ${res.status}`);
     return res.json();

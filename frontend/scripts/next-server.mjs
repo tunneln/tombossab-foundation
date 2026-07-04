@@ -15,7 +15,7 @@ export const FRONTEND_DIR = path.resolve(__dirname, '..');
 const BUILD_DIR = path.join(FRONTEND_DIR, '.next');
 const NEXT_BIN = path.join(FRONTEND_DIR, 'node_modules', 'next', 'dist', 'bin', 'next');
 
-export function assertBuilt() {
+function assertBuilt() {
   if (!existsSync(BUILD_DIR)) {
     throw new Error('frontend/.next missing — run "npm run build" first');
   }
@@ -80,4 +80,14 @@ export async function blockExternal(page, origin) {
   await page.route('**', (route) =>
     route.request().url().startsWith(origin) ? route.continue() : route.abort()
   );
+}
+
+// Open an offline, deterministic page at `route` in its own context. Shared by
+// the test suites; the caller owns the returned context and must close it.
+export async function openPage(browser, origin, route) {
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+  const page = await ctx.newPage();
+  await blockExternal(page, origin);
+  await page.goto(`${origin}${route}`, { waitUntil: 'load', timeout: 30000 });
+  return { ctx, page };
 }

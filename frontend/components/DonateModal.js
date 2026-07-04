@@ -27,8 +27,8 @@ const DonateModal = () => {
     useEffect(() => {
         if (!isOpen) return;
 
-        const trigger = document.activeElement;            // remember who opened it
-        const appRoot = document.getElementById('__next'); // page root, sibling of the portal
+        const trigger = document.activeElement;               // remember who opened it
+        const appRoot = document.getElementById('app-root');  // page content, outside the portal
         appRoot?.setAttribute('inert', '');
 
         const prevOverflow = document.body.style.overflow;

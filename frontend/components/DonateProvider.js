@@ -18,7 +18,12 @@ export const DonateProvider = ({ children }) => {
 
     return (
         <DonateContext.Provider value={{ isOpen, open, close }}>
-            {children}
+            {/* Page content in its own element so the modal can mark it `inert`
+                while open. The App Router has no #__next wrapper the way the old
+                Pages Router did; the modal portals to document.body, OUTSIDE this
+                node, so the overlay stays interactive while the page behind it
+                can't be tabbed or reached by assistive tech. */}
+            <div id="app-root">{children}</div>
             <DonateModal />
         </DonateContext.Provider>
     );

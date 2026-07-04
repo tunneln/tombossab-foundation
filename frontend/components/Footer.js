@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { API_BASE_URL } from '../lib/client-config';
+import { postJson } from '../lib/client-config';
 
 const Footer = () => {
     const [scrollBtn, setScrollBtn] = useState(false);
@@ -9,7 +9,8 @@ const Footer = () => {
     const [formData, setFormData] = useState({
         email: '',
       });
-    
+    const [submitting, setSubmitting] = useState(false);
+
       const handleChange = (e) => {
         setFormData({
           ...formData,
@@ -19,29 +20,22 @@ const Footer = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevents page reload on form submission
-    
+        if (submitting) return; // guard against double-submit
+        setSubmitting(true);
+
         try {
             // Subscribers are first-class records now (newsletter_subscriber table).
-            const response = await fetch(`${API_BASE_URL}/api/subscriptions`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email: formData.email,
-                }),
-                });
-            
-            if (!response.ok)
-                throw new Error(`Error: ${response.statusText}`);
+            await postJson('/api/subscriptions', { email: formData.email });
 
             alert('Successfully enrolled in subscription');
             setFormData({email: ''}) ;
         } catch (error) {
             console.error("Failed to send email:", error);
             alert('Failed to enroll in subscription');
+        } finally {
+            setSubmitting(false);
         }
-    }; 
+    };
 
     useEffect(() => {
         const handleScroll = () => {
@@ -83,13 +77,13 @@ const Footer = () => {
                                             <div className="row">
                                                 <div className="col-lg-9">
                                                     <div className="form-group">
-                                                        <input type="email" className="form-control" name="email"
+                                                        <input type="email" className="form-control" name="email" maxLength={320}
                                                             value={formData.email} onChange={handleChange} placeholder="Email address" required />
                                                     </div>
                                                 </div>
                                                 <div className="col-lg-3">
                                                     <button className="theme-btn submit__btn"
-                                                            type="submit">subscribe
+                                                            type="submit" disabled={submitting}>subscribe
                                                     </button>
                                                 </div>
                                             </div>

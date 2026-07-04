@@ -199,6 +199,29 @@ test('modal iframe persists across client-side navigation', async () => {
   }
 });
 
+// Accessibility guard: while the modal is open the page content behind it must be
+// `inert` (so keyboard/AT focus can't wander behind the overlay — what makes
+// aria-modal honest). This depends on the #app-root wrapper existing in the App
+// Router output; a regression that drops it (or points at the old Pages Router
+// #__next) leaves the background reachable and silently no-ops.
+test('open modal makes the page content inert and restores it on close', async () => {
+  const { ctx, page } = await openHome(VIEWPORTS[0]);
+  try {
+    assert.equal(await page.locator('#app-root').count(), 1, '#app-root wrapper must exist');
+    assert.equal(await page.$eval('#app-root', (el) => el.hasAttribute('inert')), false, 'page starts interactive');
+
+    await page.click('.header-btn .donate-btn');
+    await waitOpen(page);
+    assert.equal(await page.$eval('#app-root', (el) => el.hasAttribute('inert')), true, 'page content must be inert while the modal is open');
+
+    await page.click('.donate-modal-close');
+    await waitClosed(page);
+    assert.equal(await page.$eval('#app-root', (el) => el.hasAttribute('inert')), false, 'inert must be removed on close');
+  } finally {
+    await ctx.close();
+  }
+});
+
 test('Donorbox widget.js / install-popup-button.js are no longer loaded', async () => {
   const { ctx, page } = await openHome(VIEWPORTS[0]);
   try {

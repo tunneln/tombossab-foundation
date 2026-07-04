@@ -10,7 +10,7 @@ import { readdir, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
-import { startServer, blockExternal } from './next-server.mjs';
+import { startServer, openPage } from './next-server.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = path.resolve(__dirname, '../public');
@@ -36,18 +36,9 @@ after(async () => {
   server?.close();
 });
 
-// Open a route with external requests blocked (offline + deterministic), same as the harness.
-async function openPage(route) {
-  const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
-  const page = await ctx.newPage();
-  await blockExternal(page, origin);
-  await page.goto(`${origin}${route}`, { waitUntil: 'load', timeout: 30000 });
-  return { ctx, page };
-}
-
 test('every local <img> on core pages actually decodes (no broken images)', async () => {
   for (const route of PAGES) {
-    const { ctx, page } = await openPage(route);
+    const { ctx, page } = await openPage(browser, origin, route);
     // Only site-local assets (src="/..."); external images (e.g. the Donorbox
     // logo) are intentionally blocked by the offline route handler above.
     const broken = await page.$$eval('img', (imgs) =>
@@ -60,7 +51,7 @@ test('every local <img> on core pages actually decodes (no broken images)', asyn
 });
 
 test('entry-video uses the recompressed JPEG; the old PNG is gone', async () => {
-  const { ctx, page } = await openPage('/');
+  const { ctx, page } = await openPage(browser, origin, '/');
   const src = await page.getAttribute('.entry-video-img img', 'src');
   await ctx.close();
   assert.equal(src, '/images/entry-video-img.jpg', 'EntryArea should point at the .jpg');

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { API_BASE_URL } from '../lib/client-config';
+import { postJson } from '../lib/client-config';
 
 const Volunteer = () => {
 
@@ -13,7 +13,8 @@ const Volunteer = () => {
         job: '',
         message: '',
       });
-    
+    const [submitting, setSubmitting] = useState(false);
+
       const handleChange = (e) => {
         setFormData({
           ...formData,
@@ -23,26 +24,19 @@ const Volunteer = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevents page reload on form submission
-    
+        if (submitting) return; // guard against double-submit
+        setSubmitting(true);
+
         try {
             // Structured fields only — the backend decides recipient and wording.
-            const response = await fetch(`${API_BASE_URL}/api/volunteer`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    name: formData.name,
-                    email: formData.email,
-                    phone: formData.phone,
-                    address: formData.address,
-                    job: formData.job,
-                    message: formData.message,
-                }),
-                });
-            
-            if (!response.ok)
-                throw new Error(`Error: ${response.statusText}`);
+            await postJson('/api/volunteer', {
+                name: formData.name,
+                email: formData.email,
+                phone: formData.phone,
+                address: formData.address,
+                job: formData.job,
+                message: formData.message,
+            });
 
             alert('Volunteer registration form received successfully!');
             setFormData({
@@ -56,8 +50,10 @@ const Volunteer = () => {
         } catch (error) {
             console.error("Failed to send email:", error);
             alert('Failed to receive volunteer registration form');
+        } finally {
+            setSubmitting(false);
         }
-    }; 
+    };
 
     return (
         <section className="contact-form-area register-area">
@@ -103,42 +99,42 @@ const Volunteer = () => {
                                 <div className="row">
                                     <div className="col-lg-12">
                                         <div className="form-group">
-                                            <input type="text" className="form-control" placeholder="Full Name" name="name"
+                                            <input type="text" className="form-control" placeholder="Full Name" name="name" maxLength={200}
                                                 value={formData.name} onChange={handleChange} required/>
                                         </div>
                                     </div>
                                     <div className="col-lg-12">
                                         <div className="form-group">
-                                            <input type="email" className="form-control" placeholder="Email Address" name="email"
+                                            <input type="email" className="form-control" placeholder="Email Address" name="email" maxLength={320}
                                                 value={formData.email} onChange={handleChange} required/>
                                         </div>
                                     </div>
                                     <div className="col-lg-12">
                                         <div className="form-group">
-                                            <input type="number" className="form-control" placeholder="Phone Number" name="phone"
+                                            <input type="tel" className="form-control" placeholder="Phone Number" name="phone" maxLength={40}
                                                 value={formData.phone} onChange={handleChange} required/>
                                         </div>
                                     </div>
                                     <div className="col-lg-12">
                                         <div className="form-group">
-                                            <input type="text" className="form-control" placeholder="Address" name="address"
+                                            <input type="text" className="form-control" placeholder="Address" name="address" maxLength={500}
                                                 value={formData.address} onChange={handleChange} />
                                         </div>
                                     </div>
                                     <div className="col-lg-12">
                                         <div className="form-group">
-                                            <input type="text" className="form-control" placeholder="Occupation" name="job"
+                                            <input type="text" className="form-control" placeholder="Occupation" name="job" maxLength={200}
                                                 value={formData.job} onChange={handleChange} />
                                         </div>
                                     </div>
                                     <div className="col-lg-12">
                                         <div className="form-group">
-                                            <textarea className="textarea" name="message"
+                                            <textarea className="textarea" name="message" maxLength={5000}
                                                 value={formData.message} onChange={handleChange} placeholder="Write a Message" required></textarea>
                                         </div>
                                     </div>
                                     <div className="col-lg-12">
-                                        <button className="theme-btn submit__btn" type="submit">send message</button>
+                                        <button className="theme-btn submit__btn" type="submit" disabled={submitting}>send message</button>
                                     </div>
                                 </div>
                             </form>

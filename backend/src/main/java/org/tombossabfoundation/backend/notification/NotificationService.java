@@ -40,7 +40,8 @@ public class NotificationService {
 		message.setFrom(mailProperties.getUsername());
 		message.setTo(notificationProperties.to());
 		message.setReplyTo(replyTo);
-		message.setSubject(subject);
+		// Strip CR/LF so a user-supplied name can't inject extra mail headers.
+		message.setSubject(subject.replaceAll("[\\r\\n]", " "));
 		message.setText(body);
 		try {
 			mailSender.send(message);

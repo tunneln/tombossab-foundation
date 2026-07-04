@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { API_BASE_URL } from '../lib/client-config';
+import { postJson } from '../lib/client-config';
 
 const Contact = () => {
     const [formData, setFormData] = useState({
@@ -10,7 +10,8 @@ const Contact = () => {
         phone: '',
         message: '',
       });
-    
+    const [submitting, setSubmitting] = useState(false);
+
       const handleChange = (e) => {
         setFormData({
           ...formData,
@@ -20,32 +21,27 @@ const Contact = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevents page reload on form submission
-    
+        if (submitting) return; // guard against double-submit
+        setSubmitting(true);
+
         try {
             // Structured fields only — the backend decides recipient and wording.
-            const response = await fetch(`${API_BASE_URL}/api/contact`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    name: formData.name,
-                    email: formData.email,
-                    phone: formData.phone,
-                    message: formData.message,
-                }),
-                });
-            
-            if (!response.ok)
-                throw new Error(`Error: ${response.statusText}`);
+            await postJson('/api/contact', {
+                name: formData.name,
+                email: formData.email,
+                phone: formData.phone,
+                message: formData.message,
+            });
 
             alert('Message sent successfully!');
             window.location.reload();
         } catch (error) {
             console.error("Failed to send email:", error);
             alert('Error sending message.');
+        } finally {
+            setSubmitting(false);
         }
-    }; 
+    };
     
     return (
         <section className="contact-area">
@@ -71,27 +67,27 @@ const Contact = () => {
                             <form onSubmit={handleSubmit} method="post">
                                 <div className="row">
                                     <div className="col-lg-6 col-sm-6 form-group">
-                                        <input className="form-control" type="text" name="name" placeholder="Full Name" 
+                                        <input className="form-control" type="text" name="name" placeholder="Full Name" maxLength={200}
                                             value={formData.name} onChange={handleChange} required/>
                                     </div>
 
                                     <div className="col-lg-6 col-sm-6 form-group">
-                                        <input className="form-control" type="email" name="email"
+                                        <input className="form-control" type="email" name="email" maxLength={320}
                                             value={formData.email} onChange={handleChange} placeholder="Email Address" required/>
                                     </div>
 
                                     <div className="col-lg-12 form-group">
-                                        <input className="form-control" type="number" name="phone"
+                                        <input className="form-control" type="tel" name="phone" maxLength={40}
                                                value={formData.phone} onChange={handleChange} placeholder="Phone Number" required/>
                                     </div>
 
                                     <div className="col-lg-12 col-sm-12 form-group">
-                                        <textarea className="textarea" name="message" placeholder="Write a Message" 
+                                        <textarea className="textarea" name="message" placeholder="Write a Message" maxLength={5000}
                                             value={formData.message} onChange={handleChange} required></textarea>
                                     </div>
 
                                     <div className="col-lg-12 col-sm-12">
-                                        <button className="theme-btn submit__btn" type="submit">Send Message</button>
+                                        <button className="theme-btn submit__btn" type="submit" disabled={submitting}>Send Message</button>
                                     </div>
                                 </div>
                             </form>

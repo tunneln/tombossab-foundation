@@ -25,5 +25,49 @@
   },
   "enabledPlugins": {
     "frontend-design@claude-plugins-official": true
+  },
+  "attribution": {
+    "commit": ""
+  },
+  "permissions": {
+    "allow": [
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git show *)",
+      "Bash(rtk git status)",
+      "Bash(rtk git diff *)",
+      "Bash(rtk git log *)",
+      "Bash(rtk git show *)",
+      "Bash(rtk ls *)",
+      "Bash(rtk grep *)",
+      "Bash(rtk rg *)",
+      "Bash(rtk find *)",
+      "Bash(rtk read *)",
+      "Bash(rtk cat *)",
+      "Bash(rtk wc *)",
+      "Bash(npm test*)",
+      "Bash(npm run build*)",
+      "Bash(rtk npm test*)",
+      "Bash(rtk npm run build*)",
+      "Bash(node *)",
+      "Bash(./mvnw test*)",
+      "Bash(./mvnw verify*)",
+      "Bash(./mvnw compile*)",
+      "Bash(./mvnw spring-boot:run*)",
+      "Bash(gh pr view *)",
+      "Bash(gh pr list *)",
+      "Bash(gh pr diff *)",
+      "Bash(gh run list *)",
+      "Bash(gh run view *)",
+      "Bash(sips -g *)",
+      "Bash(magick identify *)",
+      "Bash(magick compare *)",
+      "Bash(qlmanage -t *)",
+      "Bash(docker compose -f docker-compose.dev.yml up -d)",
+      "Bash(docker compose -f docker-compose.dev.yml ps)",
+      "Bash(docker compose -f docker-compose.dev.yml logs *)",
+      "Bash(docker ps *)"
+    ]
   }
 }

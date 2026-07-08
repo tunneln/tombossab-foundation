@@ -17,6 +17,21 @@ Design rationale for the architecture lives in `docs/refactor-plan.md`.
 - Backend run: `cd backend && ./mvnw spring-boot:run -Dspring-boot.run.profiles=local`
 - Backend tests: `./mvnw test` (no Docker) · `./mvnw verify` (adds integration tests; needs Docker — macOS/colima env vars in TESTING.md)
 
+## Verification — definition of done
+
+- Frontend change: `cd frontend && npm run build && npm test` must be green. New page ⇒ add its ROUTES entry **before** running tests.
+- Visual/CSS/image change: a passing build is not proof — render it with `node frontend/scripts/shoot.mjs <label> [routes...]` and compare. Be token-frugal: viewport/cropped shots + DOM assertions, one build+shoot cycle (the homepage is ~11,600 px tall full-page). Final gate: diff against the live site.
+- Backend change: `cd backend && ./mvnw test`; also `./mvnw verify` when touching migrations, persistence, or `SecurityConfig`.
+- Content change: follow the `content-update` skill (migration + fixture + assets + tests, all in one PR).
+- Full recipes live in the project `verify` skill. Never report a change as done without stating which checks actually ran and their results.
+
+## Working style
+
+- Do only what the task requires — no unrequested refactors, helpers, or defensive handling for cases that can't happen.
+- Ground every progress claim in a tool result from this session; if something isn't verified yet, say so explicitly.
+- For minor choices (naming, formatting, which of two equivalent approaches), pick a reasonable option and note it instead of asking; ask first only for scope changes or destructive actions.
+- Lead summaries with the outcome, in complete sentences — no working shorthand or arrow chains.
+
 ## Data flow — the one rule that matters
 
 Content (recipients, newsletters, events) lives in Postgres, seeded by versioned Flyway migrations. `frontend/lib/api.js` fetches it with ISR caching (`tags: ['content']`, revalidate 3600) and falls back to the committed JSON in `frontend/data/` whenever `API_BASE_URL` is unset (CI, tests, local dev) or the fetch fails. **A content change = a new Flyway seed migration + the matching fixture update in the same PR.** The backend deploy workflow POSTs the frontend's secret-protected `/api/revalidate` so changes appear immediately.

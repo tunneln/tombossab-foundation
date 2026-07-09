@@ -116,6 +116,17 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
+				<configuration>
+					<!-- Ryuk bind-mounts the Docker socket by the path the daemon sees,
+					     and Testcontainers reads this override from the environment only
+					     (a docker.socket.override entry in ~/.testcontainers.properties
+					     is silently ignored). /var/run/docker.sock is correct for Linux
+					     CI, colima, and Docker Desktop; without it, colima's daemon
+					     rejects the macOS-side socket path as a mount source. -->
+					<environmentVariables>
+						<TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE>/var/run/docker.sock</TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE>
+					</environmentVariables>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>

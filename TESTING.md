@@ -35,13 +35,21 @@ cd backend
 ./mvnw verify    # adds *IT integration tests — Docker required (Testcontainers)
 ```
 
-macOS note: Docker here runs via **colima**; Testcontainers needs these env vars
-(add them to your shell profile):
+macOS note: Docker here runs via **colima**, and no env vars are needed — the
+failsafe config in `backend/pom.xml` sets
+`TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/var/run/docker.sock` for the test JVM
+(a no-op on Linux CI, where that is already the daemon socket).
 
-```bash
-export DOCKER_HOST="unix://$HOME/.colima/default/docker.sock"
-export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/var/run/docker.sock
-```
+Why it's needed at all: Testcontainers starts **Ryuk**, a small reaper container
+that removes test containers when the JVM exits, and bind-mounts the Docker
+socket into it. Mount source paths are interpreted by the *daemon*, which runs
+inside the colima VM — so the macOS-side socket path
+(`~/.colima/default/docker.sock`) is unmountable there, and every `*IT` fails at
+startup. The override supplies the path as the daemon sees it. It must be an
+environment variable: Testcontainers silently ignores `docker.socket.override`
+in `~/.testcontainers.properties` (hence the pom, which works in any shell or
+IDE). Client *connection* needs no setup either — the docker context resolves
+the colima socket without `DOCKER_HOST`.
 
 Conventions:
 

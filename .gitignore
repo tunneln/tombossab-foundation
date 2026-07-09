@@ -18,3 +18,6 @@ target/
 frontend/out/
 frontend/.next/
 frontend/.shots/
+
+# local-only working notes (e.g. deploy/CUTOVER-PLAN.local.md)
+*.local.md

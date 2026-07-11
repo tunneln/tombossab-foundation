@@ -1,6 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
-import { eventBadge } from './event-format';
+import EventCard from './EventCard';
 
 // Upcoming events, received from the page as a prop (see EventsSection).
 const Events = ({ events = [] }) => {
@@ -24,44 +23,11 @@ const Events = ({ events = [] }) => {
                 </div>
 
                 <div className="row blog-content-wrap">
-                    {events.map((event) => {
-                        const { day, monthYear } = eventBadge(event.eventDate);
-                        return (
-                            <div className="col-lg-4" key={event.slug ?? event.title}>
-                                <div className="blog-content">
-                                    <div className="blog-item blog-item1">
-                                        <div className="blog-img">
-                                            {event.slug ? (
-                                                <Link href={`/events/${event.slug}`}>
-                                                    <img src={event.image} alt={event.imageAlt} />
-                                                </Link>
-                                            ) : (
-                                                <img src={event.image} alt={event.imageAlt} />
-                                            )}
-                                            <span className="blog__tag blog__tag1">
-                                                <span className="date__num-text">{day}</span>
-                                                <span className="date__mon-text">{monthYear}</span>
-                                            </span>
-                                        </div>
-                                        <div className="blog-inner-content">
-                                            <h3 className="blog__title">
-                                                {event.slug ? (
-                                                    <Link href={`/events/${event.slug}`}>{event.title}</Link>
-                                                ) : (
-                                                    event.title
-                                                )}
-                                            </h3>
-                                            <ul className="blog__list">
-                                                <li className="blog__dot-active">{event.timeLabel}</li>
-                                                <li className="blog__dot-active">{event.venue}</li>
-                                                <li className="blog__dot-active">{event.city}</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-                    })}
+                    {events.map((event) => (
+                        <div className="col-lg-4" key={event.slug ?? event.title}>
+                            <EventCard event={event} tagClass="blog__tag1" />
+                        </div>
+                    ))}
                 </div>
             </div>
         </section>

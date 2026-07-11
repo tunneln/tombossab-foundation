@@ -1,11 +1,9 @@
 import React from 'react';
-import { notFound } from 'next/navigation';
 import NavOne from "../../../components/NavOne";
 import PageHeader from "../../../components/PageHeader";
 import Footer from "../../../components/Footer";
 import CoffeeWomenEmpowermentEventDetail from "../../../components/CoffeeWomenEmpowermentEventDetail";
 import CommunityFieldDay2025EventDetail from "../../../components/CommunityFieldDay2025EventDetail";
-import { getEvents } from '../../../lib/api';
 
 // Event detail bodies are rich hand-written sections, so each slug maps to its
 // bespoke component. A new event with a detail page = one entry here + its
@@ -23,12 +21,12 @@ const DETAILS = {
     },
 };
 
-// Only slugs returned here are built; anything else 404s.
+// The registry is the single source of truth for which detail pages exist:
+// only its slugs are built; anything else 404s.
 export const dynamicParams = false;
 
-export async function generateStaticParams() {
-    const events = await getEvents();
-    return events.filter((event) => event.slug).map((event) => ({ slug: event.slug }));
+export function generateStaticParams() {
+    return Object.keys(DETAILS).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }) {
@@ -38,13 +36,11 @@ export async function generateMetadata({ params }) {
 
 const EventDetailPage = async ({ params }) => {
     const { slug } = await params;
-    const detail = DETAILS[slug];
-    if (!detail) notFound();
-    const { Body } = detail;
+    const { header, Body } = DETAILS[slug];
     return (
         <>
             <NavOne />
-            <PageHeader prev="Events" link="/events" title={detail.header} />
+            <PageHeader prev="Events" link="/events" title={header} />
             <Body />
             <Footer />
         </>

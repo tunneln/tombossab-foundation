@@ -36,7 +36,7 @@ public class SecurityConfig {
 						// Engagement endpoints are permitted for all methods so MVC can
 						// answer non-POST with a proper 405 (the controllers map POST only).
 						.requestMatchers("/api/contact", "/api/volunteer", "/api/subscriptions").permitAll()
-						.requestMatchers(HttpMethod.GET, "/actuator/health", "/actuator/health/**").permitAll()
+						.requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
 						.requestMatchers(HttpMethod.GET, "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
 						.permitAll()
 						// Everything else is closed until deliberately opened. Future

@@ -24,16 +24,16 @@ const MAX_IMAGE_BYTES = 1024 * 1024; // 1 MB
 const isImage = (name) => /\.(jpe?g|png)$/i.test(name);
 const isGallery = (name) => name.startsWith('gallery-img');
 
-let server, origin, browser;
+let stop, origin, browser;
 
 before(async () => {
-  ({ server, origin } = await startServer());
+  ({ stop, origin } = await startServer());
   browser = await chromium.launch();
 });
 
 after(async () => {
   await browser?.close();
-  server?.close();
+  stop?.();
 });
 
 test('every local <img> on core pages actually decodes (no broken images)', async () => {

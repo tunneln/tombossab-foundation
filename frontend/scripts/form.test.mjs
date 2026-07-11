@@ -11,16 +11,16 @@ import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
 import { startServer, openPage } from './next-server.mjs';
 
-let server, origin, browser;
+let stop, origin, browser;
 
 before(async () => {
-  ({ server, origin } = await startServer());
+  ({ stop, origin } = await startServer());
   browser = await chromium.launch();
 });
 
 after(async () => {
   await browser?.close();
-  server?.close();
+  stop?.();
 });
 
 // Intercept the form's POST (registered after blockExternal, so it wins) and

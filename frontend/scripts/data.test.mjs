@@ -158,11 +158,12 @@ for (const [i, e] of events.entries()) {
   });
 }
 
-// Ordering contract: lib/api.js sorts events newest-first by eventDate.
-test('events: sort (eventDate desc) yields newest-first order', () => {
-  const sorted = [...events].sort((a, b) => b.eventDate.localeCompare(a.eventDate));
-  const dates = sorted.map((e) => e.eventDate);
+// Ordering contract: the fixture must be committed in API order (newest first)
+// so the file stays content-identical to the API response — checked on the raw
+// array as committed, not on a sorted copy (which could never fail).
+test('events: fixture is committed newest-first (eventDate desc)', () => {
+  const dates = events.map((e) => e.eventDate);
   for (let i = 1; i < dates.length; i++) {
-    assert.ok(dates[i - 1] >= dates[i], `not sorted desc by eventDate at index ${i}: ${dates}`);
+    assert.ok(dates[i - 1] >= dates[i], `events.json not committed desc by eventDate at index ${i}: ${dates}`);
   }
 });

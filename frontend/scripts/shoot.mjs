@@ -32,7 +32,7 @@ const VIEWPORTS = [
 ];
 
 async function main() {
-  const { server, origin } = await startServer(PORT);
+  const { stop, origin } = await startServer(PORT);
   console.log(`serving production build at ${origin}`);
 
   const browser = await chromium.launch();
@@ -57,7 +57,7 @@ async function main() {
     await ctx.close();
   }
   await browser.close();
-  server.close();
+  stop();
   console.log(`\nwrote ${results.length} screenshots to ${path.join(SHOT_BASE, label)}`);
   results.forEach((r) => console.log('  ' + r));
 }

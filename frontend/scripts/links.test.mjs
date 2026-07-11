@@ -29,18 +29,40 @@ const PAGES = [
   '/events/coffee-women-empowerment-1', '/events/community-field-day-2025',
 ];
 
-let server, origin, browser;
+let stop, origin, browser;
 
 before(async () => {
-  ({ server, origin } = await startServer());
+  ({ stop, origin } = await startServer());
   browser = await chromium.launch();
 });
 
 after(async () => {
   await browser?.close();
-  server?.close();
+  stop?.();
 });
 
+// One crawl pass over PAGES collects everything the two link tests assert on
+// (internal hrefs and target="_blank" rel attributes), so each page is loaded
+// once instead of once per test. Memoized: the first test to run does the crawl.
+let crawlPromise;
+function crawl() {
+  crawlPromise ??= (async () => {
+    const results = [];
+    for (const route of PAGES) {
+      const { ctx, page } = await openPage(browser, origin, route);
+      const [internalHrefs, blankLinks] = await Promise.all([
+        page.$$eval('a[href^="/"]', (els) =>
+          [...new Set(els.map((a) => a.getAttribute('href')))]),
+        page.$$eval('a[target="_blank"]', (els) =>
+          els.map((a) => ({ href: a.getAttribute('href'), rel: a.getAttribute('rel') || '' }))),
+      ]);
+      await ctx.close();
+      results.push({ route, internalHrefs, blankLinks });
+    }
+    return results;
+  })();
+  return crawlPromise;
+}
 
 // Every site-internal <a href="/..."> must resolve to a real page or asset (an
 // HTTP status < 400; permanent redirects count as alive). "#" anchors and
@@ -48,12 +70,8 @@ after(async () => {
 test('no dead internal links on any core page', async () => {
   const dead = [];
   const seen = new Map(); // href -> alive? (dedupe across pages)
-  for (const route of PAGES) {
-    const { ctx, page } = await openPage(browser, origin, route);
-    const hrefs = await page.$$eval('a[href^="/"]', (els) =>
-      [...new Set(els.map((a) => a.getAttribute('href')))]);
-    await ctx.close();
-    for (const href of hrefs) {
+  for (const { route, internalHrefs } of await crawl()) {
+    for (const href of internalHrefs) {
       const bare = href.split('#')[0].split('?')[0];
       if (bare === '') continue;
       if (!seen.has(bare)) {
@@ -71,13 +89,10 @@ test('no dead internal links on any core page', async () => {
 // security foot-gun, so pin it.
 test('every target="_blank" link carries rel="noopener"', async () => {
   const offenders = [];
-  for (const route of PAGES) {
-    const { ctx, page } = await openPage(browser, origin, route);
-    const bad = await page.$$eval('a[target="_blank"]', (els) =>
-      els.filter((a) => !(a.getAttribute('rel') || '').includes('noopener'))
-         .map((a) => a.getAttribute('href')));
-    await ctx.close();
-    bad.forEach((href) => offenders.push(`${route} -> ${href}`));
+  for (const { route, blankLinks } of await crawl()) {
+    blankLinks
+      .filter(({ rel }) => !rel.includes('noopener'))
+      .forEach(({ href }) => offenders.push(`${route} -> ${href}`));
   }
   assert.deepEqual(offenders, [], `_blank links missing rel="noopener":\n  ${offenders.join('\n  ')}`);
 });

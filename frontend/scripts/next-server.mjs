@@ -33,7 +33,7 @@ function freePort() {
 }
 
 // Start `next start` bound to loopback. Pass port 0 (default) to pick a free one.
-// Resolves to { server, port, origin } — same shape the old static server had.
+// Resolves to { stop, port, origin }; stop() kills the child process.
 export async function startServer(port = 0) {
   assertBuilt();
   const actualPort = port || (await freePort());
@@ -67,7 +67,7 @@ export async function startServer(port = 0) {
   }
 
   return {
-    server: { close: (cb) => { child.kill(); cb?.(); } },
+    stop: () => child.kill(),
     port: actualPort,
     origin,
   };

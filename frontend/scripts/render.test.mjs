@@ -37,16 +37,16 @@ const ROUTES = [
   { path: '/events/community-field-day-2025',   title: 'Tombossa B Foundation | Events | Community Field Day' },
 ];
 
-let server, origin, browser;
+let stop, origin, browser;
 
 before(async () => {
-  ({ server, origin } = await startServer());
+  ({ stop, origin } = await startServer());
   browser = await chromium.launch();
 });
 
 after(async () => {
   await browser?.close();
-  server?.close();
+  stop?.();
 });
 
 for (const route of ROUTES) {

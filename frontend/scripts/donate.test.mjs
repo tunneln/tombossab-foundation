@@ -22,16 +22,16 @@ const VIEWPORTS = [
   { name: 'mobile',  w: 390,  h: 844,  mobile: true },
 ];
 
-let server, origin, browser;
+let stop, origin, browser;
 
 before(async () => {
-  ({ server, origin } = await startServer());
+  ({ stop, origin } = await startServer());
   browser = await chromium.launch();
 });
 
 after(async () => {
   await browser?.close();
-  server?.close();
+  stop?.();
 });
 
 async function openHome(vp) {

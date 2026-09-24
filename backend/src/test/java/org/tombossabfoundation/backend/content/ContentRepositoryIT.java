@@ -56,10 +56,11 @@ class ContentRepositoryIT extends AbstractPostgresIT {
 	@Test
 	void seededNewsletters_orderNewestIssueFirst() {
 		List<Newsletter> all = newsletters.findAllByOrderByIssueDateDesc();
-		assertEquals(3, all.size());
-		assertEquals("june-2026", all.get(0).getPublicId());
-		assertEquals("april-2026", all.get(1).getPublicId());
-		assertEquals("march-2026", all.get(2).getPublicId());
+		assertEquals(4, all.size());
+		assertEquals("september-2026", all.get(0).getPublicId());
+		assertEquals("june-2026", all.get(1).getPublicId());
+		assertEquals("april-2026", all.get(2).getPublicId());
+		assertEquals("march-2026", all.get(3).getPublicId());
 	}
 
 	@Test

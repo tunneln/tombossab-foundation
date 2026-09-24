@@ -57,6 +57,24 @@ const SliderOne = () => {
                     </div>
                 </SwiperSlide>
                 <SwiperSlide className='swiper-no-swiping'>
+                    <div className="single-slide-item slide-bg4">
+                        <div className="slide-item-table">
+                            <div className="slide-item-tablecell">
+                                <div className="container">
+                                    <div className="row">
+                                        <div className="slider-heading">
+                                            <h3 className="slider__desc">
+                                                <div className="slider__box">Read our September Newsletter — highlights from the Eritrean Festival and a save-the-date for our 2026 Gala!</div>
+                                            </h3>
+                                        </div>
+                                        <a href="/newsletters/september-2026-newsletter.pdf" target="_blank" rel="noopener noreferrer" className="theme-btn slider-btn">Read Here!</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </SwiperSlide>
+                <SwiperSlide className='swiper-no-swiping'>
                     <div className="single-slide-item slide-bg3">
                         <div className="slide-item-table">
                             <div className="slide-item-tablecell">
@@ -68,42 +86,6 @@ const SliderOne = () => {
                                             </h3>
                                         </div>
                                         <Link href="/award-recipients" className="theme-btn slider-btn">Meet Our Scholars</Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide className='swiper-no-swiping'>
-                    <div className="single-slide-item slide-bg4">
-                        <div className="slide-item-table">
-                            <div className="slide-item-tablecell">
-                                <div className="container">
-                                    <div className="row">
-                                        <div className="slider-heading">
-                                            <h3 className="slider__desc">
-                                                <div className="slider__box">Read our June Newsletter — featuring guest speaker Dr. Yacob Tekie and mental health resources for our community.</div>
-                                            </h3>
-                                        </div>
-                                        <a href="/newsletters/june-2026-newsletter.pdf" target="_blank" rel="noopener noreferrer" className="theme-btn slider-btn">Read Here!</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide className='swiper-no-swiping'>
-                    <div className="single-slide-item slide-bg2">
-                        <div className="slide-item-table">
-                            <div className="slide-item-tablecell">
-                                <div className="container">
-                                    <div className="row">
-                                        <div className="slider-heading">
-                                            <h3 className="slider__desc">
-                                                <div className="slider__box">Coffee &amp; Women Empowerment — Join us June 27, 2–6PM with guest speaker Dr. Yacob Tekie!</div>
-                                            </h3>
-                                        </div>
-                                        <Link href="/events/coffee-women-empowerment-1" className="theme-btn slider-btn">Learn More</Link>
                                     </div>
                                 </div>
                             </div>

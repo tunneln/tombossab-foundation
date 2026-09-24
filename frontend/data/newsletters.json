@@ -34,5 +34,17 @@
     "blurb": "Get to know Dr. Yacob Tekie, guest speaker for our Coffee & Women Empowerment gathering, plus mental health resources for our community.",
     "cover": "/newsletters/june-2026-cover.jpg",
     "file": "/newsletters/june-2026-newsletter.pdf"
+  },
+  {
+    "id": "september-2026",
+    "title": "September 2026 Newsletter",
+    "issue": "Issue #4",
+    "date": "2026-09",
+    "month": "September",
+    "year": "2026",
+    "headline": "Celebrating Community at the Eritrean Festival",
+    "blurb": "Highlights from our booth at this year’s Eritrean Festival, plus a save-the-date for our first annual Gala Dinner this November.",
+    "cover": "/newsletters/september-2026-cover.jpg",
+    "file": "/newsletters/september-2026-newsletter.pdf"
   }
 ]

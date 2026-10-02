@@ -17,6 +17,7 @@
     "swiper": "^11.2.10"
   },
   "devDependencies": {
-    "playwright": "^1.61.1"
+    "playwright": "^1.61.1",
+    "qrcode": "^1.5.4"
   }
 }

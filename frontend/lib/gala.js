@@ -101,7 +101,16 @@ export const stateOverride = (search) => {
     return GALA_STATES.includes(value) ? value : null;
 };
 
-// The /events card and the homepage slide both live until removeAfter.
+// Dev-only `?galaNow=2026-12-03T12:00:00-06:00`: pretend it's that moment
+// (state, countdown, Giving Tuesday line, slide removal). Null in production.
+export const nowOverride = (search) => {
+    if (process.env.NODE_ENV === 'production') return null;
+    const value = new URLSearchParams(search).get('galaNow');
+    const date = value ? new Date(value) : null;
+    return date && !Number.isNaN(date.getTime()) ? date : null;
+};
+
+// The homepage slide lives until homeSlide.removeAfter.
 export const isAfter = (iso, now = new Date()) => now.getTime() > new Date(iso).getTime();
 
 // Whole calendar days (Central time) from `now` until the event date.

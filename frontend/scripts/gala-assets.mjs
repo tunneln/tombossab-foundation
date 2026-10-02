@@ -1,0 +1,85 @@
+// One-off generator for the gala's static images (dev-only; outputs are committed):
+//   public/images/gala-2026-og.png    1200x630 link-preview image (og:image / twitter:image)
+//   public/images/gala-2026-card.jpg  740x476  /events card image (2x the 370x238 card)
+//   public/images/gala-2026-qr.svg    QR code for https://tombossabfoundation.org/gala
+//   public/images/gala-2026-qr.png    same, 1024px
+//
+//   node scripts/gala-assets.mjs
+//
+// The images are HTML rendered by Playwright (already a dev dependency) with the
+// real Playfair Display + Poppins web fonts; the script aborts if a font fails to
+// load, so a fallback typeface can never be baked in. Needs network (Google Fonts).
+// The time is deliberately NOT on the OG image: previews are cached for a long time.
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import QRCode from 'qrcode';
+import { chromium } from 'playwright';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const IMAGES = path.resolve(__dirname, '../public/images');
+const GALA_URL = 'https://tombossabfoundation.org/gala';
+
+const INK = '#120C1C';
+const LOGO = `data:image/png;base64,${readFileSync(path.join(IMAGES, 'logo-white.png')).toString('base64')}`;
+const MOTIF = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='18' viewBox='0 0 28 18'%3E%3Cg fill='none' stroke='%23C9A45C' stroke-width='1'%3E%3Cpath d='M0 1.5h28M0 16.5h28'/%3E%3Cpath d='M14 4l5 5-5 5-5-5z'/%3E%3C/g%3E%3Cg fill='%23C9A45C'%3E%3Cpath d='M14 7.6l1.4 1.4-1.4 1.4-1.4-1.4z'/%3E%3Ccircle cx='0' cy='9' r='1.3'/%3E%3Ccircle cx='28' cy='9' r='1.3'/%3E%3C/g%3E%3C/svg%3E\")";
+
+const page = (width, height, body, extraCss = '') => `<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@500;600&display=block" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: ${width}px; height: ${height}px; overflow: hidden; }
+  body {
+    background: ${INK} radial-gradient(ellipse at 50% 45%, rgba(61,33,89,.9) 0%, rgba(43,23,64,.45) 45%, transparent 75%);
+    color: #F7F1E6; font-family: 'Poppins', sans-serif;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+    position: relative;
+  }
+  .band { position: absolute; left: 0; right: 0; height: 18px; background: ${MOTIF} repeat-x center; }
+  .display { font-family: 'Playfair Display', serif; font-weight: 700; }
+  ${extraCss}
+</style></head><body>${body}</body></html>`;
+
+const OG = page(1200, 630, `
+  <div class="band" style="top: 28px"></div>
+  <img src="${LOGO}" alt="" style="width: 190px; margin-bottom: 26px">
+  <h1 class="display" style="font-size: 76px; line-height: 1.05; max-width: 980px">The Tombossa B<br>Foundation Gala</h1>
+  <p style="margin-top: 30px; font-size: 30px; font-weight: 600; letter-spacing: .04em; color: #E3C98F">Saturday, November 28, 2026 · Dallas, TX</p>
+  <p style="margin-top: 16px; font-size: 24px; font-weight: 500; color: #CBBFD6">tombossabfoundation.org/gala</p>
+  <div class="band" style="bottom: 28px"></div>`);
+
+// Keeps the lockup clear of the card's date badge (top-left) and sale pill (top-right).
+const CARD = page(740, 476, `
+  <div class="band" style="top: 22px"></div>
+  <p style="margin-top: 30px; font-size: 19px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: #E3C98F">The Tombossa B Foundation</p>
+  <p class="display" style="font-size: 132px; line-height: 1; margin-top: 6px">Gala</p>
+  <p class="display" style="font-size: 64px; line-height: 1; color: #C9A45C; letter-spacing: .06em">2026</p>
+  <div class="band" style="bottom: 22px"></div>`);
+
+async function render(browser, html, width, height, file, type) {
+  const tab = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
+  await tab.setContent(html, { waitUntil: 'networkidle' });
+  await tab.evaluate(() => document.fonts.ready);
+  const fontsOk = await tab.evaluate(() =>
+    document.fonts.check("700 40px 'Playfair Display'") && document.fonts.check("600 20px 'Poppins'")
+    && [...document.fonts].some((f) => f.family.includes('Playfair') && f.status === 'loaded'));
+  if (!fontsOk) throw new Error(`web fonts did not load for ${file}; check the network and retry`);
+  await tab.screenshot({ path: path.join(IMAGES, file), type, ...(type === 'jpeg' && { quality: 88 }) });
+  await tab.close();
+  console.log(`wrote public/images/${file}`);
+}
+
+const browser = await chromium.launch();
+try {
+  await render(browser, OG, 1200, 630, 'gala-2026-og.png', 'png');
+  await render(browser, CARD, 740, 476, 'gala-2026-card.jpg', 'jpeg');
+} finally {
+  await browser.close();
+}
+
+// QR: high error correction, ink on white, 4-module quiet zone. Plain URL (no
+// UTM parameters: the site has no analytics of its own).
+const QR_OPTIONS = { errorCorrectionLevel: 'H', margin: 4, color: { dark: INK, light: '#FFFFFF' } };
+await QRCode.toFile(path.join(IMAGES, 'gala-2026-qr.svg'), GALA_URL, { ...QR_OPTIONS, type: 'svg' });
+await QRCode.toFile(path.join(IMAGES, 'gala-2026-qr.png'), GALA_URL, { ...QR_OPTIONS, type: 'png', width: 1024 });
+console.log('wrote public/images/gala-2026-qr.svg and gala-2026-qr.png');

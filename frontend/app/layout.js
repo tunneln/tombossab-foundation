@@ -9,7 +9,10 @@ export const metadata = {
     openGraph: {
         title: 'Tombossa B Foundation',
         description: 'Empowering Eritrean and East African youth communities through education, support, and opportunity.',
-        url: 'https://tombossabfoundation.org/',
+        // No og:url here: every page inherits these defaults, and a hardcoded
+        // homepage URL made every shared link preview as the homepage. Without
+        // it, scrapers use the page's own URL. Pages that need specific share
+        // tags (e.g. /gala) export their own openGraph, which replaces this one.
         type: 'website',
         images: ['/images/link-preview.png'],
     },

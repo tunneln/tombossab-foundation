@@ -4,7 +4,8 @@
 // it serves at its clean URL, carries the right <title>, declares the document
 // language, and renders the shared chrome (nav, footer, a donate CTA, the
 // required meta tags). It also fails if a NEW page is prerendered without a
-// matching entry here, so route coverage can't silently rot.
+// matching entry here, so route coverage can't silently rot. (/sitemap.xml and
+// /robots.txt aren't pages; scripts/gala-render.test.mjs covers them.)
 //
 // Prereq: build first (no API_BASE_URL -> hermetic fixture content), then run:
 //   npm run build
@@ -15,6 +16,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
 import { FRONTEND_DIR, startServer, openPage } from './next-server.mjs';
+import { getGalaState } from '../lib/gala.js';
 
 // The full set of user-facing routes and their exact titles. Home is bare; every
 // other page follows the "Tombossa B Foundation | X" convention (app/CLAUDE.md).
@@ -35,6 +37,8 @@ const ROUTES = [
   { path: '/volunteer',                         title: 'Tombossa B Foundation | Volunteer' },
   { path: '/events/coffee-women-empowerment-1', title: 'Tombossa B Foundation | Events | Coffee & Women Empowerment' },
   { path: '/events/community-field-day-2025',   title: 'Tombossa B Foundation | Events | Community Field Day' },
+  // The gala page opens on its own hero instead of the PageHeader banner.
+  { path: '/gala',                              title: 'Tombossa B Foundation | Gala 2026 | Tickets & Sponsorship', noBanner: true },
 ];
 
 let stop, origin, browser;
@@ -72,12 +76,25 @@ for (const route of ROUTES) {
       assert.equal(await page.locator('.footer-area').count(), 1, 'Footer must be present');
       assert.ok(await page.locator('.donate-btn').count() >= 1, 'a donate CTA must be present');
 
+      // The gold gala button in the header, on every page (it jumps to the
+      // ticket section on /gala itself). Its label follows the gala state the
+      // browser computes today; after the event it's gone.
+      const galaState = getGalaState(new Date());
+      const galaHref = route.path === '/gala' ? '#tickets' : '/gala';
+      const galaButtons = page.locator(`header a[href="${galaHref}"]`);
+      if (galaState === 'past') {
+        assert.equal(await galaButtons.count(), 0, 'header gala button must be gone after the event');
+      } else {
+        const label = galaState === 'online_closed' ? 'The Gala' : 'Gala Tickets';
+        assert.ok(await galaButtons.filter({ hasText: label }).count() >= 1, `header "${label}" button must be present`);
+      }
+
       // Required <head> meta. Responsive + SEO description ship on every page.
       assert.equal(await page.locator('meta[name="viewport"]').count(), 1, 'viewport meta required');
       assert.equal(await page.locator('meta[name="description"]').count(), 1, 'description meta required');
 
       // Every page except home carries the PageHeader breadcrumb banner.
-      if (!route.home) {
+      if (!route.home && !route.noBanner) {
         const banner = page.locator('.breadcrumb__title');
         assert.equal(await banner.count(), 1, 'inner pages must render a PageHeader banner');
         assert.ok((await banner.innerText()).trim().length > 0, 'banner title must not be blank');
@@ -98,6 +115,12 @@ test('legacy event URLs permanently redirect to the event page', async () => {
   }
 });
 
+test('/events/gala-2026 permanently redirects to the canonical /gala', async () => {
+  const res = await fetch(`${origin}/events/gala-2026`, { redirect: 'manual' });
+  assert.equal(res.status, 308);
+  assert.equal(res.headers.get('location'), '/gala');
+});
+
 // Coverage guard: every prerendered route must have a ROUTES entry above (so it
 // gets the checks). Reads the build's own manifest, so a new page can't ship
 // unchecked. Excludes Next's framework not-found route.
@@ -105,7 +128,7 @@ test('every prerendered route is covered by ROUTES', () => {
   const manifest = JSON.parse(
     readFileSync(path.join(FRONTEND_DIR, '.next', 'prerender-manifest.json'), 'utf8'));
   const known = new Set(ROUTES.map((r) => r.path));
-  const ignore = new Set(['/_not-found']);
+  const ignore = new Set(['/_not-found', '/sitemap.xml', '/robots.txt']);
   const uncovered = Object.keys(manifest.routes)
     .filter((route) => !known.has(route) && !ignore.has(route))
     .sort();

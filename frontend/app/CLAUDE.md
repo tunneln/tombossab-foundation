@@ -49,6 +49,10 @@ const AwardRecipientsPage = async () => {
 
 See `award-recipients/`, `newsletters/`, `events/`. Event detail pages: `events/[slug]/page.js` maps slugs to bespoke detail components via its `DETAILS` registry + `generateStaticParams` (`dynamicParams = false` — unknown slugs 404).
 
+## /gala
+
+`gala/page.js` is the exception to the standard shape: no PageHeader (its hero replaces it; `noBanner` in render.test), and it exports full `openGraph`/`twitter`/`alternates.canonical` metadata (a page-level `openGraph` replaces the root's wholesale). `/gala` is the printed/QR canonical URL; never rename it. Launch steps: `docs/gala-2026-launch-checklist.md`.
+
 ## layout.js owns the document
 
 - The stylesheet `<link>`s in **source order with a single `precedence="site"`** — order is load-bearing (responsive.css overrides style.css overrides bootstrap). The site's CSS is runtime files under `public/`; never convert them to bundler imports.
@@ -59,4 +63,4 @@ See `award-recipients/`, `newsletters/`, `events/`. Event detail pages: `events/
 
 ## Special files
 
-`not-found.js` (404 with full chrome), `error.js` (client, runtime errors), `api/revalidate/route.js` (secret-protected `revalidateTag('content')` — pinged by the backend deploy workflow).
+`not-found.js` (404 with full chrome), `error.js` (client, runtime errors), `api/revalidate/route.js` (secret-protected `revalidateTag('content')` — pinged by the backend deploy workflow), `sitemap.js` (`/sitemap.xml`; add new public pages to its list) and `robots.js`.

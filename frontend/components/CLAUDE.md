@@ -4,7 +4,11 @@ Reusable UI, one component per site section. ~40 components; you should not need
 
 ## Server vs client
 
-Components are **server components by default** (no pragma). Add `"use client"` as the first line only when the component needs state, effects, browser APIs, event handlers, context, or styled-jsx. Current client components: the donate family (`DonateProvider/DonateModal/DonateButton/Donate`), `NavOne`, `Footer`, the forms (`Contact`, `Volunteer`), the swiper users (`SliderOne`, `ClientsLogo`, `ClientsLogoTwo`, `MixerArea`), `EntryArea`, `VideoModal`, `Gallery`, `FaqArea`, `Map`. Everything presentational stays server-rendered.
+Components are **server components by default** (no pragma). Add `"use client"` as the first line only when the component needs state, effects, browser APIs, event handlers, context, or styled-jsx. Current client components: the donate family (`DonateProvider/DonateModal/DonateButton/Donate`), `NavOne`, `Footer`, the forms (`Contact`, `Volunteer`), the swiper users (`SliderOne`, `ClientsLogo`, `ClientsLogoTwo`, `MixerArea`), `EntryArea`, `VideoModal`, `Gallery`, `FaqArea`, `Map`, `GalaNavButton`, `GalaEvents`, and the interactive pieces in `gala/`. Everything presentational stays server-rendered.
+
+## Gala 2026 (`gala/`)
+
+The `/gala` page sections, styled by one CSS module (`gala/Gala.module.css`, its own palette, scoped). All content comes from `../config/gala-2026.js` via helpers in `../lib/gala.js`. The state (`coming_soon | on_sale | online_closed | past`) is computed client-side by `gala/useGalaState` (pages are static); sections stay server components and wrap state-dependent bits in `<ShowIn states={[...]}>`. Dev-only `?galaState=` / `?galaNow=` overrides. The header button (`GalaNavButton`), homepage slide (`SliderOne`), and `/events` card (`GalaEvents`) use the same hook.
 
 ## Style
 

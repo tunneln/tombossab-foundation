@@ -1,0 +1,76 @@
+/* Header "Gala Tickets" pill. Scoped (CSS Modules) and absolutely positioned
+   where it shares space, so the rest of the header is identical at every
+   breakpoint. */
+.pill,
+.pill:hover,
+.pill:focus {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 49px; /* = the Donate button */
+    padding: 0 16px;
+    border-radius: 999px;
+    background-color: #C9A45C;
+    color: #120C1C;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    line-height: 1;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.2s ease;
+}
+.pill:hover { background-color: #E3C98F; }
+.pill:focus-visible {
+    outline: 3px solid #120C1C;
+    outline-offset: 2px;
+}
+
+/* Desktop (> 1024px, where the header Donate button shows). */
+.desktopSlot {
+    position: relative;
+    display: inline-block;
+    width: 0;
+    height: 49px;
+    vertical-align: top;
+}
+.desktop {
+    position: absolute;
+    top: 0;
+    left: 18px; /* clears the Donate button's slanted edge */
+}
+
+/* Tablets (576-1024px): beside the hamburger icon. */
+.tablet { display: none; }
+@media (min-width: 576px) and (max-width: 1024px) {
+    .tablet {
+        display: inline-flex;
+        position: absolute;
+        top: 50%;
+        right: 84px;
+        transform: translateY(-50%);
+    }
+}
+
+/* Side (hamburger) menu: first item. The menu's own link rule is very
+   specific (.header-area ... .sidenav__item a), so this mirrors that chain. */
+:global(.header-area .side-nav-container .side-menu-wrap .side-menu-ul .sidenav__item) a.menu {
+    display: inline-flex;
+    height: 46px;
+    margin: 4px 20px 12px;
+    padding: 0 22px;
+    color: #120C1C;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+:global(.header-area .side-nav-container .side-menu-wrap .side-menu-ul .sidenav__item) a.menu:hover {
+    color: #120C1C;
+    background-color: #E3C98F;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pill { transition: none; }
+}

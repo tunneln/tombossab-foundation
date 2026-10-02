@@ -13,7 +13,7 @@ const EventsPage = async () => {
         <>
             <NavOne />
             <PageHeader title="Events" />
-            <EventsSection events={events} />
+            <EventsSection events={events} featureGala />
             <Footer />
         </>
     );

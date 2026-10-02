@@ -26,7 +26,7 @@ const readJson = (name) => JSON.parse(readFileSync(path.join(DATA_DIR, name), 'u
 const PAGES = [
   '/', '/about', '/apply', '/award-recipients', '/causes', '/contact',
   '/donatenow', '/events', '/gallery', '/newsletters', '/team', '/volunteer',
-  '/events/coffee-women-empowerment-1', '/events/community-field-day-2025',
+  '/events/coffee-women-empowerment-1', '/events/community-field-day-2025', '/gala',
 ];
 
 let stop, origin, browser;

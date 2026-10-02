@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import DonateButton from "./DonateButton";
+import GalaNavButton from "./GalaNavButton";
 
 const NavOne = () => {
     const pathname = usePathname();
@@ -114,7 +115,7 @@ const NavOne = () => {
                                         </Link>
                                     </div>
                                     <div className="header-btn ml-auto">
-                                        <DonateButton className="theme-btn" />
+                                        <DonateButton className="theme-btn" /><GalaNavButton placement="desktop" />
                                     </div>
                                 </div>
                             </div>
@@ -148,6 +149,7 @@ const NavOne = () => {
                                             </nav>
                                         </div>
                                     </div>
+                                    <GalaNavButton placement="tablet" />
                                     <div className="mobile-menu-toggle">
                                         <i className={`fa fa-bars fa-2x fa-white ${whiteNav ? 'white-nav-bar' : ''}`} aria-hidden="true"></i>
                                     </div>
@@ -162,6 +164,7 @@ const NavOne = () => {
                     </div>
                     <div className="side-menu-wrap">
                         <ul className="side-menu-ul">
+                            <li className="sidenav__item"><GalaNavButton placement="menu" /></li>
                             <li className="sidenav__item"><Link href="/">home</Link></li>
                             <li className="sidenav__item"><Link href="/about">about us</Link></li>
                             <li className="sidenav__item"><Link href="/events">events</Link> </li>

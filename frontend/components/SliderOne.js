@@ -10,12 +10,31 @@ import 'swiper/css/navigation';
 
 import { Pagination, Autoplay } from 'swiper/modules';
 
+import useGalaState from './gala/useGalaState';
+import { gala } from '../config/gala-2026';
+import { isAfter } from '../lib/gala';
+
+// Gala slide copy per gala state (config/gala-2026.js holds the text).
+const GALA_SLIDE = {
+    coming_soon: { subline: gala.homeSlide.subline, primary: 'Learn More', sponsor: true },
+    on_sale: { subline: gala.homeSlide.subline, primary: 'Get Tickets', sponsor: true },
+    online_closed: { subline: gala.homeSlide.closedSubline, primary: 'Event Details', sponsor: false },
+    past: { subline: gala.homeSlide.pastSubline, primary: 'See the Recap', sponsor: false },
+};
+
 const SliderOne = () => {
+    // The gala slide leads the slider until homeSlide.removeAfter, then removes
+    // itself (client-side, once the date is known). The Swiper is keyed on it so
+    // the looped slider remounts cleanly instead of splicing a slide out.
+    const { state, now } = useGalaState();
+    const showGala = !(now && isAfter(gala.homeSlide.removeAfter, now));
+    const galaSlide = GALA_SLIDE[state];
 
     return (
         <section className="slider-area">
             <div className="homepage-slide1">
             <Swiper
+                key={showGala ? 'with-gala' : 'without-gala'}
                 style={{
                     '--swiper-pagination-color': '#f1ae44',
                     '--swiper-pagination-bullet-size': '16px',
@@ -36,6 +55,30 @@ const SliderOne = () => {
                 modules={[Autoplay, Pagination]}
                 className="frontpageSwiper"
             >
+                {showGala && (
+                    <SwiperSlide className='swiper-no-swiping'>
+                        <div className="single-slide-item slide-bg-gala">
+                            <div className="slide-item-table">
+                                <div className="slide-item-tablecell">
+                                    <div className="container">
+                                        <div className="gala-slide">
+                                            <p className="gala-slide__eyebrow">{gala.homeSlide.eyebrow}</p>
+                                            <h2 className="gala-slide__title">{gala.name}</h2>
+                                            <p className="gala-slide__subline">{galaSlide.subline}</p>
+                                            <div className="gala-slide__ctas">
+                                                <Link href="/gala" className="gala-slide__btn gala-slide__btn--primary">{galaSlide.primary}</Link>
+                                                {galaSlide.sponsor && (
+                                                    <Link href="/gala#sponsor" className="gala-slide__btn gala-slide__btn--outline">Become a Sponsor</Link>
+                                                )}
+                                            </div>
+                                            <span className="gala-slide__motif" aria-hidden="true"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </SwiperSlide>
+                )}
                 <SwiperSlide className='swiper-no-swiping'>
                     <div className="single-slide-item slide-bg1">
                         <div className="slide-item-table">

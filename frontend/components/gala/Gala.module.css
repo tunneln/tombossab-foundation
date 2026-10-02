@@ -1,0 +1,863 @@
+/* Gala 2026 page. Everything is scoped under .gala (CSS Modules hash every class),
+   so nothing here can leak into the site's global CSS. Each section sets its own
+   background plus a few context variables (--fg, --muted, --rule, --focus) that
+   the shared pieces read, so the same card/button works on dark and light. */
+
+.gala {
+    --gala-ink: #120C1C;
+    --gala-plum: #2B1740;
+    --gala-plum-raised: #3D2159;
+    --gala-gold: #C9A45C;
+    --gala-gold-soft: #E3C98F;
+    --gala-ivory: #F7F1E6;
+    --gala-ivory-deep: #EFE5D3;
+    --gala-text-dark: #1F1629;
+    --gala-text-light: #F7F1E6;
+    --gala-muted-light: #CBBFD6;
+    --gala-muted-dark: #4E4159;
+    --gala-display: 'Playfair Display', Georgia, serif;
+    --gala-motif: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='18' viewBox='0 0 28 18'%3E%3Cg fill='none' stroke='%23C9A45C' stroke-width='1'%3E%3Cpath d='M0 1.5h28M0 16.5h28'/%3E%3Cpath d='M14 4l5 5-5 5-5-5z'/%3E%3C/g%3E%3Cg fill='%23C9A45C'%3E%3Cpath d='M14 7.6l1.4 1.4-1.4 1.4-1.4-1.4z'/%3E%3Ccircle cx='0' cy='9' r='1.3'/%3E%3Ccircle cx='28' cy='9' r='1.3'/%3E%3C/g%3E%3C/svg%3E");
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    overflow-x: clip;
+}
+
+/* ------------------------------------------------------------ section shells */
+
+.section {
+    padding: 96px 0;
+    color: var(--fg);
+    scroll-margin-top: 130px; /* the site header is fixed (120px) once scrolled */
+}
+.ink, .plum {
+    --fg: var(--gala-text-light);
+    --muted: var(--gala-muted-light);
+    --accent-text: var(--gala-gold-soft);
+    --rule: var(--gala-gold);
+    --focus: var(--gala-gold);
+    --card: var(--gala-plum-raised);
+    --card-border: rgba(201, 164, 92, 0.28);
+}
+.ink { background-color: var(--gala-ink); }
+.plum { background-color: var(--gala-plum); }
+.plum { --card: var(--gala-ink); }
+.ivory, .ivoryDeep {
+    --fg: var(--gala-text-dark);
+    --muted: var(--gala-muted-dark);
+    --accent-text: var(--gala-text-dark); /* never gold text on ivory (2:1) */
+    --rule: var(--gala-gold);
+    --focus: var(--gala-ink);
+    --card: #fff;
+    --card-border: rgba(31, 22, 41, 0.1);
+}
+.ivory { background-color: var(--gala-ivory); }
+.ivoryDeep { background-color: var(--gala-ivory-deep); }
+
+.gala :focus-visible {
+    outline: 3px solid var(--focus, var(--gala-gold));
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+.narrow {
+    max-width: 760px;
+    margin: 0 auto;
+}
+.center { text-align: center; }
+
+.eyebrow {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent-text);
+    margin-bottom: 14px;
+}
+.title {
+    font-family: var(--gala-display);
+    font-weight: 700;
+    font-size: clamp(32px, 4.4vw, 48px);
+    line-height: 1.15;
+    color: var(--fg);
+    margin: 0 0 16px;
+}
+.lead {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0 auto;
+    max-width: 680px;
+}
+.rule {
+    display: block;
+    width: 64px;
+    height: 2px;
+    background: var(--rule);
+    margin: 22px auto 0;
+    border: 0;
+}
+.heading { margin-bottom: 52px; }
+
+/* ------------------------------------------------------------ buttons & links */
+
+.btn,
+.btn:hover,
+.btn:focus {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 50px;
+    padding: 0 30px;
+    border-radius: 999px;
+    border: 2px solid var(--gala-gold);
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.btnPrimary,
+.btnPrimary:focus {
+    background-color: var(--gala-gold);
+    color: var(--gala-ink);
+}
+.btnPrimary:hover {
+    background-color: var(--gala-gold-soft);
+    border-color: var(--gala-gold-soft);
+    color: var(--gala-ink);
+}
+.btnOutline,
+.btnOutline:focus {
+    background-color: transparent;
+    color: var(--fg);
+}
+.btnOutline:hover {
+    background-color: rgba(201, 164, 92, 0.16);
+    color: var(--fg);
+}
+/* On ivory the outline keeps an ink border so it isn't gold-on-ivory. */
+.ivory .btnOutline, .ivoryDeep .btnOutline { border-color: var(--gala-text-dark); }
+.btnBlock { width: 100%; }
+.btnLarge { min-height: 58px; padding: 0 40px; font-size: 15px; }
+.btnDisabled,
+.btnDisabled:hover {
+    background-color: transparent;
+    border-color: var(--muted);
+    color: var(--muted);
+    cursor: not-allowed;
+}
+
+.textLink,
+.textLink:hover,
+.textLink:focus {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--accent-text);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: var(--rule);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+}
+.textLink:hover { color: var(--fg); }
+
+.inlineLink,
+.inlineLink:hover {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--rule);
+    text-underline-offset: 3px;
+}
+
+/* ------------------------------------------------------------ motif */
+
+.motif {
+    position: relative;
+    display: block;
+    height: 18px;
+    background-image: var(--gala-motif);
+    background-repeat: repeat-x;
+    background-position: center;
+    overflow: hidden;
+}
+/* A soft shimmer sweeps along the gold band. */
+.motif::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg, transparent 0%, rgba(255, 244, 214, 0.55) 50%, transparent 100%);
+    width: 30%;
+    transform: translateX(-120%);
+    animation: galaShimmer 7s ease-in-out infinite;
+    mix-blend-mode: screen;
+}
+@keyframes galaShimmer {
+    0%, 55% { transform: translateX(-120%); }
+    100% { transform: translateX(440%); }
+}
+
+/* ------------------------------------------------------------ hero */
+
+.hero {
+    position: relative;
+    padding: 88px 0 0;
+    text-align: center;
+    overflow: hidden;
+}
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: -20% -10% auto;
+    height: 120%;
+    background: radial-gradient(ellipse at 50% 30%, rgba(61, 33, 89, 0.75) 0%, rgba(43, 23, 64, 0.35) 40%, transparent 70%);
+    pointer-events: none;
+}
+.heroInner { position: relative; padding-bottom: 72px; }
+.h1 {
+    font-family: var(--gala-display);
+    font-weight: 700;
+    font-size: clamp(38px, 6.4vw, 78px);
+    line-height: 1.06;
+    color: var(--gala-text-light);
+    margin: 0 auto;
+    max-width: 900px;
+    text-wrap: balance;
+}
+.year {
+    display: block;
+    font-family: var(--gala-display);
+    font-weight: 700;
+    font-size: clamp(64px, 11vw, 132px);
+    line-height: 1;
+    letter-spacing: 0.06em;
+    color: var(--gala-gold);
+    margin-top: 6px;
+}
+.tagline {
+    font-family: var(--gala-display);
+    font-style: italic;
+    font-size: clamp(22px, 2.6vw, 30px);
+    color: var(--gala-gold-soft);
+    margin: 10px 0 0;
+}
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 12px;
+    margin: 36px auto 0;
+    padding: 0;
+    max-width: 920px;
+}
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 18px;
+    border: 1px solid rgba(201, 164, 92, 0.45);
+    border-radius: 999px;
+    font-size: 15px;
+    line-height: 1.4;
+    color: var(--gala-text-light);
+    background: rgba(18, 12, 28, 0.4);
+    text-align: left;
+}
+.chip i { color: var(--gala-gold); width: 16px; text-align: center; }
+.intro {
+    max-width: 720px;
+    margin: 36px auto 0;
+    color: var(--gala-muted-light);
+    font-size: 17px;
+    line-height: 1.75;
+}
+.intro p + p { margin-top: 14px; }
+.ctas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 14px 16px;
+    margin-top: 40px;
+}
+.giveLink { margin-top: 10px; }
+.countdown {
+    margin-top: 22px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gala-gold-soft);
+}
+.notice {
+    margin: 22px auto 0;
+    max-width: 640px;
+    color: var(--gala-gold-soft);
+    font-weight: 500;
+}
+
+/* ------------------------------------------------------------ story */
+
+.storyText {
+    font-size: 18px;
+    line-height: 1.85;
+    color: var(--fg);
+    margin: 0 0 18px;
+}
+
+/* ------------------------------------------------------------ evening */
+
+.tiles {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 22px;
+}
+.tile {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 30px 24px;
+    text-align: center;
+}
+.tileIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 1px solid var(--gala-gold);
+    color: var(--gala-gold);
+    font-size: 22px;
+    margin-bottom: 18px;
+}
+.tileTitle {
+    font-family: 'Poppins', sans-serif;
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--fg);
+    margin: 0 0 8px;
+}
+.tileText { color: var(--muted); margin: 0; font-size: 15px; }
+.subBlock { margin-top: 56px; }
+.subTitle {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-text);
+    text-align: center;
+    margin: 0 0 22px;
+}
+.schedule { max-width: 560px; margin: 0 auto; }
+.schedule li {
+    display: flex;
+    gap: 20px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--card-border);
+}
+.schedule time { min-width: 90px; color: var(--accent-text); font-weight: 600; }
+.people {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px 40px;
+    text-align: center;
+}
+.people strong { display: block; color: var(--fg); font-weight: 600; }
+.people span { color: var(--muted); font-size: 14px; }
+.auction {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+.auctionItem { background: var(--card); border-radius: 12px; overflow: hidden; }
+.auctionItem img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.auctionItem div { padding: 16px 18px; }
+.auctionItem h4 { font-family: 'Poppins', sans-serif; font-size: 17px; color: var(--fg); margin: 0 0 6px; }
+.auctionItem p { color: var(--muted); font-size: 14px; margin: 0; }
+
+/* ------------------------------------------------------------ scholars */
+
+.scholars {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+    margin-bottom: 36px;
+}
+.scholar {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    background: var(--card);
+    border-radius: 14px;
+    border-top: 3px solid var(--gala-gold);
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(31, 22, 41, 0.06);
+}
+.scholarPhoto {
+    flex: 0 0 104px;
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--gala-gold);
+}
+.scholarPhoto img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
+.scholarName {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--fg);
+    margin: 0 0 2px;
+}
+.scholarMeta { color: var(--muted); font-size: 14px; margin: 0 0 14px; }
+.scholarQuote {
+    margin: 0;
+    padding-left: 16px;
+    border-left: 2px solid var(--gala-gold);
+    font-style: italic;
+    color: var(--fg);
+    font-size: 15.5px;
+    line-height: 1.7;
+}
+
+/* ------------------------------------------------------------ goal */
+
+.goal { max-width: 640px; margin: 0 auto 56px; text-align: center; }
+.goalHeadline { color: var(--fg); font-weight: 600; font-size: 18px; margin: 0 0 14px; }
+.goalBar {
+    height: 12px;
+    border-radius: 999px;
+    background: rgba(201, 164, 92, 0.18);
+    overflow: hidden;
+}
+.goalFill { height: 100%; background: var(--gala-gold); border-radius: inherit; }
+.goalText { margin: 10px 0 0; color: var(--muted); font-size: 15px; }
+
+/* ------------------------------------------------------------ tickets */
+
+.tiers {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    align-items: start;
+}
+.tier {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 34px 28px 30px;
+}
+.tierFeatured {
+    border: 2px solid var(--gala-gold);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45), 0 0 0 6px rgba(201, 164, 92, 0.08);
+    padding-top: 46px;
+}
+.tierFeatured .motif {
+    position: absolute;
+    top: 12px;
+    left: 24px;
+    right: 24px;
+}
+.badge {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    background: var(--gala-gold);
+    color: var(--gala-ink);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 999px;
+}
+.tierName {
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-text);
+    margin: 0 0 6px;
+}
+.price {
+    font-family: var(--gala-display);
+    font-weight: 700;
+    font-size: 52px;
+    line-height: 1.1;
+    font-variant-numeric: lining-nums;
+    color: var(--fg);
+    margin: 0 0 6px;
+}
+.tierLead { color: var(--fg); font-weight: 500; margin: 0 0 8px; }
+.includes { margin: 18px 0 0; padding: 0; flex: 1; }
+.includes li {
+    display: flex;
+    gap: 12px;
+    padding: 7px 0;
+    color: var(--fg);
+    font-size: 15px;
+    line-height: 1.5;
+}
+.includes li i { color: var(--gala-gold); margin-top: 4px; font-size: 13px; }
+.tierTagline {
+    margin: 16px 0 0;
+    font-style: italic;
+    color: var(--accent-text);
+    font-size: 15px;
+}
+.tierNote, .deductible, .seatsLine {
+    margin: 10px 0 0;
+    font-size: 13.5px;
+    color: var(--muted);
+}
+.seatsLine { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--card-border); }
+.tierCta { margin-top: 24px; }
+.availability {
+    display: inline-block;
+    margin: 0 0 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent-text);
+}
+.notes {
+    max-width: 760px;
+    margin: 44px auto 0;
+    padding: 0;
+    text-align: center;
+}
+.notes li { color: var(--muted); font-size: 14px; line-height: 1.6; margin: 6px 0; }
+
+.checkout {
+    max-width: 760px;
+    margin: 56px auto 0;
+    text-align: center;
+    scroll-margin-top: 130px;
+}
+.embedFrame {
+    position: relative;
+    width: 100%;
+    background: var(--gala-ivory);
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--card-border);
+}
+.embedFrame iframe { display: block; width: 100%; height: 100%; border: 0; }
+.embedPlaceholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--gala-muted-dark);
+}
+.fallbackLink { margin-top: 12px; }
+.statusPanel {
+    max-width: 640px;
+    margin: 52px auto 0;
+    padding: 34px 28px;
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    text-align: center;
+    background: rgba(61, 33, 89, 0.35);
+}
+.statusTitle {
+    font-family: var(--gala-display);
+    font-size: clamp(28px, 3vw, 34px);
+    font-weight: 700;
+    color: var(--fg);
+    margin: 0 0 10px;
+}
+.statusText { color: var(--muted); margin: 0 0 8px; }
+
+/* ------------------------------------------------------------ sponsor */
+
+.sponsorCards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    align-items: stretch;
+}
+.sponsorCards .tier { padding-top: 34px; }
+.sponsorCards .badge { position: static; transform: none; display: inline-block; margin: 0 0 14px; align-self: flex-start; }
+.sponsorNotes { max-width: 760px; margin: 40px auto 0; text-align: center; }
+.sponsorNotes p { color: var(--muted); margin: 6px 0; }
+.wall { margin-top: 72px; }
+.wallLevel { margin-top: 28px; }
+.wallLogos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px 36px;
+}
+.wallLogos a, .wallLogos span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 64px;
+    padding: 10px 18px;
+    background: var(--gala-ivory);
+    border-radius: 10px;
+    color: var(--gala-text-dark);
+    font-weight: 600;
+}
+.wallLogos img { max-height: 56px; max-width: 160px; }
+
+/* ------------------------------------------------------------ give */
+
+/* Flex (not grid) so the fund card centers on its own when Sponsor a Seat is
+   hidden after sales close. */
+.giveGrid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 28px;
+}
+.giveCard {
+    flex: 1 1 360px;
+    max-width: 466px;
+    display: flex;
+    flex-direction: column;
+    background: var(--card);
+    border-radius: 16px;
+    border-top: 3px solid var(--gala-gold);
+    padding: 34px 30px;
+    box-shadow: 0 10px 30px rgba(31, 22, 41, 0.06);
+}
+.giveCard .tierName { color: var(--fg); }
+.giveText { color: var(--fg); margin: 6px 0 0; flex: 1; }
+.fundToggle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    padding: 5px;
+    margin: 14px 0 18px;
+    border-radius: 999px;
+    background: var(--gala-ivory-deep);
+}
+.fundToggle button {
+    min-height: 44px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--gala-text-dark);
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.25;
+    padding: 6px 10px;
+    cursor: pointer;
+}
+.fundToggle button[aria-pressed="true"] { background: var(--gala-ink); color: var(--gala-text-light); }
+.amountsLabel { font-size: 13px; color: var(--muted); margin: 0 0 8px; }
+.amounts { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; }
+.amounts li {
+    min-width: 64px;
+    padding: 8px 14px;
+    text-align: center;
+    border: 1px solid var(--card-border);
+    border-radius: 999px;
+    color: var(--fg);
+    font-weight: 600;
+    font-size: 15px;
+}
+.impact { margin: 16px 0 0; color: var(--fg); font-style: italic; }
+.giveNote { max-width: 760px; margin: 36px auto 0; text-align: center; color: var(--muted); }
+
+/* ------------------------------------------------------------ faq */
+
+.faqList { max-width: 820px; margin: 0 auto; padding: 0; border-top: 1px solid rgba(201, 164, 92, 0.6); }
+.faqItem { border-bottom: 1px solid rgba(201, 164, 92, 0.6); }
+.faqQuestion { margin: 0; font-size: inherit; }
+.faqButton {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 64px;
+    padding: 14px 4px;
+    border: 0;
+    background: transparent;
+    color: var(--fg);
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-align: left;
+    cursor: pointer;
+}
+.faqButton i { flex: 0 0 auto; transition: transform 0.2s ease; color: var(--gala-text-dark); }
+.faqButton[aria-expanded="true"] i { transform: rotate(180deg); }
+.faqPanel { padding: 0 4px 22px; color: var(--fg); }
+.faqPanel p + p, .faqPanel p + ul, .faqPanel ul + p { margin-top: 10px; }
+.faqPanel ul { padding-left: 0; }
+.faqPanel li { padding: 2px 0; }
+.mapFrame {
+    margin-top: 16px;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    background: var(--gala-ivory);
+    border: 1px solid var(--card-border);
+}
+.mapFrame iframe { display: block; width: 100%; height: 100%; border: 0; }
+
+/* ------------------------------------------------------------ share */
+
+.shareButtons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 36px;
+}
+.whatsapp,
+.whatsapp:focus {
+    background-color: #25D366;
+    border-color: #25D366;
+    color: var(--gala-ink);
+}
+.whatsapp:hover { background-color: #5ee08f; border-color: #5ee08f; color: var(--gala-ink); }
+.copied { display: block; min-height: 24px; margin-top: 12px; color: var(--gala-gold-soft); font-size: 14px; }
+.calendar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 24px;
+    margin-top: 28px;
+}
+.finalCta { margin-top: 44px; }
+
+/* ------------------------------------------------------------ mobile sticky CTA */
+
+.sticky { display: none; }
+@media (max-width: 767px) {
+    .sticky {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 9980;
+        display: block;
+        padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+        background: var(--gala-ink);
+        border-top: 1px solid var(--gala-gold);
+        transform: translateY(110%);
+        transition: transform 0.25s ease;
+    }
+    .sticky .btn { width: 100%; min-height: 48px; }
+    .stickyVisible { transform: translateY(0); }
+    /* Lift the site's back-to-top button above the bar while it's showing. */
+    :global(body):has(.stickyVisible) :global(#back-to-top) { bottom: 84px; }
+}
+
+/* ------------------------------------------------------------ dev checklist */
+
+.devPanel {
+    position: fixed;
+    left: 12px;
+    bottom: 96px; /* above the mobile sticky CTA */
+    z-index: 10000;
+    max-width: 340px;
+    max-height: 60vh;
+    overflow: auto;
+    background: #fff;
+    color: #222;
+    border: 2px dashed #c0392b;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font: 12px/1.5 ui-monospace, Menlo, monospace;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+}
+.devPanel summary { cursor: pointer; font-weight: 700; color: #c0392b; }
+.devPanel ul { margin: 6px 0 0; }
+.devPanel li { padding: 1px 0; }
+
+/* ------------------------------------------------------------ scroll reveal */
+
+/* RevealOnScroll marks below-the-fold .reveal elements "pending" at mount and
+   clears the mark as each scrolls into view. Anything rendered later never gets
+   the mark, so nothing can get stuck invisible. */
+.reveal { transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal[data-reveal="pending"] { opacity: 0; transform: translateY(18px); }
+
+/* ------------------------------------------------------------ responsive */
+
+@media (prefers-reduced-motion: no-preference) {
+    :global(html):has(.gala) { scroll-behavior: smooth; }
+}
+
+@media (max-width: 991px) {
+    .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tiers, .sponsorCards { grid-template-columns: minmax(0, 1fr); max-width: 520px; margin: 0 auto; }
+    .tiers { gap: 36px; }
+    .scholars { grid-template-columns: minmax(0, 1fr); }
+}
+@media (min-width: 992px) {
+    .tierFeatured { transform: translateY(-14px); }
+}
+@media (max-width: 767px) {
+    .section { padding: 68px 0; }
+    .hero { padding-top: 64px; }
+    /* Clear the site's floating Donate tab on the left edge (kept symmetric). */
+    .heroInner { padding: 0 44px 56px; }
+    .heading { margin-bottom: 40px; }
+    .ctas .btn { width: 100%; max-width: 360px; }
+    .scholar { flex-direction: column; align-items: center; text-align: center; padding: 26px 22px; }
+    .scholarQuote {
+        text-align: left;
+        display: -webkit-box;
+        -webkit-line-clamp: 7;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .storyText { font-size: 17px; }
+}
+@media (max-width: 575px) {
+    .tiles { grid-template-columns: minmax(0, 1fr); }
+    .container { padding: 0 16px; }
+    .chip { font-size: 14px; }
+    .tier, .giveCard { padding-left: 22px; padding-right: 22px; }
+    .shareButtons .btn { flex: 1 1 calc(50% - 12px); padding: 0 14px; }
+    .shareButtons .whatsapp { flex-basis: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .motif::after { animation: none; display: none; }
+    .reveal, .reveal[data-reveal="pending"] { opacity: 1; transform: none; transition: none; }
+    .btn, .faqButton i, .sticky { transition: none; }
+}
+
+/* A <button> that looks like .textLink (the .ics download). */
+.linkButton {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: inherit;
+    cursor: pointer;
+}

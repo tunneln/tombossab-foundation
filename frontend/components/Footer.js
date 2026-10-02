@@ -60,7 +60,7 @@ const Footer = () => {
     return (
         <div>
             <section className="footer-area">
-                <div className="newsletter-area">
+                <div className="newsletter-area" id="subscribe">
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-6 mx-auto text-center">

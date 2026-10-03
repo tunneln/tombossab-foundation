@@ -1,6 +1,8 @@
 // One-off generator for the gala's static images (dev-only; outputs are committed):
 //   public/images/gala-2026-og.png    1200x630 link-preview image (og:image / twitter:image)
 //   public/images/gala-2026-card.jpg  740x476  /events card image (2x the 370x238 card)
+//   public/images/gala-2026-zeffy-banner.png  1080x1080 checkout-platform banner
+//                                     (Zeffy campaign banners are square, < 1200px wide)
 //   public/images/gala-2026-qr.svg    QR code for https://tombossabfoundation.org/gala
 //   public/images/gala-2026-qr.png    same, 1024px
 //
@@ -16,6 +18,7 @@ import { fileURLToPath } from 'node:url';
 import QRCode from 'qrcode';
 import { chromium } from 'playwright';
 import { gala } from '../config/gala-2026.js';
+import { displayName, formatTime, timePublished } from '../lib/gala.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const IMAGES = path.resolve(__dirname, '../public/images');
@@ -26,7 +29,7 @@ const LOGO = `data:image/png;base64,${readFileSync(path.join(IMAGES, 'logo-white
 const MOTIF = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='18' viewBox='0 0 28 18'%3E%3Cg fill='none' stroke='%23C9A45C' stroke-width='1'%3E%3Cpath d='M0 1.5h28M0 16.5h28'/%3E%3Cpath d='M14 4l5 5-5 5-5-5z'/%3E%3C/g%3E%3Cg fill='%23C9A45C'%3E%3Cpath d='M14 7.6l1.4 1.4-1.4 1.4-1.4-1.4z'/%3E%3Ccircle cx='0' cy='9' r='1.3'/%3E%3Ccircle cx='28' cy='9' r='1.3'/%3E%3C/g%3E%3C/svg%3E\")";
 
 const page = (width, height, body, extraCss = '') => `<!doctype html><html><head><meta charset="utf-8">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@500;600&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Poppins:wght@500;600&display=block" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { width: ${width}px; height: ${height}px; overflow: hidden; }
@@ -44,7 +47,7 @@ const page = (width, height, body, extraCss = '') => `<!doctype html><html><head
 const OG = page(1200, 630, `
   <div class="band" style="top: 28px"></div>
   <img src="${LOGO}" alt="" style="width: 190px; margin-bottom: 26px">
-  <h1 class="display" style="font-size: 70px; line-height: 1.08; max-width: 1000px; text-wrap: balance">${gala.name}</h1>
+  <h1 class="display" style="font-size: 70px; line-height: 1.08; max-width: 1000px; text-wrap: balance">${displayName()}</h1>
   <p style="margin-top: 30px; font-size: 30px; font-weight: 600; letter-spacing: .04em; color: #E3C98F">Saturday, November 28, 2026 · Dallas, TX</p>
   <p style="margin-top: 16px; font-size: 24px; font-weight: 500; color: #CBBFD6">tombossabfoundation.org/gala</p>
   <div class="band" style="bottom: 28px"></div>`);
@@ -56,6 +59,19 @@ const CARD = page(740, 476, `
   <p class="display" style="font-size: 76px; line-height: 1.05; margin-top: 12px">Fundraising Gala</p>
   <p class="display" style="font-size: 60px; line-height: 1; margin-top: 4px; color: #C9A45C; letter-spacing: .06em">${gala.year}</p>
   <div class="band" style="bottom: 22px"></div>`);
+
+// Square banner for the checkout platform: no URL (buyers are already there).
+// Unlike link previews, it can be re-uploaded anytime, so it shows the time once confirmed.
+const when = [gala.dateDisplay, timePublished() && formatTime(gala.startAt)].filter(Boolean).join(' · ');
+const BANNER = page(1080, 1080, `
+  <div class="band" style="top: 44px"></div>
+  <img src="${LOGO}" alt="" style="width: 230px; margin-bottom: 44px">
+  <h1 class="display" style="font-size: 92px; line-height: 1.06; max-width: 900px; text-wrap: balance">${displayName()}</h1>
+  <p class="display" style="font-size: 84px; line-height: 1; margin-top: 18px; color: #C9A45C; letter-spacing: .06em">${gala.year}</p>
+  ${gala.tagline ? `<p style="margin-top: 22px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 40px; color: #E3C98F">${gala.tagline}</p>` : ''}
+  <p style="margin-top: 52px; font-size: 32px; font-weight: 600; letter-spacing: .03em">${when}</p>
+  <p style="margin-top: 14px; font-size: 28px; font-weight: 500; color: #CBBFD6">${gala.venue.name} · ${gala.venue.city}, ${gala.venue.region}</p>
+  <div class="band" style="bottom: 44px"></div>`);
 
 async function render(browser, html, width, height, file, type) {
   const tab = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
@@ -74,6 +90,7 @@ const browser = await chromium.launch();
 try {
   await render(browser, OG, 1200, 630, 'gala-2026-og.png', 'png');
   await render(browser, CARD, 740, 476, 'gala-2026-card.jpg', 'jpeg');
+  await render(browser, BANNER, 1080, 1080, 'gala-2026-zeffy-banner.png', 'png');
 } finally {
   await browser.close();
 }

@@ -1081,12 +1081,20 @@
     .slider-area .gala-slide {
         padding: 110px 44px 40px;
     }
-    .slider-area .gala-slide .gala-slide__eyebrow {
+    .slider-area .gala-slide .gala-slide__eyebrow,
+    .slider-area .gala-slide .gala-slide__date {
         font-size: 12px;
         letter-spacing: 0.16em;
     }
     .slider-area .gala-slide .gala-slide__title {
-        font-size: 40px;
+        font-size: 30px;
+    }
+    /* Date and city on their own lines instead of breaking mid-date. */
+    .slider-area .gala-slide .gala-slide__sep {
+        display: none;
+    }
+    .slider-area .gala-slide .gala-slide__part {
+        display: block;
     }
     .slider-area .gala-slide .gala-slide__subline {
         font-size: 17px;
@@ -1101,7 +1109,18 @@
     }
 }
 @media (max-width:380px) {
+    .slider-area .gala-slide {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
     .slider-area .gala-slide .gala-slide__title {
-        font-size: 34px;
+        font-size: 28px;
+    }
+    .slider-area .gala-slide .gala-slide__subline {
+        font-size: 16px;
+    }
+    .slider-area .gala-slide .gala-slide__btn {
+        padding: 0 16px;
+        font-size: 13px;
     }
 }

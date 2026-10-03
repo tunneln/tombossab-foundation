@@ -25,7 +25,7 @@ const Events = ({ events = [] }) => {
                 <div className="row blog-content-wrap">
                     {events.map((event) => (
                         <div className="col-lg-4" key={event.slug ?? event.title}>
-                            <EventCard event={event} tagClass="blog__tag1" />
+                            <EventCard event={event} tagClass="blog__tag1" spacedMeta />
                         </div>
                     ))}
                 </div>

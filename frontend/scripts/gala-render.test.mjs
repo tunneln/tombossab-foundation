@@ -54,7 +54,7 @@ test('/gala: link-preview tags are page-specific and absolute', async () => {
     assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), GALA);
     assert.equal(await meta(page, 'name', 'description'),
       'Dinner, music, a silent auction, and inspiring speakers — Saturday, November 28, 2026. Every ticket funds scholarships for Eritrean and East African youth.');
-    assert.equal(await meta(page, 'property', 'og:title'), 'The Tombossa B Foundation Gala · November 28, 2026');
+    assert.equal(await meta(page, 'property', 'og:title'), 'The Tombossa B Foundation Fundraising Gala · November 28, 2026');
     assert.equal(await meta(page, 'property', 'og:url'), GALA);
     assert.equal(await meta(page, 'property', 'og:type'), 'website');
     assert.equal(await meta(page, 'property', 'og:image'), OG_IMAGE);
@@ -62,7 +62,7 @@ test('/gala: link-preview tags are page-specific and absolute', async () => {
     assert.equal(await meta(page, 'property', 'og:image:height'), '630');
     assert.ok((await meta(page, 'property', 'og:image:alt')).length > 0, 'og:image:alt');
     assert.equal(await meta(page, 'name', 'twitter:card'), 'summary_large_image');
-    assert.equal(await meta(page, 'name', 'twitter:title'), 'The Tombossa B Foundation Gala · November 28, 2026');
+    assert.equal(await meta(page, 'name', 'twitter:title'), 'The Tombossa B Foundation Fundraising Gala · November 28, 2026');
     assert.equal(await meta(page, 'name', 'twitter:image'), OG_IMAGE);
   } finally {
     await ctx.close();
@@ -168,6 +168,7 @@ test('/gala: pre-sale state (no checkout yet) and Donorbox-only FAQ',
   { skip: unless(STATE === 'coming_soon', 'pre-sale assertions') }, async () => {
   const { ctx, page } = await openPage(browser, origin, '/gala');
   try {
+    assert.match(await page.locator('#top').innerText(), /^ANNOUNCING A NEW ANNUAL TRADITION\s+The Tombossa\sB Foundation Fundraising Gala/i);
     // Checkout isn't configured: no checkout CTAs or embed, "on sale soon" instead.
     const tickets = page.locator('#tickets');
     assert.match(await tickets.innerText(), /Tickets go on sale soon\./);
@@ -179,7 +180,7 @@ test('/gala: pre-sale state (no checkout yet) and Donorbox-only FAQ',
     assert.match(await tickets.innerText(), /THE FULL EXPERIENCE/i);
     assert.match(await tickets.innerText(), /Online sales close Saturday, November 28 at 12:00 PM\./);
     assert.match(await tickets.innerText(), /Student & Youth \$40 · General Admission \$65 · Champion \$95\./);
-    assert.match(await tickets.innerText(), /For current students and guests under 17\./);
+    assert.match(await tickets.innerText(), /For current students and guests 17 and younger\./);
     assert.doesNotMatch(await page.locator('body').innerText(), /student ID/i, 'no ID requirement for admission');
     // Sponsorship falls back to email while no checkout link exists.
     assert.ok(await page.locator('#sponsor a[href^="mailto:contact@tombossabfoundation.org?subject=Gala%202026%20Sponsorship"]').count() >= 3);
@@ -248,8 +249,7 @@ test('homepage: the gala slide leads, existing slides keep their order',
         .map((s) => s.innerText.replace(/\s+/g, ' ').trim());
     });
     assert.equal(slides.length, 4);
-    assert.match(slides[0], /SATURDAY, NOVEMBER 28, 2026 · DALLAS/i);
-    assert.match(slides[0], /The Tombossa B Foundation Gala/);
+    assert.match(slides[0], /^ANNOUNCING A NEW ANNUAL TRADITION The Tombossa\sB Foundation Fundraising Gala SATURDAY, NOVEMBER 28, 2026 · DALLAS/i);
     assert.match(slides[0], /Two years of legacy\. One unforgettable night for our scholars\./);
     assert.doesNotMatch(slides[0], /\d:\d\d/, 'no time on the slide');
     assert.match(slides[1], /^Empowering Eritrean/);
@@ -274,7 +274,7 @@ test('/events: Upcoming (gala card -> /gala) above Past (fixture events, unchang
     const [upcoming, past] = [page.locator('.causes-area').nth(0), page.locator('.causes-area').nth(1)];
     const card = upcoming.locator('.blog-item');
     assert.equal(await card.count(), 1);
-    assert.equal(await card.locator('.blog__title a').innerText(), 'Tombossa B Foundation Gala 2026');
+    assert.equal(await card.locator('.blog__title a').innerText(), 'Tombossa B Foundation Fundraising Gala 2026');
     assert.equal(await card.locator('.blog__title a').getAttribute('href'), '/gala');
     assert.equal(await card.locator('.blog-img a').getAttribute('href'), '/gala');
     assert.equal((await card.locator('.blog__tag').textContent()).replace(/\s+/g, ''), '28Nov2026');

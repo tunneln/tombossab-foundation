@@ -1,6 +1,6 @@
 import React from 'react';
 import { gala } from '../../config/gala-2026';
-import { timeRange } from '../../lib/gala';
+import { displayName, timeRange } from '../../lib/gala';
 import { ShowIn } from './GalaState';
 import Countdown from './Countdown';
 import Motif from './Motif';
@@ -9,28 +9,34 @@ import styles from './Gala.module.css';
 const BEFORE = ['coming_soon', 'on_sale', 'online_closed'];
 
 const GalaHero = () => {
+    // When, where, then the two short details, which pair up side by side on
+    // phones (see .chips in the CSS); `wide` chips take a full row there.
     const chips = [
-        { icon: 'fa-calendar', text: gala.dateDisplay },
-        { icon: 'fa-clock-o', text: timeRange() ?? 'Time to be announced' },
+        { icon: 'fa-calendar', text: gala.dateDisplay, wide: true },
         {
             icon: 'fa-map-marker',
             text: gala.venue.name ? [gala.venue.name, gala.venue.city].filter(Boolean).join(' · ') : 'Venue to be announced',
+            wide: true,
         },
+        { icon: 'fa-clock-o', text: timeRange() ?? 'Time to be announced' },
         { icon: 'fa-diamond', text: gala.dressCode.label },
     ];
 
     return (
         <section id="top" className={`${styles.section} ${styles.ink} ${styles.hero}`}>
             <div className={`${styles.container} ${styles.heroInner}`}>
+                <ShowIn states={['coming_soon', 'on_sale']}>
+                    <p className={styles.eyebrow}>{gala.copy.kicker}</p>
+                </ShowIn>
                 <h1 className={styles.h1}>
-                    {gala.name}
+                    {displayName()}
                     <span className={styles.year}>{gala.year}</span>
                 </h1>
                 {gala.tagline && <p className={styles.tagline}>{gala.tagline}</p>}
 
                 <ul className={styles.chips} aria-label="Event details">
                     {chips.map((chip) => (
-                        <li key={chip.icon} className={styles.chip}>
+                        <li key={chip.icon} className={`${styles.chip} ${chip.wide ? styles.chipWide : ''}`}>
                             <i className={`fa ${chip.icon}`} aria-hidden="true"></i>
                             {chip.text}
                         </li>

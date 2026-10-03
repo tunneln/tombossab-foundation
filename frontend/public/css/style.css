@@ -929,6 +929,18 @@ a:hover {
     margin-bottom: 20px;
     text-wrap: balance;
 }
+.slider-area .gala-slide .gala-slide__part {
+    white-space: nowrap;
+}
+.slider-area .gala-slide .gala-slide__date {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #F7F1E6;
+    margin-bottom: 18px;
+    text-wrap: balance;
+}
 .slider-area .gala-slide .gala-slide__subline {
     font-size: 20px;
     line-height: 1.6;

@@ -14,7 +14,7 @@
 // so don't also add it as a Flyway seed (it would show twice).
 export const gala = {
     canonicalUrl: 'https://tombossabfoundation.org/gala',
-    name: 'The Tombossa B Foundation Gala',
+    name: 'The Tombossa B Foundation Fundraising Gala',
     year: 2026,
     tagline: 'Two Years of Legacy', // TODO_CONFIRM (proposed; hidden if null)
     dateDisplay: 'Saturday, November 28, 2026',
@@ -40,6 +40,9 @@ export const gala = {
     },
 
     copy: {
+        // Small line above the title (homepage slide + /gala hero), shown only
+        // until ticket sales close: "announcing" reads stale on the day itself.
+        kicker: 'Announcing a new annual tradition',
         // Hero intro, one string per paragraph. If program.speakers is still
         // empty at launch, "words from the students your support makes possible"
         // can be swapped for "inspiring speakers" here.
@@ -55,12 +58,12 @@ export const gala = {
             showUntil: '2026-12-02T23:59:59-06:00',
         },
         shareText:
-            'Join me at the Tombossa B Foundation Gala on Saturday, November 28! Every ticket supports scholarships for Eritrean and East African youth.',
+            'Join me at the Tombossa B Foundation Fundraising Gala on Saturday, November 28! Every ticket supports scholarships for Eritrean and East African youth.',
     },
 
     // The homepage gala slide. It removes itself (client-side) after removeAfter.
     homeSlide: {
-        eyebrow: 'Saturday, November 28, 2026 · Dallas',
+        dateLine: 'Saturday, November 28, 2026 · Dallas', // under the title (no time on the slide)
         subline: 'Two years of legacy. One unforgettable night for our scholars.',
         closedSubline: 'Online sales have closed. See you tonight!', // sales close the morning of the gala
         pastSubline: 'Thank you for an unforgettable night.',
@@ -97,7 +100,7 @@ export const gala = {
                 fmvKey: 'standard',
                 includes: ['Dinner', 'The full program', 'One drink ticket'],
                 tagline: "Because the future we're building should be in the room.",
-                note: 'For current students and guests under 17.',
+                note: 'For current students and guests 17 and younger.',
             },
             {
                 id: 'ga',
@@ -226,7 +229,7 @@ export const gala = {
         dietary:             // TODO_CONFIRM with caterer
             'Yes. Let us know your dietary needs (vegan/fasting, vegetarian, or allergies) during checkout.',
         studentEligibility:  // TODO_CONFIRM (proposed student wording)
-            'Any current high school, college, or graduate student, and any guest under 17. No ID needed: we check everyone in by the QR code on their ticket.',
+            'Any current high school, college, or graduate student, and any guest 17 or younger. No ID needed: we check everyone in by the QR code on their ticket.',
         // Check-in is by QR code ticket; no ID at the door unless a guest can't find their QR code.
         checkIn:
             "Just your ticket's QR code, on your phone or printed. Can't find it? No problem: we'll look you up by name at check-in.",

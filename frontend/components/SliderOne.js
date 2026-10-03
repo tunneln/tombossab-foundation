@@ -12,14 +12,14 @@ import { Pagination, Autoplay } from 'swiper/modules';
 
 import useGalaState from './gala/useGalaState';
 import { gala } from '../config/gala-2026';
-import { isAfter } from '../lib/gala';
+import { displayName, isAfter } from '../lib/gala';
 
 // Gala slide copy per gala state (config/gala-2026.js holds the text).
 const GALA_SLIDE = {
-    coming_soon: { subline: gala.homeSlide.subline, primary: 'Learn More', sponsor: true },
-    on_sale: { subline: gala.homeSlide.subline, primary: 'Get Tickets', sponsor: true },
-    online_closed: { subline: gala.homeSlide.closedSubline, primary: 'Event Details', sponsor: false },
-    past: { subline: gala.homeSlide.pastSubline, primary: 'See the Recap', sponsor: false },
+    coming_soon: { subline: gala.homeSlide.subline, primary: 'Learn More', sponsor: true, kicker: true },
+    on_sale: { subline: gala.homeSlide.subline, primary: 'Get Tickets', sponsor: true, kicker: true },
+    online_closed: { subline: gala.homeSlide.closedSubline, primary: 'Event Details', sponsor: false, kicker: false },
+    past: { subline: gala.homeSlide.pastSubline, primary: 'See the Recap', sponsor: false, kicker: false },
 };
 
 const SliderOne = () => {
@@ -62,8 +62,16 @@ const SliderOne = () => {
                                 <div className="slide-item-tablecell">
                                     <div className="container">
                                         <div className="gala-slide">
-                                            <p className="gala-slide__eyebrow">{gala.homeSlide.eyebrow}</p>
-                                            <h2 className="gala-slide__title">{gala.name}</h2>
+                                            {galaSlide.kicker && <p className="gala-slide__eyebrow">{gala.copy.kicker}</p>}
+                                            <h2 className="gala-slide__title">{displayName()}</h2>
+                                            <p className="gala-slide__date">
+                                                {gala.homeSlide.dateLine.split(' · ').map((part, i) => (
+                                                    <React.Fragment key={part}>
+                                                        {i > 0 && <span className="gala-slide__sep"> · </span>}
+                                                        <span className="gala-slide__part">{part}</span>
+                                                    </React.Fragment>
+                                                ))}
+                                            </p>
                                             <p className="gala-slide__subline">{galaSlide.subline}</p>
                                             <div className="gala-slide__ctas">
                                                 <Link href="/gala" className="gala-slide__btn gala-slide__btn--primary">{galaSlide.primary}</Link>

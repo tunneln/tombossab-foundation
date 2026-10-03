@@ -1,6 +1,6 @@
 # Gala 2026 launch checklist
 
-Manual steps outside the code for **https://tombossabfoundation.org/gala** (Saturday, November 28, 2026, Empire Event Center, Dallas). Everything the site shows comes from `frontend/config/gala-2026.js`; editing that file, then committing and deploying, is all a content change needs.
+Manual steps outside the code for **https://tombossabfoundation.org/gala** (The Tombossa B Foundation Fundraising Gala, Saturday, November 28, 2026, Empire Event Center, Dallas). Everything the site shows comes from `frontend/config/gala-2026.js`; editing that file, then committing and deploying, is all a content change needs.
 
 > The gala ships with the decoupling refactor (Vercel frontend). The live site is still the old nginx build, so none of this is public until the cutover in `deploy/RUNBOOK.md`.
 
@@ -11,7 +11,7 @@ Manual steps outside the code for **https://tombossabfoundation.org/gala** (Satu
 
   | Ticket type | Price | Notes |
   |---|---|---|
-  | Student & Youth | $30 | Current students and guests under 17 |
+  | Student & Youth | $30 | Current students and guests 17 and younger |
   | General Admission | $55 | |
   | Champion | $85 | |
   | Community Sponsor | $500 | 5 seats |

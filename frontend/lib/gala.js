@@ -46,6 +46,10 @@ export const cardTimeLabel = (g = GALA) => {
 
 export const hasVenue = (g = GALA) => Boolean(g.venue.name);
 
+// The name for display in headings: a non-breaking space keeps "Tombossa B"
+// on one line, so wrapping never strands the "B".
+export const displayName = (g = GALA) => g.name.replace('Tombossa B', 'Tombossa\u00a0B');
+
 // "Dallas, TX" (or null)
 export const venueCity = (g = GALA) =>
     g.venue.city ? `${g.venue.city}, ${g.venue.region}` : null;
@@ -285,11 +289,11 @@ export const eventJsonLd = (state = defaultGalaState(), g = GALA) => {
 // Link-preview copy for /gala (app/gala/page.js metadata and the JSON-LD).
 export const GALA_META = {
     title: 'Tombossa B Foundation | Gala 2026 | Tickets & Sponsorship',
-    shareTitle: 'The Tombossa B Foundation Gala · November 28, 2026',
+    shareTitle: 'The Tombossa B Foundation Fundraising Gala · November 28, 2026',
     description:
         'Dinner, music, a silent auction, and inspiring speakers — Saturday, November 28, 2026. Every ticket funds scholarships for Eritrean and East African youth.',
     image: 'https://tombossabfoundation.org/images/gala-2026-og.png',
-    imageAlt: 'The Tombossa B Foundation Gala, Saturday, November 28, 2026, at tombossabfoundation.org/gala',
+    imageAlt: 'The Tombossa B Foundation Fundraising Gala, Saturday, November 28, 2026, at tombossabfoundation.org/gala',
 };
 
 // ---------------------------------------------------------------- launch checklist

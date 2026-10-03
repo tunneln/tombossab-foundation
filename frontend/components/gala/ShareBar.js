@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useGala } from './GalaState';
+import { gala } from '../../config/gala-2026';
 import { calendarReady, googleCalendarUrl, icsContent, shareLinks } from '../../lib/gala';
 import styles from './Gala.module.css';
 
@@ -19,7 +20,7 @@ const ShareBar = () => {
 
     const nativeShare = async () => {
         try {
-            await navigator.share({ title: 'The Tombossa B Foundation Gala', text: LINKS.text, url: LINKS.url });
+            await navigator.share({ title: gala.name, text: LINKS.text, url: LINKS.url });
         } catch { /* dismissed */ }
     };
 

@@ -255,7 +255,7 @@ test('calendar: Google link carries UTC dates and the venue', () => {
 test('share links encode the spec text and canonical URL', () => {
     const s = shareLinks(gala);
     assert.equal(s.text,
-        'Join me at the Tombossa B Foundation Gala on Saturday, November 28! Every ticket supports scholarships for Eritrean and East African youth.');
+        'Join me at the Tombossa B Foundation Fundraising Gala on Saturday, November 28! Every ticket supports scholarships for Eritrean and East African youth.');
     assert.ok(s.whatsapp.startsWith('https://wa.me/?text='));
     assert.ok(decodeURIComponent(s.whatsapp).endsWith(' https://tombossabfoundation.org/gala'));
     assert.equal(s.facebook, 'https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ftombossabfoundation.org%2Fgala');

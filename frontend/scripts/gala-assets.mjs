@@ -15,6 +15,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import QRCode from 'qrcode';
 import { chromium } from 'playwright';
+import { gala } from '../config/gala-2026.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const IMAGES = path.resolve(__dirname, '../public/images');
@@ -43,7 +44,7 @@ const page = (width, height, body, extraCss = '') => `<!doctype html><html><head
 const OG = page(1200, 630, `
   <div class="band" style="top: 28px"></div>
   <img src="${LOGO}" alt="" style="width: 190px; margin-bottom: 26px">
-  <h1 class="display" style="font-size: 76px; line-height: 1.05; max-width: 980px">The Tombossa B<br>Foundation Gala</h1>
+  <h1 class="display" style="font-size: 70px; line-height: 1.08; max-width: 1000px; text-wrap: balance">${gala.name}</h1>
   <p style="margin-top: 30px; font-size: 30px; font-weight: 600; letter-spacing: .04em; color: #E3C98F">Saturday, November 28, 2026 · Dallas, TX</p>
   <p style="margin-top: 16px; font-size: 24px; font-weight: 500; color: #CBBFD6">tombossabfoundation.org/gala</p>
   <div class="band" style="bottom: 28px"></div>`);
@@ -52,8 +53,8 @@ const OG = page(1200, 630, `
 const CARD = page(740, 476, `
   <div class="band" style="top: 22px"></div>
   <p style="margin-top: 30px; font-size: 19px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: #E3C98F">The Tombossa B Foundation</p>
-  <p class="display" style="font-size: 132px; line-height: 1; margin-top: 6px">Gala</p>
-  <p class="display" style="font-size: 64px; line-height: 1; color: #C9A45C; letter-spacing: .06em">2026</p>
+  <p class="display" style="font-size: 76px; line-height: 1.05; margin-top: 12px">Fundraising Gala</p>
+  <p class="display" style="font-size: 60px; line-height: 1; margin-top: 4px; color: #C9A45C; letter-spacing: .06em">${gala.year}</p>
   <div class="band" style="bottom: 22px"></div>`);
 
 async function render(browser, html, width, height, file, type) {

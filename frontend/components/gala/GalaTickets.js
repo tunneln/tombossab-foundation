@@ -1,6 +1,6 @@
 import React from 'react';
 import { gala } from '../../config/gala-2026';
-import { checkoutMode, formatPrice, formatWeekdayDate, providerInfo } from '../../lib/gala';
+import { checkoutMode, formatPrice, formatTime, formatWeekdayDate, providerInfo } from '../../lib/gala';
 import { ShowIn } from './GalaState';
 import CheckoutCta from './CheckoutCta';
 import GalaGoal from './GalaGoal';
@@ -79,7 +79,9 @@ const GalaTickets = () => (
                     <li>Drink tickets can be redeemed for non-alcoholic drinks. Alcohol served to guests 21+ with valid ID.</li>
                     {gala.sales.onlineCloseAt && (
                         <ShowIn states={['coming_soon', 'on_sale']}>
-                            <li>Online sales close {formatWeekdayDate(gala.sales.onlineCloseAt)}.</li>
+                            <li>
+                                Online sales close {formatWeekdayDate(gala.sales.onlineCloseAt)} at {formatTime(gala.sales.onlineCloseAt)}.
+                            </li>
                         </ShowIn>
                     )}
                     {gala.sales.doorSalesAvailable && <li>{doorLine()}</li>}

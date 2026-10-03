@@ -131,7 +131,7 @@ export const countdownLabel = (days) => {
 // Estimated tax-deductible amount, or null when the FMV isn't set (UI hides it).
 //  individual tier: price - FMV per guest
 //  sponsor tier:    price - seats * FMV per guest of its seat type
-// Clamped at 0: a Student ticket's FMV may exceed its price.
+// Clamped at 0: a Student & Youth ticket's FMV may exceed its price.
 export const tierDeductible = (tier, g = GALA) => {
     const key = tier.fmvKey ?? tier.seatType;
     const fmv = g.fmvPerGuest[key];
@@ -297,9 +297,9 @@ export const GALA_META = {
 // Every TODO_CONFIRM in config/gala-2026.js, by path (scripts/gala.test.mjs keeps
 // this in sync with the comments). The dev-only panel on /gala lists them.
 export const CONFIRM_FIELDS = [
-    'tagline', 'startTimeConfirmed', 'endAt',
+    'tagline', 'endAt',
     'copy.intro.1',
-    'sales.onlineCloseAt', 'sales.doorSalesAvailable',
+    'sales.doorSalesAvailable',
     'fmvPerGuest.standard', 'fmvPerGuest.champion', 'ein',
     'goal.headline', 'goal.amountGoal',
     'tiers.attend.2.includes.2', 'tiers.sponsor.2.benefits.1',

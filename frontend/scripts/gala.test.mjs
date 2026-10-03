@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { gala } from '../config/gala-2026.js';
 import {
     getGalaState, defaultGalaState, checkoutMode, tierDeductible, tierAvailability,
-    sponsorshipHref, minTicketPrice, formatPrice, formatWeekdayDate, timeRange, cardTimeLabel,
+    sponsorshipHref, minTicketPrice, formatPrice, formatTime, formatWeekdayDate, timeRange, cardTimeLabel,
     daysUntil, countdownLabel, googleCalendarUrl, icsContent, eventJsonLd, shareLinks,
     venueAddress, CONFIRM_FIELDS, confirmChecklist, getPath, GALA_META, providerInfo, timePublished,
 } from '../lib/gala.js';
@@ -74,7 +74,7 @@ test('config: CONFIRM_FIELDS matches the TODO_CONFIRM comments and every path re
 
 test('checklist: unset fields are reported, proposed values are not "unset"', () => {
     const byPath = Object.fromEntries(confirmChecklist().map((i) => [i.path, i.unset]));
-    assert.equal(byPath.startTimeConfirmed, true);
+    assert.equal(byPath.endAt, true);
     assert.equal(byPath['checkout.provider'], false);
     assert.equal(byPath['checkout.tickets'], true);
     assert.equal(byPath['program.speakers'], true);
@@ -106,10 +106,10 @@ test('state: openAt holds sales back', () => {
     assert.equal(getGalaState(at('2026-10-15T09:01:00-05:00'), g), 'on_sale');
 });
 
-test('state: boundaries in Central time (online close, end of night)', () => {
+test('state: boundaries in Central time (online close at noon on gala day, end of night)', () => {
     const g = withCheckout(LINK);
-    assert.equal(getGalaState(at('2026-11-23T23:58:00-06:00'), g), 'on_sale');
-    assert.equal(getGalaState(at('2026-11-24T00:00:00-06:00'), g), 'online_closed');
+    assert.equal(getGalaState(at('2026-11-28T11:59:00-06:00'), g), 'on_sale');
+    assert.equal(getGalaState(at('2026-11-28T12:01:00-06:00'), g), 'online_closed');
     assert.equal(getGalaState(at('2026-11-28T23:58:00-06:00'), g), 'online_closed');
     // endAt null -> past after 11:59 PM CST on Nov 28 (= 05:59 UTC Nov 29)
     assert.equal(getGalaState(at('2026-11-29T06:00:00Z'), g), 'past');
@@ -179,16 +179,18 @@ test('formatting: prices, close date, minimum price', () => {
     assert.equal(formatPrice(55), '$55');
     assert.equal(formatPrice(2500), '$2,500');
     assert.equal(minTicketPrice(gala), 30);
-    assert.equal(formatWeekdayDate(gala.sales.onlineCloseAt, gala), 'Monday, November 23');
+    assert.equal(formatWeekdayDate(gala.sales.onlineCloseAt, gala), 'Saturday, November 28');
+    assert.equal(formatTime(gala.sales.onlineCloseAt, gala), '12:00 PM');
 });
 
-test('formatting: the tentative start time is never published until confirmed', () => {
-    assert.equal(timePublished(gala), false);
-    assert.equal(timeRange(gala), null);
-    assert.equal(cardTimeLabel(gala), 'Time TBA');
-    const confirmed = variant({ startTimeConfirmed: true });
-    assert.equal(timeRange(confirmed), '5:00 PM');
-    assert.equal(cardTimeLabel(confirmed), '5:00pm');
+test('formatting: a start time is published only once confirmed', () => {
+    const tentative = variant({ startTimeConfirmed: false });
+    assert.equal(timePublished(tentative), false);
+    assert.equal(timeRange(tentative), null);
+    assert.equal(cardTimeLabel(tentative), 'Time TBA');
+    assert.equal(timePublished(gala), true, 'the real config has the 5 PM start confirmed');
+    assert.equal(timeRange(gala), '5:00 PM');
+    assert.equal(cardTimeLabel(gala), '5:00pm');
     const g = variant(CONFIRMED);
     assert.equal(timeRange(g), '6:00 PM – 10:00 PM');
     assert.equal(cardTimeLabel(g), '6:00pm to 10:00pm');
@@ -218,12 +220,13 @@ test('countdown: calendar days in Central time', () => {
 // ------------------------------------------------------------------ calendar & sharing
 
 test('calendar: withheld while the start time is unconfirmed', () => {
-    assert.equal(googleCalendarUrl(gala), null);
-    assert.equal(icsContent(new Date(), gala), null);
+    const tentative = variant({ startTimeConfirmed: false });
+    assert.equal(googleCalendarUrl(tentative), null);
+    assert.equal(icsContent(new Date(), tentative), null);
 });
 
 test('calendar: confirmed 5:00 PM CST, no endAt -> start-only entry at 23:00Z', () => {
-    const g = variant({ startTimeConfirmed: true });
+    const g = gala;
     const ics = icsContent(at('2026-10-02T17:00:00Z'), g);
     assert.match(ics, /\r\nDTSTART:20261128T230000Z\r\n/);
     assert.doesNotMatch(ics, /DTEND/, 'never guess an end time');
@@ -267,8 +270,12 @@ test('meta: description stays under 160 characters', () => {
 });
 
 test('JSON-LD: absent while the start time is unconfirmed', () => {
-    assert.equal(eventJsonLd('coming_soon', gala), null);
-    assert.ok(eventJsonLd('coming_soon', variant({ startTimeConfirmed: true })));
+    assert.equal(eventJsonLd('coming_soon', variant({ startTimeConfirmed: false })), null);
+    const ld = eventJsonLd('coming_soon', gala);
+    assert.equal(ld.startDate, '2026-11-28T17:00:00-06:00');
+    assert.equal(ld.location.name, 'Empire Event Center');
+    assert.equal(ld.location.address.streetAddress, '9560 Skillman St, Suite 126');
+    assert.equal(ld.endDate, undefined, 'no endDate until endAt is set');
 });
 
 test('JSON-LD: a complete schema.org Event once confirmed', () => {
@@ -281,7 +288,7 @@ test('JSON-LD: a complete schema.org Event once confirmed', () => {
     assert.equal(ld.location.name, 'Test Hall');
     assert.equal(ld.location.address.postalCode, '75201');
     assert.deepEqual(ld.offers.map((o) => [o.name, o.price, o.priceCurrency]),
-        [['Student', 30, 'USD'], ['General Admission', 55, 'USD'], ['Champion', 85, 'USD']]);
+        [['Student & Youth', 30, 'USD'], ['General Admission', 55, 'USD'], ['Champion', 85, 'USD']]);
     assert.ok(ld.offers.every((o) => o.availability === 'https://schema.org/InStock' && o.url === gala.canonicalUrl));
     assert.ok(ld.image[0].startsWith('https://'), 'absolute image URL');
 });

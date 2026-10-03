@@ -16,7 +16,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { startServer, openPage, blockExternal } from './next-server.mjs';
-import { getGalaState, timePublished } from '../lib/gala.js';
+import { cardTimeLabel, getGalaState, timePublished } from '../lib/gala.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const events = JSON.parse(readFileSync(path.resolve(__dirname, '../data/events.json'), 'utf8'));
@@ -110,6 +110,27 @@ test('/gala: the tentative start time is not published anywhere',
   }
 });
 
+test('/gala: the confirmed start time, calendar links, and Event JSON-LD are published',
+  { skip: unless(timePublished(), 'start time is not confirmed yet') }, async () => {
+  const { ctx, page } = await openPage(browser, origin, '/gala');
+  try {
+    assert.match(await page.locator('#top').innerText(), /5:00 PM/);
+    const ld = JSON.parse(await page.locator('script[type="application/ld+json"]').textContent());
+    assert.equal(ld['@type'], 'Event');
+    assert.equal(ld.startDate, '2026-11-28T17:00:00-06:00');
+    assert.equal(ld.location.address.postalCode, '75243');
+    assert.equal(ld.offers.length, 3);
+    if (STATE !== 'past') {
+      const google = page.locator('#share a[href^="https://calendar.google.com/"]');
+      assert.equal(await google.count(), 1);
+      assert.match(await google.getAttribute('href'), /dates=20261128T230000Z%2F20261128T230000Z/);
+      assert.equal(await page.locator('#share button', { hasText: '.ics' }).count(), 1);
+    }
+  } finally {
+    await ctx.close();
+  }
+});
+
 test('/gala: confirmed venue renders (hero chip + FAQ with a lazy, titled map)', async () => {
   const { ctx, page } = await openPage(browser, origin, '/gala');
   try {
@@ -156,8 +177,10 @@ test('/gala: pre-sale state (no checkout yet) and Donorbox-only FAQ',
     // Prices come from config; Champion is the featured tier.
     assert.match(await tickets.innerText(), /\$30[\s\S]*\$55[\s\S]*\$85/);
     assert.match(await tickets.innerText(), /THE FULL EXPERIENCE/i);
-    assert.match(await tickets.innerText(), /Online sales close Monday, November 23\./);
-    assert.match(await tickets.innerText(), /Student \$40 · General Admission \$65 · Champion \$95\./);
+    assert.match(await tickets.innerText(), /Online sales close Saturday, November 28 at 12:00 PM\./);
+    assert.match(await tickets.innerText(), /Student & Youth \$40 · General Admission \$65 · Champion \$95\./);
+    assert.match(await tickets.innerText(), /For current students and guests under 17\./);
+    assert.doesNotMatch(await page.locator('body').innerText(), /student ID/i, 'no ID requirement for admission');
     // Sponsorship falls back to email while no checkout link exists.
     assert.ok(await page.locator('#sponsor a[href^="mailto:contact@tombossabfoundation.org?subject=Gala%202026%20Sponsorship"]').count() >= 3);
     // Provider is Donorbox: the Zeffy tip question must not render.
@@ -256,7 +279,7 @@ test('/events: Upcoming (gala card -> /gala) above Past (fixture events, unchang
     assert.equal(await card.locator('.blog-img a').getAttribute('href'), '/gala');
     assert.equal((await card.locator('.blog__tag').textContent()).replace(/\s+/g, ''), '28Nov2026');
     const meta = await card.locator('.blog__list li').allTextContents();
-    assert.deepEqual(meta.map((m) => m.trim()), ['Time TBA', 'Empire Event Center', 'Dallas, TX']);
+    assert.deepEqual(meta.map((m) => m.trim()), [cardTimeLabel(), 'Empire Event Center', 'Dallas, TX']);
     assert.equal(await card.locator('.event-card__pill').count(), STATE === 'on_sale' ? 1 : 0, '"Tickets on sale" pill only while on sale');
 
     const pastTitles = await past.locator('.blog__title').allInnerTexts();

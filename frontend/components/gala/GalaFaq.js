@@ -66,7 +66,8 @@ const GalaFaq = () => {
         faq.ages && { id: 'ages', question: 'Is the gala open to all ages?', answer: <p>{faq.ages}</p> },
         faq.refunds && { id: 'refunds', question: "What's the refund policy?", answer: <p>{faq.refunds}</p> },
         faq.dietary && { id: 'food', question: 'Will there be vegan or fasting-friendly food?', answer: <p>{faq.dietary}</p> },
-        faq.studentEligibility && { id: 'student', question: 'Who qualifies for a Student ticket?', answer: <p>{faq.studentEligibility}</p> },
+        faq.studentEligibility && { id: 'student', question: 'Who qualifies for a Student & Youth ticket?', answer: <p>{faq.studentEligibility}</p> },
+        { id: 'bring', question: 'What do I need to bring?', answer: <p>{faq.checkIn}</p> },
         {
             id: 'others',
             question: 'Can I buy tickets for other people?',

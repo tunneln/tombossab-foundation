@@ -23,8 +23,8 @@ export const gala = {
     // startAt drives the countdown and state logic now, but the time itself is
     // only published (hero, FAQ, /events card, calendar links, JSON-LD) once
     // startTimeConfirmed is true: a wrong time saved to a calendar never updates.
-    startAt: '2026-11-28T17:00:00-06:00', // 5:00 PM CST (tentative)
-    startTimeConfirmed: false, // TODO_CONFIRM
+    startAt: '2026-11-28T17:00:00-06:00', // 5:00 PM CST
+    startTimeConfirmed: true,
     endAt: null, // TODO_CONFIRM e.g. '2026-11-28T22:00:00-06:00'
     venue: {
         name: 'Empire Event Center',
@@ -34,7 +34,7 @@ export const gala = {
         postalCode: '75243',
     },
     dressCode: {
-        label: 'Cocktail attire',
+        label: 'Cocktail Attire',
         detail:
             'Think suits, cocktail dresses, or formal wear. Traditional Eritrean and East African attire is warmly welcomed.',
     },
@@ -62,20 +62,20 @@ export const gala = {
     homeSlide: {
         eyebrow: 'Saturday, November 28, 2026 · Dallas',
         subline: 'Two years of legacy. One unforgettable night for our scholars.',
-        closedSubline: 'Online sales have closed. See you on November 28!',
+        closedSubline: 'Online sales have closed. See you tonight!', // sales close the morning of the gala
         pastSubline: 'Thank you for an unforgettable night.',
         removeAfter: '2026-12-02T23:59:59-06:00',
     },
 
     sales: {
         openAt: null, // null = on sale as soon as checkout links are configured
-        onlineCloseAt: '2026-11-23T23:59:00-06:00', // TODO_CONFIRM (caterer headcount deadline)
+        onlineCloseAt: '2026-11-28T12:00:00-06:00', // noon on gala day: online sales stay open through the morning
         doorSalesAvailable: true, // TODO_CONFIRM; door tickets are limited, never sold online
     },
 
     // Fair market value of goods/services per guest, for tax disclosure. Set by the treasurer.
     fmvPerGuest: {
-        standard: null, // TODO_CONFIRM dinner + 1 drink (applies to Student and GA)
+        standard: null, // TODO_CONFIRM dinner + 1 drink (applies to Student & Youth and GA)
         champion: null, // TODO_CONFIRM dinner + 3 drinks + reception
     },
     ein: null, // TODO_CONFIRM shown in the tax note if set
@@ -91,13 +91,13 @@ export const gala = {
         attend: [
             {
                 id: 'student',
-                name: 'Student',
+                name: 'Student & Youth',
                 price: 30,
                 doorPrice: 40,
                 fmvKey: 'standard',
                 includes: ['Dinner', 'The full program', 'One drink ticket'],
                 tagline: "Because the future we're building should be in the room.",
-                note: 'Valid student ID required at check-in.',
+                note: 'For current students and guests under 17.',
             },
             {
                 id: 'ga',
@@ -225,8 +225,11 @@ export const gala = {
             "All sales are final. If you can no longer attend, email us and we'll gladly transfer your ticket to another guest or convert it into a tax-deductible donation.",
         dietary:             // TODO_CONFIRM with caterer
             'Yes. Let us know your dietary needs (vegan/fasting, vegetarian, or allergies) during checkout.',
-        studentEligibility:  // TODO_CONFIRM
-            'Any current high school, college, or graduate student. Please bring a valid student ID to check-in.',
+        studentEligibility:  // TODO_CONFIRM (proposed student wording)
+            'Any current high school, college, or graduate student, and any guest under 17. No ID needed: we check everyone in by the QR code on their ticket.',
+        // Check-in is by QR code ticket; no ID at the door unless a guest can't find their QR code.
+        checkIn:
+            "Just your ticket's QR code, on your phone or printed. Can't find it? No problem: we'll look you up by name at check-in.",
         auction: null,       // TODO_CONFIRM silent auction without a ticket / remote bidding; question hidden while null
         accessibility: null, // TODO_CONFIRM
     },

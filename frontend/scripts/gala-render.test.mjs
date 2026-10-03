@@ -235,12 +235,65 @@ test('/gala: no horizontal scroll at 320px; reduced motion hides nothing', async
   }
 });
 
+test('/gala on phones: a gold "Gala Tickets" side tab replaces the Donate tab',
+  { skip: unless(['coming_soon', 'on_sale'].includes(STATE), 'the side tab only shows while tickets sell') }, async () => {
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 664 } });
+  try {
+    const page = await ctx.newPage();
+    await blockExternal(page, origin);
+    await page.goto(`${origin}/gala`, { waitUntil: 'load' });
+    assert.equal(await page.locator('.donate-floating').count(), 0, 'no Donate side tab on /gala');
+    const tab = page.locator('a[class*="GalaNavButton_floating"]');
+    assert.ok(await tab.isVisible());
+    assert.equal((await tab.innerText()).trim(), 'GALA TICKETS');
+    assert.equal(await tab.getAttribute('href'), '#tickets');
+
+    await page.goto(`${origin}/about`, { waitUntil: 'load' });
+    assert.ok(await page.locator('.donate-floating').isVisible(), 'other pages keep the Donate side tab');
+    assert.equal(await page.locator('a[class*="GalaNavButton_floating"]').count(), 0);
+  } finally {
+    await ctx.close();
+  }
+});
+
+test('desktop header "Gala Tickets" button actually receives clicks (not covered by the nav)',
+  { skip: unless(STATE !== 'past', 'the button is gone after the event') }, async () => {
+  for (const width of [1100, 1280, 1440, 1920]) {
+    const ctx = await browser.newContext({ viewport: { width, height: 900 } });
+    try {
+      const page = await ctx.newPage();
+      await blockExternal(page, origin);
+      await page.goto(`${origin}/about`, { waitUntil: 'load' });
+      const hit = await page.locator('header a[class*="GalaNavButton_desktop"]').evaluate((el) => {
+        const r = el.getBoundingClientRect();
+        const top = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+        return el === top || el.contains(top);
+      });
+      assert.ok(hit, `at ${width}px something else sits on top of the button`);
+    } finally {
+      await ctx.close();
+    }
+  }
+});
+
+test('/gala: the tax FAQ shows the foundation EIN', async () => {
+  const { ctx, page } = await openPage(browser, origin, '/gala');
+  try {
+    await page.locator('#faq').getByRole('button', { name: 'Is my ticket tax-deductible?' }).click();
+    assert.match(await page.locator('#faq [role="region"]:visible').innerText(), /501\(c\)\(3\) nonprofit, EIN 99-4436179\./);
+  } finally {
+    await ctx.close();
+  }
+});
+
 // ------------------------------------------------------------------ homepage & /events
 
 test('homepage: the gala slide leads, existing slides keep their order',
   { skip: unless(STATE === 'coming_soon', 'pre-sale slide assertions') }, async () => {
   const { ctx, page } = await openPage(browser, origin, '/');
   try {
+    // Swiper initializes after hydration; wait for it before reading its state.
+    await page.waitForFunction(() => document.querySelector('.frontpageSwiper')?.swiper);
     // Swiper's loop mode reorders DOM nodes, so read its own slide order.
     const slides = await page.evaluate(() => {
       const swiper = document.querySelector('.frontpageSwiper').swiper;
@@ -250,7 +303,7 @@ test('homepage: the gala slide leads, existing slides keep their order',
     });
     assert.equal(slides.length, 4);
     assert.match(slides[0], /^ANNOUNCING A NEW ANNUAL TRADITION The Tombossa\sB Foundation Fundraising Gala SATURDAY, NOVEMBER 28, 2026 · DALLAS/i);
-    assert.match(slides[0], /Two years of legacy\. One unforgettable night for our scholars\./);
+    assert.match(slides[0], /An evening for the next generation\. One unforgettable night for our scholars\./);
     assert.doesNotMatch(slides[0], /\d:\d\d/, 'no time on the slide');
     assert.match(slides[1], /^Empowering Eritrean/);
     assert.match(slides[2], /^Read our September Newsletter/);

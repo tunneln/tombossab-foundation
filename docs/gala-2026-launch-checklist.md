@@ -34,7 +34,7 @@ Manual steps outside the code for **https://tombossabfoundation.org/gala** (The 
   - `checkout.sponsorship.hostedUrl`: optional. Without it, "Become a Sponsor" uses the ticket link, then email.
   - `checkout.donate`: fund-specific donation links. Both point at `/donatenow` until you have separate ones.
 
-  As soon as either ticket URL is set, the site switches from "Tickets go on sale soon" to on sale (unless `sales.openAt` is in the future).
+  As soon as either ticket URL is set, the site switches from "Tickets go on sale soon" to on sale (unless `sales.openAt` is in the future). Once `embedSrc` is set, the desktop header "Gala Tickets" button and the gold side tab on `/gala` (phones/tablets) open the checkout in a pop-up modal; until then they link to the ticket section.
 
 ## 2. Content to fill in
 
@@ -43,7 +43,7 @@ Every `TODO_CONFIRM` in the config. Run `npm run dev` and open `/gala` to see a 
 - [ ] End time (`endAt`). The 5:00 PM start is confirmed and published; without an end time, calendar entries are start-only and the page shows just "5:00 PM".
 - [ ] **Final confirmation that the scholars will attend and speak.** If not, edit the hero sentence in `copy.intro` ("words from the students your support makes possible", swap in "inspiring speakers"), the Champion reception line, and the Speakers tile.
 - [ ] Parking (`faq.parking`; until then: "Parking details coming soon."), venue accessibility (`faq.accessibility`), silent auction access and remote bidding (`faq.auction`; the question is hidden until set).
-- [ ] Board approval of the **proposed** wording (shown now): tagline "Two Years of Legacy", age policy (`faq.ages`), refund policy (`faq.refunds`), dietary answer, the student part of the Student & Youth eligibility answer, the "introduction to the scholar" Scholarship Sponsor benefit.
+- [ ] Board approval of the **proposed** wording (shown now): age policy (`faq.ages`), refund policy (`faq.refunds`), dietary answer, the student part of the Student & Youth eligibility answer, the "introduction to the scholar" Scholarship Sponsor benefit.
 - [ ] FMV values from the treasurer (`fmvPerGuest.standard`, `.champion`), which turn on the "Est. tax-deductible" lines; the EIN (`ein`).
 - [ ] Program print deadline (`tiers.give.programListing.deadline`) and sponsor logo deadline (`sponsorship.logoDeadline`).
 - [ ] Speakers, schedule, music, auction items (`program.*`): each block appears once its list or value is set.

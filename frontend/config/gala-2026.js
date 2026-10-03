@@ -16,7 +16,7 @@ export const gala = {
     canonicalUrl: 'https://tombossabfoundation.org/gala',
     name: 'The Tombossa B Foundation Fundraising Gala',
     year: 2026,
-    tagline: 'Two Years of Legacy', // TODO_CONFIRM (proposed; hidden if null)
+    tagline: 'An Evening for the Next Generation', // hidden if null
     dateDisplay: 'Saturday, November 28, 2026',
     eventDate: '2026-11-28', // drives the /events date badge
     timezone: 'America/Chicago',
@@ -64,7 +64,7 @@ export const gala = {
     // The homepage gala slide. It removes itself (client-side) after removeAfter.
     homeSlide: {
         dateLine: 'Saturday, November 28, 2026 · Dallas', // under the title (no time on the slide)
-        subline: 'Two years of legacy. One unforgettable night for our scholars.',
+        subline: 'An evening for the next generation. One unforgettable night for our scholars.',
         closedSubline: 'Online sales have closed. See you tonight!', // sales close the morning of the gala
         pastSubline: 'Thank you for an unforgettable night.',
         removeAfter: '2026-12-02T23:59:59-06:00',
@@ -81,7 +81,7 @@ export const gala = {
         standard: null, // TODO_CONFIRM dinner + 1 drink (applies to Student & Youth and GA)
         champion: null, // TODO_CONFIRM dinner + 3 drinks + reception
     },
-    ein: null, // TODO_CONFIRM shown in the tax note if set
+    ein: '99-4436179', // as published in the site's donate modal disclaimer; shown in the tax FAQ
 
     goal: {
         // The whole progress section stays hidden unless both amountGoal and headline are set.

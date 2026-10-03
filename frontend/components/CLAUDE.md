@@ -4,7 +4,7 @@ Reusable UI, one component per site section. ~40 components; you should not need
 
 ## Server vs client
 
-Components are **server components by default** (no pragma). Add `"use client"` as the first line only when the component needs state, effects, browser APIs, event handlers, context, or styled-jsx. Current client components: the donate family (`DonateProvider/DonateModal/DonateButton/Donate`), `NavOne`, `Footer`, the forms (`Contact`, `Volunteer`), the swiper users (`SliderOne`, `ClientsLogo`, `ClientsLogoTwo`, `MixerArea`), `EntryArea`, `VideoModal`, `Gallery`, `FaqArea`, `Map`, `GalaNavButton`, `GalaEvents`, and the interactive pieces in `gala/`. Everything presentational stays server-rendered.
+Components are **server components by default** (no pragma). Add `"use client"` as the first line only when the component needs state, effects, browser APIs, event handlers, context, or styled-jsx. Current client components: the donate family (`DonateProvider/DonateModal/DonateButton/Donate`), `NavOne`, `Footer`, the forms (`Contact`, `Volunteer`), the swiper users (`SliderOne`, `ClientsLogo`, `ClientsLogoTwo`, `MixerArea`), `EntryArea`, `VideoModal`, `Gallery`, `FaqArea`, `Map`, `GalaNavButton`, `GalaEvents`, `GalaCheckout` (app-level ticket modal; shares `useDialog` with `DonateModal`), and the interactive pieces in `gala/`. Everything presentational stays server-rendered.
 
 ## Gala 2026 (`gala/`)
 

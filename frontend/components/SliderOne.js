@@ -48,7 +48,7 @@ const SliderOne = () => {
                     clickable: true,
                 }}
                 autoplay={{
-                    delay: 7000
+                    delay: 9000
                 }}
                 speed={3500}
                 loop={true}

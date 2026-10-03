@@ -4,21 +4,49 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import useGalaState from './gala/useGalaState';
+import { useGalaCheckout } from './GalaCheckout';
 import styles from './GalaNavButton.module.css';
 
-// Gold "Gala Tickets" pill in the site header (see NavOne for its three
-// placements). Label follows the gala state; it disappears after the event.
-// On /gala itself it jumps to the ticket section instead of reloading the page.
-const GalaNavButton = ({ placement }) => {
+// Gold "Gala Tickets" CTA (see NavOne for its placements). Label follows the gala
+// state; it disappears after the event.
+//  - desktop / floating: open the ticket checkout modal when it's available
+//    (embed configured + on sale); otherwise they're plain links.
+//  - tablet / menu: always link to /gala.
+// On /gala itself, links jump to the ticket section instead of reloading.
+// `floating` is the /gala side tab that replaces the Donate tab; outside the
+// ticket-selling states it renders `fallback` (the regular Donate tab) instead.
+const GalaNavButton = ({ placement, fallback = null }) => {
     const { state } = useGalaState();
+    const { available, open } = useGalaCheckout();
     const pathname = usePathname();
+
+    if (placement === 'floating' && !['coming_soon', 'on_sale'].includes(state)) return fallback;
     if (state === 'past') return null;
 
     const label = state === 'online_closed' ? 'The Gala' : 'Gala Tickets';
     const className = `${styles.pill} ${styles[placement]}`;
-    const button = pathname === '/gala'
-        ? <a href="#tickets" className={className}>{label}</a>
-        : <Link href="/gala" className={className}>{label}</Link>;
+    const href = pathname === '/gala' ? '#tickets' : '/gala';
+    const opensModal = available && (placement === 'desktop' || placement === 'floating');
+
+    let button;
+    if (opensModal) {
+        // Keeps a real href so it still works without JS (progressive enhancement).
+        button = (
+            <a href={href} className={className} onClick={(e) => { e.preventDefault(); open(); }}>
+                {placement === 'floating' && <i className="fa fa-ticket" aria-hidden="true"></i>}
+                {label}
+            </a>
+        );
+    } else if (href === '#tickets') {
+        button = (
+            <a href={href} className={className}>
+                {placement === 'floating' && <i className="fa fa-ticket" aria-hidden="true"></i>}
+                {label}
+            </a>
+        );
+    } else {
+        button = <Link href={href} className={className}>{label}</Link>;
+    }
 
     // Desktop: a zero-width slot after the Donate button, so the pill sits in
     // the gap beside it without moving any existing header item.

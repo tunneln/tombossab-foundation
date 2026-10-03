@@ -197,8 +197,11 @@ const NavOne = () => {
                     </div>
                 </div>
             </header>
-            {/* Always-visible fixed donate tab (replaces Donorbox's injected popup button). */}
-            <DonateButton className="donate-floating" />
+            {/* Always-visible fixed donate tab (replaces Donorbox's injected popup button).
+                On /gala it becomes a gold "Gala Tickets" tab while tickets are selling. */}
+            {pathname === '/gala'
+                ? <GalaNavButton placement="floating" fallback={<DonateButton className="donate-floating" />} />
+                : <DonateButton className="donate-floating" />}
         </div>
     );
 };

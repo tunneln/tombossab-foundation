@@ -40,6 +40,7 @@
     position: absolute;
     top: 0;
     left: 18px; /* clears the Donate button's slanted edge */
+    z-index: 5; /* the nav column (later in the DOM) overlaps this gap; stay clickable above it */
 }
 
 /* Tablets (576-1024px): beside the hamburger icon. */
@@ -69,6 +70,28 @@
 :global(.header-area .side-nav-container .side-menu-wrap .side-menu-ul .sidenav__item) a.menu:hover {
     color: #120C1C;
     background-color: #E3C98F;
+}
+
+/* /gala side tab: a slimmer gold take on the fixed Donate tab it replaces there.
+   Like that tab, it shows only at <= 1024px (desktop uses the header button).
+   It hugs the left edge: `left` = half the tab's thickness, since it's rotated. */
+.pill.floating { display: none; }
+@media (max-width: 1024px) {
+    .pill.floating {
+        display: inline-flex;
+        position: fixed;
+        top: 25%;
+        left: 13px;
+        z-index: 9990;
+        transform: translate(-50%, -50%) rotate(-90deg);
+        transform-origin: center center;
+        gap: 6px;
+        height: auto;
+        padding: 7px 16px 7px 14px;
+        border-radius: 0 0 6px 6px;
+        font-size: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -78,7 +78,6 @@ test('checklist: unset fields are reported, proposed values are not "unset"', ()
     assert.equal(byPath['checkout.provider'], false);
     assert.equal(byPath['checkout.tickets'], true);
     assert.equal(byPath['program.speakers'], true);
-    assert.equal(byPath.tagline, false);
     assert.equal(byPath['faq.refunds'], false);
 });
 

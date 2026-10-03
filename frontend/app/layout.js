@@ -1,5 +1,6 @@
 import React from 'react';
 import { DonateProvider } from '../components/DonateProvider';
+import { GalaCheckoutProvider } from '../components/GalaCheckout';
 
 export const metadata = {
     metadataBase: new URL('https://tombossabfoundation.org'),
@@ -61,7 +62,10 @@ export default function RootLayout({ children }) {
 
                 {/* The single app-level donate modal persists across client-side
                     navigation so a donor's in-progress form is never lost. */}
-                <DonateProvider>{children}</DonateProvider>
+                <DonateProvider>
+                    {/* Same pattern for the gala ticket checkout modal. */}
+                    <GalaCheckoutProvider>{children}</GalaCheckoutProvider>
+                </DonateProvider>
 
                 {/* Classic sync scripts, exactly as the old Layout rendered them:
                     they execute during document parse — before hydration — so the

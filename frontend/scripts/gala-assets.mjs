@@ -60,11 +60,10 @@ const CARD = page(740, 476, `
   <p class="display" style="font-size: 60px; line-height: 1; margin-top: 4px; color: #C9A45C; letter-spacing: .06em">${gala.year}</p>
   <div class="band" style="bottom: 22px"></div>`);
 
-// Square banner for the checkout platform: name only. The event page there already
+// Square banner for the checkout platform: name only, no logo (Zeffy shows the organization's own). The event page there already
 // shows the date, time, and venue, and buyers are already on it (so no URL either).
 const BANNER = page(1080, 1080, `
   <div class="band" style="top: 44px"></div>
-  <img src="${LOGO}" alt="" style="width: 250px; margin-bottom: 56px">
   <h1 class="display" style="font-size: 96px; line-height: 1.06; max-width: 920px; text-wrap: balance">${displayName()}</h1>
   <p class="display" style="font-size: 92px; line-height: 1; margin-top: 22px; color: #C9A45C; letter-spacing: .06em">${gala.year}</p>
   ${gala.tagline ? `<p style="margin-top: 28px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 44px; color: #E3C98F">${gala.tagline}</p>` : ''}

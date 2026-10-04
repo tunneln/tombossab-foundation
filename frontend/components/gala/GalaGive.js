@@ -1,6 +1,6 @@
 import React from 'react';
 import { gala } from '../../config/gala-2026';
-import { formatPrice } from '../../lib/gala';
+import { formatPrice, tierDeductible } from '../../lib/gala';
 import { ShowIn } from './GalaState';
 import CheckoutCta from './CheckoutCta';
 import FundCard from './FundCard';
@@ -22,6 +22,9 @@ const GalaGive = () => {
                             <h3 className={styles.tierName}>{sponsorSeat.name}</h3>
                             <p className={styles.price}>{formatPrice(sponsorSeat.price)}</p>
                             <p className={styles.giveText}>{sponsorSeat.description}</p>
+                            {tierDeductible(sponsorSeat) === sponsorSeat.price && (
+                                <p className={styles.deductible}>Fully tax-deductible</p>
+                            )}
                             <ShowIn states={['on_sale']}>
                                 <div className={styles.tierCta}>
                                     <CheckoutCta

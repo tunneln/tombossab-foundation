@@ -26,7 +26,21 @@ Manual steps outside the code for **https://tombossabfoundation.org/gala** (The 
   - Dietary needs: none / vegan-fasting / vegetarian / allergies (describe).
   - For sponsors: recognition name and logo (or "we'll email you").
 - [ ] Tickets are **QR codes**: turn on the platform's QR-code tickets and its check-in (scanner) app. Guests check in by scanning; if someone can't find their QR code, look them up by name. No ID is needed at the door (only the bar checks ID, for 21+).
-- [ ] Tax receipts: if the platform supports a per-ticket deductible (eligible) amount, set it to price minus fair market value (the same FMV you enter in `fmvPerGuest`).
+- [ ] Tax receipts: enter each ticket type's tax-deductible (eligible) amount in Zeffy. These come from `fmvPerGuest` ($40 standard, $60 Champion) and match the page's estimates:
+
+  | Ticket type | Price | Tax-deductible |
+  |---|---|---|
+  | Student & Youth | $30 | $0 |
+  | General Admission | $55 | $15 |
+  | Champion | $85 | $25 |
+  | Community Sponsor | $500 | $300 |
+  | Legacy Sponsor | $1,000 | $520 |
+  | Scholarship Sponsor | $2,500 | $2,020 |
+  | Sponsor a Seat | $55 | $55 (fully deductible) |
+
+  Door tickets (sold in person): Student & Youth $0 · General Admission $25 · Champion $35.
+
+  > These values need **treasurer/CPA sign-off** before sales open, and must **not change once sales open** (receipts already issued are based on them).
 - [ ] Confirmation email copy: date, dress code (cocktail attire), what to bring (just the QR code ticket, on a phone or printed; ID only for drinks if 21+), and contact (contact@tombossabfoundation.org · 214 208 3936).
 - [ ] Paste the URLs into `checkout` in the config exactly as the dashboard gives them. Never edit or construct them.
   - `checkout.tickets.embedSrc`: the embed/iframe URL. When set, the page shows the checkout inline, and the tier buttons read "Select tickets below".
@@ -44,7 +58,7 @@ Every `TODO_CONFIRM` in the config. Run `npm run dev` and open `/gala` to see a 
 - [ ] **Final confirmation that the scholars will attend and speak.** If not, edit the hero sentence in `copy.intro` ("words from the students your support makes possible", swap in "inspiring speakers") and the Speakers tile.
 - [ ] Parking (`faq.parking`; until then: "Parking details coming soon."), venue accessibility (`faq.accessibility`), silent auction access and remote bidding (`faq.auction`; the question is hidden until set).
 - [ ] Board approval of the **proposed** wording (shown now): age policy (`faq.ages`), refund policy (`faq.refunds`), dietary answer, the student part of the Student & Youth eligibility answer, the "introduction to the scholar" Scholarship Sponsor benefit.
-- [ ] FMV values from the treasurer (`fmvPerGuest.student` = dinner only, `.standard` = dinner + 1 drink, `.champion`), which turn on the "Est. tax-deductible" lines; the EIN (`ein`).
+- [ ] Treasurer/CPA sign-off on the fair market values (`fmvPerGuest`: $40 standard = dinner + 1 drink + entertainment; $60 Champion = standard + 2 drinks). They drive the "Est. tax-deductible" lines and the amounts in the Tax receipts table above.
 - [ ] Program print deadline (`tiers.give.programListing.deadline`) and sponsor logo deadline (`sponsorship.logoDeadline`).
 - [ ] Speakers, schedule, music, auction items (`program.*`): each block appears once its list or value is set.
 - [ ] Goal amount and headline (`goal.*`): the progress bar appears only when both are set. Update `amountRaised` by hand.

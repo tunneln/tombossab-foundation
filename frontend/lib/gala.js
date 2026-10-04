@@ -133,10 +133,12 @@ export const countdownLabel = (days) => {
 // ---------------------------------------------------------------- tiers & money
 
 // Estimated tax-deductible amount, or null when the FMV isn't set (UI hides it).
+//  fully deductible (Sponsor a Seat): the whole price (the buyer receives nothing)
 //  individual tier: price - FMV per guest
 //  sponsor tier:    price - seats * FMV per guest of its seat type
-// Clamped at 0: a Student & Youth ticket's FMV may exceed its price.
+// Clamped at 0: a Student & Youth ticket's FMV exceeds its price.
 export const tierDeductible = (tier, g = GALA) => {
+    if (tier.fullyDeductible) return tier.price;
     const key = tier.fmvKey ?? tier.seatType;
     const fmv = g.fmvPerGuest[key];
     if (fmv == null) return null;
@@ -304,7 +306,7 @@ export const CONFIRM_FIELDS = [
     'endAt',
     'copy.intro.1',
     'sales.doorSalesAvailable',
-    'fmvPerGuest.student', 'fmvPerGuest.standard', 'fmvPerGuest.champion',
+    'fmvPerGuest.standard', 'fmvPerGuest.champion',
     'goal.headline', 'goal.amountGoal',
     'tiers.sponsor.2.benefits.1',
     'tiers.give.programListing.deadline',

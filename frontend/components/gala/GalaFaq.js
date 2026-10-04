@@ -34,7 +34,8 @@ const WhenWhere = () => {
 };
 
 const TaxAnswer = () => {
-    const tiers = [...gala.tiers.attend, ...gala.tiers.sponsor]
+    // Every option, including $0 (Student & Youth) and Sponsor a Seat.
+    const tiers = [...gala.tiers.attend, ...gala.tiers.sponsor, { id: 'seat', ...gala.tiers.give.sponsorSeat }]
         .map((tier) => ({ tier, value: tierDeductible(tier) }))
         .filter(({ value }) => value != null);
     return (

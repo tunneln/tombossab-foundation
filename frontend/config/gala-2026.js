@@ -76,11 +76,11 @@ export const gala = {
         doorSalesAvailable: true, // TODO_CONFIRM; door tickets are limited, never sold online
     },
 
-    // Fair market value of goods/services per guest, for tax disclosure. Set by the treasurer.
+    // Fair market value of goods/services per guest, for tax disclosure.
+    // Don't change these once sales open: buyers' receipts are based on them.
     fmvPerGuest: {
-        student: null,  // TODO_CONFIRM dinner only (Student & Youth: no drink ticket)
-        standard: null, // TODO_CONFIRM dinner + 1 drink (General Admission)
-        champion: null, // TODO_CONFIRM dinner + 3 drinks
+        standard: 40, // TODO_CONFIRM good-faith FMV: dinner + 1 drink + entertainment. Pending treasurer/CPA sign-off. (Also Student & Youth: 30 - 40 clamps to $0.)
+        champion: 60, // TODO_CONFIRM standard + 2 additional drinks (~$10 each). Pending treasurer/CPA sign-off.
     },
     ein: '99-4436179', // as published in the site's donate modal disclaimer; shown in the tax FAQ
 
@@ -98,7 +98,7 @@ export const gala = {
                 name: 'Student & Youth',
                 price: 30,
                 doorPrice: 40,
-                fmvKey: 'student',
+                fmvKey: 'standard',
                 includes: ['Dinner', 'The full program'],
                 tagline: "Because the future we're building should be in the room.",
                 note: 'For current students and guests 17 and younger.',
@@ -177,6 +177,7 @@ export const gala = {
             sponsorSeat: {
                 name: 'Sponsor a Seat',
                 price: 55,
+                fullyDeductible: true, // the buyer receives nothing, so the whole price is deductible
                 description: 'Give a student or family a seat at the table.',
             },
             funds: [

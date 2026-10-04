@@ -24,7 +24,7 @@ const TierCard = ({ tier, list, availability, cta }) => {
             </ul>
             {tier.tagline && <p className={styles.tierTagline}>{tier.tagline}</p>}
             {tier.note && <p className={styles.tierNote}>{tier.note}</p>}
-            {deductible != null && <p className={styles.deductible}>Est. tax-deductible: {formatPrice(deductible)}</p>}
+            {deductible > 0 && <p className={styles.deductible}>Est. tax-deductible: {formatPrice(deductible)}</p>}
             {cta && <div className={styles.tierCta}>{cta}</div>}
         </li>
     );

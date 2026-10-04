@@ -186,8 +186,6 @@ test('/gala: pre-sale state (no checkout yet) and Donorbox-only FAQ',
     assert.ok(await page.locator('#sponsor a[href^="mailto:contact@tombossabfoundation.org?subject=Gala%202026%20Sponsorship"]').count() >= 3);
     // Provider is Donorbox: the Zeffy tip question must not render.
     assert.doesNotMatch(await page.locator('#faq').innerText(), /optional tip/);
-    // FMV is unset: no deductible estimates.
-    assert.doesNotMatch(await page.locator('body').innerText(), /Est\. tax-deductible/);
   } finally {
     await ctx.close();
   }
@@ -314,6 +312,34 @@ test('/gala: Champion promises no reception; its extra proceeds go to mental wel
     assert.equal(items.at(-1), 'Extra proceeds support our mental wellness services');
     assert.doesNotMatch(await page.locator('body').innerText(), /reception|Negusse family/i);
     assert.doesNotMatch(await card.innerText(), /Future Scholar Fund/);
+  } finally {
+    await ctx.close();
+  }
+});
+
+test('/gala: tax-deductible estimates on cards ($0 hidden) and in the FAQ (every option)',
+  { skip: unless(STATE !== 'past', 'ticket and sponsor cards are hidden after the event') }, async () => {
+  const { ctx, page } = await openPage(browser, origin, '/gala');
+  try {
+    const cardLine = async (section, name) => {
+      const card = page.locator(`${section} > div > ul > li`).filter({ has: page.locator('h3', { hasText: name }) });
+      const line = card.getByText(/^Est\. tax-deductible:/);
+      return (await line.count()) ? (await line.innerText()).trim() : null;
+    };
+    assert.equal(await cardLine('#tickets', 'Student & Youth'), null, 'a $0 estimate is hidden');
+    assert.equal(await cardLine('#tickets', 'General Admission'), 'Est. tax-deductible: $15');
+    assert.equal(await cardLine('#tickets', 'Champion'), 'Est. tax-deductible: $25');
+    assert.equal(await cardLine('#sponsor', 'Community Sponsor'), 'Est. tax-deductible: $300');
+    assert.equal(await cardLine('#sponsor', 'Legacy Sponsor'), 'Est. tax-deductible: $520');
+    assert.equal(await cardLine('#sponsor', 'Scholarship Sponsor'), 'Est. tax-deductible: $2,020');
+    assert.match(await page.locator('#give').innerText(), /Fully tax-deductible/);
+
+    await page.locator('#faq').getByRole('button', { name: 'Is my ticket tax-deductible?' }).click();
+    const items = await page.locator('#faq [role="region"]:visible li').allTextContents();
+    assert.deepEqual(items.map((t) => t.trim()), [
+      'Student & Youth: $0', 'General Admission: $15', 'Champion: $25', 'Community Sponsor: $300',
+      'Legacy Sponsor: $520', 'Scholarship Sponsor: $2,020', 'Sponsor a Seat: $55',
+    ]);
   } finally {
     await ctx.close();
   }

@@ -4948,9 +4948,13 @@ html {
     /* dvh tracks the *visible* viewport (shrinks when the mobile address bar is
        shown); vh is the fallback for older browsers. Plain vh alone measures the
        largest viewport, so 90vh could exceed the visible area on mobile and, with
-       the overlay centering, clip the close button off the top edge. */
-    height: min(90vh, 800px);
-    height: min(90dvh, 800px);
+       the overlay centering, clip the close button off the top edge.
+       A MAX height: the box follows the form's own height (--dbox-h, reported by
+       the embed; see DonateModal), so short steps (e.g. Payment) leave no white
+       space below, and tall steps stop here and scroll inside. 900px fits the
+       ~800px first step whole on tall tablets and desktops. */
+    max-height: min(90vh, 900px);
+    max-height: min(90dvh, 900px);
     display: flex;
     flex-direction: column;
 }
@@ -4982,9 +4986,13 @@ html {
     text-align: center;
 }
 
-/* Fills the modal's height (flex) and clips the over-wide iframe so the embed's
-   white side padding is trimmed and a tall form scrolls inside instead of overflowing. */
+/* As tall as the form reports (--dbox-h, minus the 6px the iframe is pulled up
+   below), shrinking to the box's max height when the form is taller; clips the
+   over-wide iframe so the embed's white side padding is trimmed and a tall form
+   scrolls inside instead of overflowing. Until the form reports, it fills the
+   max height (the large fallback). */
 .donate-modal-frame {
+    height: calc(var(--dbox-h, 2000px) - 6px);
     flex: 1 1 auto;
     min-height: 0;
     overflow: hidden;

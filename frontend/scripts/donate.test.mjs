@@ -352,3 +352,43 @@ for (const vp of VIEWPORTS.filter((v) => v.w <= 767).concat([{ name: 'se', w: 37
     }
   });
 }
+
+// The box follows the embed's reported height ({ from: 'dbox', height }), so
+// short steps (e.g. Payment) leave no white space below the form and tall steps
+// stop at the max height and scroll inside. The real Donorbox embed is blocked
+// in tests, so a stub at its URL sends the same messages.
+const DBOX_STUB = '<!doctype html><body style="margin:0"><script>parent.postMessage({ from: "dbox", height: 400 }, "*");</script></body>';
+const frameHeight = (page) =>
+  page.evaluate(() => Math.round(document.querySelector('.donate-modal-frame').getBoundingClientRect().height));
+
+for (const vp of VIEWPORTS) {
+  test(`${vp.name}: the donate box follows the form's reported height`, async () => {
+    const { ctx, page } = await openHome(vp);
+    try {
+      await page.route('https://donorbox.org/embed/**', (r) => r.fulfill({ contentType: 'text/html', body: DBOX_STUB }));
+      await tapDonate(page, vp);
+      await waitOpen(page);
+
+      // Short step: the box is the reported height minus the iframe's 6px top trim.
+      await page.waitForFunction(() => document.querySelector('.donate-modal-frame').getBoundingClientRect().height < 500);
+      assert.equal(await frameHeight(page), 394);
+
+      // Only our own iframe's messages count.
+      await page.evaluate(() => window.postMessage({ from: 'dbox', height: 200 }, '*'));
+      await page.waitForTimeout(200);
+      assert.equal(await frameHeight(page), 394, 'a message from the page itself must be ignored');
+
+      // Tall step: stops at the max height, box still fully on screen.
+      const stub = page.frames().find((f) => f.url().includes(MODAL_EMBED));
+      await stub.evaluate(() => parent.postMessage({ from: 'dbox', height: 3000 }, '*'));
+      await page.waitForFunction(() => document.querySelector('.donate-modal-frame').getBoundingClientRect().height > 500);
+      const { bottom, vh } = await page.evaluate(() => ({
+        bottom: document.querySelector('.donate-modal').getBoundingClientRect().bottom,
+        vh: window.innerHeight,
+      }));
+      assert.ok(bottom <= vh, `tall step: box bottom (${Math.round(bottom)}px) must stay within the ${vh}px viewport`);
+    } finally {
+      await ctx.close();
+    }
+  });
+}

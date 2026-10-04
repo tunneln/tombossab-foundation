@@ -561,7 +561,7 @@
         padding: 18px 16px 12px;
     }
     .donate-modal-wrap {
-        height: min(96dvh, 900px);
+        max-height: min(96dvh, 900px);
     }
     /* The embed form is ~705px tall to its Next button — taller than a phone's
        visible viewport once the browser toolbars show. Pull the legal notice OUT of

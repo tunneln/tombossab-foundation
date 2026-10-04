@@ -24,6 +24,22 @@ const DonateModal = () => {
     // isOpen && everOpened: run once the dialog is actually mounted (first open), so focus can move into it.
     useDialog(isOpen && everOpened, close, closeRef, iframeRef);
 
+    // The embed reports its content height ({ from: 'dbox', height }) whenever it
+    // changes, e.g. per step (Donorbox's own popup script resizes with it). Sizing
+    // the box to it removes the white space under short steps like Payment; tall
+    // steps still stop at the CSS max height and scroll inside. Only messages from
+    // our own iframe count (the homepage donor wall embed sends them too).
+    const [formHeight, setFormHeight] = useState(null);
+    useEffect(() => {
+        const onMessage = (e) => {
+            if (e.origin !== 'https://donorbox.org' || e.source !== iframeRef.current?.contentWindow) return;
+            const height = e.data?.from === 'dbox' ? Number(e.data.height) : NaN;
+            if (Number.isFinite(height) && height > 0) setFormHeight(height);
+        };
+        window.addEventListener('message', onMessage);
+        return () => window.removeEventListener('message', onMessage);
+    }, []);
+
     // Nothing in the DOM until the first open: keeps the embed request lazy and
     // keeps the static export's server-rendered output clean (the portal only runs
     // after a client-side open, never during SSR/export).
@@ -38,7 +54,11 @@ const DonateModal = () => {
             aria-label="Donate to Tombossa B Foundation"
             aria-hidden={isOpen ? undefined : true}
         >
-            <div className="donate-modal-wrap" onClick={(e) => e.stopPropagation()}>
+            <div
+                className="donate-modal-wrap"
+                onClick={(e) => e.stopPropagation()}
+                style={formHeight ? { '--dbox-h': `${formHeight}px` } : undefined}
+            >
                 <div className="donate-modal">
                     <button
                         ref={closeRef}

@@ -18,7 +18,7 @@ import { fileURLToPath } from 'node:url';
 import QRCode from 'qrcode';
 import { chromium } from 'playwright';
 import { gala } from '../config/gala-2026.js';
-import { displayName, formatTime, timePublished } from '../lib/gala.js';
+import { displayName } from '../lib/gala.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const IMAGES = path.resolve(__dirname, '../public/images');
@@ -60,22 +60,25 @@ const CARD = page(740, 476, `
   <p class="display" style="font-size: 60px; line-height: 1; margin-top: 4px; color: #C9A45C; letter-spacing: .06em">${gala.year}</p>
   <div class="band" style="bottom: 22px"></div>`);
 
-// Square banner for the checkout platform: no URL (buyers are already there).
-// Unlike link previews, it can be re-uploaded anytime, so it shows the time once confirmed.
-const when = [gala.dateDisplay, timePublished() && formatTime(gala.startAt)].filter(Boolean).join(' · ');
+// Square banner for the checkout platform: name only. The event page there already
+// shows the date, time, and venue, and buyers are already on it (so no URL either).
 const BANNER = page(1080, 1080, `
   <div class="band" style="top: 44px"></div>
-  <img src="${LOGO}" alt="" style="width: 230px; margin-bottom: 44px">
-  <h1 class="display" style="font-size: 92px; line-height: 1.06; max-width: 900px; text-wrap: balance">${displayName()}</h1>
-  <p class="display" style="font-size: 84px; line-height: 1; margin-top: 18px; color: #C9A45C; letter-spacing: .06em">${gala.year}</p>
-  ${gala.tagline ? `<p style="margin-top: 22px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 40px; color: #E3C98F">${gala.tagline}</p>` : ''}
-  <p style="margin-top: 52px; font-size: 32px; font-weight: 600; letter-spacing: .03em">${when}</p>
-  <p style="margin-top: 14px; font-size: 28px; font-weight: 500; color: #CBBFD6">${gala.venue.name} · ${gala.venue.city}, ${gala.venue.region}</p>
+  <img src="${LOGO}" alt="" style="width: 250px; margin-bottom: 56px">
+  <h1 class="display" style="font-size: 96px; line-height: 1.06; max-width: 920px; text-wrap: balance">${displayName()}</h1>
+  <p class="display" style="font-size: 92px; line-height: 1; margin-top: 22px; color: #C9A45C; letter-spacing: .06em">${gala.year}</p>
+  ${gala.tagline ? `<p style="margin-top: 28px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 44px; color: #E3C98F">${gala.tagline}</p>` : ''}
   <div class="band" style="bottom: 44px"></div>`);
 
 async function render(browser, html, width, height, file, type) {
   const tab = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
   await tab.setContent(html, { waitUntil: 'networkidle' });
+  // Load both families explicitly: the browser only fetches fonts a page uses,
+  // and not every image uses both (the banner has no Poppins text).
+  await tab.evaluate(() => Promise.all([
+    document.fonts.load("700 40px 'Playfair Display'"),
+    document.fonts.load("600 20px 'Poppins'"),
+  ]));
   await tab.evaluate(() => document.fonts.ready);
   const fontsOk = await tab.evaluate(() =>
     document.fonts.check("700 40px 'Playfair Display'") && document.fonts.check("600 20px 'Poppins'")

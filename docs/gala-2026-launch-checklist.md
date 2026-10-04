@@ -50,7 +50,7 @@ Manual steps outside the code for **https://tombossabfoundation.org/gala** (The 
   - `checkout.tickets.embedSrc`: an inline embed URL, if you'd ever rather show the form on the page.
   - `checkout.tickets.hostedUrl`: the hosted ticket page. It's the "open in a new tab" fallback, and the only checkout if there's no embed.
   - `checkout.sponsorship.hostedUrl`: optional. Without it, "Become a Sponsor" uses the ticket link, then email.
-  - `checkout.donate`: fund-specific donation links. Both point at `/donatenow` until you have separate ones.
+  - `checkout.donationForm`: the Zeffy donation form embedded in the "Can't Make It?" section (set). Tip: set its theme color in Zeffy to match the gala page (it defaults to Zeffy red).
 
   With any ticket URL set, the site is on sale (unless `sales.openAt` is in the future); with none, it shows "Tickets go on sale soon" and the buttons link to the ticket section.
 
@@ -60,13 +60,12 @@ Every `TODO_CONFIRM` in the config. Run `npm run dev` and open `/gala` to see a 
 
 - [ ] End time (`endAt`). The 5:00 PM start is confirmed and published; without an end time, calendar entries are start-only and the page shows just "5:00 PM".
 - [ ] **Final confirmation that the scholars will attend and speak.** If not, edit the hero sentence in `copy.intro` ("words from the students your support makes possible", swap in "inspiring speakers") and the Speakers tile.
-- [ ] Parking (`faq.parking`; until then: "Parking details coming soon."), venue accessibility (`faq.accessibility`), silent auction access and remote bidding (`faq.auction`; the question is hidden until set).
-- [ ] Board approval of the **proposed** wording (shown now): age policy (`faq.ages`), refund policy (`faq.refunds`), dietary answer, the student part of the Student & Youth eligibility answer, the "introduction to the scholar" Scholarship Sponsor benefit.
+- [ ] Venue accessibility (`faq.accessibility`), silent auction access and remote bidding (`faq.auction`; the question is hidden until set).
+- [ ] Board approval of the **proposed** wording (shown now): age policy (`faq.ages`), refund policy (`faq.refunds`), the "introduction to the scholar" Scholarship Sponsor benefit.
 - [ ] Treasurer/CPA sign-off on the fair market values (`fmvPerGuest`: $40 standard = dinner + 1 drink + entertainment; $60 Champion = standard + 2 drinks). They drive the "Est. tax-deductible" lines and the amounts in the Tax receipts table above.
 - [ ] Program print deadline (`tiers.give.programListing.deadline`) and sponsor logo deadline (`sponsorship.logoDeadline`).
 - [ ] Speakers, schedule, music, auction items (`program.*`): each block appears once its list or value is set.
 - [ ] Goal amount and headline (`goal.*`): the progress bar appears only when both are set. Update `amountRaised` by hand.
-- [ ] Fund-specific donate links (`checkout.donate`).
 - [ ] Sponsorship packet PDF: put it in `frontend/public/` and set `sponsorship.packetPdf`.
 - [ ] Gala imagery: the `/events` card uses a generated graphic (`public/images/gala-2026-card.jpg`). Swap it for a photo or poster at 740×476 if you have one.
 - [ ] Late-sales details: `sales.doorSalesAvailable` (door prices are shown while true), `program.dinnerNote` (confirm with the caterer).

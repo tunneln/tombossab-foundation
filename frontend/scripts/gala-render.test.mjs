@@ -144,7 +144,13 @@ test('/gala: confirmed venue renders (hero chip + FAQ with a lazy, titled map)',
     const map = panel.locator('iframe');
     assert.equal(await map.getAttribute('loading'), 'lazy');
     assert.equal(await map.getAttribute('title'), 'Map to Empire Event Center');
-    assert.match(await faq.innerText(), /Is there parking\?/);
+    const questions = (await faq.locator('button[aria-expanded]').allInnerTexts()).map((q) => q.trim());
+    assert.deepEqual(questions, [
+      'What should I wear?', 'When and where is the gala?', 'What do I need to bring?',
+      'Is the gala open to all ages?', 'Is the venue accessible?', 'Can I buy tickets for other people?',
+      "What's the refund policy?", 'Is my ticket tax-deductible?', 'Why does checkout ask for an optional tip?',
+      'Who do I contact with questions?',
+    ]);
   } finally {
     await ctx.close();
   }
@@ -346,6 +352,24 @@ test('/gala: tax-deductible estimates on cards ($0 hidden) and in the FAQ (every
   }
 });
 
+test('/gala: "Can\'t Make It?" embeds the Zeffy donation form, with a working fallback', async () => {
+  const { ctx, page } = await openPage(browser, origin, '/gala');
+  try {
+    const card = page.locator('#give').getByRole('heading', { name: 'Give to the Scholarship Fund' }).locator('..');
+    // Server-rendered placeholder for Zeffy's embed script.
+    const html = await (await fetch(`${origin}/gala`)).text();
+    assert.match(html, /data-zeffy-embed="" data-form-url="\/embed\/donation-form\/scholarship-fund-79"/);
+    // The test browser blocks external scripts, so the script "fails" here and
+    // the plain iframe from Zeffy's embed code must take over.
+    const fallback = card.locator('iframe[title="Donation form powered by Zeffy"]');
+    await fallback.waitFor({ timeout: 10000 });
+    assert.equal(await fallback.getAttribute('src'), gala.checkout.donationForm.fallbackSrc);
+    assert.equal(await card.locator('[data-zeffy-embed]').count(), 0);
+  } finally {
+    await ctx.close();
+  }
+});
+
 test('/gala: the tax FAQ shows the foundation EIN', async () => {
   const { ctx, page } = await openPage(browser, origin, '/gala');
   try {
@@ -412,11 +436,11 @@ test('/gala on sale: every ticket, sponsor, and Sponsor a Seat button opens the 
 
     const buttons = [
       ...await page.locator('#tickets button', { hasText: 'Get Tickets' }).all(),
-      page.locator('#tickets button', { hasText: 'Get Your Tickets' }),
       ...await page.locator('#sponsor button', { hasText: 'Become a Sponsor' }).all(),
       page.locator('#give button', { hasText: 'Sponsor a Seat' }),
     ];
-    assert.equal(buttons.length, 3 + 1 + 3 + 1);
+    assert.equal(buttons.length, 3 + 3 + 1);
+    assert.equal(await page.getByText('Get Your Tickets').count(), 0, 'no extra button under the tiers');
     for (const button of buttons) {
       await button.scrollIntoViewIfNeeded();
       await button.click();

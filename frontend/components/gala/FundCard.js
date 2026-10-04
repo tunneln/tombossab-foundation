@@ -1,49 +1,38 @@
 "use client";
 
 import React, { useState } from 'react';
+import Script from 'next/script';
 import { gala } from '../../config/gala-2026';
-import { formatPrice } from '../../lib/gala';
 import styles from './Gala.module.css';
 
-// "Give to a Fund": a toggle between the two funds; the Give button opens the
-// selected fund's donate link from config. The preset amounts are suggestions
-// only: no amount is passed to the platform (we never invent URL parameters).
+const ZEFFY_EMBED_SCRIPT = 'https://www.zeffy.com/embed/v2/zeffy-embed.js';
+
+// "Give to the Scholarship Fund": Zeffy's embedded donation form
+// (checkout.donationForm), via Zeffy's v2 embed script, which fills the
+// [data-zeffy-embed] placeholder and resizes the form as donors move through it.
+// The script loads only on this card (not site-wide); its init() re-scans each
+// time the card mounts, so arriving at /gala by client-side navigation works too
+// (it skips placeholders it has already filled). If the script can't load, the
+// plain iframe from Zeffy's embed code is shown instead.
 const FundCard = () => {
-    const { funds, presetAmounts, impactLine } = gala.tiers.give;
-    const [fundId, setFundId] = useState(funds[0].id);
-    const href = gala.checkout.donate[fundId];
-    const external = /^https?:/.test(href);
+    const { formUrl, fallbackSrc } = gala.checkout.donationForm;
+    const [failed, setFailed] = useState(false);
 
     return (
         <div className={styles.giveCard}>
-            <h3 className={styles.tierName}>Give to a Fund</h3>
-            <div className={styles.fundToggle} role="group" aria-label="Choose a fund">
-                {funds.map((fund) => (
-                    <button
-                        key={fund.id}
-                        type="button"
-                        aria-pressed={fund.id === fundId}
-                        onClick={() => setFundId(fund.id)}
-                    >
-                        {fund.name}
-                    </button>
-                ))}
+            <h3 className={styles.tierName}>Give to the Scholarship Fund</h3>
+            <p className={styles.impact}>{gala.tiers.give.impactLine}</p>
+            <div className={styles.donationForm}>
+                {failed
+                    ? <iframe className={styles.donationFallback} title="Donation form powered by Zeffy" src={fallbackSrc} allow="payment" />
+                    : <div data-zeffy-embed="" data-form-url={formUrl} />}
             </div>
-            <p className={styles.amountsLabel}>Suggested gifts</p>
-            <ul className={styles.amounts}>
-                {presetAmounts.map((amount) => <li key={amount}>{formatPrice(amount)}</li>)}
-                <li>Other</li>
-            </ul>
-            <p className={styles.impact}>{impactLine}</p>
-            <div className={styles.tierCta}>
-                <a
-                    href={href}
-                    className={`${styles.btn} ${styles.btnPrimary} ${styles.btnBlock}`}
-                    {...(external && { target: '_blank', rel: 'noopener noreferrer' })}
-                >
-                    Give
-                </a>
-            </div>
+            <Script
+                src={ZEFFY_EMBED_SCRIPT}
+                strategy="lazyOnload"
+                onReady={() => window.Zeffy?.embed?.init()}
+                onError={() => setFailed(true)}
+            />
         </div>
     );
 };

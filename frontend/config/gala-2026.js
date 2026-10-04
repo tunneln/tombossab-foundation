@@ -180,11 +180,6 @@ export const gala = {
                 fullyDeductible: true, // the buyer receives nothing, so the whole price is deductible
                 description: 'Give a student or family a seat at the table.',
             },
-            funds: [
-                { id: 'future-scholar', name: 'Future Scholar Fund' },
-                { id: 'mental-wellness', name: 'Mental Wellness Fund' },
-            ],
-            presetAmounts: [50, 100, 250, 500], // plus "Other"
             impactLine: "Ten gifts of $250 fund one student's semester.",
             programListing: {
                 threshold: 100,
@@ -215,9 +210,12 @@ export const gala = {
             hostedUrl: null,
         },
         sponsorship: { hostedUrl: null }, // falls back to tickets.hostedUrl, then email
-        donate: {
-            'future-scholar': '/donatenow', // TODO_CONFIRM replace with fund-specific links when available
-            'mental-wellness': '/donatenow',
+        // Zeffy donation form embedded in the "Can't Make It?" section (FundCard),
+        // both values exactly as in Zeffy's embed code: the placeholder's
+        // data-form-url, and the fallback iframe's src (used if Zeffy's script fails).
+        donationForm: {
+            formUrl: '/embed/donation-form/scholarship-fund-79',
+            fallbackSrc: 'https://www.zeffy.com/embed/donation-form/scholarship-fund-79',
         },
     },
 
@@ -233,15 +231,10 @@ export const gala = {
     // on the page (or hides the question, for auction). "Proposed" answers are
     // pending board approval.
     faq: {
-        parking: null,       // TODO_CONFIRM fallback: 'Parking details coming soon.'
         ages:                // TODO_CONFIRM (proposed)
             'Guests of all ages are welcome; guests under 18 must be accompanied by an adult. Alcohol is served only to guests 21+ with valid ID.',
         refunds:             // TODO_CONFIRM (proposed)
             "All sales are final. If you can no longer attend, email us and we'll gladly transfer your ticket to another guest or convert it into a tax-deductible donation.",
-        dietary:             // TODO_CONFIRM with caterer
-            'Yes. Let us know your dietary needs (vegan/fasting, vegetarian, or allergies) during checkout.',
-        studentEligibility:  // TODO_CONFIRM (proposed student wording)
-            'Any current high school, college, or graduate student, and any guest 17 or younger. No ID needed: we check everyone in by the QR code on their ticket.',
         // Check-in is by QR code ticket; no ID at the door unless a guest can't find their QR code.
         checkIn:
             "Just your ticket's QR code, on your phone or printed. Can't find it? No problem: we'll look you up by name at check-in.",

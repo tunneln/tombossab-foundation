@@ -12,9 +12,9 @@ const EXTERNAL = { target: '_blank', rel: 'noopener noreferrer' };
 const doorLine = () => `Door tickets, if available: ${gala.tiers.attend
     .map((t) => `${t.name} ${formatPrice(t.doorPrice)}`).join(' · ')}.`;
 
-// The checkout itself: the platform's embed (lazy-loaded by the browser as it
-// nears the viewport) with a new-tab fallback, or one big button/link into the
-// pop-up checkout or hosted page.
+// An inline checkout below the cards, only in embed mode (lazy-loaded by the
+// browser as it nears the viewport) with a new-tab fallback. In modal and link
+// modes each tier card's own button is the way in, so nothing goes here.
 const Checkout = () => {
     const { hostedUrl, embedSrc } = gala.checkout.tickets;
     const mode = checkoutMode();
@@ -29,13 +29,6 @@ const Checkout = () => {
                         Trouble loading checkout? Open it in a new tab →
                     </a>
                 )}
-            </div>
-        );
-    }
-    if (mode === 'modal' || mode === 'link') {
-        return (
-            <div id="checkout" className={styles.checkout}>
-                <CheckoutCta className={`${styles.btn} ${styles.btnPrimary} ${styles.btnLarge}`} label="Get Your Tickets" />
             </div>
         );
     }

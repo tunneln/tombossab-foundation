@@ -60,41 +60,27 @@ const TaxAnswer = () => {
 // the answer text lives in config/gala-2026.js under `faq`.
 const GalaFaq = () => {
     const { faq } = gala;
+    // Grouped: the evening itself, then buying, then who to ask. Questions
+    // answered elsewhere on the page (food: The Evening; Student & Youth
+    // eligibility: its ticket card; sponsoring and giving: their sections) are
+    // left out on purpose.
     const items = [
         { id: 'wear', question: 'What should I wear?', answer: <p>{gala.dressCode.label}. {gala.dressCode.detail}</p> },
         { id: 'where', question: 'When and where is the gala?', answer: <WhenWhere /> },
-        { id: 'parking', question: 'Is there parking?', answer: <p>{faq.parking ?? 'Parking details coming soon.'}</p> },
-        faq.ages && { id: 'ages', question: 'Is the gala open to all ages?', answer: <p>{faq.ages}</p> },
-        faq.refunds && { id: 'refunds', question: "What's the refund policy?", answer: <p>{faq.refunds}</p> },
-        faq.dietary && { id: 'food', question: 'Will there be vegan or fasting-friendly food?', answer: <p>{faq.dietary}</p> },
-        faq.studentEligibility && { id: 'student', question: 'Who qualifies for a Student & Youth ticket?', answer: <p>{faq.studentEligibility}</p> },
         { id: 'bring', question: 'What do I need to bring?', answer: <p>{faq.checkIn}</p> },
-        {
-            id: 'others',
-            question: 'Can I buy tickets for other people?',
-            answer: <p>Yes. You&apos;ll be asked for each guest&apos;s name at checkout so we can have name tags ready.</p>,
-        },
-        { id: 'tax', question: 'Is my ticket tax-deductible?', answer: <TaxAnswer /> },
-        faq.auction && {
-            id: 'auction',
-            question: 'Can I attend the silent auction without a ticket, or bid remotely?',
-            answer: <p>{faq.auction}</p>,
-        },
+        faq.ages && { id: 'ages', question: 'Is the gala open to all ages?', answer: <p>{faq.ages}</p> },
         {
             id: 'access',
             question: 'Is the venue accessible?',
             answer: <p>{faq.accessibility ?? "Please email us with any accessibility needs and we'll make sure you're taken care of."}</p>,
         },
         {
-            id: 'sponsor',
-            question: 'How do I become a sponsor?',
-            answer: (
-                <p>
-                    Choose a sponsorship level <a href="#sponsor" className={styles.inlineLink}>above</a>, or email {EMAIL} for
-                    an invoice, W-9, or a custom package.
-                </p>
-            ),
+            id: 'others',
+            question: 'Can I buy tickets for other people?',
+            answer: <p>Yes. You&apos;ll be asked for each guest&apos;s name at checkout so we can have name tags ready.</p>,
         },
+        faq.refunds && { id: 'refunds', question: "What's the refund policy?", answer: <p>{faq.refunds}</p> },
+        { id: 'tax', question: 'Is my ticket tax-deductible?', answer: <TaxAnswer /> },
         providerInfo()?.tipFaq && {
             id: 'tip',
             question: 'Why does checkout ask for an optional tip?',
@@ -105,15 +91,10 @@ const GalaFaq = () => {
                 </p>
             ),
         },
-        {
-            id: 'help',
-            question: "I can't attend. How else can I help?",
-            answer: (
-                <p>
-                    <a href="#give" className={styles.inlineLink}>Sponsor a seat</a> for a student or family, give to one of our
-                    funds, or share this page with someone who&apos;d love to be there.
-                </p>
-            ),
+        faq.auction && {
+            id: 'auction',
+            question: 'Can I attend the silent auction without a ticket, or bid remotely?',
+            answer: <p>{faq.auction}</p>,
         },
         {
             id: 'contact',

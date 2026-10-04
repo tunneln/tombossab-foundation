@@ -313,9 +313,8 @@ export const CONFIRM_FIELDS = [
     'tiers.sponsor.2.benefits.1',
     'tiers.give.programListing.deadline',
     'sponsorship.logoDeadline', 'sponsorship.packetPdf',
-    'checkout.donate.future-scholar',
     'program.schedule', 'program.speakers', 'program.music', 'program.dinnerNote',
-    'faq.parking', 'faq.ages', 'faq.refunds', 'faq.dietary', 'faq.studentEligibility',
+    'faq.ages', 'faq.refunds',
     'faq.auction', 'faq.accessibility',
 ];
 

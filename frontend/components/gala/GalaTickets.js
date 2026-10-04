@@ -13,7 +13,8 @@ const doorLine = () => `Door tickets, if available: ${gala.tiers.attend
     .map((t) => `${t.name} ${formatPrice(t.doorPrice)}`).join(' · ')}.`;
 
 // The checkout itself: the platform's embed (lazy-loaded by the browser as it
-// nears the viewport) with a new-tab fallback, or one big link to the hosted page.
+// nears the viewport) with a new-tab fallback, or one big button/link into the
+// pop-up checkout or hosted page.
 const Checkout = () => {
     const { hostedUrl, embedSrc } = gala.checkout.tickets;
     const mode = checkoutMode();
@@ -31,12 +32,10 @@ const Checkout = () => {
             </div>
         );
     }
-    if (mode === 'link') {
+    if (mode === 'modal' || mode === 'link') {
         return (
             <div id="checkout" className={styles.checkout}>
-                <a href={hostedUrl} className={`${styles.btn} ${styles.btnPrimary} ${styles.btnLarge}`} {...EXTERNAL}>
-                    Get Your Tickets
-                </a>
+                <CheckoutCta className={`${styles.btn} ${styles.btnPrimary} ${styles.btnLarge}`} label="Get Your Tickets" />
             </div>
         );
     }
@@ -66,8 +65,8 @@ const GalaTickets = () => (
                                 <ShowIn states={['on_sale']}>
                                     <CheckoutCta
                                         className={`${styles.btn} ${tier.featured ? styles.btnPrimary : styles.btnOutline} ${styles.btnBlock}`}
+                                        label="Get Tickets"
                                         embedLabel="Select tickets below"
-                                        linkLabel="Get Tickets"
                                     />
                                 </ShowIn>
                             )}

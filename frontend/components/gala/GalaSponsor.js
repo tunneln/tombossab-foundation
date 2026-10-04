@@ -1,7 +1,8 @@
 import React from 'react';
 import { gala } from '../../config/gala-2026';
-import { sponsorshipHref, tierAvailability } from '../../lib/gala';
+import { checkoutMode, sponsorshipHref, tierAvailability } from '../../lib/gala';
 import { ShowIn } from './GalaState';
+import CheckoutCta from './CheckoutCta';
 import TierCard from './TierCard';
 import styles from './Gala.module.css';
 
@@ -12,11 +13,18 @@ const SponsorCta = ({ soldOut }) => {
     if (soldOut) return <span className={`${cls} ${styles.btnDisabled}`} aria-disabled="true">Sold out</span>;
     const href = sponsorshipHref();
     const external = /^https?:/.test(href);
-    return (
+    const link = (
         <a href={href} className={`${cls} ${styles.btnPrimary}`} {...(external && { target: '_blank', rel: 'noopener noreferrer' })}>
             Become a Sponsor
         </a>
     );
+    // Sponsorships are ticket types in the same checkout form: with the pop-up
+    // checkout (and no dedicated sponsorship link), open it; the link is the
+    // fallback when it isn't available.
+    if (!gala.checkout.sponsorship.hostedUrl && checkoutMode() === 'modal') {
+        return <CheckoutCta className={`${cls} ${styles.btnPrimary}`} label="Become a Sponsor" fallback={link} />;
+    }
+    return link;
 };
 
 // Sponsor wall, by level. Only once there are sponsors to thank.

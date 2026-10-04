@@ -16,7 +16,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { startServer, openPage, blockExternal } from './next-server.mjs';
-import { cardTimeLabel, getGalaState, timePublished } from '../lib/gala.js';
+import { cardTimeLabel, checkoutMode, getGalaState, timePublished } from '../lib/gala.js';
+import { gala } from '../config/gala-2026.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const events = JSON.parse(readFileSync(path.resolve(__dirname, '../data/events.json'), 'utf8'));
@@ -398,10 +399,43 @@ test('/gala scroll-reveal never strands content (plain visit, scroll to the end)
   }
 });
 
+test('/gala on sale: every ticket, sponsor, and Sponsor a Seat button opens the pop-up checkout',
+  { skip: unless(STATE === 'on_sale' && checkoutMode() === 'modal', 'needs the pop-up checkout on sale') }, async () => {
+  const { ctx, page } = await openPage(browser, origin, '/gala');
+  try {
+    const dialog = page.locator('[role="dialog"][aria-label="Gala ticket checkout"]');
+    // Wait for hydration (the countdown only renders client-side) so clicks have handlers.
+    await page.locator('#top').getByText(/days? to go|Tonight/).waitFor();
+    assert.equal(await dialog.count(), 0, 'the form is not loaded until someone asks for it');
+    assert.doesNotMatch(await page.locator('#tickets').innerText(), /on sale soon/);
+    assert.match(await page.locator('#faq').innerText(), /Why does checkout ask for an optional tip\?/);
+
+    const buttons = [
+      ...await page.locator('#tickets button', { hasText: 'Get Tickets' }).all(),
+      page.locator('#tickets button', { hasText: 'Get Your Tickets' }),
+      ...await page.locator('#sponsor button', { hasText: 'Become a Sponsor' }).all(),
+      page.locator('#give button', { hasText: 'Sponsor a Seat' }),
+    ];
+    assert.equal(buttons.length, 3 + 1 + 3 + 1);
+    for (const button of buttons) {
+      await button.scrollIntoViewIfNeeded();
+      await button.click();
+      await dialog.waitFor({ state: 'visible', timeout: 5000 }); // mounts on the next render
+      assert.equal(await dialog.locator('iframe').getAttribute('src'), gala.checkout.tickets.modalUrl);
+      assert.equal(await page.evaluate(() => document.getElementById('app-root').hasAttribute('inert')), true);
+      await page.keyboard.press('Escape');
+      await dialog.waitFor({ state: 'hidden', timeout: 5000 });
+    }
+    assert.equal(await dialog.locator('iframe').count(), 1, 'one form instance, reused');
+  } finally {
+    await ctx.close();
+  }
+});
+
 // ------------------------------------------------------------------ homepage & /events
 
 test('homepage: the gala slide leads, existing slides keep their order',
-  { skip: unless(STATE === 'coming_soon', 'pre-sale slide assertions') }, async () => {
+  { skip: unless(['coming_soon', 'on_sale'].includes(STATE), 'slide copy before sales close') }, async () => {
   const { ctx, page } = await openPage(browser, origin, '/');
   try {
     // Swiper initializes after hydration; wait for it before reading its state.
@@ -421,8 +455,9 @@ test('homepage: the gala slide leads, existing slides keep their order',
     assert.match(slides[2], /^Read our September Newsletter/);
     assert.match(slides[3], /^Meet our scholarship award recipients/);
     assert.equal(await page.evaluate(() => document.querySelector('.frontpageSwiper').swiper.realIndex), 0);
-    // Pre-sale state: "Learn More" -> /gala, plus the sponsor link.
-    assert.equal(await page.locator('.slide-bg-gala a[href="/gala"]').first().innerText(), 'LEARN MORE');
+    // "Learn More" before sales open, "Get Tickets" while on sale; plus the sponsor link.
+    assert.equal(await page.locator('.slide-bg-gala a[href="/gala"]').first().innerText(),
+      STATE === 'on_sale' ? 'GET TICKETS' : 'LEARN MORE');
     assert.ok(await page.locator('.slide-bg-gala a[href="/gala#sponsor"]').count() >= 1);
   } finally {
     await ctx.close();

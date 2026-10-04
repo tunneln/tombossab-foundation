@@ -6,7 +6,10 @@ Manual steps outside the code for **https://tombossabfoundation.org/gala** (The 
 
 ## 1. Checkout platform setup
 
-- [ ] **Switch from Donorbox to Zeffy (change provider, paste the new URLs) BEFORE sharing the link publicly, so no tickets are sold on the platform you're leaving.** In the config, set `checkout.provider: 'zeffy'` and replace the URLs. No code changes are needed: the embed height and the "optional tip" FAQ key off `provider`.
+- [x] **Switched to Zeffy** (2026-10-04): `checkout.provider` is `'zeffy'` and `checkout.tickets.modalUrl` is the form's modal link. The site is now **on sale**: every ticket button opens the Zeffy form in a pop-up. Nothing was sold on Donorbox.
+- [ ] **Update the Champion description in Zeffy**: it still promises "a pre-program reception with our scholars", which the site no longer offers.
+- [ ] **End time**: Zeffy shows 5:00 PM - 10:00 PM, but the site has no end time (`endAt`). Set `endAt: '2026-11-28T22:00:00-06:00'` if 10 PM is right, so calendar entries and search listings show it too.
+- [ ] Optional: paste the form's public page link into `checkout.tickets.hostedUrl` (Zeffy dashboard, share link). It adds an "open in a new tab" fallback.
 - [ ] Create these ticket types:
 
   | Ticket type | Price | Notes |
@@ -42,13 +45,14 @@ Manual steps outside the code for **https://tombossabfoundation.org/gala** (The 
 
   > These values need **treasurer/CPA sign-off** before sales open, and must **not change once sales open** (receipts already issued are based on them).
 - [ ] Confirmation email copy: date, dress code (cocktail attire), what to bring (just the QR code ticket, on a phone or printed; ID only for drinks if 21+), and contact (contact@tombossabfoundation.org · 214 208 3936).
-- [ ] Paste the URLs into `checkout` in the config exactly as the dashboard gives them. Never edit or construct them.
-  - `checkout.tickets.embedSrc`: the embed/iframe URL. When set, the page shows the checkout inline, and the tier buttons read "Select tickets below".
+- [ ] Checkout URLs in `checkout` must be pasted exactly as the dashboard gives them. Never edit or construct them.
+  - `checkout.tickets.modalUrl`: Zeffy's modal link (set). Ticket, sponsor, and Sponsor a Seat buttons, the desktop header button, and the `/gala` side tab open it in a pop-up. The site does this itself, so **don't add Zeffy's embed script** to the site: it only hooks up buttons present on the first page load (they'd stop working after navigating) and loads the form on every page view.
+  - `checkout.tickets.embedSrc`: an inline embed URL, if you'd ever rather show the form on the page.
   - `checkout.tickets.hostedUrl`: the hosted ticket page. It's the "open in a new tab" fallback, and the only checkout if there's no embed.
   - `checkout.sponsorship.hostedUrl`: optional. Without it, "Become a Sponsor" uses the ticket link, then email.
   - `checkout.donate`: fund-specific donation links. Both point at `/donatenow` until you have separate ones.
 
-  As soon as either ticket URL is set, the site switches from "Tickets go on sale soon" to on sale (unless `sales.openAt` is in the future). Once `embedSrc` is set, the desktop header "Gala Tickets" button and the gold side tab on `/gala` (phones/tablets) open the checkout in a pop-up modal; until then they link to the ticket section.
+  With any ticket URL set, the site is on sale (unless `sales.openAt` is in the future); with none, it shows "Tickets go on sale soon" and the buttons link to the ticket section.
 
 ## 2. Content to fill in
 

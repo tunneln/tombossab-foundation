@@ -75,27 +75,34 @@ test('config: CONFIRM_FIELDS matches the TODO_CONFIRM comments and every path re
 test('checklist: unset fields are reported, proposed values are not "unset"', () => {
     const byPath = Object.fromEntries(confirmChecklist().map((i) => [i.path, i.unset]));
     assert.equal(byPath.endAt, true);
-    assert.equal(byPath['checkout.provider'], false);
-    assert.equal(byPath['checkout.tickets'], true);
+    assert.equal(byPath['program.speakers'], true);
     assert.equal(byPath['program.speakers'], true);
     assert.equal(byPath['faq.refunds'], false);
 });
 
 // ------------------------------------------------------------------ state
 
+const NONE = { modalUrl: null, hostedUrl: null, embedSrc: null };
+const MODAL = { ...NONE, modalUrl: 'https://example.org/embed?modal=true' };
+
 test('state: default render state follows checkout configuration', () => {
-    assert.equal(defaultGalaState(gala), 'coming_soon');
+    assert.equal(defaultGalaState(withCheckout(NONE)), 'coming_soon');
     assert.equal(defaultGalaState(withCheckout(LINK)), 'on_sale');
+    assert.equal(defaultGalaState(gala), 'on_sale', 'the committed config has the Zeffy modal link');
 });
 
 test('state: coming_soon until a checkout link exists', () => {
-    assert.equal(checkoutMode(gala), null);
-    assert.equal(getGalaState(at('2026-10-02T12:00:00-05:00'), gala), 'coming_soon');
+    const g = withCheckout(NONE);
+    assert.equal(checkoutMode(g), null);
+    assert.equal(getGalaState(at('2026-10-02T12:00:00-05:00'), g), 'coming_soon');
 });
 
-test('state: checkout mode prefers the embed', () => {
+test('state: checkout mode prefers the modal, then the embed, then the hosted link', () => {
     assert.equal(checkoutMode(withCheckout(LINK)), 'link');
     assert.equal(checkoutMode(withCheckout(EMBED)), 'embed');
+    assert.equal(checkoutMode(withCheckout({ ...EMBED, modalUrl: MODAL.modalUrl })), 'modal');
+    assert.equal(checkoutMode(gala), 'modal');
+    assert.equal(gala.checkout.tickets.modalUrl, 'https://www.zeffy.com/embed/ticketing/fundraising-gala-12?modal=true');
 });
 
 test('state: openAt holds sales back', () => {
@@ -214,11 +221,11 @@ test('formatting: a start time is published only once confirmed', () => {
 });
 
 test('provider: platform behavior keys off checkout.provider alone', () => {
-    assert.equal(providerInfo(gala).name, 'Donorbox');
-    assert.equal(providerInfo(gala).tipFaq, false);
-    const zeffy = variant({ checkout: { ...gala.checkout, provider: 'zeffy' } });
-    assert.equal(providerInfo(zeffy).name, 'Zeffy');
-    assert.equal(providerInfo(zeffy).tipFaq, true);
+    assert.equal(providerInfo(gala).name, 'Zeffy');
+    assert.equal(providerInfo(gala).tipFaq, true);
+    const donorbox = variant({ checkout: { ...gala.checkout, provider: 'donorbox' } });
+    assert.equal(providerInfo(donorbox).name, 'Donorbox');
+    assert.equal(providerInfo(donorbox).tipFaq, false);
     assert.equal(providerInfo(variant({ checkout: { ...gala.checkout, provider: null } })), null);
 });
 

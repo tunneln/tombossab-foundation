@@ -203,9 +203,17 @@ export const gala = {
         // 'donorbox' | 'zeffy'. Everything platform-specific (embed handling, the
         // Zeffy tip FAQ) keys off this value, so switching platforms = change it
         // and paste the new URLs below. No code changes.
-        provider: 'donorbox', // TODO_CONFIRM placeholder: switching to 'zeffy' before launch
+        provider: 'zeffy',
         // Paste URLs exactly as given by the platform dashboard. NEVER construct or guess them.
-        tickets: { hostedUrl: null, embedSrc: null }, // TODO_CONFIRM all ticket + sponsorship + Sponsor a Seat types
+        // All ticket + sponsorship + Sponsor a Seat types live in one Zeffy form.
+        //  modalUrl:  Zeffy's "modal" embed link; ticket buttons open it in a pop-up (GalaCheckout).
+        //  embedSrc:  an inline embed URL (shown in the ticket section), if ever wanted.
+        //  hostedUrl: the form's public page; used as a new-tab fallback link if set.
+        tickets: {
+            modalUrl: 'https://www.zeffy.com/embed/ticketing/fundraising-gala-12?modal=true',
+            embedSrc: null,
+            hostedUrl: null,
+        },
         sponsorship: { hostedUrl: null }, // falls back to tickets.hostedUrl, then email
         donate: {
             'future-scholar': '/donatenow', // TODO_CONFIRM replace with fund-specific links when available

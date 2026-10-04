@@ -77,8 +77,10 @@ export const PROVIDERS = {
 };
 export const providerInfo = (g = GALA) => PROVIDERS[g.checkout.provider] ?? null;
 
-// 'embed' (iframe + fallback link), 'link' (hosted page), or null (not set up yet).
+// 'modal' (pop-up checkout), 'embed' (inline iframe + fallback link), 'link'
+// (hosted page), or null (not set up yet).
 export const checkoutMode = (g = GALA) => {
+    if (g.checkout.tickets.modalUrl) return 'modal';
     if (g.checkout.tickets.embedSrc) return 'embed';
     if (g.checkout.tickets.hostedUrl) return 'link';
     return null;
@@ -311,7 +313,7 @@ export const CONFIRM_FIELDS = [
     'tiers.sponsor.2.benefits.1',
     'tiers.give.programListing.deadline',
     'sponsorship.logoDeadline', 'sponsorship.packetPdf',
-    'checkout.provider', 'checkout.tickets', 'checkout.donate.future-scholar',
+    'checkout.donate.future-scholar',
     'program.schedule', 'program.speakers', 'program.music', 'program.dinnerNote',
     'faq.parking', 'faq.ages', 'faq.refunds', 'faq.dietary', 'faq.studentEligibility',
     'faq.auction', 'faq.accessibility',

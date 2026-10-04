@@ -29,8 +29,7 @@ const GalaGive = () => {
                                 <div className={styles.tierCta}>
                                     <CheckoutCta
                                         className={`${styles.btn} ${styles.btnPrimary} ${styles.btnBlock}`}
-                                        embedLabel="Sponsor a Seat"
-                                        linkLabel="Sponsor a Seat"
+                                        label="Sponsor a Seat"
                                     />
                                 </div>
                             </ShowIn>

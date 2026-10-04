@@ -1,0 +1,63 @@
+// No page may be wider than a phone screen.
+//
+// Horizontal overflow is a recurring regression here (a breadcrumb once, then
+// long email addresses and a hard-coded 310px min-width). On iPhones it lets
+// Safari pan sideways and leaves dead white space beside fixed overlays like the
+// donate modal, so it's checked in WebKit (Safari's engine) as well as Chromium,
+// on every prerendered page (read from the build manifest, so new pages are
+// covered automatically) at common phone widths.
+//
+// Prereq: build first, then run:
+//   npm run build
+//   node --test scripts/overflow.test.mjs      (or: npm test)
+import test, { before, after } from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { chromium, webkit, devices } from 'playwright';
+import { FRONTEND_DIR, startServer, blockExternal } from './next-server.mjs';
+
+const WIDTHS = [320, 360, 390, 430];
+const NOT_PAGES = new Set(['/_not-found', '/sitemap.xml', '/robots.txt']);
+const ROUTES = Object.keys(JSON.parse(
+    readFileSync(path.join(FRONTEND_DIR, '.next', 'prerender-manifest.json'), 'utf8')).routes)
+    .filter((route) => !NOT_PAGES.has(route))
+    .sort();
+
+let stop, origin;
+
+before(async () => {
+    ({ stop, origin } = await startServer());
+});
+
+after(() => stop?.());
+
+for (const [engineName, engine] of [['chromium', chromium], ['webkit', webkit]]) {
+    test(`${engineName}: no page overflows a phone screen horizontally`, async () => {
+        const browser = await engine.launch();
+        const offenders = [];
+        try {
+            for (const width of WIDTHS) {
+                const ctx = await browser.newContext({
+                    viewport: { width, height: 800 },
+                    isMobile: true,
+                    hasTouch: true,
+                    userAgent: devices['iPhone 13'].userAgent,
+                });
+                for (const route of ROUTES) {
+                    const page = await ctx.newPage();
+                    await blockExternal(page, origin);
+                    await page.goto(`${origin}${route}`, { waitUntil: 'load', timeout: 30000 });
+                    const [scrollW, clientW] = await page.evaluate(() =>
+                        [document.documentElement.scrollWidth, document.documentElement.clientWidth]);
+                    if (scrollW > clientW) offenders.push(`${route} @${width}px: ${scrollW}px wide`);
+                    await page.close();
+                }
+                await ctx.close();
+            }
+        } finally {
+            await browser.close();
+        }
+        assert.deepEqual(offenders, [], `pages wider than the screen:\n  ${offenders.join('\n  ')}`);
+    });
+}

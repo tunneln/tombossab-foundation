@@ -34,6 +34,18 @@ a,
 a:hover {
     text-decoration: none;
 }
+/* Long unbroken strings (email addresses, URLs) wrap instead of pushing the page
+   wider than a phone screen; that overflow lets mobile Safari pan sideways and
+   shows dead space beside fixed overlays like the donate modal. break-word only
+   affects a word that can't fit its line, so normal text is unchanged; emails
+   have no break points of their own, so they may break anywhere. Guarded by
+   scripts/overflow.test.mjs. */
+body {
+    overflow-wrap: break-word;
+}
+a[href^="mailto:"] {
+    overflow-wrap: anywhere;
+}
 
 /*=============================
     general-style

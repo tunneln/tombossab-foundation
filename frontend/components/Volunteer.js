@@ -87,7 +87,7 @@ const Volunteer = () => {
                                     </div>
                                     <div className="contact__item contact__item2">
                                         <h4>Send email</h4>
-                                        <a href="mailto:contact@tombossabfoundation.org">contact@tombossabfoundation.org</a>
+                                        <a href="mailto:contact@tombossabfoundation.org">contact@<wbr />tombossabfoundation.org</a>
                                     </div>
                                 </div>
                             </div>

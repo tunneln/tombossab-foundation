@@ -18,10 +18,11 @@ const Donate = () => {
                     scrolling="no"
                     height="900px"
                     width="100%"
-                    style={{ 'maxWidth': '500px', 'minWidth': '310px', 'maxHeight': "none!important" }}
+                    style={{ 'maxWidth': '500px', 'minWidth': 'min(310px, 100%)', 'maxHeight': "none!important" }}
                     allow="payment"
                     />
-                    <div className="" style={{'maxWidth': '500px', 'minWidth': '310px'}}>
+                    {/* min(…, 100%): never wider than a 320px phone's content area. */}
+                    <div className="" style={{'maxWidth': '500px', 'minWidth': 'min(310px, 100%)'}}>
                         <div className="sidebar-shared">
                             <div className="side-widget blog-content">
                                 <div className="blog-item">

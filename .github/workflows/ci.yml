@@ -26,11 +26,13 @@ jobs:
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('frontend/package-lock.json') }}
-      - run: npx playwright install --with-deps chromium
+          # The browser list is in the key so adding a browser can't restore a stale cache.
+          key: ${{ runner.os }}-playwright-chromium-webkit-${{ hashFiles('frontend/package-lock.json') }}
+      # WebKit = Safari's engine: scripts/overflow.test.mjs checks phone layouts in it.
+      - run: npx playwright install --with-deps chromium webkit
         if: steps.playwright-cache.outputs.cache-hit != 'true'
       # On a cache hit the browser binaries are restored; still ensure the OS libs.
-      - run: npx playwright install-deps chromium
+      - run: npx playwright install-deps chromium webkit
         if: steps.playwright-cache.outputs.cache-hit == 'true'
       - run: npm test
 

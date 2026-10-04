@@ -55,8 +55,8 @@ const GalaPage = async () => {
                     <GalaEvening />
                     <GalaScholars recipients={recipients} />
                     <GalaTickets />
-                    <GalaSponsor />
                     <GalaGive />
+                    <GalaSponsor />
                     <GalaFaq />
                     <GalaShare />
                     <StickyCta />

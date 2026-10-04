@@ -163,6 +163,11 @@ test('/gala: one h1 and every section anchor', async () => {
     const ids = STATE === 'past'
       ? ['top', 'story', 'evening', 'scholars', 'give', 'faq', 'share']
       : ['top', 'story', 'evening', 'scholars', 'tickets', 'sponsor', 'give', 'faq', 'share'];
+    // In this order: "Can't Make It?" follows the tickets, before sponsorship.
+    const sectionOrder = await page.locator('main section[id]').evaluateAll((els) => els.map((e) => e.id));
+    assert.deepEqual(sectionOrder, STATE === 'past'
+      ? ['top', 'story', 'evening', 'scholars', 'give', 'faq', 'share']
+      : ['top', 'story', 'evening', 'scholars', 'tickets', 'give', 'sponsor', 'faq', 'share']);
     for (const id of ids) {
       assert.equal(await page.locator(`section#${id}`).count(), 1, `section #${id}`);
     }

@@ -132,18 +132,18 @@ test('deductible: hand-checked against two FMV sets, never negative', () => {
     const [student, ga, champion] = gala.tiers.attend;
     const [community, legacy, scholarship] = gala.tiers.sponsor;
 
-    // Set A: standard $35, champion $50
-    const a = variant({ fmvPerGuest: { standard: 35, champion: 50 } });
-    assert.equal(tierDeductible(student, a), 0);         // 30 - 35 -> clamped
+    // Set A: student $32, standard $35, champion $50
+    const a = variant({ fmvPerGuest: { student: 32, standard: 35, champion: 50 } });
+    assert.equal(tierDeductible(student, a), 0);         // 30 - 32 -> clamped
     assert.equal(tierDeductible(ga, a), 20);             // 55 - 35
     assert.equal(tierDeductible(champion, a), 35);       // 85 - 50
     assert.equal(tierDeductible(community, a), 325);     // 500 - 5*35
     assert.equal(tierDeductible(legacy, a), 600);        // 1000 - 8*50
     assert.equal(tierDeductible(scholarship, a), 2100);  // 2500 - 8*50
 
-    // Set B: standard $25, champion $40
-    const b = variant({ fmvPerGuest: { standard: 25, champion: 40 } });
-    assert.equal(tierDeductible(student, b), 5);         // 30 - 25
+    // Set B: student $20, standard $25, champion $40
+    const b = variant({ fmvPerGuest: { student: 20, standard: 25, champion: 40 } });
+    assert.equal(tierDeductible(student, b), 10);        // 30 - 20
     assert.equal(tierDeductible(ga, b), 30);             // 55 - 25
     assert.equal(tierDeductible(champion, b), 45);       // 85 - 40
     assert.equal(tierDeductible(community, b), 375);     // 500 - 5*25
@@ -151,7 +151,7 @@ test('deductible: hand-checked against two FMV sets, never negative', () => {
     assert.equal(tierDeductible(scholarship, b), 2180);  // 2500 - 8*40
 
     // Absurd FMV still clamps at zero.
-    const c = variant({ fmvPerGuest: { standard: 999, champion: 999 } });
+    const c = variant({ fmvPerGuest: { student: 999, standard: 999, champion: 999 } });
     for (const tier of [...gala.tiers.attend, ...gala.tiers.sponsor]) {
         assert.equal(tierDeductible(tier, c), 0, tier.id);
     }

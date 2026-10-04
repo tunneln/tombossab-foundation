@@ -78,7 +78,8 @@ export const gala = {
 
     // Fair market value of goods/services per guest, for tax disclosure. Set by the treasurer.
     fmvPerGuest: {
-        standard: null, // TODO_CONFIRM dinner + 1 drink (applies to Student & Youth and GA)
+        student: null,  // TODO_CONFIRM dinner only (Student & Youth: no drink ticket)
+        standard: null, // TODO_CONFIRM dinner + 1 drink (General Admission)
         champion: null, // TODO_CONFIRM dinner + 3 drinks + reception
     },
     ein: '99-4436179', // as published in the site's donate modal disclaimer; shown in the tax FAQ
@@ -97,8 +98,8 @@ export const gala = {
                 name: 'Student & Youth',
                 price: 30,
                 doorPrice: 40,
-                fmvKey: 'standard',
-                includes: ['Dinner', 'The full program', 'One drink ticket'],
+                fmvKey: 'student',
+                includes: ['Dinner', 'The full program'],
                 tagline: "Because the future we're building should be in the room.",
                 note: 'For current students and guests 17 and younger.',
             },

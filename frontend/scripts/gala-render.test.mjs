@@ -293,6 +293,18 @@ test('/gala: each sponsor tier lists its reserved table as the last checklist it
   }
 });
 
+test('/gala: the Student & Youth ticket includes no drink ticket',
+  { skip: unless(STATE !== 'past', 'tickets are hidden after the event') }, async () => {
+  const { ctx, page } = await openPage(browser, origin, '/gala');
+  try {
+    const card = page.locator('#tickets > div > ul > li').filter({ has: page.locator('h3', { hasText: 'Student & Youth' }) });
+    assert.deepEqual((await card.locator('ul li').allTextContents()).map((t) => t.trim()), ['Dinner', 'The full program']);
+    assert.doesNotMatch(await card.innerText(), /drink/i);
+  } finally {
+    await ctx.close();
+  }
+});
+
 test('/gala: the tax FAQ shows the foundation EIN', async () => {
   const { ctx, page } = await openPage(browser, origin, '/gala');
   try {

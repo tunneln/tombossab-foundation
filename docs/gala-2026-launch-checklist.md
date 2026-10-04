@@ -44,7 +44,7 @@ Every `TODO_CONFIRM` in the config. Run `npm run dev` and open `/gala` to see a 
 - [ ] **Final confirmation that the scholars will attend and speak.** If not, edit the hero sentence in `copy.intro` ("words from the students your support makes possible", swap in "inspiring speakers"), the Champion reception line, and the Speakers tile.
 - [ ] Parking (`faq.parking`; until then: "Parking details coming soon."), venue accessibility (`faq.accessibility`), silent auction access and remote bidding (`faq.auction`; the question is hidden until set).
 - [ ] Board approval of the **proposed** wording (shown now): age policy (`faq.ages`), refund policy (`faq.refunds`), dietary answer, the student part of the Student & Youth eligibility answer, the "introduction to the scholar" Scholarship Sponsor benefit.
-- [ ] FMV values from the treasurer (`fmvPerGuest.standard`, `.champion`), which turn on the "Est. tax-deductible" lines; the EIN (`ein`).
+- [ ] FMV values from the treasurer (`fmvPerGuest.student` = dinner only, `.standard` = dinner + 1 drink, `.champion`), which turn on the "Est. tax-deductible" lines; the EIN (`ein`).
 - [ ] Program print deadline (`tiers.give.programListing.deadline`) and sponsor logo deadline (`sponsorship.logoDeadline`).
 - [ ] Speakers, schedule, music, auction items (`program.*`): each block appears once its list or value is set.
 - [ ] Goal amount and headline (`goal.*`): the progress bar appears only when both are set. Update `amountRaised` by hand.

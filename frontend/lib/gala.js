@@ -304,7 +304,7 @@ export const CONFIRM_FIELDS = [
     'endAt',
     'copy.intro.1',
     'sales.doorSalesAvailable',
-    'fmvPerGuest.standard', 'fmvPerGuest.champion',
+    'fmvPerGuest.student', 'fmvPerGuest.standard', 'fmvPerGuest.champion',
     'goal.headline', 'goal.amountGoal',
     'tiers.attend.2.includes.2', 'tiers.sponsor.2.benefits.1',
     'tiers.give.programListing.deadline',

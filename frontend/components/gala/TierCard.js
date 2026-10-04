@@ -5,7 +5,7 @@ import styles from './Gala.module.css';
 
 // One pricing card, shared by the ticket tiers and the sponsorship levels.
 // Order (top to bottom): badge, name, price, lead, availability, includes,
-// tagline/note, deductible, seats line, CTA. Every line renders only if its
+// tagline/note, deductible, CTA. Every line renders only if its
 // data exists, so unconfirmed values simply don't appear.
 const TierCard = ({ tier, list, availability, cta }) => {
     const deductible = tierDeductible(tier);
@@ -25,7 +25,6 @@ const TierCard = ({ tier, list, availability, cta }) => {
             {tier.tagline && <p className={styles.tierTagline}>{tier.tagline}</p>}
             {tier.note && <p className={styles.tierNote}>{tier.note}</p>}
             {deductible != null && <p className={styles.deductible}>Est. tax-deductible: {formatPrice(deductible)}</p>}
-            {tier.seatsLine && <p className={styles.seatsLine}>{tier.seatsLine}</p>}
             {cta && <div className={styles.tierCta}>{cta}</div>}
         </li>
     );

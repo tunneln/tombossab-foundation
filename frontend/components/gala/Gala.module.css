@@ -531,12 +531,11 @@
     color: var(--accent-text);
     font-size: 15px;
 }
-.tierNote, .deductible, .seatsLine {
+.tierNote, .deductible {
     margin: 10px 0 0;
     font-size: 13.5px;
     color: var(--muted);
 }
-.seatsLine { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--card-border); }
 .tierCta { margin-top: 24px; }
 .availability {
     display: inline-block;

@@ -136,8 +136,11 @@ export const gala = {
                 price: 500,
                 seats: 5,
                 seatType: 'standard',
-                benefits: ['Name on table signage', 'Recognition on our website and social media'],
-                seatsLine: 'Includes a reserved table for 5.',
+                benefits: [
+                    'Name on table signage',
+                    'Recognition on our website and social media',
+                    'Reserved table for 5', // keep in step with `seats`
+                ],
             },
             {
                 id: 'legacy',
@@ -149,8 +152,8 @@ export const gala = {
                     'Logo on event slides and the printed program',
                     'Recognition from the stage',
                     'A feature on our website and social media',
+                    'Reserved table for 8, with Champion benefits',
                 ],
-                seatsLine: 'Includes a reserved table for 8 with Champion benefits.',
             },
             {
                 id: 'scholarship',
@@ -165,8 +168,8 @@ export const gala = {
                 benefits: [
                     'Top billing at the event and online',
                     'An introduction to the scholar your gift supports', // TODO_CONFIRM board/scholar approval
+                    'Reserved table for 8, with Champion benefits',
                 ],
-                seatsLine: 'Includes a reserved table for 8 with Champion benefits.',
             },
         ],
 

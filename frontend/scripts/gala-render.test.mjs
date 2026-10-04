@@ -276,6 +276,23 @@ test('desktop header "Gala Tickets" button actually receives clicks (not covered
   }
 });
 
+test('/gala: each sponsor tier lists its reserved table as the last checklist item',
+  { skip: unless(STATE !== 'past', 'sponsor levels are hidden after the event') }, async () => {
+  const { ctx, page } = await openPage(browser, origin, '/gala');
+  try {
+    const lastItems = await page.locator('#sponsor > div > ul > li').evaluateAll((cards) =>
+      cards.map((card) => [...card.querySelectorAll('ul li')].at(-1)?.textContent.trim()));
+    assert.deepEqual(lastItems, [
+      'Reserved table for 5',
+      'Reserved table for 8, with Champion benefits',
+      'Reserved table for 8, with Champion benefits',
+    ]);
+    assert.doesNotMatch(await page.locator('#sponsor').innerText(), /Includes a reserved table/);
+  } finally {
+    await ctx.close();
+  }
+});
+
 test('/gala: the tax FAQ shows the foundation EIN', async () => {
   const { ctx, page } = await openPage(browser, origin, '/gala');
   try {

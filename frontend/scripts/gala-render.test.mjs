@@ -355,6 +355,49 @@ test('/gala: the tax FAQ shows the foundation EIN', async () => {
   }
 });
 
+// Regression: following the homepage slide's "Become a Sponsor" (/gala#sponsor)
+// once left most of the page stuck invisible behind the scroll-reveal effect.
+test('arriving at /gala via an anchor link hides nothing (slide "Become a Sponsor")',
+  { skip: unless(STATE === 'coming_soon' || STATE === 'on_sale', 'the slide sponsor button shows only before sales close') }, async () => {
+  for (const [width, height] of [[390, 664], [1440, 900]]) {
+    const ctx = await browser.newContext({ viewport: { width, height } });
+    try {
+      const page = await ctx.newPage();
+      await blockExternal(page, origin);
+      await page.goto(`${origin}/`, { waitUntil: 'load' });
+      await page.waitForFunction(() => document.querySelector('.frontpageSwiper')?.swiper);
+      await page.locator('.swiper-slide-active .slide-bg-gala a', { hasText: /become a sponsor/i }).click();
+      await page.waitForURL('**/gala#sponsor');
+      await page.waitForTimeout(500);
+      assert.equal(await page.locator('[data-reveal="pending"]').count(), 0, `hidden content at ${width}px`);
+      assert.ok(await page.locator('#sponsor h2').isVisible());
+    } finally {
+      await ctx.close();
+    }
+  }
+});
+
+test('/gala scroll-reveal never strands content (plain visit, scroll to the end)', async () => {
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 664 } });
+  try {
+    const page = await ctx.newPage();
+    await blockExternal(page, origin);
+    await page.goto(`${origin}/gala`, { waitUntil: 'load' });
+    await page.waitForTimeout(300);
+    assert.ok(await page.locator('[data-reveal="pending"]').count() > 0, 'below-the-fold content animates in on a plain visit');
+    const height = await page.evaluate(() => document.body.scrollHeight);
+    // Instant, not the page's smooth scrolling, so each step actually lands.
+    for (let y = 0; y <= height; y += 250) {
+      await page.evaluate((y) => window.scrollTo({ top: y, behavior: 'instant' }), y);
+      await page.waitForTimeout(60);
+    }
+    await page.waitForTimeout(300);
+    assert.equal(await page.locator('[data-reveal="pending"]').count(), 0);
+  } finally {
+    await ctx.close();
+  }
+});
+
 // ------------------------------------------------------------------ homepage & /events
 
 test('homepage: the gala slide leads, existing slides keep their order',

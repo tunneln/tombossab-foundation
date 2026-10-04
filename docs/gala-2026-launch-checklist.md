@@ -41,7 +41,7 @@ Manual steps outside the code for **https://tombossabfoundation.org/gala** (The 
 Every `TODO_CONFIRM` in the config. Run `npm run dev` and open `/gala` to see a live checklist panel of the ones still unset. Until a value is filled in, its element is hidden or shows a fallback; nothing placeholder-like is ever shown.
 
 - [ ] End time (`endAt`). The 5:00 PM start is confirmed and published; without an end time, calendar entries are start-only and the page shows just "5:00 PM".
-- [ ] **Final confirmation that the scholars will attend and speak.** If not, edit the hero sentence in `copy.intro` ("words from the students your support makes possible", swap in "inspiring speakers"), the Champion reception line, and the Speakers tile.
+- [ ] **Final confirmation that the scholars will attend and speak.** If not, edit the hero sentence in `copy.intro` ("words from the students your support makes possible", swap in "inspiring speakers") and the Speakers tile.
 - [ ] Parking (`faq.parking`; until then: "Parking details coming soon."), venue accessibility (`faq.accessibility`), silent auction access and remote bidding (`faq.auction`; the question is hidden until set).
 - [ ] Board approval of the **proposed** wording (shown now): age policy (`faq.ages`), refund policy (`faq.refunds`), dietary answer, the student part of the Student & Youth eligibility answer, the "introduction to the scholar" Scholarship Sponsor benefit.
 - [ ] FMV values from the treasurer (`fmvPerGuest.student` = dinner only, `.standard` = dinner + 1 drink, `.champion`), which turn on the "Est. tax-deductible" lines; the EIN (`ein`).

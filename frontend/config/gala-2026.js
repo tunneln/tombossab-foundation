@@ -80,7 +80,7 @@ export const gala = {
     fmvPerGuest: {
         student: null,  // TODO_CONFIRM dinner only (Student & Youth: no drink ticket)
         standard: null, // TODO_CONFIRM dinner + 1 drink (General Admission)
-        champion: null, // TODO_CONFIRM dinner + 3 drinks + reception
+        champion: null, // TODO_CONFIRM dinner + 3 drinks
     },
     ein: '99-4436179', // as published in the site's donate modal disclaimer; shown in the tax FAQ
 
@@ -122,11 +122,10 @@ export const gala = {
                 includes: [
                     'Everything in General Admission',
                     'Reserved seating near the stage',
-                    'Pre-program reception with our scholars and the Negusse family', // TODO_CONFIRM scholars attending
                     'Two additional drink tickets',
                     "Your name in the evening's program",
+                    'Extra proceeds support our mental wellness services',
                 ],
-                tagline: 'Includes a gift to the Future Scholar Fund.',
             },
         ],
 

@@ -305,6 +305,20 @@ test('/gala: the Student & Youth ticket includes no drink ticket',
   }
 });
 
+test('/gala: Champion promises no reception; its extra proceeds go to mental wellness',
+  { skip: unless(STATE !== 'past', 'tickets are hidden after the event') }, async () => {
+  const { ctx, page } = await openPage(browser, origin, '/gala');
+  try {
+    const card = page.locator('#tickets > div > ul > li').filter({ has: page.locator('h3', { hasText: 'Champion' }) });
+    const items = (await card.locator('ul li').allTextContents()).map((t) => t.trim());
+    assert.equal(items.at(-1), 'Extra proceeds support our mental wellness services');
+    assert.doesNotMatch(await page.locator('body').innerText(), /reception|Negusse family/i);
+    assert.doesNotMatch(await card.innerText(), /Future Scholar Fund/);
+  } finally {
+    await ctx.close();
+  }
+});
+
 test('/gala: the tax FAQ shows the foundation EIN', async () => {
   const { ctx, page } = await openPage(browser, origin, '/gala');
   try {

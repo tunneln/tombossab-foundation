@@ -29,6 +29,13 @@ const useGalaState = () => {
         return () => clearInterval(timer);
     }, []);
 
+    // Once the real state is applied (after mount), expose it as
+    // <html data-gala-state="...">, so tests (and dev tools) can tell the page
+    // has switched from the build-time default to today's state.
+    useEffect(() => {
+        if (now) document.documentElement.dataset.galaState = state;
+    }, [state, now]);
+
     return { state, now };
 };
 

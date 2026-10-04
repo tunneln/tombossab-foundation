@@ -19,19 +19,25 @@ import styles from './GalaCheckout.module.css';
 // binds only to buttons present on the first page load (so they'd go dead after
 // client-side navigation) and loads the form on every page view. Here the form
 // loads on first open and survives closing and navigation (like DonateProvider).
+//
+// `available` only gates OPENING. Once opened, the pop-up stays mounted while it's
+// open even if sales close underneath it (the minute ticker can flip the state
+// mid-purchase), so an order in progress or its confirmation never vanishes; it
+// unmounts only after it's closed and can't be reopened.
 const GalaCheckoutContext = createContext({ available: false, open: () => {} });
 
 export const GalaCheckoutProvider = ({ children }) => {
     const { state } = useGalaState();
     const [isOpen, setIsOpen] = useState(false);
-    const open = useCallback(() => setIsOpen(true), []);
-    const close = useCallback(() => setIsOpen(false), []);
+    const [started, setStarted] = useState(false); // first opened: load the form from then on
     const available = checkoutMode() === 'modal' && state === 'on_sale';
+    const open = useCallback(() => { setStarted(true); setIsOpen(true); }, []);
+    const close = useCallback(() => setIsOpen(false), []);
 
     return (
         <GalaCheckoutContext.Provider value={{ available, open }}>
             {children}
-            {available && <GalaCheckoutModal isOpen={isOpen} close={close} />}
+            {started && (available || isOpen) && <GalaCheckoutModal isOpen={isOpen} close={close} />}
         </GalaCheckoutContext.Provider>
     );
 };
@@ -43,14 +49,12 @@ export const useGalaCheckout = () => useContext(GalaCheckoutContext);
 // { id: 'zeffy-iframe', close: true } when its own × is pressed.
 const ZEFFY_ID = 'zeffy-iframe';
 
+// Mounted by the provider on first open (open at mount), then kept, hidden when
+// closed, so an in-progress order survives closing and reopening.
 const GalaCheckoutModal = ({ isOpen, close }) => {
-    // Mounted on first open, then kept (hidden) so an in-progress order survives.
-    const [everOpened, setEverOpened] = useState(false);
-    useEffect(() => { if (isOpen) setEverOpened(true); }, [isOpen]);
-
     const closeRef = useRef(null);
     const iframeRef = useRef(null);
-    useDialog(isOpen && everOpened, close, closeRef, iframeRef);
+    useDialog(isOpen, close, closeRef, iframeRef);
 
     const src = gala.checkout.tickets.modalUrl;
     const zeffy = gala.checkout.provider === 'zeffy';
@@ -61,7 +65,7 @@ const GalaCheckoutModal = ({ isOpen, close }) => {
     }, [zeffy, src]);
 
     // Re-opening an already loaded form (the first open announces on iframe load).
-    useEffect(() => { if (isOpen && everOpened) announceOpen(); }, [isOpen, everOpened, announceOpen]);
+    useEffect(() => { if (isOpen) announceOpen(); }, [isOpen, announceOpen]);
 
     // The form's own × closes the pop-up. Only messages from our iframe count.
     useEffect(() => {
@@ -73,8 +77,6 @@ const GalaCheckoutModal = ({ isOpen, close }) => {
         return () => window.removeEventListener('message', onMessage);
     }, [zeffy, close]);
 
-    if (!everOpened) return null;
-
     const provider = providerInfo();
     return createPortal(
         <div
@@ -85,11 +87,13 @@ const GalaCheckoutModal = ({ isOpen, close }) => {
             aria-label="Gala ticket checkout"
             aria-hidden={isOpen ? undefined : true}
         >
-            {/* Zeffy's form shows its own × only on phones, so this one is visible
-                on desktop (outside the form's corner) and, on phones, appears only
-                for keyboard focus. */}
+            {/* Always visible, so there's a way out even if the form never loads
+                (offline, blocked, Zeffy down). Phones: a "Close" pill in a strip
+                above the form, clear of the form's own ×. Desktop (where the form
+                has no ×): a round × just outside the form's corner. */}
             <button ref={closeRef} type="button" className={styles.close} onClick={close} aria-label="Close checkout">
-                &times;
+                <span className={styles.closeLabel} aria-hidden="true">Close</span>
+                <span aria-hidden="true">&times;</span>
             </button>
             <div className={styles.frame} onClick={(e) => e.stopPropagation()}>
                 <iframe

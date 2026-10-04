@@ -42,7 +42,9 @@ const ShareBar = () => {
         document.body.appendChild(a);
         a.click();
         a.remove();
-        URL.revokeObjectURL(url);
+        // The download starts asynchronously; revoking right away can cancel it
+        // (Safari, some Firefox), so free the blob a little later.
+        setTimeout(() => URL.revokeObjectURL(url), 10_000);
     };
 
     const btn = `${styles.btn} ${styles.btnOutline}`;

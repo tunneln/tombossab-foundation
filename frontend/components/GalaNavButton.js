@@ -7,6 +7,15 @@ import useGalaState from './gala/useGalaState';
 import { useGalaCheckout } from './GalaCheckout';
 import styles from './GalaNavButton.module.css';
 
+// A plain primary click. Cmd/Ctrl/Shift/Alt-clicks and middle-clicks keep the
+// browser's link behavior (new tab/window) instead of opening the pop-up.
+const isPlainClick = (e) => e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey;
+
+// The side (hamburger) menu is opened/closed by NavOne toggling `active` on this
+// container. Following a link to another page closes it (the page re-renders),
+// but a same-page jump (#tickets on /gala) would leave it covering the screen.
+const closeSideMenu = () => document.querySelector('.side-nav-container')?.classList.remove('active');
+
 // Gold "Gala Tickets" CTA (see NavOne for its placements). Label follows the gala
 // state; it disappears after the event.
 //  - desktop / floating: open the ticket checkout modal when it's available
@@ -32,14 +41,22 @@ const GalaNavButton = ({ placement, fallback = null }) => {
     if (opensModal) {
         // Keeps a real href so it still works without JS (progressive enhancement).
         button = (
-            <a href={href} className={className} onClick={(e) => { e.preventDefault(); open(); }}>
+            <a
+                href={href}
+                className={className}
+                onClick={(e) => {
+                    if (!isPlainClick(e)) return;
+                    e.preventDefault();
+                    open();
+                }}
+            >
                 {placement === 'floating' && <i className="fa fa-ticket" aria-hidden="true"></i>}
                 {label}
             </a>
         );
     } else if (href === '#tickets') {
         button = (
-            <a href={href} className={className}>
+            <a href={href} className={className} onClick={placement === 'menu' ? closeSideMenu : undefined}>
                 {placement === 'floating' && <i className="fa fa-ticket" aria-hidden="true"></i>}
                 {label}
             </a>

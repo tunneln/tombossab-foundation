@@ -78,8 +78,10 @@ for (const route of ROUTES) {
 
       // The gold gala button in the header, on every page (it jumps to the
       // ticket section on /gala itself). Its label follows the gala state the
-      // browser computes today; after the event it's gone.
+      // browser computes today; after the event it's gone. The page first shows
+      // the build-time default, so wait until it has switched to today's state.
       const galaState = getGalaState(new Date());
+      await page.waitForFunction((s) => document.documentElement.dataset.galaState === s, galaState);
       const galaHref = route.path === '/gala' ? '#tickets' : '/gala';
       const galaButtons = page.locator(`header a[href="${galaHref}"]`);
       if (galaState === 'past') {

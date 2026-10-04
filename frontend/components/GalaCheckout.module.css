@@ -1,5 +1,6 @@
-/* Pop-up ticket checkout (GalaCheckout.js). Geometry mirrors Zeffy's own modal:
-   full screen on phones, inset 5% / 10% from 769px up. */
+/* Pop-up ticket checkout (GalaCheckout.js). Geometry mirrors Zeffy's own modal
+   (full screen on phones, inset 5% / 10% from 769px up), except that phones keep
+   a 56px strip above the form for an always-visible Close button. */
 .overlay {
     position: fixed;
     inset: 0;
@@ -11,7 +12,7 @@
 
 .frame {
     position: fixed;
-    inset: 0;
+    inset: 56px 0 0 0;
     background: #fff;
 }
 @media (min-width: 769px) {
@@ -33,42 +34,42 @@
     border: 0;
 }
 
-/* Phones: Zeffy's form has its own × (top-right), so this one stays invisible
-   until keyboard-focused, then shows top-left, clear of it. Desktop: the form
-   has no ×, so this one is always shown just outside the form's top-right corner. */
+/* Phones: a gold "Close ×" pill in the strip above the form (never on top of the
+   form, whose own × sits at its top-right). Desktop: a round × just outside the
+   form's top-right corner. Visible in both, so a form that fails to load can't
+   trap anyone. */
 .close {
     position: fixed;
-    top: 10px;
-    left: 10px;
+    top: 6px;
+    right: 10px;
     z-index: 1;
-    width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     height: 44px;
-    padding: 0;
+    padding: 0 18px;
     border: 0;
-    border-radius: 50%;
+    border-radius: 999px;
     background: #C9A45C;
     color: #120C1C;
-    font-size: 28px;
-    line-height: 44px;
-    text-align: center;
+    font: 600 14px/1 'Poppins', sans-serif;
     cursor: pointer;
-    opacity: 0;
-    pointer-events: none; /* invisible must also mean untappable (it overlaps the form) */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
 }
+.close span:last-child { font-size: 24px; line-height: 1; }
+.close:hover { background: #E3C98F; }
 .close:focus-visible {
-    opacity: 1;
-    pointer-events: auto;
     outline: 3px solid #F7F1E6;
     outline-offset: 2px;
 }
-.close:hover { background: #E3C98F; }
 @media (min-width: 769px) {
     .close {
         top: calc(5% - 22px);
-        left: auto;
         right: calc(10% - 22px);
-        opacity: 1;
-        pointer-events: auto;
+        width: 44px;
+        padding: 0;
+        border-radius: 50%;
     }
+    .closeLabel { display: none; }
 }

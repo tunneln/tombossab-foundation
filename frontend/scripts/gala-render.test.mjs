@@ -16,7 +16,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { startServer, openPage, blockExternal } from './next-server.mjs';
-import { cardTimeLabel, checkoutMode, getGalaState, timePublished } from '../lib/gala.js';
+import { cardTimeLabel, checkoutMode, getGalaState, providerInfo, timePublished } from '../lib/gala.js';
 import { gala } from '../config/gala-2026.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -44,13 +44,24 @@ after(async () => {
   stop?.();
 });
 
+// Pages render the build-time default state first and switch to today's state
+// after hydration (useGalaState marks <html data-gala-state>); state-dependent
+// checks must wait for that switch.
+const waitForGalaState = (page) =>
+  page.waitForFunction((s) => document.documentElement.dataset.galaState === s, STATE);
+const openReady = async (route) => {
+  const opened = await openPage(browser, origin, route);
+  await waitForGalaState(opened.page);
+  return opened;
+};
+
 const meta = (page, attr, key) =>
   page.locator(`meta[${attr}="${key}"]`).first().getAttribute('content');
 
 // ------------------------------------------------------------------ /gala
 
 test('/gala: link-preview tags are page-specific and absolute', async () => {
-  const { ctx, page } = await openPage(browser, origin, '/gala');
+  const { ctx, page } = await openReady('/gala');
   try {
     assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), GALA);
     assert.equal(await meta(page, 'name', 'description'),
@@ -73,7 +84,7 @@ test('/gala: link-preview tags are page-specific and absolute', async () => {
 });
 
 test('other pages no longer claim the homepage as their og:url', async () => {
-  const { ctx, page } = await openPage(browser, origin, '/about');
+  const { ctx, page } = await openReady('/about');
   try {
     assert.equal(await page.locator('meta[property="og:url"]').count(), 0);
     assert.equal(await meta(page, 'property', 'og:title'), 'Tombossa B Foundation');
@@ -85,7 +96,7 @@ test('other pages no longer claim the homepage as their og:url', async () => {
 
 test('no placeholder text on /gala, the homepage, or /events', async () => {
   for (const route of ['/gala', '/', '/events']) {
-    const { ctx, page } = await openPage(browser, origin, route);
+    const { ctx, page } = await openReady(route);
     try {
       const text = await page.locator('body').innerText();
       const hit = text.match(PLACEHOLDER);
@@ -99,7 +110,7 @@ test('no placeholder text on /gala, the homepage, or /events', async () => {
 
 test('/gala: the tentative start time is not published anywhere',
   { skip: unless(!timePublished(), 'start time is confirmed') }, async () => {
-  const { ctx, page } = await openPage(browser, origin, '/gala');
+  const { ctx, page } = await openReady('/gala');
   try {
     const html = await page.content();
     assert.match(await page.locator('#top').innerText(), /Time to be announced/);
@@ -113,7 +124,7 @@ test('/gala: the tentative start time is not published anywhere',
 
 test('/gala: the confirmed start time, calendar links, and Event JSON-LD are published',
   { skip: unless(timePublished(), 'start time is not confirmed yet') }, async () => {
-  const { ctx, page } = await openPage(browser, origin, '/gala');
+  const { ctx, page } = await openReady('/gala');
   try {
     assert.match(await page.locator('#top').innerText(), /5:00 PM/);
     const ld = JSON.parse(await page.locator('script[type="application/ld+json"]').textContent());
@@ -133,7 +144,7 @@ test('/gala: the confirmed start time, calendar links, and Event JSON-LD are pub
 });
 
 test('/gala: confirmed venue renders (hero chip + FAQ with a lazy, titled map)', async () => {
-  const { ctx, page } = await openPage(browser, origin, '/gala');
+  const { ctx, page } = await openReady('/gala');
   try {
     assert.match(await page.locator('#top').innerText(), /Empire Event Center · Dallas/);
     const faq = page.locator('#faq');
@@ -157,7 +168,7 @@ test('/gala: confirmed venue renders (hero chip + FAQ with a lazy, titled map)',
 });
 
 test('/gala: one h1 and every section anchor', async () => {
-  const { ctx, page } = await openPage(browser, origin, '/gala');
+  const { ctx, page } = await openReady('/gala');
   try {
     assert.equal(await page.locator('h1').count(), 1, 'exactly one h1');
     const ids = STATE === 'past'
@@ -176,28 +187,35 @@ test('/gala: one h1 and every section anchor', async () => {
   }
 });
 
-test('/gala: pre-sale state (no checkout yet) and Donorbox-only FAQ',
-  { skip: unless(STATE === 'coming_soon', 'pre-sale assertions') }, async () => {
-  const { ctx, page } = await openPage(browser, origin, '/gala');
+test('/gala: ticket section content follows the state and the checkout config',
+  { skip: unless(STATE !== 'past', 'tickets are hidden after the event') }, async () => {
+  const { ctx, page } = await openReady('/gala');
   try {
-    assert.match(await page.locator('#top').innerText(), /^ANNOUNCING A NEW ANNUAL TRADITION\s+The Tombossa\sB Foundation Fundraising Gala/i);
-    // Checkout isn't configured: no checkout CTAs or embed, "on sale soon" instead.
+    const selling = ['coming_soon', 'on_sale'].includes(STATE);
+    const hero = await page.locator('#top').innerText();
+    if (selling) assert.match(hero, /^ANNOUNCING A NEW ANNUAL TRADITION\s+The Tombossa\sB Foundation Fundraising Gala/i);
+    else assert.doesNotMatch(hero, /ANNOUNCING/i);
+
     const tickets = page.locator('#tickets');
-    assert.match(await tickets.innerText(), /Tickets go on sale soon\./);
-    assert.equal(await tickets.locator('iframe').count(), 0);
-    assert.equal(await tickets.getByText('Select tickets below').count(), 0);
-    assert.equal(await page.locator('a[href="#subscribe"]').first().count(), 1);
+    const text = await tickets.innerText();
     // Prices come from config; Champion is the featured tier.
-    assert.match(await tickets.innerText(), /\$30[\s\S]*\$55[\s\S]*\$85/);
-    assert.match(await tickets.innerText(), /THE FULL EXPERIENCE/i);
-    assert.match(await tickets.innerText(), /Online sales close Saturday, November 28 at 12:00 PM\./);
-    assert.match(await tickets.innerText(), /Student & Youth \$40 · General Admission \$65 · Champion \$95\./);
-    assert.match(await tickets.innerText(), /For current students and guests 17 and younger\./);
+    assert.match(text, /\$30[\s\S]*\$55[\s\S]*\$85/);
+    assert.match(text, /THE FULL EXPERIENCE/i);
+    assert.match(text, /Student & Youth \$40 · General Admission \$65 · Champion \$95\./);
+    assert.match(text, /For current students and guests 17 and younger\./);
     assert.doesNotMatch(await page.locator('body').innerText(), /student ID/i, 'no ID requirement for admission');
-    // Sponsorship falls back to email while no checkout link exists.
-    assert.ok(await page.locator('#sponsor a[href^="mailto:contact@tombossabfoundation.org?subject=Gala%202026%20Sponsorship"]').count() >= 3);
-    // Provider is Donorbox: the Zeffy tip question must not render.
-    assert.doesNotMatch(await page.locator('#faq').innerText(), /optional tip/);
+    assert.equal(/Online sales close Saturday, November 28 at 12:00 PM\./.test(text), selling);
+    assert.equal(/Tickets go on sale soon\./.test(text), STATE === 'coming_soon');
+    assert.equal(/Online ticket sales have closed\./.test(text), STATE === 'online_closed');
+
+    // Sponsorship opens the pop-up checkout while it's available, else falls back to email.
+    const popUp = checkoutMode() === 'modal' && STATE === 'on_sale';
+    const sponsorButtons = await page.locator('#sponsor button', { hasText: 'Become a Sponsor' }).count();
+    const sponsorMail = await page.locator('#sponsor a[href^="mailto:contact@tombossabfoundation.org?subject=Gala%202026%20Sponsorship"]').count();
+    assert.deepEqual([sponsorButtons, sponsorMail], popUp ? [3, 0] : [0, 3]);
+
+    // The optional-tip question appears only for Zeffy.
+    assert.equal(/optional tip/.test(await page.locator('#faq').innerText()), Boolean(providerInfo()?.tipFaq));
   } finally {
     await ctx.close();
   }
@@ -205,7 +223,7 @@ test('/gala: pre-sale state (no checkout yet) and Donorbox-only FAQ',
 
 test('/gala: the ?galaState override is ignored in production',
   { skip: unless(STATE !== 'past', 'needs the tickets section') }, async () => {
-  const { ctx, page } = await openPage(browser, origin, '/gala?galaState=past');
+  const { ctx, page } = await openReady('/gala?galaState=past');
   try {
     await page.waitForTimeout(300);
     assert.equal(await page.locator('#tickets').count(), 1, 'tickets must still render');
@@ -216,7 +234,7 @@ test('/gala: the ?galaState override is ignored in production',
 });
 
 test('/gala: FAQ accordion is keyboard-operable', async () => {
-  const { ctx, page } = await openPage(browser, origin, '/gala');
+  const { ctx, page } = await openReady('/gala');
   try {
     const button = page.locator('#faq button').first();
     const panelId = await button.getAttribute('aria-controls');
@@ -252,6 +270,7 @@ test('/gala on phones: a gold "Gala Tickets" side tab replaces the Donate tab',
     const page = await ctx.newPage();
     await blockExternal(page, origin);
     await page.goto(`${origin}/gala`, { waitUntil: 'load' });
+    await waitForGalaState(page);
     assert.equal(await page.locator('.donate-floating').count(), 0, 'no Donate side tab on /gala');
     const tab = page.locator('a[class*="GalaNavButton_floating"]');
     assert.ok(await tab.isVisible());
@@ -259,6 +278,7 @@ test('/gala on phones: a gold "Gala Tickets" side tab replaces the Donate tab',
     assert.equal(await tab.getAttribute('href'), '#tickets');
 
     await page.goto(`${origin}/about`, { waitUntil: 'load' });
+    await waitForGalaState(page);
     assert.ok(await page.locator('.donate-floating').isVisible(), 'other pages keep the Donate side tab');
     assert.equal(await page.locator('a[class*="GalaNavButton_floating"]').count(), 0);
   } finally {
@@ -274,6 +294,7 @@ test('desktop header "Gala Tickets" button actually receives clicks (not covered
       const page = await ctx.newPage();
       await blockExternal(page, origin);
       await page.goto(`${origin}/about`, { waitUntil: 'load' });
+      await waitForGalaState(page);
       const hit = await page.locator('header a[class*="GalaNavButton_desktop"]').evaluate((el) => {
         const r = el.getBoundingClientRect();
         const top = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
@@ -288,7 +309,7 @@ test('desktop header "Gala Tickets" button actually receives clicks (not covered
 
 test('/gala: each sponsor tier lists its reserved table as the last checklist item',
   { skip: unless(STATE !== 'past', 'sponsor levels are hidden after the event') }, async () => {
-  const { ctx, page } = await openPage(browser, origin, '/gala');
+  const { ctx, page } = await openReady('/gala');
   try {
     const lastItems = await page.locator('#sponsor > div > ul > li').evaluateAll((cards) =>
       cards.map((card) => [...card.querySelectorAll('ul li')].at(-1)?.textContent.trim()));
@@ -305,7 +326,7 @@ test('/gala: each sponsor tier lists its reserved table as the last checklist it
 
 test('/gala: the Student & Youth ticket includes no drink ticket',
   { skip: unless(STATE !== 'past', 'tickets are hidden after the event') }, async () => {
-  const { ctx, page } = await openPage(browser, origin, '/gala');
+  const { ctx, page } = await openReady('/gala');
   try {
     const card = page.locator('#tickets > div > ul > li').filter({ has: page.locator('h3', { hasText: 'Student & Youth' }) });
     assert.deepEqual((await card.locator('ul li').allTextContents()).map((t) => t.trim()), ['Dinner', 'The full program']);
@@ -317,7 +338,7 @@ test('/gala: the Student & Youth ticket includes no drink ticket',
 
 test('/gala: Champion promises no reception; its extra proceeds go to mental wellness',
   { skip: unless(STATE !== 'past', 'tickets are hidden after the event') }, async () => {
-  const { ctx, page } = await openPage(browser, origin, '/gala');
+  const { ctx, page } = await openReady('/gala');
   try {
     const card = page.locator('#tickets > div > ul > li').filter({ has: page.locator('h3', { hasText: 'Champion' }) });
     const items = (await card.locator('ul li').allTextContents()).map((t) => t.trim());
@@ -331,7 +352,7 @@ test('/gala: Champion promises no reception; its extra proceeds go to mental wel
 
 test('/gala: tax-deductible estimates on cards ($0 hidden) and in the FAQ (every option)',
   { skip: unless(STATE !== 'past', 'ticket and sponsor cards are hidden after the event') }, async () => {
-  const { ctx, page } = await openPage(browser, origin, '/gala');
+  const { ctx, page } = await openReady('/gala');
   try {
     const cardLine = async (section, name) => {
       const card = page.locator(`${section} > div > ul > li`).filter({ has: page.locator('h3', { hasText: name }) });
@@ -358,7 +379,7 @@ test('/gala: tax-deductible estimates on cards ($0 hidden) and in the FAQ (every
 });
 
 test('/gala: "Can\'t Make It?" embeds the Zeffy donation form, with a working fallback', async () => {
-  const { ctx, page } = await openPage(browser, origin, '/gala');
+  const { ctx, page } = await openReady('/gala');
   try {
     const card = page.locator('#give').getByRole('heading', { name: 'Give to the Scholarship Fund' }).locator('..');
     // Server-rendered placeholder for Zeffy's embed script.
@@ -376,7 +397,7 @@ test('/gala: "Can\'t Make It?" embeds the Zeffy donation form, with a working fa
 });
 
 test('/gala: the tax FAQ shows the foundation EIN', async () => {
-  const { ctx, page } = await openPage(browser, origin, '/gala');
+  const { ctx, page } = await openReady('/gala');
   try {
     await page.locator('#faq').getByRole('button', { name: 'Is my ticket tax-deductible?' }).click();
     assert.match(await page.locator('#faq [role="region"]:visible').innerText(), /501\(c\)\(3\) nonprofit, EIN 99-4436179\./);
@@ -395,6 +416,7 @@ test('arriving at /gala via an anchor link hides nothing (slide "Become a Sponso
       const page = await ctx.newPage();
       await blockExternal(page, origin);
       await page.goto(`${origin}/`, { waitUntil: 'load' });
+      await waitForGalaState(page);
       await page.waitForFunction(() => document.querySelector('.frontpageSwiper')?.swiper);
       await page.locator('.swiper-slide-active .slide-bg-gala a', { hasText: /become a sponsor/i }).click();
       await page.waitForURL('**/gala#sponsor');
@@ -430,7 +452,7 @@ test('/gala scroll-reveal never strands content (plain visit, scroll to the end)
 
 test('/gala on sale: every ticket, sponsor, and Sponsor a Seat button opens the pop-up checkout',
   { skip: unless(STATE === 'on_sale' && checkoutMode() === 'modal', 'needs the pop-up checkout on sale') }, async () => {
-  const { ctx, page } = await openPage(browser, origin, '/gala');
+  const { ctx, page } = await openReady('/gala');
   try {
     const dialog = page.locator('[role="dialog"][aria-label="Gala ticket checkout"]');
     // Wait for hydration (the countdown only renders client-side) so clicks have handlers.
@@ -465,7 +487,7 @@ test('/gala on sale: every ticket, sponsor, and Sponsor a Seat button opens the 
 
 test('homepage: the gala slide leads, existing slides keep their order',
   { skip: unless(['coming_soon', 'on_sale'].includes(STATE), 'slide copy before sales close') }, async () => {
-  const { ctx, page } = await openPage(browser, origin, '/');
+  const { ctx, page } = await openReady('/');
   try {
     // Swiper initializes after hydration; wait for it before reading its state.
     await page.waitForFunction(() => document.querySelector('.frontpageSwiper')?.swiper);
@@ -495,7 +517,7 @@ test('homepage: the gala slide leads, existing slides keep their order',
 
 test('/events: Upcoming (gala card -> /gala) above Past (fixture events, unchanged)',
   { skip: unless(STATE !== 'past', 'the gala card has moved to Past Events') }, async () => {
-  const { ctx, page } = await openPage(browser, origin, '/events');
+  const { ctx, page } = await openReady('/events');
   try {
     const headings = await page.locator('.section__title').allInnerTexts();
     assert.deepEqual(headings.slice(0, 2), ['Upcoming Events', 'Past Events']);
@@ -520,7 +542,7 @@ test('/events: Upcoming (gala card -> /gala) above Past (fixture events, unchang
 });
 
 test('homepage events section is unchanged (no gala card)', async () => {
-  const { ctx, page } = await openPage(browser, origin, '/');
+  const { ctx, page } = await openReady('/');
   try {
     assert.equal(await page.locator('.causes-area a[href="/gala"]').count(), 0);
   } finally {

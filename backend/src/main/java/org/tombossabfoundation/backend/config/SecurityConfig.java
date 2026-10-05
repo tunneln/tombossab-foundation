@@ -18,6 +18,8 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+// Not redundant with @ConfigurationPropertiesScan on the application class:
+// @WebMvcTest slices (which @Import this class) don't run that scan.
 @EnableConfigurationProperties({ CorsProperties.class, RateLimitProperties.class })
 public class SecurityConfig {
 

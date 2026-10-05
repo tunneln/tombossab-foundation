@@ -6,9 +6,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.time.Duration;
+import java.util.Collections;
+import java.util.HexFormat;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -19,10 +23,22 @@ import org.springframework.web.filter.OncePerRequestFilter;
  */
 public class RateLimitFilter extends OncePerRequestFilter {
 
-	private static final int MAX_TRACKED_CLIENTS = 10_000;
+	static final int MAX_TRACKED_CLIENTS = 10_000;
 
 	private final RateLimitProperties properties;
-	private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
+
+	/**
+	 * Bounded LRU: past the cap, the least recently seen client is dropped, so
+	 * memory stays fixed and every request is O(1) even under a flood of new
+	 * addresses. (A dropped client just starts over with a full bucket.)
+	 */
+	private final Map<String, Bucket> buckets = Collections.synchronizedMap(
+			new LinkedHashMap<>(256, 0.75f, true) {
+				@Override
+				protected boolean removeEldestEntry(Map.Entry<String, Bucket> eldest) {
+					return size() > MAX_TRACKED_CLIENTS;
+				}
+			});
 
 	public RateLimitFilter(RateLimitProperties properties) {
 		this.properties = properties;
@@ -36,12 +52,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
-		if (buckets.size() > MAX_TRACKED_CLIENTS) {
-			// Evict only idle clients (bucket fully refilled) so currently
-			// throttled clients keep their limit — never wipe every bucket.
-			buckets.values().removeIf(b -> b.getAvailableTokens() >= properties.capacity());
-		}
-		Bucket bucket = buckets.computeIfAbsent(clientIp(request), ip -> newBucket());
+		Bucket bucket = buckets.computeIfAbsent(clientKey(clientIp(request)), ip -> newBucket());
 		if (bucket.tryConsume(1)) {
 			chain.doFilter(request, response);
 			return;
@@ -58,6 +69,32 @@ public class RateLimitFilter extends OncePerRequestFilter {
 				.addLimit(limit -> limit.capacity(properties.capacity())
 						.refillGreedy(properties.capacity(), Duration.ofMinutes(properties.refillMinutes())))
 				.build();
+	}
+
+	int trackedClients() {
+		return buckets.size();
+	}
+
+	/**
+	 * IPv6 clients are keyed by their /64 network: one subscriber usually gets a
+	 * whole /64, so per-address buckets would let them rotate addresses for
+	 * fresh limits. IPv4 (and anything unparseable) is keyed as-is.
+	 */
+	static String clientKey(String ip) {
+		// Only IPv6 literals (hex digits, colons, dots) are parsed, so getByName
+		// never does a DNS lookup on a header value.
+		if (ip.indexOf(':') < 0 || !ip.matches("[0-9A-Fa-f:.]+")) {
+			return ip;
+		}
+		try {
+			byte[] address = InetAddress.getByName(ip).getAddress();
+			if (address.length != 16) {
+				return ip;
+			}
+			return HexFormat.of().formatHex(address, 0, 8) + "::/64";
+		} catch (UnknownHostException e) {
+			return ip;
+		}
 	}
 
 	/** Caddy fronts the app in production and sets X-Forwarded-For. */

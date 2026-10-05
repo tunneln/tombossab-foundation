@@ -58,6 +58,40 @@ class RateLimitFilterTest {
 	}
 
 	@Test
+	void ipv6Clients_shareOneBucketPerSlash64() throws Exception {
+		RateLimitFilter filter = new RateLimitFilter(new RateLimitProperties(1, 1));
+		filter.doFilter(post("2001:db8:1:2::1"), new MockHttpServletResponse(), new MockFilterChain());
+
+		// Another address in the same /64 doesn't get a fresh bucket...
+		MockHttpServletResponse rotated = new MockHttpServletResponse();
+		filter.doFilter(post("2001:db8:1:2:ffff::9"), rotated, new MockFilterChain());
+		assertEquals(429, rotated.getStatus());
+
+		// ...but a different /64 does.
+		MockHttpServletResponse otherNetwork = new MockHttpServletResponse();
+		filter.doFilter(post("2001:db8:1:3::1"), otherNetwork, new MockFilterChain());
+		assertEquals(200, otherNetwork.getStatus());
+	}
+
+	@Test
+	void clientKey_leavesIpv4AndNonLiteralsAlone() {
+		assertEquals("203.0.113.9", RateLimitFilter.clientKey("203.0.113.9"));
+		assertEquals("not-an-ip.example", RateLimitFilter.clientKey("not-an-ip.example"));
+		assertEquals(RateLimitFilter.clientKey("2001:db8::1"), RateLimitFilter.clientKey("2001:0db8:0:0:abcd::2"));
+	}
+
+	@Test
+	void trackedClients_areCapped() throws Exception {
+		RateLimitFilter filter = new RateLimitFilter(new RateLimitProperties(1, 1));
+		for (int i = 0; i < RateLimitFilter.MAX_TRACKED_CLIENTS + 500; i++) {
+			// Exhaust each bucket, so none of them is idle.
+			filter.doFilter(post("10." + (i >> 16) + "." + ((i >> 8) & 255) + "." + (i & 255)),
+					new MockHttpServletResponse(), new MockFilterChain());
+		}
+		assertEquals(RateLimitFilter.MAX_TRACKED_CLIENTS, filter.trackedClients());
+	}
+
+	@Test
 	void nonPostAndNonApiRequests_areNotFiltered() {
 		RateLimitFilter filter = new RateLimitFilter(new RateLimitProperties(1, 1));
 		assertTrue(filter.shouldNotFilter(new MockHttpServletRequest("GET", "/api/recipients")));

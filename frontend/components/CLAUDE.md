@@ -8,7 +8,7 @@ Components are **server components by default** (no pragma). Add `"use client"` 
 
 ## Gala 2026 (`gala/`)
 
-The `/gala` page sections, styled by one CSS module (`gala/Gala.module.css`, its own palette, scoped). All content comes from `../config/gala-2026.js` via helpers in `../lib/gala.js`. The state (`coming_soon | on_sale | online_closed | past`) is computed client-side by `gala/useGalaState` (pages are static); sections stay server components and wrap state-dependent bits in `<ShowIn states={[...]}>`. Dev-only `?galaState=` / `?galaNow=` overrides. The header button (`GalaNavButton`), homepage slide (`SliderOne`), and `/events` card (`GalaEvents`) use the same hook.
+The `/gala` page sections, styled by one CSS module (`gala/Gala.module.css`, its own palette, scoped). All content comes from `../config/gala-2026.js` via helpers in `../lib/gala.js`. The state (`coming_soon | on_sale | online_closed | past`) is one app-wide `GalaStateProvider` (`gala/GalaState.js`, mounted in the root layout): it starts from the state computed when the page was rendered (`app/layout.js` revalidates hourly) and re-checks the browser clock every minute. Read it with `useGala()`; sections stay server components and wrap state-dependent bits in `<ShowIn states={[...]}>`. Dev-only `?galaState=` / `?galaNow=` overrides. The header button (`GalaNavButton`), homepage slide (`SliderOne`), `/events` card (`GalaEvents`), and checkout pop-up (`GalaCheckout`) read the same state.
 
 ## Style
 

@@ -2,10 +2,8 @@
 
 import React from 'react';
 import { gala } from '../../config/gala-2026';
-import { checkoutMode } from '../../lib/gala';
+import { checkoutMode, EXTERNAL_LINK } from '../../lib/gala';
 import { useGalaCheckout } from '../GalaCheckout';
-
-const EXTERNAL = { target: '_blank', rel: 'noopener noreferrer' };
 
 // A way into the ticket checkout, per checkout mode:
 //  modal: a button opening the pop-up checkout (GalaCheckout) while it's available
@@ -19,7 +17,7 @@ const CheckoutCta = ({ className, label, embedLabel = label, fallback = null }) 
         return available ? <button type="button" className={className} onClick={open}>{label}</button> : fallback;
     }
     if (mode === 'embed') return <a href="#checkout" className={className}>{embedLabel}</a>;
-    if (mode === 'link') return <a href={gala.checkout.tickets.hostedUrl} className={className} {...EXTERNAL}>{label}</a>;
+    if (mode === 'link') return <a href={gala.checkout.tickets.hostedUrl} className={className} {...EXTERNAL_LINK}>{label}</a>;
     return fallback;
 };
 

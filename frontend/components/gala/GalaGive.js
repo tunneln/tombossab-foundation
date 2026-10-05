@@ -1,6 +1,6 @@
 import React from 'react';
 import { gala } from '../../config/gala-2026';
-import { formatPrice, tierDeductible } from '../../lib/gala';
+import { BEFORE_EVENT, formatPrice, tierDeductible } from '../../lib/gala';
 import { ShowIn } from './GalaState';
 import CheckoutCta from './CheckoutCta';
 import FundCard from './FundCard';
@@ -40,7 +40,7 @@ const GalaGive = () => {
                     </ShowIn>
                     <FundCard />
                 </div>
-                <ShowIn states={['coming_soon', 'on_sale', 'online_closed']}>
+                <ShowIn states={BEFORE_EVENT}>
                     <p className={styles.giveNote}>
                         Gifts of {formatPrice(programListing.threshold)} or more are listed as Friends of the Foundation in the gala program.
                         {programListing.deadline && ` Give by ${programListing.deadline} to be included.`}

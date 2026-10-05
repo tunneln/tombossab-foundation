@@ -1,12 +1,10 @@
 import React from 'react';
 import { gala } from '../../config/gala-2026';
-import { displayName, timeRange } from '../../lib/gala';
+import { BEFORE_EVENT, displayName, timeRange } from '../../lib/gala';
 import { ShowIn } from './GalaState';
 import Countdown from './Countdown';
 import Motif from './Motif';
 import styles from './Gala.module.css';
-
-const BEFORE = ['coming_soon', 'on_sale', 'online_closed'];
 
 const GalaHero = () => {
     // When, where, then the two short details, which pair up side by side on
@@ -43,7 +41,7 @@ const GalaHero = () => {
                     ))}
                 </ul>
 
-                <ShowIn states={BEFORE}>
+                <ShowIn states={BEFORE_EVENT}>
                     <div className={styles.intro}>
                         {gala.copy.intro.map((para) => <p key={para}>{para}</p>)}
                     </div>

@@ -1,6 +1,14 @@
 import React from 'react';
 import { DonateProvider } from '../components/DonateProvider';
 import { GalaCheckoutProvider } from '../components/GalaCheckout';
+import { GalaStateProvider } from '../components/gala/GalaState';
+import { getGalaState } from '../lib/gala';
+
+// Re-render every page at most hourly (ISR), so the gala state baked into the
+// static HTML (header button, homepage slide, /gala sections, its JSON-LD)
+// follows the real date: sales opening and closing, the event ending. Pages that
+// fetch content already revalidate hourly; this extends it to every page.
+export const revalidate = 3600;
 
 export const metadata = {
     metadataBase: new URL('https://tombossabfoundation.org'),
@@ -60,12 +68,15 @@ export default function RootLayout({ children }) {
                     <link key={href} rel="stylesheet" href={href} precedence="site" />
                 ))}
 
-                {/* The single app-level donate modal persists across client-side
-                    navigation so a donor's in-progress form is never lost. */}
-                <DonateProvider>
-                    {/* Same pattern for the gala ticket checkout modal. */}
-                    <GalaCheckoutProvider>{children}</GalaCheckoutProvider>
-                </DonateProvider>
+                {/* One shared gala state for the whole app, starting from the state
+                    as of this render (see GalaState). The single app-level donate
+                    modal persists across client-side navigation so a donor's
+                    in-progress form is never lost; same for the gala checkout. */}
+                <GalaStateProvider initialState={getGalaState()}>
+                    <DonateProvider>
+                        <GalaCheckoutProvider>{children}</GalaCheckoutProvider>
+                    </DonateProvider>
+                </GalaStateProvider>
 
                 {/* Classic sync scripts, exactly as the old Layout rendered them:
                     they execute during document parse — before hydration — so the

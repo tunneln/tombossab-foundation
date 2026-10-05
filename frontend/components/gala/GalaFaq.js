@@ -1,17 +1,17 @@
 import React from 'react';
 import { gala } from '../../config/gala-2026';
-import { formatPrice, hasVenue, providerInfo, tierDeductible, timeRange, venueAddress } from '../../lib/gala';
+import { CONTACT_EMAIL, EXTERNAL_LINK, formatPrice, hasVenue, providerInfo, tierDeductible, timeRange, venueAddress } from '../../lib/gala';
 import FaqAccordion from './FaqAccordion';
 import styles from './Gala.module.css';
 
-const EMAIL = <a href="mailto:contact@tombossabfoundation.org" className={styles.inlineLink}>contact@tombossabfoundation.org</a>;
+const EMAIL = <a href={`mailto:${CONTACT_EMAIL}`} className={styles.inlineLink}>{CONTACT_EMAIL}</a>;
 
 const WhenWhere = () => {
     if (!hasVenue()) {
         return (
             <p>
                 {gala.dateDisplay}. Venue and time will be announced soon. Follow us on{' '}
-                <a href="https://www.instagram.com/tombossabfoundation" className={styles.inlineLink} target="_blank" rel="noopener noreferrer">Instagram</a>{' '}
+                <a href="https://www.instagram.com/tombossabfoundation" className={styles.inlineLink} {...EXTERNAL_LINK}>Instagram</a>{' '}
                 or <a href="#subscribe" className={styles.inlineLink}>subscribe to our newsletter</a> for updates.
             </p>
         );

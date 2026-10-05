@@ -3,11 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import { useGala } from './GalaState';
 import { gala } from '../../config/gala-2026';
-import { calendarReady, googleCalendarUrl, icsContent, shareLinks } from '../../lib/gala';
+import { calendarReady, EXTERNAL_LINK, googleCalendarUrl, icsContent, shareLinks } from '../../lib/gala';
 import styles from './Gala.module.css';
 
 const LINKS = shareLinks();
-const EXTERNAL = { target: '_blank', rel: 'noopener noreferrer' };
 
 // Share buttons + add-to-calendar. The native share button needs the Web Share
 // API, which only exists in the browser, so it appears after mount.
@@ -51,7 +50,7 @@ const ShareBar = () => {
     return (
         <>
             <div className={styles.shareButtons}>
-                <a href={LINKS.whatsapp} className={`${styles.btn} ${styles.whatsapp}`} {...EXTERNAL}>
+                <a href={LINKS.whatsapp} className={`${styles.btn} ${styles.whatsapp}`} {...EXTERNAL_LINK}>
                     <i className="fa fa-whatsapp" aria-hidden="true"></i> Share on WhatsApp
                 </a>
                 {canShare && (
@@ -62,10 +61,10 @@ const ShareBar = () => {
                 <button type="button" className={btn} onClick={copyLink}>
                     <i className="fa fa-link" aria-hidden="true"></i> Copy link
                 </button>
-                <a href={LINKS.facebook} className={btn} {...EXTERNAL}>
+                <a href={LINKS.facebook} className={btn} {...EXTERNAL_LINK}>
                     <i className="fa fa-facebook" aria-hidden="true"></i> Facebook
                 </a>
-                <a href={LINKS.x} className={btn} {...EXTERNAL}>
+                <a href={LINKS.x} className={btn} {...EXTERNAL_LINK}>
                     <i className="fa fa-twitter" aria-hidden="true"></i> X
                 </a>
                 <a href={LINKS.email} className={btn}>
@@ -76,7 +75,7 @@ const ShareBar = () => {
 
             {calendarReady() && state !== 'past' && (
                 <div className={styles.calendar}>
-                    <a href={googleCalendarUrl()} className={styles.textLink} {...EXTERNAL}>
+                    <a href={googleCalendarUrl()} className={styles.textLink} {...EXTERNAL_LINK}>
                         <i className="fa fa-calendar-plus-o" aria-hidden="true"></i>&nbsp; Add to Google Calendar
                     </a>
                     <button type="button" className={`${styles.textLink} ${styles.linkButton}`} onClick={downloadIcs}>

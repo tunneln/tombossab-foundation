@@ -10,7 +10,7 @@ import 'swiper/css/navigation';
 
 import { Pagination, Autoplay } from 'swiper/modules';
 
-import useGalaState from './gala/useGalaState';
+import { useGala } from './gala/GalaState';
 import { gala } from '../config/gala-2026';
 import { displayName, isAfter } from '../lib/gala';
 
@@ -26,7 +26,7 @@ const SliderOne = () => {
     // The gala slide leads the slider until homeSlide.removeAfter, then removes
     // itself (client-side, once the date is known). The Swiper is keyed on it so
     // the looped slider remounts cleanly instead of splicing a slide out.
-    const { state, now } = useGalaState();
+    const { state, now } = useGala();
     const showGala = !(now && isAfter(gala.homeSlide.removeAfter, now));
     const galaSlide = GALA_SLIDE[state];
 

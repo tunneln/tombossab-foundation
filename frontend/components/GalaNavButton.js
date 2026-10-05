@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import useGalaState from './gala/useGalaState';
+import { useGala } from './gala/GalaState';
 import { useGalaCheckout } from './GalaCheckout';
 import styles from './GalaNavButton.module.css';
 
@@ -25,7 +25,7 @@ const closeSideMenu = () => document.querySelector('.side-nav-container')?.class
 // `floating` is the /gala side tab that replaces the Donate tab; outside the
 // ticket-selling states it renders `fallback` (the regular Donate tab) instead.
 const GalaNavButton = ({ placement, fallback = null }) => {
-    const { state } = useGalaState();
+    const { state } = useGala();
     const { available, open } = useGalaCheckout();
     const pathname = usePathname();
 

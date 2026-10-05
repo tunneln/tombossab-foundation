@@ -1,13 +1,11 @@
 import React from 'react';
 import { gala } from '../../config/gala-2026';
-import { checkoutMode, formatPrice, formatTime, formatWeekdayDate, providerInfo } from '../../lib/gala';
+import { BEFORE_EVENT, checkoutMode, CONTACT_EMAIL, EXTERNAL_LINK, formatPrice, formatTime, formatWeekdayDate, providerInfo } from '../../lib/gala';
 import { ShowIn } from './GalaState';
 import CheckoutCta from './CheckoutCta';
 import GalaGoal from './GalaGoal';
 import TierCard from './TierCard';
 import styles from './Gala.module.css';
-
-const EXTERNAL = { target: '_blank', rel: 'noopener noreferrer' };
 
 const doorLine = () => `Door tickets, if available: ${gala.tiers.attend
     .map((t) => `${t.name} ${formatPrice(t.doorPrice)}`).join(' · ')}.`;
@@ -25,7 +23,7 @@ const Checkout = () => {
                     <iframe src={embedSrc} title="Gala ticket checkout" loading="lazy" allow="payment" />
                 </div>
                 {hostedUrl && (
-                    <a href={hostedUrl} className={`${styles.textLink} ${styles.fallbackLink}`} {...EXTERNAL}>
+                    <a href={hostedUrl} className={`${styles.textLink} ${styles.fallbackLink}`} {...EXTERNAL_LINK}>
                         Trouble loading checkout? Open it in a new tab →
                     </a>
                 )}
@@ -36,7 +34,7 @@ const Checkout = () => {
 };
 
 const GalaTickets = () => (
-    <ShowIn states={['coming_soon', 'on_sale', 'online_closed']}>
+    <ShowIn states={BEFORE_EVENT}>
         <section id="tickets" className={`${styles.section} ${styles.ink}`}>
             <div className={styles.container}>
                 <GalaGoal />
@@ -89,7 +87,7 @@ const GalaTickets = () => (
                         <p className={styles.statusTitle}>Tickets go on sale soon.</p>
                         <p className={styles.statusText}>
                             Be the first to know: <a href="#subscribe" className={styles.inlineLink}>subscribe to our newsletter</a>{' '}
-                            or email <a href="mailto:contact@tombossabfoundation.org" className={styles.inlineLink}>contact@tombossabfoundation.org</a>.
+                            or email <a href={`mailto:${CONTACT_EMAIL}`} className={styles.inlineLink}>{CONTACT_EMAIL}</a>.
                         </p>
                     </div>
                 </ShowIn>

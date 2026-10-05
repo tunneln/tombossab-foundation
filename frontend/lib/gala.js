@@ -7,8 +7,12 @@
 import { gala as GALA } from '../config/gala-2026.js';
 
 export const GALA_STATES = ['coming_soon', 'on_sale', 'online_closed', 'past'];
+// Every state before the night is over (the sales sections show in these).
+export const BEFORE_EVENT = ['coming_soon', 'on_sale', 'online_closed'];
 
-const CONTACT_EMAIL = 'contact@tombossabfoundation.org';
+export const CONTACT_EMAIL = 'contact@tombossabfoundation.org';
+// Attributes for links that leave the site: new tab, no opener or referrer.
+export const EXTERNAL_LINK = { target: '_blank', rel: 'noopener noreferrer' };
 
 // ---------------------------------------------------------------- formatting
 

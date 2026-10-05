@@ -3,7 +3,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import useDialog from './useDialog';
-import useGalaState from './gala/useGalaState';
+import { useGala } from './gala/GalaState';
 import { gala } from '../config/gala-2026';
 import { checkoutMode, providerInfo } from '../lib/gala';
 import styles from './GalaCheckout.module.css';
@@ -27,7 +27,7 @@ import styles from './GalaCheckout.module.css';
 const GalaCheckoutContext = createContext({ available: false, open: () => {} });
 
 export const GalaCheckoutProvider = ({ children }) => {
-    const { state } = useGalaState();
+    const { state } = useGala();
     const [isOpen, setIsOpen] = useState(false);
     const [started, setStarted] = useState(false); // first opened: load the form from then on
     const available = checkoutMode() === 'modal' && state === 'on_sale';

@@ -1,12 +1,10 @@
 import React from 'react';
 import { gala } from '../../config/gala-2026';
-import { checkoutMode, sponsorshipHref, tierAvailability } from '../../lib/gala';
+import { BEFORE_EVENT, checkoutMode, CONTACT_EMAIL, EXTERNAL_LINK, sponsorshipHref, tierAvailability } from '../../lib/gala';
 import { ShowIn } from './GalaState';
 import CheckoutCta from './CheckoutCta';
 import TierCard from './TierCard';
 import styles from './Gala.module.css';
-
-const BEFORE = ['coming_soon', 'on_sale', 'online_closed'];
 
 const SponsorCta = ({ soldOut }) => {
     const cls = `${styles.btn} ${styles.btnBlock}`;
@@ -14,7 +12,7 @@ const SponsorCta = ({ soldOut }) => {
     const href = sponsorshipHref();
     const external = /^https?:/.test(href);
     const link = (
-        <a href={href} className={`${cls} ${styles.btnPrimary}`} {...(external && { target: '_blank', rel: 'noopener noreferrer' })}>
+        <a href={href} className={`${cls} ${styles.btnPrimary}`} {...(external && EXTERNAL_LINK)}>
             Become a Sponsor
         </a>
     );
@@ -46,7 +44,7 @@ const SponsorWall = () => {
                                 return (
                                     <li key={s.name}>
                                         {s.url
-                                            ? <a href={s.url} target="_blank" rel="noopener noreferrer">{content}</a>
+                                            ? <a href={s.url} {...EXTERNAL_LINK}>{content}</a>
                                             : <span>{content}</span>}
                                     </li>
                                 );
@@ -89,11 +87,11 @@ const SponsorLevels = () => {
             <div className={styles.sponsorNotes}>
                 <p>
                     Need an invoice, a W-9, or a custom package? Email{' '}
-                    <a href="mailto:contact@tombossabfoundation.org" className={styles.inlineLink}>contact@tombossabfoundation.org</a>.
+                    <a href={`mailto:${CONTACT_EMAIL}`} className={styles.inlineLink}>{CONTACT_EMAIL}</a>.
                 </p>
                 {packetPdf && (
                     <p>
-                        <a href={packetPdf} className={styles.textLink} target="_blank" rel="noopener noreferrer">
+                        <a href={packetPdf} className={styles.textLink} {...EXTERNAL_LINK}>
                             Download the sponsorship packet (PDF)
                         </a>
                     </p>
@@ -113,11 +111,11 @@ const GalaSponsor = () => {
         </section>
     );
     if (gala.sponsorship.sponsors.length === 0) {
-        return <ShowIn states={BEFORE}>{section(<SponsorLevels />)}</ShowIn>;
+        return <ShowIn states={BEFORE_EVENT}>{section(<SponsorLevels />)}</ShowIn>;
     }
     return section(
         <>
-            <ShowIn states={BEFORE}><SponsorLevels /></ShowIn>
+            <ShowIn states={BEFORE_EVENT}><SponsorLevels /></ShowIn>
             <SponsorWall />
         </>,
     );

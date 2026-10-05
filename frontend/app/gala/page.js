@@ -1,7 +1,6 @@
 import React from 'react';
 import NavOne from "../../components/NavOne";
 import Footer from "../../components/Footer";
-import { GalaStateProvider } from "../../components/gala/GalaState";
 import GalaHero from "../../components/gala/GalaHero";
 import GalaStory from "../../components/gala/GalaStory";
 import GalaEvening from "../../components/gala/GalaEvening";
@@ -16,7 +15,7 @@ import RevealOnScroll from "../../components/gala/RevealOnScroll";
 import DevChecklist from "../../components/gala/DevChecklist";
 import styles from "../../components/gala/Gala.module.css";
 import { gala } from '../../config/gala-2026';
-import { eventJsonLd, GALA_META } from '../../lib/gala';
+import { eventJsonLd, GALA_META, getGalaState } from '../../lib/gala';
 import { getRecipients } from '../../lib/api';
 
 // /gala is the canonical, printed URL (flyers, QR codes): never rename it.
@@ -44,26 +43,26 @@ export const metadata = {
 
 const GalaPage = async () => {
     const recipients = await getRecipients();
-    const jsonLd = eventJsonLd();
+    // Offer availability reflects the state as of this render (refreshed hourly).
+    const jsonLd = eventJsonLd(getGalaState());
     return (
         <>
             <NavOne />
-            <GalaStateProvider>
-                <main className={styles.gala}>
-                    <GalaHero />
-                    <GalaStory />
-                    <GalaEvening />
-                    <GalaScholars recipients={recipients} />
-                    <GalaTickets />
-                    <GalaGive />
-                    <GalaSponsor />
-                    <GalaFaq />
-                    <GalaShare />
-                    <StickyCta />
-                    <DevChecklist />
-                </main>
-                <RevealOnScroll />
-            </GalaStateProvider>
+            {/* Gala state comes from the app-wide GalaStateProvider (root layout). */}
+            <main className={styles.gala}>
+                <GalaHero />
+                <GalaStory />
+                <GalaEvening />
+                <GalaScholars recipients={recipients} />
+                <GalaTickets />
+                <GalaGive />
+                <GalaSponsor />
+                <GalaFaq />
+                <GalaShare />
+                <StickyCta />
+                <DevChecklist />
+            </main>
+            <RevealOnScroll />
             <Footer />
             {jsonLd && (
                 <script

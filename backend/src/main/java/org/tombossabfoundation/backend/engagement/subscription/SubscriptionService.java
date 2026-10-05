@@ -2,20 +2,21 @@ package org.tombossabfoundation.backend.engagement.subscription;
 
 import java.util.Locale;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.tombossabfoundation.backend.notification.NotificationService;
+import org.tombossabfoundation.backend.notification.FoundationNotification;
 
 @Service
 public class SubscriptionService {
 
 	private final NewsletterSubscriberRepository repository;
-	private final NotificationService notificationService;
+	private final ApplicationEventPublisher events;
 
-	public SubscriptionService(NewsletterSubscriberRepository repository, NotificationService notificationService) {
+	public SubscriptionService(NewsletterSubscriberRepository repository, ApplicationEventPublisher events) {
 		this.repository = repository;
-		this.notificationService = notificationService;
+		this.events = events;
 	}
 
 	/**
@@ -35,7 +36,7 @@ public class SubscriptionService {
 			// Concurrent duplicate — the unique constraint won; still a success.
 			return false;
 		}
-		notificationService.notifyFoundation("New Newsletter Subscription", "Email: " + email, email);
+		events.publishEvent(new FoundationNotification("New Newsletter Subscription", "Email: " + email, email));
 		return true;
 	}
 

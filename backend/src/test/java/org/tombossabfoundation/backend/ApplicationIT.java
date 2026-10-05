@@ -79,7 +79,7 @@ class ApplicationIT extends AbstractPostgresIT {
 	}
 
 	@Test
-	void subscription_isIdempotentAcrossRepeatedPosts() {
+	void subscription_isIdempotentAcrossRepeatedPosts() throws Exception {
 		ResponseEntity<String> first = rest.postForEntity("/api/subscriptions",
 				json("""
 						{"email":"Reader@Example.com"}"""), String.class);
@@ -92,6 +92,11 @@ class ApplicationIT extends AbstractPostgresIT {
 
 		assertEquals(1, subscribers.count());
 		assertEquals("reader@example.com", subscribers.findAll().get(0).getEmail());
+
+		// Only the new subscriber is announced. Waiting for it also keeps this
+		// async email from landing in the next test's (restarted) inbox.
+		assertTrue(greenMail.waitForIncomingEmail(5000, 1), "notification email should arrive");
+		assertEquals("New Newsletter Subscription", greenMail.getReceivedMessages()[0].getSubject());
 	}
 
 	@Test

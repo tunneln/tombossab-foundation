@@ -8,11 +8,12 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 /**
- * Outbound email to the foundation inbox. Async and best-effort: submissions
- * are already persisted before this runs, so a mail failure is logged, never
- * surfaced to the caller.
+ * Outbound email to the foundation inbox. Async and best-effort: it runs only
+ * after the submission's transaction commits (so no email for a submission that
+ * wasn't saved), and a mail failure is logged, never surfaced to the caller.
  */
 @Service
 public class NotificationService {
@@ -30,12 +31,18 @@ public class NotificationService {
 		this.notificationProperties = notificationProperties;
 	}
 
+	/** fallbackExecution: also sent when published outside a transaction. */
+	@Async("mailExecutor")
+	@TransactionalEventListener(fallbackExecution = true)
+	public void onNotification(FoundationNotification notification) {
+		notifyFoundation(notification.subject(), notification.body(), notification.replyTo());
+	}
+
 	/**
 	 * From is the authenticated SMTP account (SPF/DMARC-correct); Reply-To is
 	 * the submitter, so replying from the inbox still reaches them.
 	 */
-	@Async("mailExecutor")
-	public void notifyFoundation(String subject, String body, String replyTo) {
+	void notifyFoundation(String subject, String body, String replyTo) {
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setFrom(mailProperties.getUsername());
 		message.setTo(notificationProperties.to());

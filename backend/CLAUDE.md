@@ -6,7 +6,7 @@ Spring Boot 3.5 / Java 21 / PostgreSQL 16 + Flyway. Standalone JSON API for the 
 
 - `content/{recipient,newsletter,event}` — public read side. Each package: Entity, Repository, Service, Controller, Response record. **Response field names mirror `frontend/data/*.json` exactly** — the fixtures are the API's contract.
 - `engagement/{contact,volunteer,subscription}` — public write side: submissions are persisted first, then a notification email is sent (best-effort).
-- `notification/` — `@Async("mailExecutor")` outbound mail. From = the SMTP account (SPF/DMARC-correct), Reply-To = the submitter.
+- `notification/` — outbound mail: services publish a `FoundationNotification` event, sent `@Async("mailExecutor")` only after the transaction commits (full queue = dropped + logged, never a failed request). From = the SMTP account (SPF/DMARC-correct), Reply-To = the submitter.
 - `config/` — `SecurityConfig` (closed by default — new endpoints are added ABOVE `anyRequest().denyAll()`), CORS + rate-limit `@ConfigurationProperties`, async executor, OpenAPI info.
 - `common/` — `ApiExceptionHandler` (RFC-9457 ProblemDetail; validation failures carry an `errors` field map) and `StatusResponse`.
 

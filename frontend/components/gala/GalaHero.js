@@ -27,6 +27,7 @@ const GalaHero = () => {
                     <p className={styles.eyebrow}>{gala.copy.kicker}</p>
                 </ShowIn>
                 <h1 className={styles.h1}>
+                    <span className={styles.titleLead}>{gala.copy.titleLead} </span>
                     {gala.shortName}
                     <span className={styles.year}>{gala.year}</span>
                 </h1>

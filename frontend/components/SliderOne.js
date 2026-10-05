@@ -63,7 +63,7 @@ const SliderOne = () => {
                                     <div className="container">
                                         <div className="gala-slide">
                                             {galaSlide.kicker && <p className="gala-slide__eyebrow">{gala.copy.kicker}</p>}
-                                            <h2 className="gala-slide__title">{gala.shortName}</h2>
+                                            <h2 className="gala-slide__title"><span className="gala-slide__lead">{gala.copy.titleLead} </span>{gala.shortName}</h2>
                                             <p className="gala-slide__date">
                                                 {gala.homeSlide.dateLine.split(' · ').map((part, i) => (
                                                     <React.Fragment key={part}>

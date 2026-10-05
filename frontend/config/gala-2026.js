@@ -43,7 +43,10 @@ export const gala = {
     copy: {
         // Small line above the title (homepage slide + /gala hero), shown only
         // until ticket sales close: "announcing" reads stale on the day itself.
-        kicker: 'Announcing a new annual tradition',
+        kicker: 'Announcing a new tradition',
+        // Smaller lead-in line inside the title itself, so the heading reads
+        // "Our Annual Fundraising Gala". Part of the name, so shown in every state.
+        titleLead: 'Our Annual',
         // Hero intro, one string per paragraph. If program.speakers is still
         // empty at launch, "words from the students your support makes possible"
         // can be swapped for "inspiring speakers" here.

@@ -943,6 +943,15 @@ a[href^="mailto:"] {
     margin-bottom: 20px;
     text-wrap: balance;
 }
+/* "Our Annual", a smaller italic lead-in on its own line inside the title. */
+.slider-area .gala-slide .gala-slide__lead {
+    display: block;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 1.2;
+    color: #E3C98F;
+}
 .slider-area .gala-slide .gala-slide__part {
     white-space: nowrap;
 }

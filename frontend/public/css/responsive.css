@@ -1076,6 +1076,9 @@
     .slider-area .gala-slide .gala-slide__title {
         font-size: min(calc((100vw - 120px) / 8.4), 96px);
     }
+    .slider-area .gala-slide .gala-slide__lead {
+        font-size: 26px;
+    }
 }
 @media (max-width:767px) {
     /* Top padding clears the overlaid logo (incl. its tagline) with room to
@@ -1093,6 +1096,9 @@
        (5.65em wide / 0.95 = 5.95). */
     .slider-area .gala-slide .gala-slide__title {
         font-size: min(calc((100vw - 118px) / 5.95), 72px);
+    }
+    .slider-area .gala-slide .gala-slide__lead {
+        font-size: 20px;
     }
     /* Date and city on their own lines instead of breaking mid-date. */
     .slider-area .gala-slide .gala-slide__sep {
@@ -1121,6 +1127,9 @@
     .slider-area .gala-slide .gala-slide__title {
         font-size: calc((100vw - 110px) / 5.95);
     }
+    .slider-area .gala-slide .gala-slide__lead {
+        font-size: 18px;
+    }
     .slider-area .gala-slide .gala-slide__subline {
         font-size: 16px;
     }
@@ -1141,6 +1150,9 @@
     }
     .slider-area .gala-slide .gala-slide__title {
         margin-bottom: 12px;
+    }
+    .slider-area .gala-slide .gala-slide__lead {
+        font-size: 18px;
     }
     .slider-area .gala-slide .gala-slide__date {
         margin-bottom: 12px;
@@ -1167,6 +1179,9 @@
     /* Very short screens: a single line, so everything fits above the buttons. */
     .slider-area .gala-slide .gala-slide__title {
         font-size: 28px;
+    }
+    .slider-area .gala-slide .gala-slide__lead {
+        font-size: 16px;
     }
     .slider-area .gala-slide .gala-slide__subline {
         font-size: 14px;

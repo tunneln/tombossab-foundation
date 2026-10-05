@@ -244,8 +244,9 @@
     display: block;
     font-family: var(--gala-display);
     font-weight: 700;
-    /* About 80% of the title's size, so the year supports it, not outshines it. */
-    font-size: clamp(42px, 7vw, 90px);
+    /* The title's own size at every width (it sits inside the h1). Playfair's
+       old-style figures sit mostly at x-height, so it still reads as secondary. */
+    font-size: 1em;
     line-height: 1;
     letter-spacing: 0.06em;
     color: var(--gala-gold);

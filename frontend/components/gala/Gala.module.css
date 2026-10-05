@@ -223,8 +223,11 @@
 .h1 {
     font-family: var(--gala-display);
     font-weight: 700;
-    font-size: clamp(34px, 6.4vw, 78px);
-    line-height: 1.06;
+    /* Big and dramatic: one line up to 112px ("Fundraising Gala" is ~7.96em
+       wide in Playfair 700, so 112px just fits the 900px max width). Phones stack
+       it as "Fundraising / Gala" (see the 767px rules). */
+    font-size: clamp(34px, 9.5vw, 112px);
+    line-height: 1.04;
     color: var(--gala-text-light);
     margin: 0 auto;
     max-width: 900px;
@@ -779,6 +782,9 @@
     /* Clear the site's floating Donate tab on the left edge (kept symmetric).
        Two classes so it beats the later `.container` padding rule at <= 575px. */
     .container.heroInner { padding: 0 44px 56px; }
+    /* Stacked "Fundraising / Gala", "Fundraising" filling ~95% of the width
+       between the 44px paddings (5.65em wide / 0.95 = 5.95). */
+    .h1 { font-size: min(calc((100vw - 88px) / 5.95), 72px); }
     .heading { margin-bottom: 40px; }
     .ctas .btn { width: 100%; max-width: 360px; }
     .scholar { flex-direction: column; align-items: center; text-align: center; padding: 26px 22px; }
@@ -815,7 +821,7 @@
 
 @media (max-width: 380px) {
     .container.heroInner { padding: 0 40px 48px; }
-    .h1 { font-size: 30px; }
+    .h1 { font-size: calc((100vw - 80px) / 5.95); }
     .chips { margin-left: max(-26px, calc((100% - 360px) / 2)); margin-right: max(-26px, calc((100% - 360px) / 2)); }
     .chip { gap: 6px; padding: 8px; font-size: 13px; }
 }

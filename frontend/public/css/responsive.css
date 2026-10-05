@@ -1072,8 +1072,9 @@
     }
 }
 @media (max-width:1024px) {
+    /* Tablets: one line spanning most of the width. */
     .slider-area .gala-slide .gala-slide__title {
-        font-size: 54px;
+        font-size: min(calc((100vw - 120px) / 8.4), 96px);
     }
 }
 @media (max-width:767px) {
@@ -1087,8 +1088,11 @@
         font-size: 12px;
         letter-spacing: 0.16em;
     }
+    /* Phones: stacked "Fundraising / Gala", "Fundraising" filling ~95% of the
+       width inside the 44px side paddings plus the .container's 15px each side
+       (5.65em wide / 0.95 = 5.95). */
     .slider-area .gala-slide .gala-slide__title {
-        font-size: 30px;
+        font-size: min(calc((100vw - 118px) / 5.95), 72px);
     }
     /* Date and city on their own lines instead of breaking mid-date. */
     .slider-area .gala-slide .gala-slide__sep {
@@ -1115,7 +1119,7 @@
         padding-right: 40px;
     }
     .slider-area .gala-slide .gala-slide__title {
-        font-size: 28px;
+        font-size: calc((100vw - 110px) / 5.95);
     }
     .slider-area .gala-slide .gala-slide__subline {
         font-size: 16px;
@@ -1160,8 +1164,9 @@
     .slider-area .gala-slide {
         padding-top: 122px;
     }
+    /* Very short screens: a single line, so everything fits above the buttons. */
     .slider-area .gala-slide .gala-slide__title {
-        font-size: 26px;
+        font-size: 28px;
     }
     .slider-area .gala-slide .gala-slide__subline {
         font-size: 14px;

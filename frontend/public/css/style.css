@@ -935,8 +935,10 @@ a[href^="mailto:"] {
 .slider-area .gala-slide .gala-slide__title {
     font-family: 'Playfair Display', serif;
     font-weight: 700;
-    font-size: 72px;
-    line-height: 1.08;
+    /* Big and dramatic. "Fundraising Gala" is ~7.96em wide in Playfair 700
+       ("Fundraising" ~5.65em), so sizes are set from the width available. */
+    font-size: clamp(64px, 7.2vw, 100px);
+    line-height: 1.05;
     color: #F7F1E6;
     margin-bottom: 20px;
     text-wrap: balance;

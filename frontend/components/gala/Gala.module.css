@@ -233,14 +233,12 @@
     max-width: 900px;
     text-wrap: balance;
 }
-/* "Our Annual", a smaller italic lead-in on its own line inside the h1. */
+/* "Our Annual", a smaller lead-in on its own line inside the h1 (same font,
+   weight and color, inherited from the h1). */
 .titleLead {
     display: block;
-    font-style: italic;
-    font-weight: 500;
     font-size: clamp(20px, 3.2vw, 34px);
     line-height: 1.2;
-    color: var(--accent-text);
 }
 .year {
     display: block;

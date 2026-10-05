@@ -26,6 +26,8 @@ simply not proceeding, and afterwards by DNS revert (step 9).
 ```bash
 # as the admin user on the Lightsail box
 sudo dnf install -y docker && sudo systemctl enable --now docker
+# Amazon Linux 2023 ships without cron (needed for the nightly backup):
+sudo dnf install -y cronie && sudo systemctl enable --now crond
 sudo usermod -aG docker $USER   # re-login
 # docker compose v2 plugin if not bundled:
 sudo mkdir -p /usr/local/lib/docker/cli-plugins
@@ -36,9 +38,12 @@ sudo fallocate -l 1G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapf
 echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 ```
 
-Copy this `deploy/` directory to `/opt/tombossab/deploy`, create `.env` from
+Copy this `deploy/` directory to `/opt/tombossab/deploy` (owned by the deploy
+user: `sudo mkdir -p /opt/tombossab && sudo chown -R $USER /opt/tombossab`, so
+the deploy workflow can update it), create `.env` from
 `.env.example` with real values (Postgres password, SMTP password), and
-install the backup cron: `crontab -l | cat - backup/crontab.txt | crontab -`.
+install the backup cron: `(crontab -l 2>/dev/null; cat backup/crontab.txt) | crontab -`
+(check it with `crontab -l`).
 
 ## 2. First stack boot — on alternate ports
 
@@ -115,8 +120,15 @@ plus the two legacy redirects on the new site:
 
 - Set repo variable `DEPLOY_ENABLED=true` — pushes to `main` touching
   `backend/**` or `deploy/**` now build, deploy, and revalidate automatically.
+  Each deploy also copies `docker-compose.yml`, `Caddyfile`, and `backup/`
+  from the repo onto the box (overwriting hand edits there; `.env` is never
+  touched), restarts Caddy if its config changed, and waits for the app to be
+  healthy before pinging the frontend. Change those files in the repo, not on
+  the box.
 - Run one manual backup and verify the object lands in S3:
   `/opt/tombossab/deploy/backup/pg-backup.sh`
+- The morning after, confirm the nightly cron ran too (the manual run above
+  doesn't prove it): `tail ~/tombossab-backup.log` should end in `backup ok`.
 - Restore drill (do this once): `aws s3 cp s3://tombossab-backups/pg/<date>.sql.gz - | gunzip | docker compose exec -T db psql -U tombossa tombossa_restore_test`
 
 ## 9. Rollback levers

@@ -40,17 +40,49 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      # Ship the stack's config too (compose file, Caddyfile, backup scripts):
+      # otherwise deploy/** changes would trigger this job but never reach the
+      # box. .env and the box's other files are untouched.
+      - name: Copy deploy files to Lightsail
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.LIGHTSAIL_HOST }}
+          username: ${{ secrets.LIGHTSAIL_USER }}
+          key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
+          source: "deploy/docker-compose.yml,deploy/Caddyfile,deploy/backup"
+          target: /opt/tombossab
+
       - name: Deploy to Lightsail
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.LIGHTSAIL_HOST }}
           username: ${{ secrets.LIGHTSAIL_USER }}
           key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
+          # Fail the job on the first failing command (a failed pull must not
+          # report green while the old image keeps running).
           script: |
+            set -euo pipefail
             cd /opt/tombossab/deploy
             docker compose pull app
             docker compose up -d
-            docker system prune -f
+            # Caddy reads its config at start; restart it only if the copied
+            # Caddyfile differs from the one it's running.
+            if ! docker compose exec -T caddy cat /etc/caddy/Caddyfile | cmp -s - Caddyfile; then
+              docker compose restart caddy
+            fi
+            # Wait for the new app (Flyway + startup) before revalidating the
+            # frontend, or the regeneration would hit a 502 and cache fixtures.
+            for i in $(seq 1 60); do
+              if docker compose exec -T app wget -qO- http://127.0.0.1:8080/actuator/health 2>/dev/null | grep -q '"UP"'; then
+                echo "app healthy"
+                docker system prune -f
+                exit 0
+              fi
+              sleep 5
+            done
+            echo "app not healthy after 5 minutes" >&2
+            docker compose logs --tail 100 app >&2
+            exit 1
 
       - name: Revalidate frontend content
         # Best-effort: pages also carry a time-based revalidate as the net.

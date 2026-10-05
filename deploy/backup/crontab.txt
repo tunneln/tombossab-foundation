@@ -1,4 +1,6 @@
 # Nightly Postgres backup at 08:00 UTC (~3am Dallas). Install on the box with:
-#   crontab -l | cat - crontab.txt | crontab -
+#   (crontab -l 2>/dev/null; cat crontab.txt) | crontab -
+# It runs as the admin user (not root), so the log goes in that user's home:
+# /var/log is root-only and the redirect would fail before the script starts.
 # Bucket should have a 30-day expiry lifecycle rule (see deploy/RUNBOOK.md).
-0 8 * * * /opt/tombossab/deploy/backup/pg-backup.sh >> /var/log/tombossab-backup.log 2>&1
+0 8 * * * /opt/tombossab/deploy/backup/pg-backup.sh >> $HOME/tombossab-backup.log 2>&1

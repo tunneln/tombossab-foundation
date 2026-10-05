@@ -123,6 +123,20 @@ test('/events/gala-2026 permanently redirects to the canonical /gala', async () 
   assert.equal(res.headers.get('location'), '/gala');
 });
 
+// The old site served every page at its .html file name too; those links must
+// keep working after the cutover.
+test('legacy .html URLs permanently redirect to the clean URL', async () => {
+  for (const [legacy, clean] of [
+    ['/about.html', '/about'],
+    ['/index.html', '/'],
+    ['/events/coffee-women-empowerment-1.html', '/events/coffee-women-empowerment-1'],
+  ]) {
+    const res = await fetch(`${origin}${legacy}`, { redirect: 'manual' });
+    assert.equal(res.status, 308, `${legacy} should permanently redirect`);
+    assert.equal(res.headers.get('location'), clean, `${legacy} redirect target`);
+  }
+});
+
 // Coverage guard: every prerendered route must have a ROUTES entry above (so it
 // gets the checks). Reads the build's own manifest, so a new page can't ship
 // unchecked. Excludes Next's framework not-found route.

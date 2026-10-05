@@ -1,7 +1,8 @@
 // Client-safe config (imported by "use client" components).
 // NEXT_PUBLIC_ vars are inlined at build time; Vercel sets the production value.
 // The fallback keeps local dev and the offline test suite working with zero
-// setup (tests intercept the request before any connection is attempted).
+// setup (tests intercept the request before any connection is attempted); a
+// Vercel production build without the variable fails (next.config.mjs).
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080';
 
 // Shared POST for the engagement forms (contact, volunteer, subscribe). Sends

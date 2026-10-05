@@ -35,29 +35,35 @@ async function main() {
   const { stop, origin } = await startServer(PORT);
   console.log(`serving production build at ${origin}`);
 
-  const browser = await chromium.launch();
+  // Always stop the server, even when a page fails: a leftover `next start`
+  // would keep serving the old build on this port.
+  let browser;
   const results = [];
-  for (const vp of VIEWPORTS) {
-    const ctx = await browser.newContext({
-      viewport: { width: vp.width, height: vp.height },
-      deviceScaleFactor: vp.dsf,
-    });
-    const page = await ctx.newPage();
-    await blockExternal(page, origin);
-    for (const route of pages) {
-      const name = route === '/' ? 'home' : route.replace(/^\//, '').replace(/\//g, '-');
-      const dir = path.join(SHOT_BASE, label);
-      await mkdir(dir, { recursive: true });
-      const dest = path.join(dir, `${name}__${vp.name}.png`);
-      await page.goto(`${origin}${route}`, { waitUntil: 'load', timeout: 30000 });
-      await page.waitForTimeout(2000); // let the first slide's background paint
-      await page.screenshot({ path: dest }); // viewport (above the fold) — where hero fill shows
-      results.push(dest);
+  try {
+    browser = await chromium.launch();
+    for (const vp of VIEWPORTS) {
+      const ctx = await browser.newContext({
+        viewport: { width: vp.width, height: vp.height },
+        deviceScaleFactor: vp.dsf,
+      });
+      const page = await ctx.newPage();
+      await blockExternal(page, origin);
+      for (const route of pages) {
+        const name = route === '/' ? 'home' : route.replace(/^\//, '').replace(/\//g, '-');
+        const dir = path.join(SHOT_BASE, label);
+        await mkdir(dir, { recursive: true });
+        const dest = path.join(dir, `${name}__${vp.name}.png`);
+        await page.goto(`${origin}${route}`, { waitUntil: 'load', timeout: 30000 });
+        await page.waitForTimeout(2000); // let the first slide's background paint
+        await page.screenshot({ path: dest }); // viewport (above the fold) — where hero fill shows
+        results.push(dest);
+      }
+      await ctx.close();
     }
-    await ctx.close();
+  } finally {
+    await browser?.close();
+    stop();
   }
-  await browser.close();
-  stop();
   console.log(`\nwrote ${results.length} screenshots to ${path.join(SHOT_BASE, label)}`);
   results.forEach((r) => console.log('  ' + r));
 }

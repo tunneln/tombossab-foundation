@@ -21,6 +21,16 @@ function assertBuilt() {
   }
 }
 
+// A fixed port must be free: a leftover server there (e.g. from a crashed run)
+// would answer the readiness probe, and the caller would test a stale build.
+function assertPortFree(port) {
+  return new Promise((resolve, reject) => {
+    const probe = net.createServer();
+    probe.once('error', () => reject(new Error(`port ${port} is already in use (a leftover next server?)`)));
+    probe.listen(port, '127.0.0.1', () => probe.close(resolve));
+  });
+}
+
 function freePort() {
   return new Promise((resolve, reject) => {
     const probe = net.createServer();
@@ -36,6 +46,7 @@ function freePort() {
 // Resolves to { stop, port, origin }; stop() kills the child process.
 export async function startServer(port = 0) {
   assertBuilt();
+  if (port) await assertPortFree(port);
   const actualPort = port || (await freePort());
   const origin = `http://127.0.0.1:${actualPort}`;
 

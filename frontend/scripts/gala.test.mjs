@@ -205,6 +205,23 @@ test('formatting: prices, close date, minimum price', () => {
     assert.equal(formatTime(gala.sales.onlineCloseAt, gala), '12:00 PM');
 });
 
+test('formatting: times match even where ICU puts a narrow no-break space before AM/PM', () => {
+    // Some browsers' newer ICU data format "5:00 PM"; the server's may not.
+    // Any difference in rendered text is a hydration mismatch.
+    const RealFormat = Intl.DateTimeFormat;
+    Intl.DateTimeFormat = function (...args) {
+        const formatter = new RealFormat(...args);
+        return { format: (date) => formatter.format(date).replace(' ', ' ') };
+    };
+    try {
+        assert.equal(formatTime(gala.sales.onlineCloseAt, gala), '12:00 PM');
+        assert.equal(cardTimeLabel(gala), '5:00pm');
+        assert.equal(timeRange(gala), '5:00 PM');
+    } finally {
+        Intl.DateTimeFormat = RealFormat;
+    }
+});
+
 test('formatting: a start time is published only once confirmed', () => {
     const tentative = variant({ startTimeConfirmed: false });
     assert.equal(timePublished(tentative), false);

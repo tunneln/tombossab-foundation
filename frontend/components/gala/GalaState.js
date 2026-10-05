@@ -16,9 +16,14 @@ import { defaultGalaState, getGalaState, nowOverride, stateOverride } from '../.
 // (countdown, Giving Tuesday line) renders nothing at build time instead of a
 // frozen value.
 //
+// The state and the clock are separate contexts: the clock ticks every minute,
+// but only the few date-dependent pieces read it (useGalaNow), so a minute that
+// doesn't change the state re-renders nothing else.
+//
 // In development, ?galaState=past (or any state) overrides the state, and
 // ?galaNow=<ISO timestamp> overrides the clock.
-const GalaStateContext = createContext({ state: defaultGalaState(), now: null });
+const GalaStateContext = createContext({ state: defaultGalaState() });
+const GalaClockContext = createContext(null);
 
 export const GalaStateProvider = ({ initialState, children }) => {
     const [state, setState] = useState(initialState ?? defaultGalaState);
@@ -42,17 +47,30 @@ export const GalaStateProvider = ({ initialState, children }) => {
         if (now) document.documentElement.dataset.galaState = state;
     }, [state, now]);
 
-    const value = useMemo(() => ({ state, now }), [state, now]);
-    return <GalaStateContext.Provider value={value}>{children}</GalaStateContext.Provider>;
+    const value = useMemo(() => ({ state }), [state]);
+    return (
+        <GalaStateContext.Provider value={value}>
+            <GalaClockContext.Provider value={now}>{children}</GalaClockContext.Provider>
+        </GalaStateContext.Provider>
+    );
 };
 
+// { state }: re-renders only when the state changes.
 export const useGala = () => useContext(GalaStateContext);
 
+// The browser's current time (null until mount), updated every minute.
+export const useGalaNow = () => useContext(GalaClockContext);
+
 // Render children only in the listed states. `until` (ISO) also hides them once
-// that moment has passed (checked only after mount, when the date is known).
+// that moment has passed (checked only after mount, when the date is known);
+// only those blocks subscribe to the clock.
 export const ShowIn = ({ states, until, children }) => {
-    const { state, now } = useGala();
+    const { state } = useGala();
     if (!states.includes(state)) return null;
-    if (until && (!now || now.getTime() > new Date(until).getTime())) return null;
-    return children;
+    return until ? <Until moment={until}>{children}</Until> : children;
+};
+
+const Until = ({ moment, children }) => {
+    const now = useGalaNow();
+    return now && now.getTime() <= new Date(moment).getTime() ? children : null;
 };

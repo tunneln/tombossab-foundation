@@ -23,9 +23,11 @@ export const formatPrice = (amount) =>
 const zoned = (iso, options, g = GALA) =>
     new Intl.DateTimeFormat('en-US', { timeZone: g.timezone, ...options }).format(new Date(iso));
 
-// "6:00 PM"
+// "6:00 PM". Newer ICU data (in some browsers) puts a narrow no-break space
+// before AM/PM; normalize it so the browser's text matches the server's
+// (a mismatch is a React hydration error).
 export const formatTime = (iso, g = GALA) =>
-    zoned(iso, { hour: 'numeric', minute: '2-digit' }, g);
+    zoned(iso, { hour: 'numeric', minute: '2-digit' }, g).replace(/\s/g, ' ');
 
 // "Monday, November 23"
 export const formatWeekdayDate = (iso, g = GALA) =>
@@ -44,7 +46,7 @@ export const timeRange = (g = GALA) => {
 // /events card, matching the existing cards' "2:00pm to 6:00pm" style.
 export const cardTimeLabel = (g = GALA) => {
     if (!timePublished(g)) return 'Time TBA';
-    const short = (iso) => formatTime(iso, g).replace(' ', '').toLowerCase();
+    const short = (iso) => formatTime(iso, g).replace(/\s/g, '').toLowerCase();
     return g.endAt ? `${short(g.startAt)} to ${short(g.endAt)}` : short(g.startAt);
 };
 

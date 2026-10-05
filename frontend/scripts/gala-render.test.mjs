@@ -409,6 +409,46 @@ test('/gala: "Can\'t Make It?" embeds the Zeffy donation form, with a working fa
     await fallback.waitFor({ timeout: 10000 });
     assert.equal(await fallback.getAttribute('src'), gala.checkout.donationForm.fallbackSrc);
     assert.equal(await card.locator('[data-zeffy-embed]').count(), 0);
+
+    // Leave and come back by client-side navigation (the card remounts, the
+    // failed script is cached): the fallback must still be there, not a blank card.
+    await page.evaluate(() => { window.__sameDocument = true; });
+    await page.evaluate(() => window.next.router.push('/about'));
+    await page.waitForURL('**/about');
+    await page.evaluate(() => window.next.router.push('/gala'));
+    await page.waitForURL('**/gala');
+    await fallback.waitFor({ timeout: 10000 });
+    assert.equal(await page.evaluate(() => window.__sameDocument), true, 'stayed a client-side navigation');
+    assert.equal(await card.locator('[data-zeffy-embed]').count(), 0);
+  } finally {
+    await ctx.close();
+  }
+});
+
+test('side menu: opens, closes, and closes on a same-page Gala Tickets jump and on navigation',
+  { skip: unless(STATE !== 'past', 'the menu has no gala button after the event') }, async () => {
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const page = await ctx.newPage();
+  try {
+    await blockExternal(page, origin);
+    await page.goto(`${origin}/gala`, { waitUntil: 'load', timeout: 30000 });
+    await waitForGalaState(page);
+    const menu = page.locator('.side-nav-container');
+    const isOpen = () => menu.evaluate((el) => el.classList.contains('active'));
+
+    await page.click('.mobile-menu-toggle');
+    assert.equal(await isOpen(), true, 'hamburger opens the menu');
+    await page.click('.side-menu-close');
+    assert.equal(await isOpen(), false, 'close icon closes it');
+
+    await page.click('.mobile-menu-toggle');
+    await menu.locator('a[href="#tickets"]').click();
+    assert.equal(await isOpen(), false, 'a same-page jump to #tickets closes it');
+
+    await page.click('.mobile-menu-toggle');
+    await menu.locator('a[href="/about"]').click();
+    await page.waitForURL('**/about');
+    assert.equal(await isOpen(), false, 'navigating to another page closes it');
   } finally {
     await ctx.close();
   }

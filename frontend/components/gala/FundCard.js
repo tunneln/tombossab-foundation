@@ -14,9 +14,20 @@ const ZEFFY_EMBED_SCRIPT = 'https://www.zeffy.com/embed/v2/zeffy-embed.js';
 // time the card mounts, so arriving at /gala by client-side navigation works too
 // (it skips placeholders it has already filled). If the script can't load, the
 // plain iframe from Zeffy's embed code is shown instead.
+//
+// The failure is remembered for the page's lifetime: next/script caches a failed
+// load as finished (its promise swallows the error), so when the card mounts
+// again after client-side navigation, onError never fires a second time. A
+// "ready" script without Zeffy's API counts as a failure for the same reason.
+let scriptFailed = false;
+
 const FundCard = () => {
     const { formUrl, fallbackSrc } = gala.checkout.donationForm;
-    const [failed, setFailed] = useState(false);
+    const [failed, setFailed] = useState(scriptFailed);
+    const fail = () => {
+        scriptFailed = true;
+        setFailed(true);
+    };
 
     return (
         <div className={styles.giveCard}>
@@ -30,8 +41,8 @@ const FundCard = () => {
             <Script
                 src={ZEFFY_EMBED_SCRIPT}
                 strategy="lazyOnload"
-                onReady={() => window.Zeffy?.embed?.init()}
-                onError={() => setFailed(true)}
+                onReady={() => (window.Zeffy?.embed ? window.Zeffy.embed.init() : fail())}
+                onError={fail}
             />
         </div>
     );

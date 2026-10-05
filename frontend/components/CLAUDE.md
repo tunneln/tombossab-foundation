@@ -8,7 +8,7 @@ Components are **server components by default** (no pragma). Add `"use client"` 
 
 ## Gala 2026 (`gala/`)
 
-The `/gala` page sections, styled by one CSS module (`gala/Gala.module.css`, its own palette, scoped). All content comes from `../config/gala-2026.js` via helpers in `../lib/gala.js`. The state (`coming_soon | on_sale | online_closed | past`) is one app-wide `GalaStateProvider` (`gala/GalaState.js`, mounted in the root layout): it starts from the state computed when the page was rendered (`app/layout.js` revalidates hourly) and re-checks the browser clock every minute. Read it with `useGala()`; sections stay server components and wrap state-dependent bits in `<ShowIn states={[...]}>`. Dev-only `?galaState=` / `?galaNow=` overrides. The header button (`GalaNavButton`), homepage slide (`SliderOne`), `/events` card (`GalaEvents`), and checkout pop-up (`GalaCheckout`) read the same state.
+The `/gala` page sections, styled by one CSS module (`gala/Gala.module.css`, its own palette, scoped). All content comes from `../config/gala-2026.js` via helpers in `../lib/gala.js`. The state (`coming_soon | on_sale | online_closed | past`) is one app-wide `GalaStateProvider` (`gala/GalaState.js`, mounted in the root layout): it starts from the state computed when the page was rendered (`app/layout.js` revalidates hourly) and re-checks the browser clock every minute. Read it with `useGala()` (and the minute-ticking clock, separately, with `useGalaNow()`: only date-dependent bits subscribe to it); sections stay server components and wrap state-dependent bits in `<ShowIn states={[...]}>`. Dev-only `?galaState=` / `?galaNow=` overrides. The header button (`GalaNavButton`), homepage slide (`SliderOne`), `/events` card (`GalaEvents`), and checkout pop-up (`GalaCheckout`) read the same state.
 
 ## Style
 
@@ -21,7 +21,7 @@ The `/gala` page sections, styled by one CSS module (`gala/Gala.module.css`, its
 - 4-space indentation. `import Link from 'next/link';` for internal links.
 - Prefer hooks over class components. `NavOne.js` is the hooks reference (note: `usePathname` from `next/navigation`, never `next/router`).
 - Markup is Bootstrap grid (`container` / `row` / `col-lg-*`) plus the site's shared CSS classes. Reuse existing classes (`theme-btn`, `section-heading`, `blog-item`, `recent-item`, `team-item`) before writing new CSS.
-- Brand accent gold `#f1ae44`. Use inline `style={{ }}` only for small one-off custom bits (see `RecipientCard.js`, `Newsletter.js`); lean on classes otherwise.
+- Brand accent gold `#f1ae44` (the gala's own palette is the one exception: `gala/` and the homepage `gala-slide__*` rules; see the root CLAUDE.md). Use inline `style={{ }}` only for small one-off custom bits (see `RecipientCard.js`, `Newsletter.js`); lean on classes otherwise.
 - Plain `<img src="/images/..." />` (never `next/image`); assets live in `../public/`.
 - External links always get `target="_blank" rel="noopener noreferrer"`. Link to PDFs/static files with a plain `<a>`, not `Link`.
 

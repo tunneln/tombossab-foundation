@@ -20,6 +20,7 @@ const NavOne = () => {
     const [sticky, setSticky] = useState(false);
     const [logoSrc, setLogoSrc] = useState(startsWhite ? "/images/logo-white.png" : "/images/logo.png");
     const [whiteNav, setWhiteNav] = useState(startsWhite);
+    const [menuOpen, setMenuOpen] = useState(false);
 
     // The nav uses its "white" treatment (white logo + white hamburger icon)
     // ONLY at the top of the home page, where it sits over the dark hero.
@@ -32,29 +33,9 @@ const NavOne = () => {
         setWhiteNav(atHomeTop);
     };
 
-    // Mobile menu toggle logic
-    const mobileMenu = () => {
-        const mainNavToggler = document.querySelector(".mobile-menu-toggle");
-        const mainNav = document.querySelector(".side-nav-container");
-        const closeMenu = document.querySelector(".side-menu-close");
-
-        if (mainNavToggler) {
-            mainNavToggler.addEventListener("click", () => {
-            mainNav?.classList.add("active");
-            });
-        }
-
-        if (closeMenu) {
-            closeMenu.addEventListener("click", () => {
-            mainNav?.classList.remove("active");
-            });
-        }
-    };
-
     // Wire up listeners once on mount.
     useEffect(() => {
         window.addEventListener("scroll", syncNav);
-        mobileMenu();
 
         // Cleanup event listeners on unmount
         return () => {
@@ -66,8 +47,10 @@ const NavOne = () => {
     // changes, so the mount effect above never re-runs — without this, the nav
     // would keep the previous page's colors (e.g. a white hamburger from the
     // home hero turning invisible on a light inner page).
+    // The side menu closes on navigation too.
     useEffect(() => {
         syncNav();
+        setMenuOpen(false);
     }, [pathname]);
 
     return (
@@ -150,7 +133,7 @@ const NavOne = () => {
                                         </div>
                                     </div>
                                     <GalaNavButton placement="tablet" />
-                                    <div className="mobile-menu-toggle">
+                                    <div className="mobile-menu-toggle" onClick={() => setMenuOpen(true)}>
                                         <i className={`fa fa-bars fa-2x fa-white ${whiteNav ? 'white-nav-bar' : ''}`} aria-hidden="true"></i>
                                     </div>
                                 </div>
@@ -158,13 +141,13 @@ const NavOne = () => {
                         </div>
                     </div>
                 </div>
-                <div className="side-nav-container">
+                <div className={`side-nav-container${menuOpen ? ' active' : ''}`}>
                     <div className="humburger-menu">
-                        <div className="humburger-menu-lines side-menu-close"></div>
+                        <div className="humburger-menu-lines side-menu-close" onClick={() => setMenuOpen(false)}></div>
                     </div>
                     <div className="side-menu-wrap">
                         <ul className="side-menu-ul">
-                            <li className="sidenav__item"><GalaNavButton placement="menu" /></li>
+                            <li className="sidenav__item"><GalaNavButton placement="menu" onNavigate={() => setMenuOpen(false)} /></li>
                             <li className="sidenav__item"><Link href="/">home</Link></li>
                             <li className="sidenav__item"><Link href="/about">about us</Link></li>
                             <li className="sidenav__item"><Link href="/events">events</Link> </li>

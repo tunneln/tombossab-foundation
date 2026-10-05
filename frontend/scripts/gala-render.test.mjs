@@ -187,6 +187,24 @@ test('/gala: one h1 and every section anchor', async () => {
   }
 });
 
+test('/gala: no Get Tickets buttons once online sales close', async () => {
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+  const page = await ctx.newPage();
+  try {
+    await blockExternal(page, origin);
+    // Gala day, after online sales close (the browser re-checks its own clock).
+    await page.clock.setFixedTime(new Date('2026-11-28T14:00:00-06:00'));
+    await page.goto(`${origin}/gala`, { waitUntil: 'load', timeout: 30000 });
+    await page.waitForFunction(() => document.documentElement.dataset.galaState === 'online_closed');
+    const hero = await page.locator('#top').innerText();
+    assert.doesNotMatch(hero, /Get Tickets/i);
+    assert.equal(/Tickets at the Door/i.test(hero), gala.sales.doorSalesAvailable);
+    assert.doesNotMatch(await page.locator('#share').innerText(), /Get Tickets/i);
+  } finally {
+    await ctx.close();
+  }
+});
+
 test('/gala: ticket section content follows the state and the checkout config',
   { skip: unless(STATE !== 'past', 'tickets are hidden after the event') }, async () => {
   const { ctx, page } = await openReady('/gala');

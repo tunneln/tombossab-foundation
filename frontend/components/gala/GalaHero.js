@@ -47,7 +47,15 @@ const GalaHero = () => {
                         {gala.copy.intro.map((para) => <p key={para}>{para}</p>)}
                     </div>
                     <div className={styles.ctas}>
-                        <a href="#tickets" className={`${styles.btn} ${styles.btnPrimary}`}>Get Tickets</a>
+                        <ShowIn states={['coming_soon', 'on_sale']}>
+                            <a href="#tickets" className={`${styles.btn} ${styles.btnPrimary}`}>Get Tickets</a>
+                        </ShowIn>
+                        {/* Once online sales close, point to the door-ticket info instead. */}
+                        {gala.sales.doorSalesAvailable && (
+                            <ShowIn states={['online_closed']}>
+                                <a href="#tickets" className={`${styles.btn} ${styles.btnPrimary}`}>Tickets at the Door</a>
+                            </ShowIn>
+                        )}
                         <a href="#sponsor" className={`${styles.btn} ${styles.btnOutline}`}>Become a Sponsor</a>
                     </div>
                     <a href="#give" className={`${styles.textLink} ${styles.giveLink}`}>Can&apos;t make it? Give here</a>

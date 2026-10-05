@@ -1,5 +1,4 @@
 import React from 'react';
-import { BEFORE_EVENT } from '../../lib/gala';
 import { ShowIn } from './GalaState';
 import ShareBar from './ShareBar';
 import styles from './Gala.module.css';
@@ -10,7 +9,7 @@ const GalaShare = () => (
             <h2 className={styles.title}>Share the Night</h2>
             <p className={styles.lead}>The more people in the room, the more students we can support.</p>
             <ShareBar />
-            <ShowIn states={BEFORE_EVENT}>
+            <ShowIn states={['coming_soon', 'on_sale']}>
                 <div className={styles.finalCta}>
                     <a href="#tickets" className={`${styles.btn} ${styles.btnPrimary} ${styles.btnLarge}`}>Get Tickets</a>
                 </div>

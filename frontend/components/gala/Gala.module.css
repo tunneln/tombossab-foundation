@@ -244,7 +244,8 @@
     display: block;
     font-family: var(--gala-display);
     font-weight: 700;
-    font-size: clamp(64px, 11vw, 132px);
+    /* About 80% of the title's size, so the year supports it, not outshines it. */
+    font-size: clamp(42px, 7vw, 90px);
     line-height: 1;
     letter-spacing: 0.06em;
     color: var(--gala-gold);

@@ -14,7 +14,8 @@
 // so don't also add it as a Flyway seed (it would show twice).
 export const gala = {
     canonicalUrl: 'https://tombossabfoundation.org/gala',
-    name: 'The Tombossa B Foundation Fundraising Gala',
+    name: 'The Tombossa B Foundation Fundraising Gala', // off-site/standalone: tab title, share previews, /events card, calendar, JSON-LD
+    shortName: 'Fundraising Gala', // on-site headings (/gala hero, homepage slide), where the logo already names the foundation
     year: 2026,
     tagline: 'An Evening for the Next Generation', // hidden if null
     dateDisplay: 'Saturday, November 28, 2026',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { gala } from '../../config/gala-2026';
-import { BEFORE_EVENT, displayName, timeRange } from '../../lib/gala';
+import { BEFORE_EVENT, timeRange } from '../../lib/gala';
 import { ShowIn } from './GalaState';
 import Countdown from './Countdown';
 import Motif from './Motif';
@@ -27,7 +27,7 @@ const GalaHero = () => {
                     <p className={styles.eyebrow}>{gala.copy.kicker}</p>
                 </ShowIn>
                 <h1 className={styles.h1}>
-                    {displayName()}
+                    {gala.shortName}
                     <span className={styles.year}>{gala.year}</span>
                 </h1>
                 {gala.tagline && <p className={styles.tagline}>{gala.tagline}</p>}

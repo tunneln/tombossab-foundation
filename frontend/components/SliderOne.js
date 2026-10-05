@@ -12,7 +12,7 @@ import { Pagination, Autoplay } from 'swiper/modules';
 
 import { useGala } from './gala/GalaState';
 import { gala } from '../config/gala-2026';
-import { displayName, isAfter } from '../lib/gala';
+import { isAfter } from '../lib/gala';
 
 // Gala slide copy per gala state (config/gala-2026.js holds the text).
 const GALA_SLIDE = {
@@ -63,7 +63,7 @@ const SliderOne = () => {
                                     <div className="container">
                                         <div className="gala-slide">
                                             {galaSlide.kicker && <p className="gala-slide__eyebrow">{gala.copy.kicker}</p>}
-                                            <h2 className="gala-slide__title">{displayName()}</h2>
+                                            <h2 className="gala-slide__title">{gala.shortName}</h2>
                                             <p className="gala-slide__date">
                                                 {gala.homeSlide.dateLine.split(' · ').map((part, i) => (
                                                     <React.Fragment key={part}>

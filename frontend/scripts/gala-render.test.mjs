@@ -193,7 +193,7 @@ test('/gala: ticket section content follows the state and the checkout config',
   try {
     const selling = ['coming_soon', 'on_sale'].includes(STATE);
     const hero = await page.locator('#top').innerText();
-    if (selling) assert.match(hero, /^ANNOUNCING A NEW ANNUAL TRADITION\s+The Tombossa\sB Foundation Fundraising Gala/i);
+    if (selling) assert.match(hero, /^ANNOUNCING A NEW ANNUAL TRADITION\s+Fundraising Gala\s+2026/i);
     else assert.doesNotMatch(hero, /ANNOUNCING/i);
 
     const tickets = page.locator('#tickets');
@@ -499,7 +499,7 @@ test('homepage: the gala slide leads, existing slides keep their order',
         .map((s) => s.innerText.replace(/\s+/g, ' ').trim());
     });
     assert.equal(slides.length, 4);
-    assert.match(slides[0], /^ANNOUNCING A NEW ANNUAL TRADITION The Tombossa\sB Foundation Fundraising Gala SATURDAY, NOVEMBER 28, 2026 · DALLAS/i);
+    assert.match(slides[0], /^ANNOUNCING A NEW ANNUAL TRADITION Fundraising Gala SATURDAY, NOVEMBER 28, 2026 · DALLAS/i);
     assert.match(slides[0], /An evening for the next generation\. One unforgettable night for our scholars\./);
     assert.doesNotMatch(slides[0], /\d:\d\d/, 'no time on the slide');
     assert.match(slides[1], /^Empowering Eritrean/);

@@ -81,10 +81,26 @@ test('/gala: link-preview tags are page-specific and absolute', async () => {
   }
   const og = await fetch(OG_IMAGE.replace('https://tombossabfoundation.org', origin));
   assert.equal(og.status, 200, 'the OG image must be served');
+  assert.match(og.headers.get('content-type') || '', /^image\/jpeg/, 'the OG image must be served as a JPEG');
+  const buf = Buffer.from(await og.arrayBuffer());
   // WhatsApp drops link-preview images over ~300 KB; keep a safe margin.
-  const bytes = (await og.arrayBuffer()).byteLength;
-  assert.ok(bytes < 250_000, `the OG image is ${bytes} bytes; keep it under 250 KB for WhatsApp previews`);
+  assert.ok(buf.length < 250_000, `the OG image is ${buf.length} bytes; keep it under 250 KB for WhatsApp previews`);
+  // The file's real size must match the og:image:width/height promised above.
+  assert.deepEqual(jpegSize(buf), { width: 1200, height: 630 });
 });
+
+// Width and height from a JPEG's start-of-frame marker.
+function jpegSize(buf) {
+  for (let i = 2; i + 9 < buf.length;) {
+    if (buf[i] !== 0xff) { i++; continue; }
+    const marker = buf[i + 1];
+    if (marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker)) {
+      return { width: buf.readUInt16BE(i + 7), height: buf.readUInt16BE(i + 5) };
+    }
+    i += 2 + buf.readUInt16BE(i + 2);
+  }
+  return null;
+}
 
 test('other pages no longer claim the homepage as their og:url', async () => {
   const { ctx, page } = await openReady('/about');

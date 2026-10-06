@@ -137,6 +137,27 @@ test('legacy .html URLs permanently redirect to the clean URL', async () => {
   }
 });
 
+// Every page's link-preview image must actually work when shared: it loads, is
+// served as the image type its name says, and stays small (WhatsApp drops
+// preview images over ~300 KB, so keep a safe margin).
+test('every page has a link-preview image that loads, has the right type, and stays under 250 KB', async () => {
+  const checked = new Map();
+  for (const route of ROUTES) {
+    const html = await (await fetch(`${origin}${route.path}`)).text();
+    const url = html.match(/<meta property="og:image" content="([^"]+)"/)?.[1];
+    assert.ok(url, `${route.path} must have an og:image`);
+    if (!checked.has(url)) {
+      const res = await fetch(url.replace('https://tombossabfoundation.org', origin));
+      checked.set(url, { status: res.status, type: res.headers.get('content-type') || '', bytes: (await res.arrayBuffer()).byteLength });
+    }
+    const img = checked.get(url);
+    assert.equal(img.status, 200, `${route.path}: ${url} must load`);
+    const expected = url.endsWith('.jpg') ? 'image/jpeg' : url.endsWith('.png') ? 'image/png' : null;
+    assert.ok(expected && img.type.startsWith(expected), `${route.path}: ${url} is served as "${img.type}"`);
+    assert.ok(img.bytes < 250_000, `${route.path}: ${url} is ${img.bytes} bytes; keep it under 250 KB for WhatsApp previews`);
+  }
+});
+
 // Coverage guard: every prerendered route must have a ROUTES entry above (so it
 // gets the checks). Reads the build's own manifest, so a new page can't ship
 // unchecked. Excludes Next's framework not-found route.

@@ -1,6 +1,8 @@
 // One-off generator for the gala's static images (dev-only; outputs are committed):
 //   public/images/gala-2026-og.jpg    1200x630 link-preview image (og:image / twitter:image);
 //                                     JPEG keeps it well under WhatsApp's ~300 KB preview limit
+//   (public/images/gala-2026-og.png is the earlier PNG version, no longer generated or
+//    referenced; it stays so previews cached under its URL keep showing an image)
 //   public/images/gala-2026-card.jpg  740x476  /events card image (2x the 370x238 card)
 //   public/images/gala-2026-zeffy-banner.png  1080x1080 checkout-platform banner
 //                                     (Zeffy campaign banners are square, < 1200px wide)

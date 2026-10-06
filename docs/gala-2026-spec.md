@@ -596,11 +596,11 @@ This page will be shared everywhere. The link preview is the first impression.
    | `meta description` and `og:description` | `Dinner, music, a silent auction, and inspiring speakers — Saturday, November 28, 2026. Every ticket funds scholarships for Eritrean and East African youth.` (155 characters; keep it under 160) |
    | `og:title` / `twitter:title` | `The Tombossa B Foundation Gala · November 28, 2026` |
    | `og:url` / `link rel="canonical"` | `https://tombossabfoundation.org/gala` |
-   | `og:image` / `twitter:image` | `https://tombossabfoundation.org/images/gala-2026-og.png` (1200×630), with `og:image:width`, `og:image:height`, and `og:image:alt` |
+   | `og:image` / `twitter:image` | `https://tombossabfoundation.org/images/gala-2026-og.jpg` (1200×630, JPEG under 250 KB), with `og:image:width`, `og:image:height`, and `og:image:alt` |
    | `twitter:card` | `summary_large_image` |
    | `og:type` | `website` |
 
-2. **OG image (`/public/images/gala-2026-og.png`, 1200×630):**
+2. **OG image (`/public/images/gala-2026-og.jpg`, 1200×630):**
    - Content:
      - Gala palette background with the gold motif.
      - Foundation logo (from `/public/images/logo-white.png` if it exists).
@@ -608,7 +608,7 @@ This page will be shared everywhere. The link preview is the first impression.
      - `Saturday, November 28, 2026`
      - `tombossabfoundation.org/gala`
    - Generate it with a small one-off script in `/scripts`: author an SVG, rasterize with `@resvg/resvg-js` or `sharp`, and load the display font file explicitly so text renders correctly.
-   - Commit the PNG. Keep key text inside the center ~1000×500 safe area; some platforms crop.
+   - Commit it as a **JPEG**, not a PNG: WhatsApp drops link-preview images over ~300 KB, and a lossless 1200×630 PNG of this design is ~336 KB. `scripts/gala-assets.mjs` writes it at JPEG quality 88 (~90 KB), and the render tests fail if any page's preview image is 250 KB or more. Keep key text inside the center ~1000×500 safe area; some platforms crop.
    - If rasterizing fonts is troublesome, commit the SVG and ask Noel to export it.
 3. **Structured data:**
    - Add a JSON-LD `Event` (schema.org) **only when `startAt` and venue are set**, since Google requires a location.

@@ -78,6 +78,7 @@ To mark a sponsor: add `{ name, level, logo, url }` to `sponsorship.sponsors` (`
 - [ ] Check the link preview in the Facebook Sharing Debugger (https://developers.facebook.com/tools/debug/), and click "Scrape Again" after any change to the image or title. Also send the link to yourself on WhatsApp and iMessage.
 - [ ] Scan the QR code at print size (`public/images/gala-2026-qr.svg` for print, `.png` at 1024px). It encodes the plain https://tombossabfoundation.org/gala, with no tracking parameters.
 - [ ] Confirm https://tombossabfoundation.org/events/gala-2026 redirects to `/gala`.
+- [ ] On a real **iPhone (Safari)** and a real **Android phone (Chrome)**, tap **Share to Instagram Story** on `/gala`: the share menu opens with the story image; choose Instagram, then Story, and check the image fills the story. Add a Link sticker and paste (the button copies https://tombossabfoundation.org/gala). Automated tests cover the page side, but only a real phone shows the share menu and Instagram's own screens.
 
 ## 4. After the event
 
@@ -90,4 +91,4 @@ The page switches to its thank-you state on its own after 11:59 PM CST on Novemb
 
 ## Regenerating the images
 
-`node frontend/scripts/gala-assets.mjs` (needs network access for Google Fonts) rewrites the OG image, the `/events` card graphic, and both QR files. The OG image deliberately leaves the time off, because link previews are cached for a long time. After replacing it, re-scrape in the Facebook debugger.
+`node frontend/scripts/gala-assets.mjs` (needs network access for Google Fonts) rewrites the OG image, the Instagram story image, the `/events` card graphic, the Zeffy banner, and both QR files. Images whose inputs didn't change come out byte-for-byte identical. The story image shows the date, time, venue and the lowest ticket price from the config, so regenerate it after changing any of those. The OG image deliberately leaves the time off, because link previews are cached for a long time. After replacing it, re-scrape in the Facebook debugger.

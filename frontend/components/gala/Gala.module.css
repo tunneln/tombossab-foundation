@@ -693,12 +693,21 @@
 
 /* ------------------------------------------------------------ share */
 
+/* WhatsApp and Instagram Story: the two main share actions, stacked full-width. */
+.sharePrimary {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 420px;
+    margin: 36px auto 0;
+}
+.sharePrimary .btn { width: 100%; }
 .shareButtons {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 12px;
-    margin-top: 36px;
+    margin-top: 16px;
 }
 .whatsapp,
 .whatsapp:focus {
@@ -707,6 +716,17 @@
     color: var(--gala-ink);
 }
 .whatsapp:hover { background-color: #5ee08f; border-color: #5ee08f; color: var(--gala-ink); }
+/* Instagram's gradient, kept to its darker stops so white text stays readable. */
+.instagram,
+.instagram:focus {
+    background: linear-gradient(90deg, #C13584 0%, #833AB4 55%, #405DE6 100%);
+    background-origin: border-box; /* span the (transparent) border too, so the ends don't repeat */
+    border-color: transparent;
+    color: #fff;
+}
+.instagram:hover { filter: brightness(1.12); border-color: transparent; color: #fff; }
+.storyHint { max-width: 420px; margin: 12px auto 0; color: var(--gala-gold-soft); font-size: 14px; line-height: 1.5; }
+.storyHint:empty { margin: 0; }
 .copied { display: block; min-height: 24px; margin-top: 12px; color: var(--gala-gold-soft); font-size: 14px; }
 .calendar {
     display: flex;
@@ -825,7 +845,6 @@
     .chip { justify-content: center; gap: 8px; padding: 9px 10px; font-size: 13.5px; white-space: nowrap; }
     .chipWide { grid-column: 1 / -1; }
     .shareButtons .btn { flex: 1 1 calc(50% - 12px); padding: 0 14px; }
-    .shareButtons .whatsapp { flex-basis: 100%; }
 }
 
 @media (max-width: 380px) {

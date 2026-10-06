@@ -16,7 +16,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { startServer, openPage, blockExternal } from './next-server.mjs';
-import { cardTimeLabel, checkoutMode, getGalaState, providerInfo, timePublished } from '../lib/gala.js';
+import { cardTimeLabel, checkoutMode, getGalaState, providerInfo, STORY_IMAGE, timePublished } from '../lib/gala.js';
 import { gala } from '../config/gala-2026.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -219,6 +219,117 @@ test('/gala: no Get Tickets buttons once online sales close', async () => {
     assert.doesNotMatch(hero, /Get Tickets/i);
     assert.equal(/Tickets at the Door/i.test(hero), gala.sales.doorSalesAvailable);
     assert.doesNotMatch(await page.locator('#share').innerText(), /Get Tickets/i);
+    // The story image advertises ticket prices, so its button goes too.
+    assert.equal(await page.locator('#share button', { hasText: 'Instagram Story' }).count(), 0);
+  } finally {
+    await ctx.close();
+  }
+});
+
+// ------------------------------------------------------------ Instagram story
+
+test('/gala: the Instagram story image is a 1080x1920 JPEG', async () => {
+  const res = await fetch(origin + STORY_IMAGE);
+  assert.equal(res.status, 200);
+  assert.match(res.headers.get('content-type') || '', /^image\/jpeg/);
+  const buf = Buffer.from(await res.arrayBuffer());
+  assert.deepEqual(jpegSize(buf), { width: 1080, height: 1920 });
+  assert.ok(buf.length < 500_000, `story image is ${buf.length} bytes`);
+});
+
+// A /gala page with the share sheet and clipboard replaced by recorders.
+// `fileShare: false` imitates browsers that can't share files (e.g. Instagram's in-app browser).
+async function openStoryPage({ mobile, fileShare = true, shareResult = 'ok' }) {
+  const ctx = await browser.newContext({ viewport: mobile ? { width: 390, height: 844 } : { width: 1280, height: 800 },
+    isMobile: mobile, hasTouch: mobile, acceptDownloads: true });
+  await ctx.addInitScript(({ fileShare, shareResult }) => {
+    window.__shared = [];
+    window.__copied = [];
+    navigator.canShare = (data) => fileShare && Boolean(data?.files?.length);
+    navigator.share = async (data) => {
+      window.__shared.push({ files: (data.files || []).map((f) => ({ name: f.name, type: f.type, size: f.size })), url: data.url, text: data.text });
+      if (shareResult === 'abort') throw new DOMException('Share canceled', 'AbortError');
+    };
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (t) => { window.__copied.push(t); } } });
+  }, { fileShare, shareResult });
+  const page = await ctx.newPage();
+  await blockExternal(page, origin);
+  await page.goto(`${origin}/gala`, { waitUntil: 'load', timeout: 30000 });
+  await waitForGalaState(page);
+  await page.locator('#share').scrollIntoViewIfNeeded();
+  return { ctx, page, button: page.locator('#share button', { hasText: 'Share to Instagram Story' }), hint: page.locator('#share [role="status"]').first() };
+}
+
+test('/gala: "Share to Instagram Story" sits directly below "Share on WhatsApp"',
+  { skip: unless(STATE === 'on_sale', 'the story button only shows while tickets sell online') }, async () => {
+  for (const mobile of [true, false]) {
+    const { ctx, page, button } = await openStoryPage({ mobile });
+    try {
+      const wa = await page.locator('#share a', { hasText: 'Share on WhatsApp' }).boundingBox();
+      const ig = await button.boundingBox();
+      assert.ok(ig.y > wa.y + wa.height - 1 && ig.y - (wa.y + wa.height) < 24, `${mobile ? 'phone' : 'desktop'}: right below WhatsApp`);
+      assert.ok(Math.abs((ig.x + ig.width / 2) - (wa.x + wa.width / 2)) < 2 && Math.abs(ig.width - wa.width) < 2, 'same width, centered');
+    } finally {
+      await ctx.close();
+    }
+  }
+});
+
+test('/gala story button on phones: shares the story image and copies the link for the Link sticker',
+  { skip: unless(STATE === 'on_sale', 'the story button only shows while tickets sell online') }, async () => {
+  const { ctx, page, button, hint } = await openStoryPage({ mobile: true });
+  try {
+    await button.click();
+    await page.waitForFunction(() => window.__shared.length === 1);
+    const [shared] = await page.evaluate(() => window.__shared);
+    assert.deepEqual(shared.files.map((f) => [f.name, f.type]), [['tombossa-b-foundation-gala-2026-story.jpg', 'image/jpeg']]);
+    assert.ok(shared.files[0].size > 50_000, 'the real image, not an empty file');
+    assert.equal(shared.url, undefined, 'image only: a URL would make apps share the link instead');
+    assert.deepEqual(await page.evaluate(() => window.__copied), ['https://tombossabfoundation.org/gala']);
+    await page.waitForFunction(() => /Link sticker/.test(document.querySelector('#share [role="status"]')?.textContent || ''));
+    assert.match(await hint.innerText(), /choose Instagram, then Story\. Link copied\. In Instagram, add a Link sticker and paste it\./);
+  } finally {
+    await ctx.close();
+  }
+});
+
+test('/gala story button on phones: closing the share menu leaves no message',
+  { skip: unless(STATE === 'on_sale', 'the story button only shows while tickets sell online') }, async () => {
+  const { ctx, page, button, hint } = await openStoryPage({ mobile: true, shareResult: 'abort' });
+  try {
+    await button.click();
+    await page.waitForFunction(() => window.__shared.length === 1);
+    await page.waitForTimeout(300);
+    assert.equal((await hint.innerText()).trim(), '');
+  } finally {
+    await ctx.close();
+  }
+});
+
+test('/gala story button where files can\'t be shared (e.g. Instagram\'s in-app browser): link to the image + steps',
+  { skip: unless(STATE === 'on_sale', 'the story button only shows while tickets sell online') }, async () => {
+  const { ctx, page, button, hint } = await openStoryPage({ mobile: true, fileShare: false });
+  try {
+    await button.click();
+    const link = hint.locator('a', { hasText: 'Open the story image' });
+    await link.waitFor();
+    assert.equal(await link.getAttribute('href'), STORY_IMAGE);
+    assert.equal(await page.evaluate(() => window.__shared.length), 0);
+    assert.match(await hint.innerText(), /^Open the story image, press and hold it to save it, then add it to your Instagram story\. Link copied\./);
+  } finally {
+    await ctx.close();
+  }
+});
+
+test('/gala story button on computers: downloads the image with instructions',
+  { skip: unless(STATE === 'on_sale', 'the story button only shows while tickets sell online') }, async () => {
+  const { ctx, page, button, hint } = await openStoryPage({ mobile: false });
+  try {
+    const [download] = await Promise.all([page.waitForEvent('download'), button.click()]);
+    assert.equal(download.suggestedFilename(), 'tombossa-b-foundation-gala-2026-story.jpg');
+    assert.equal(await page.evaluate(() => window.__shared.length), 0, 'no share sheet on computers');
+    await page.waitForFunction(() => /downloaded/.test(document.querySelector('#share [role="status"]')?.textContent || ''));
+    assert.match(await hint.innerText(), /Send it to your phone, add it to your Instagram story, and add a Link sticker/);
   } finally {
     await ctx.close();
   }

@@ -3,6 +3,7 @@
 //                                     JPEG keeps it well under WhatsApp's ~300 KB preview limit
 //   (public/images/gala-2026-og.png is the earlier PNG version, no longer generated or
 //    referenced; it stays so previews cached under its URL keep showing an image)
+//   public/images/gala-2026-story.jpg 1080x1920 Instagram story image (the "Share to Instagram Story" button)
 //   public/images/gala-2026-card.jpg  740x476  /events card image (2x the 370x238 card)
 //   public/images/gala-2026-zeffy-banner.png  1080x1080 checkout-platform banner
 //                                     (Zeffy campaign banners are square, < 1200px wide)
@@ -21,7 +22,7 @@ import { fileURLToPath } from 'node:url';
 import QRCode from 'qrcode';
 import { chromium } from 'playwright';
 import { gala } from '../config/gala-2026.js';
-import { displayName } from '../lib/gala.js';
+import { displayName, formatPrice, formatTime, minTicketPrice, timePublished, venueCity } from '../lib/gala.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const IMAGES = path.resolve(__dirname, '../public/images');
@@ -72,6 +73,24 @@ const BANNER = page(1080, 1080, `
   ${gala.tagline ? `<p style="margin-top: 28px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 44px; color: #E3C98F">${gala.tagline}</p>` : ''}
   <div class="band" style="bottom: 44px"></div>`);
 
+// Instagram story (9:16). Instagram overlays its own UI on the top ~250px and
+// the bottom ~340px, so everything sits between them. The gap above the price
+// is room for the Link sticker supporters add; the URL is printed too, so the
+// story still points to tickets without one.
+const when = [timePublished() && formatTime(gala.startAt), gala.venue.name, venueCity().split(',')[0]].filter(Boolean).join(' · ');
+const STORY = page(1080, 1920, `
+  <div class="band" style="top: 270px"></div>
+  <img src="${LOGO}" alt="" style="width: 230px; margin-bottom: 52px">
+  <p class="display" style="font-size: 60px; line-height: 1.2">${gala.copy.titleLead}</p>
+  <p class="display" style="font-size: 116px; line-height: 1.05">${gala.shortName}</p>
+  <p class="display" style="font-size: 116px; line-height: 1.05; color: #C9A45C; letter-spacing: .06em">${gala.year}</p>
+  ${gala.tagline ? `<p style="margin-top: 26px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 50px; color: #E3C98F">${gala.tagline}</p>` : ''}
+  <p style="margin-top: 70px; font-size: 44px; font-weight: 600; letter-spacing: .02em; color: #E3C98F">Saturday, November 28, 2026</p>
+  <p style="margin-top: 14px; font-size: 34px; font-weight: 500; color: #CBBFD6">${when}</p>
+  <p style="margin-top: 190px; padding: 22px 54px; border-radius: 999px; background: #C9A45C; color: ${INK}; font-size: 40px; font-weight: 600; letter-spacing: .04em">Tickets from ${formatPrice(minTicketPrice())}</p>
+  <p style="margin-top: 26px; font-size: 36px; font-weight: 500; color: #F7F1E6">tombossabfoundation.org/gala</p>
+  <div class="band" style="bottom: 340px"></div>`);
+
 async function render(browser, html, width, height, file, type) {
   const tab = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
   await tab.setContent(html, { waitUntil: 'networkidle' });
@@ -94,6 +113,7 @@ async function render(browser, html, width, height, file, type) {
 const browser = await chromium.launch();
 try {
   await render(browser, OG, 1200, 630, 'gala-2026-og.jpg', 'jpeg');
+  await render(browser, STORY, 1080, 1920, 'gala-2026-story.jpg', 'jpeg');
   await render(browser, CARD, 740, 476, 'gala-2026-card.jpg', 'jpeg');
   await render(browser, BANNER, 1080, 1080, 'gala-2026-zeffy-banner.png', 'png');
 } finally {

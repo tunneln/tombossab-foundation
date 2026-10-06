@@ -302,7 +302,7 @@ export const GALA_META = {
     shareTitle: 'The Tombossa B Foundation Fundraising Gala · November 28, 2026',
     description:
         'Dinner, music, a silent auction, and inspiring speakers — Saturday, November 28, 2026. Every ticket funds scholarships for Eritrean and East African youth.',
-    image: 'https://tombossabfoundation.org/images/gala-2026-og.png',
+    image: 'https://tombossabfoundation.org/images/gala-2026-og.jpg',
     imageAlt: 'The Tombossa B Foundation Fundraising Gala, Saturday, November 28, 2026, at tombossabfoundation.org/gala',
 };
 

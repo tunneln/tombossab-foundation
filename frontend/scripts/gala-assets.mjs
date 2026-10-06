@@ -1,5 +1,6 @@
 // One-off generator for the gala's static images (dev-only; outputs are committed):
-//   public/images/gala-2026-og.png    1200x630 link-preview image (og:image / twitter:image)
+//   public/images/gala-2026-og.jpg    1200x630 link-preview image (og:image / twitter:image);
+//                                     JPEG keeps it well under WhatsApp's ~300 KB preview limit
 //   public/images/gala-2026-card.jpg  740x476  /events card image (2x the 370x238 card)
 //   public/images/gala-2026-zeffy-banner.png  1080x1080 checkout-platform banner
 //                                     (Zeffy campaign banners are square, < 1200px wide)
@@ -90,7 +91,7 @@ async function render(browser, html, width, height, file, type) {
 
 const browser = await chromium.launch();
 try {
-  await render(browser, OG, 1200, 630, 'gala-2026-og.png', 'png');
+  await render(browser, OG, 1200, 630, 'gala-2026-og.jpg', 'jpeg');
   await render(browser, CARD, 740, 476, 'gala-2026-card.jpg', 'jpeg');
   await render(browser, BANNER, 1080, 1080, 'gala-2026-zeffy-banner.png', 'png');
 } finally {

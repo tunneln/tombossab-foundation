@@ -27,7 +27,7 @@ const unless = (cond, why) => (cond ? false : `${why} (gala state today: ${STATE
 const TODAY = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Chicago' }).format(new Date());
 
 const GALA = 'https://tombossabfoundation.org/gala';
-const OG_IMAGE = 'https://tombossabfoundation.org/images/gala-2026-og.png';
+const OG_IMAGE = 'https://tombossabfoundation.org/images/gala-2026-og.jpg';
 // Visible text that must never reach the public page (unconfirmed values are
 // null in config and must be hidden or replaced by a fallback).
 const PLACEHOLDER = /\bTODO|\bnull\b|\bundefined\b|\bNaN\b|\[X\]|\[\s*\]/;
@@ -81,6 +81,9 @@ test('/gala: link-preview tags are page-specific and absolute', async () => {
   }
   const og = await fetch(OG_IMAGE.replace('https://tombossabfoundation.org', origin));
   assert.equal(og.status, 200, 'the OG image must be served');
+  // WhatsApp drops link-preview images over ~300 KB; keep a safe margin.
+  const bytes = (await og.arrayBuffer()).byteLength;
+  assert.ok(bytes < 250_000, `the OG image is ${bytes} bytes; keep it under 250 KB for WhatsApp previews`);
 });
 
 test('other pages no longer claim the homepage as their og:url', async () => {

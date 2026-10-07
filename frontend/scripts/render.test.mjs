@@ -15,7 +15,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
-import { FRONTEND_DIR, startServer, openPage } from './next-server.mjs';
+import { FRONTEND_DIR, startServer, openPage, blockExternal } from './next-server.mjs';
 import { getGalaState } from '../lib/gala.js';
 
 // The full set of user-facing routes and their exact titles. Home is bare; every
@@ -135,6 +135,45 @@ test('legacy .html URLs permanently redirect to the clean URL', async () => {
     assert.equal(res.status, 308, `${legacy} should permanently redirect`);
     assert.equal(res.headers.get('location'), clean, `${legacy} redirect target`);
   }
+});
+
+// The full desktop header (contact bar + nav, > 1366px and wider than 4:3) is
+// the compact 32px + 96px version, and the homepage hero still fills the
+// screen exactly below it. The hamburger layout keeps its 120px bar.
+test('desktop header is compact (32px + 96px) and the hero fills the screen below it', async () => {
+  const measure = async (width, height) => {
+    const ctx = await browser.newContext({ viewport: { width, height } });
+    try {
+      const page = await ctx.newPage();
+      await blockExternal(page, origin);
+      await page.goto(`${origin}/`, { waitUntil: 'load', timeout: 30000 });
+      await page.waitForFunction(() => document.documentElement.dataset.galaState);
+      return await page.evaluate(() => {
+        const box = (sel) => document.querySelector(sel)?.getBoundingClientRect();
+        const donate = box('.header-area .header-btn .donate-btn');
+        const pill = box('header a[class*="GalaNavButton_desktop"]');
+        return {
+          contactBar: box('.header-top-action').height,
+          nav: box('.header-top').height,
+          heroBottom: box('.single-slide-item').bottom,
+          donate: donate?.height,
+          pill: pill?.height ?? null,
+        };
+      });
+    } finally {
+      await ctx.close();
+    }
+  };
+  for (const [width, height] of [[1440, 900], [1920, 1080]]) {
+    const m = await measure(width, height);
+    assert.equal(m.contactBar, 32, `${width}px: contact bar`);
+    assert.equal(m.nav, 96, `${width}px: nav bar`);
+    assert.equal(Math.round(m.heroBottom), height, `${width}px: the hero ends at the bottom of the screen`);
+    assert.equal(m.donate, 46, `${width}px: header Donate button`);
+    if (m.pill !== null) assert.equal(m.pill, m.donate, `${width}px: Gala Tickets matches Donate`);
+  }
+  const laptop = await measure(1366, 768);
+  assert.equal(laptop.nav, 120, 'the hamburger layout keeps its 120px bar');
 });
 
 // Every page's link-preview image must actually work when shared: it loads, is

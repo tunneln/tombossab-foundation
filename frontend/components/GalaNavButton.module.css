@@ -28,12 +28,14 @@
     outline-offset: 2px;
 }
 
-/* Desktop (> 1024px, where the header Donate button shows). */
+/* Desktop (> 1024px, where the header Donate button shows). Same height as that
+   button: --header-btn-height is set by the compact desktop header
+   (public/css/responsive.css); 49px elsewhere. */
 .desktopSlot {
     position: relative;
     display: inline-block;
     width: 0;
-    height: 49px;
+    height: var(--header-btn-height, 49px);
     vertical-align: top;
 }
 .desktop {
@@ -42,6 +44,7 @@
     left: 18px; /* clears the Donate button's slanted edge */
     z-index: 5; /* the nav column (later in the DOM) overlaps this gap; stay clickable above it */
 }
+.pill.desktop { height: var(--header-btn-height, 49px); }
 
 /* Tablets (576-1024px): beside the hamburger icon. */
 .tablet { display: none; }

@@ -135,6 +135,54 @@
     } */
 }
 
+/* Desktop header (the full nav with the contact/social bar above it), which
+   shows only where the hamburger layout above does not: exactly the opposite
+   of (max-width:1366px), (max-aspect-ratio: 4/3). A more compact header:
+   contact/social bar 38px -> 32px, nav bar 120px -> 96px (158px -> 128px in
+   all), logo 95px -> 74px tall, header buttons 49px -> 46px, nav links
+   centered in the bar. The hamburger layout keeps its 120px bar: its hero is
+   positioned against that height (top: -120px above). Browsers without range
+   media queries keep the previous header as a whole. */
+@media (width > 1366px) and (aspect-ratio > 4/3) {
+    /* Also sizes the header "Gala Tickets" pill (GalaNavButton.module.css). */
+    .header-area {
+        --header-btn-height: 46px;
+    }
+    .header-area .header-top-action .top-action-content .info-box {
+        padding-top: 9px;
+        padding-bottom: 9px;
+    }
+    .header-area .header-top .header-row .brand-logo,
+    .header-area .header-top .header-row .brand-logo a,
+    .header-area .header-top .header-row .primary-nav,
+    .header-area .header-top .header-row .primary-nav .nav-content {
+        height: 96px;
+    }
+    .header-area .header-top .header-row .brand-logo img {
+        height: 74px;
+        width: auto;
+    }
+    .header-area .header-top .header-row .header-btn .theme-btn {
+        line-height: var(--header-btn-height);
+    }
+    .header-area .header-top .header-row .primary-nav .nav-content {
+        padding-top: 0;
+    }
+    /* Top-level links only: the dropdown items' own (more specific) rules win. */
+    .header-area .header-top .header-row .primary-nav .nav-content .navigation-top .main-navigation ul li a {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .header-area .header-top .header-row .primary-nav .nav-content .navigation-top .main-navigation ul li a:after {
+        bottom: 8px;
+    }
+    /* The hero fills the screen below the header: 100svh minus 32px + 96px. */
+    .slider-area .single-slide-item,
+    .slider-area .single-slide-item:after {
+        height: calc(100svh - 128px);
+    }
+}
+
 @media (max-width:1280px) {
     /* .site-branding {
         width: 534px

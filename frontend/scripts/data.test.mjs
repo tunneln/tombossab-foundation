@@ -42,7 +42,7 @@ test('recipients: ids and slugs are unique (keys + card routing depend on it)', 
 
 // Fields the card and the page actually read. Optional prose (story/quote) is not
 // forced here, only the structural fields a broken card would trip on.
-const RECIPIENT_REQUIRED = ['id', 'slug', 'name', 'year', 'scholarship', 'headline', 'photo', 'blurb'];
+const RECIPIENT_REQUIRED = ['id', 'slug', 'name', 'year', 'firstYear', 'scholarship', 'headline', 'photo', 'blurb'];
 for (const [i, r] of recipients.entries()) {
   const who = r.name || r.id || `#${i}`;
   test(`recipients[${i}] (${who}): has all required string fields`, () => {
@@ -51,6 +51,9 @@ for (const [i, r] of recipients.entries()) {
       assert.ok(r[field].trim().length > 0, `${field} must not be blank`);
     }
     assert.match(r.year, /^\d{4}$/, 'year must be a 4-digit string (award-recipients sorts on Number(year))');
+    // year is the most recent award, firstYear the first ("2025 – 2026 Recipient").
+    assert.match(r.firstYear, /^\d{4}$/, 'firstYear must be a 4-digit string');
+    assert.ok(Number(r.firstYear) <= Number(r.year), `firstYear ${r.firstYear} is after year ${r.year}`);
     assert.ok(Array.isArray(r.highlights), 'highlights must be an array');
     assert.ok(Array.isArray(r.story), 'story must be an array');
   });
@@ -61,14 +64,15 @@ for (const [i, r] of recipients.entries()) {
   });
 }
 
-// Ordering contract: award-recipients.js sorts newest-year first. Mirror the page
-// comparator here and assert it yields a non-increasing year sequence, so the data
-// always has a well-defined "newest first" order for the page to render.
-test('recipients: page sort (year desc) yields newest-first order', () => {
-  const sorted = [...recipients].sort((a, b) => Number(b.year) - Number(a.year));
-  const years = sorted.map((r) => Number(r.year));
-  for (let i = 1; i < years.length; i++) {
-    assert.ok(years[i - 1] >= years[i], `not sorted desc by year at index ${i}: ${years}`);
+// Ordering contract (lib/api.js, mirroring the API): most recent award first,
+// then newer scholars first. The fixture is kept in that order already, so the
+// API and the fixture render identically.
+test('recipients: fixture is in display order (year desc, then firstYear desc)', () => {
+  for (let i = 1; i < recipients.length; i++) {
+    const [a, b] = [recipients[i - 1], recipients[i]];
+    const ok = Number(a.year) > Number(b.year)
+      || (a.year === b.year && Number(a.firstYear) >= Number(b.firstYear));
+    assert.ok(ok, `out of order at index ${i}: ${a.id} before ${b.id}`);
   }
 });
 

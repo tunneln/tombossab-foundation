@@ -15,7 +15,7 @@ public class RecipientService {
 
 	@Transactional(readOnly = true)
 	public List<RecipientResponse> findAll() {
-		return repository.findAllByOrderByAwardYearDescIdAsc().stream()
+		return repository.findAllByOrderByAwardYearDescFirstAwardYearDescIdAsc().stream()
 				.map(RecipientResponse::from)
 				.toList();
 	}

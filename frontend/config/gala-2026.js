@@ -51,7 +51,7 @@ export const gala = {
         // empty at launch, "words from the students your support makes possible"
         // can be swapped for "inspiring speakers" here.
         intro: [
-            'Two years ago, we gathered to honor Tombossa Negusse and launch a foundation in his name. This year, we celebrate what that legacy has already built: scholars like Mattania and Elim, and a community investing in the next generation of Eritrean and East African youth.',
+            'Two years ago, we gathered to honor Tombossa Negusse and launch a foundation in his name. This year, we celebrate what that legacy has already built: scholars like Mattania, Elim, and Kaleb, and a community investing in the next generation of Eritrean and East African youth.',
             'Join us for an evening of dinner, music, a silent auction, and words from the students your support makes possible. Every ticket helps fund scholarships and mental wellness programs.', // TODO_CONFIRM scholars will speak
         ],
         pastIntro:

@@ -119,6 +119,24 @@ const SliderOne = () => {
                     </SwiperSlide>
                 )}
                 <SwiperSlide>
+                    <div className="single-slide-item slide-bg3">
+                        <div className="slide-item-table">
+                            <div className="slide-item-tablecell">
+                                <div className="container">
+                                    <div className="row">
+                                        <div className="slider-heading">
+                                            <h3 className="slider__desc">
+                                                <div className="slider__box">Meet our 2026 scholarship recipients! Learn how they're making a difference in their communities.</div>
+                                            </h3>
+                                        </div>
+                                        <Link href="/award-recipients" className="theme-btn slider-btn">Meet Our Scholars</Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </SwiperSlide>
+                <SwiperSlide>
                     <div className="single-slide-item slide-bg4">
                         <div className="slide-item-table">
                             <div className="slide-item-tablecell">
@@ -130,24 +148,6 @@ const SliderOne = () => {
                                             </h3>
                                         </div>
                                         <a href="/newsletters/september-2026-newsletter.pdf" target="_blank" rel="noopener noreferrer" className="theme-btn slider-btn">Read Here!</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <div className="single-slide-item slide-bg3">
-                        <div className="slide-item-table">
-                            <div className="slide-item-tablecell">
-                                <div className="container">
-                                    <div className="row">
-                                        <div className="slider-heading">
-                                            <h3 className="slider__desc">
-                                                <div className="slider__box">Meet our scholarship award recipients! Learn how they're making a difference in their communities.</div>
-                                            </h3>
-                                        </div>
-                                        <Link href="/award-recipients" className="theme-btn slider-btn">Meet Our Scholars</Link>
                                     </div>
                                 </div>
                             </div>

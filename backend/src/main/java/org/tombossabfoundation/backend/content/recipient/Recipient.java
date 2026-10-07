@@ -26,8 +26,13 @@ public class Recipient {
 	@Column(nullable = false)
 	private String name;
 
+	/** The most recent award year (the sort key). */
 	@Column(nullable = false)
 	private Integer awardYear;
+
+	/** The first award year; earlier than awardYear for repeat recipients. */
+	@Column(nullable = false)
+	private Integer firstAwardYear;
 
 	@Column(nullable = false)
 	private String cohort;
@@ -91,6 +96,10 @@ public class Recipient {
 
 	public Integer getAwardYear() {
 		return awardYear;
+	}
+
+	public Integer getFirstAwardYear() {
+		return firstAwardYear;
 	}
 
 	public String getCohort() {

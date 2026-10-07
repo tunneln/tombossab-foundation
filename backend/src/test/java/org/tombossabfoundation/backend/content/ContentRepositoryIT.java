@@ -41,16 +41,24 @@ class ContentRepositoryIT extends AbstractPostgresIT {
 	private NewsletterSubscriberRepository subscribers;
 
 	@Test
-	void seededRecipients_orderNewestYearFirst_thenSeedOrderWithinYear() {
-		List<Recipient> all = recipients.findAllByOrderByAwardYearDescIdAsc();
-		assertEquals(2, all.size());
-		// Both 2025: seed order (= the old JSON order) must be preserved.
-		assertEquals("Mattania Biniam", all.get(0).getName());
-		assertEquals("Elim Girma", all.get(1).getName());
-		assertEquals("mattania-biniam-2025", all.get(0).getPublicId());
+	void seededRecipients_orderLatestAwardFirst_thenNewerScholarsFirst() {
+		List<Recipient> all = recipients.findAllByOrderByAwardYearDescFirstAwardYearDescIdAsc();
+		assertEquals(3, all.size());
+		// 2026 awards first; within them the new scholar (first award 2026) before
+		// the repeat recipient (first award 2025); then the 2025 recipient.
+		assertEquals(List.of("Kaleb Alemayehu", "Mattania Biniam", "Elim Girma"),
+				all.stream().map(Recipient::getName).toList());
+		Recipient mattania = all.get(1);
+		assertEquals("mattania-biniam-2025", mattania.getPublicId());
+		assertEquals(2026, mattania.getAwardYear());
+		assertEquals(2025, mattania.getFirstAwardYear());
 		assertEquals(List.of("4.2 Weighted GPA", "Church Youth Leader", "Varsity Basketball Captain"),
-				all.get(0).getHighlights());
-		assertEquals(3, all.get(0).getStory().size());
+				mattania.getHighlights());
+		Recipient kaleb = all.get(0);
+		assertEquals(2026, kaleb.getFirstAwardYear());
+		assertEquals(3, kaleb.getHighlights().size());
+		assertEquals(3, kaleb.getStory().size());
+		assertEquals(2025, all.get(2).getFirstAwardYear());
 	}
 
 	@Test

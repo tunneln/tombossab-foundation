@@ -117,6 +117,27 @@ test('/award-recipients renders recipients newest-year first', async () => {
   }
 });
 
+// Same order everywhere recipients appear, and each card's award years: a single
+// year, or a range for someone awarded in more than one year ("2025 – 2026").
+test('recipients render in fixture order on /award-recipients and /gala, with their award years', async () => {
+  const recipients = readJson('recipients.json');
+  const expectedNames = recipients.map((r) => r.name);
+
+  let { ctx, page } = await openPage(browser, origin, '/award-recipients');
+  const names = await page.$$eval('.team-area h3', (els) => els.map((h) => h.textContent.split(':')[0].trim()));
+  const labels = await page.$$eval('.team-area p', (els) =>
+    els.map((p) => p.textContent.trim()).filter((t) => /Recipient$/.test(t)));
+  await ctx.close();
+  assert.deepEqual(names, expectedNames);
+  assert.deepEqual(labels, recipients.map((r) =>
+    `${r.firstYear !== r.year ? `${r.firstYear} – ${r.year}` : r.year} Recipient`));
+
+  ({ ctx, page } = await openPage(browser, origin, '/gala'));
+  const galaNames = await page.$$eval('#scholars h3', (els) => els.map((h) => h.textContent.trim()));
+  await ctx.close();
+  assert.deepEqual(galaNames, expectedNames);
+});
+
 test('/newsletters renders issues newest-date first, and each PDF link resolves', async () => {
   const dateByHeadline = new Map(readJson('newsletters.json').map((n) => [n.headline, n.date]));
   const { ctx, page } = await openPage(browser, origin, '/newsletters');

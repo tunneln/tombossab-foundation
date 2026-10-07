@@ -3,10 +3,14 @@ import React from 'react';
 const ACCENT = '#f1ae44';
 const ACCENT_SOFT = 'rgba(241, 174, 68, 0.12)';
 
+// "2026", or "2025 – 2026" for a recipient awarded in more than one year.
+const awardYears = (first, latest) => (first && first !== latest ? `${first} – ${latest}` : latest);
+
 const RecipientCard = ({ recipient }) => {
     const {
         name,
         year,
+        firstYear,
         scholarship,
         headline,
         photo,
@@ -39,7 +43,7 @@ const RecipientCard = ({ recipient }) => {
                         }}>
                             <img
                                 src={photo}
-                                alt={photoAlt || `${name}, ${year} recipient`}
+                                alt={photoAlt || `${name}, ${awardYears(firstYear, year)} recipient`}
                                 style={{ width: '100%', height: '125%', objectFit: 'cover' }}
                             />
                         </div>
@@ -58,7 +62,7 @@ const RecipientCard = ({ recipient }) => {
                             )}
                             {year && (
                                 <p style={{ fontSize: '0.85rem', color: '#888', margin: 0 }}>
-                                    {year} Recipient
+                                    {awardYears(firstYear, year)} Recipient
                                 </p>
                             )}
                         </div>

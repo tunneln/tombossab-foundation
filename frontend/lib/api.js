@@ -27,8 +27,10 @@ async function fromApi(path, tag) {
 }
 
 // Sort fixtures exactly like the API does, so both sources render identically.
+// Recipients: most recent award first, then newer scholars first (first award
+// year desc); stable, so seed order after that.
 const sortRecipients = (list) =>
-    [...list].sort((a, b) => Number(b.year) - Number(a.year)); // stable: seed order within a year
+    [...list].sort((a, b) => Number(b.year) - Number(a.year) || Number(b.firstYear) - Number(a.firstYear));
 const sortNewsletters = (list) =>
     [...list].sort((a, b) => b.date.localeCompare(a.date));
 const sortEvents = (list) =>

@@ -5,7 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RecipientRepository extends JpaRepository<Recipient, Long> {
 
-	/** Newest cohort first; id ASC preserves seed order within a year (display contract). */
-	List<Recipient> findAllByOrderByAwardYearDescIdAsc();
+	/**
+	 * Most recent award first, then newer scholars first (first award year desc);
+	 * id ASC preserves seed order after that (display contract).
+	 */
+	List<Recipient> findAllByOrderByAwardYearDescFirstAwardYearDescIdAsc();
 
 }

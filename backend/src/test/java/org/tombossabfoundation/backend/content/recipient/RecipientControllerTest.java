@@ -28,7 +28,7 @@ class RecipientControllerTest {
 	@Test
 	void get_returnsRecipientsWithJsonShapeOfTheOldDataFile() throws Exception {
 		when(service.findAll()).thenReturn(List.of(new RecipientResponse(
-				"mattania-biniam-2025", "mattania-biniam", "Mattania Biniam", "2025", "2025–2026",
+				"mattania-biniam-2025", "mattania-biniam", "Mattania Biniam", "2026", "2025", "2026–2027",
 				"East African Youth Scholarship", "Engineering Impact Through Analytics",
 				"/recipients/mattania-biniam.jpg", "Mattania Biniam, recipient", "Eritrean-American",
 				"Southern Methodist University", "Management Science",
@@ -37,7 +37,8 @@ class RecipientControllerTest {
 		mockMvc.perform(get("/api/recipients"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$[0].id").value("mattania-biniam-2025"))
-				.andExpect(jsonPath("$[0].year").value("2025"))
+				.andExpect(jsonPath("$[0].year").value("2026"))
+				.andExpect(jsonPath("$[0].firstYear").value("2025"))
 				.andExpect(jsonPath("$[0].highlights[0]").value("4.2 Weighted GPA"))
 				.andExpect(jsonPath("$[0].photoAlt").value("Mattania Biniam, recipient"));
 	}

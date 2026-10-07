@@ -17,10 +17,19 @@ import { isAfter } from '../lib/gala';
 // Gala slide copy per gala state (config/gala-2026.js holds the text).
 const GALA_SLIDE = {
     coming_soon: { subline: gala.homeSlide.subline, primary: 'Learn More', sponsor: true, kicker: true },
-    on_sale: { subline: gala.homeSlide.subline, primary: 'Get Tickets', sponsor: true, kicker: true },
+    on_sale: { subline: gala.homeSlide.subline, primary: 'Learn More', sponsor: true, kicker: true },
     online_closed: { subline: gala.homeSlide.closedSubline, primary: 'Event Details', sponsor: false, kicker: false },
     past: { subline: gala.homeSlide.pastSubline, primary: 'See the Recap', sponsor: false, kicker: false },
 };
+
+// Autoplay glides slowly; slides the visitor moves (swipe, drag, or a dot) move
+// quickly, or a swipe would take 3.5s to settle. The speed is raised when the
+// visitor starts moving a slide and reset once that animated transition ends.
+// (Loop mode also runs instant, zero-length transitions when a drag starts;
+// those must not reset it, or the release would glide at the slow speed.)
+const AUTOPLAY_SPEED = 3500;
+const USER_SPEED = 600;
+const userMoving = (swiper) => { swiper.params.speed = USER_SPEED; };
 
 const SliderOne = () => {
     // The gala slide leads the slider until homeSlide.removeAfter, then removes
@@ -30,6 +39,7 @@ const SliderOne = () => {
     const now = useGalaNow();
     const showGala = !(now && isAfter(gala.homeSlide.removeAfter, now));
     const galaSlide = GALA_SLIDE[state];
+    const animated = useRef(false);
 
     return (
         <section className="slider-area">
@@ -49,15 +59,28 @@ const SliderOne = () => {
                     clickable: true,
                 }}
                 autoplay={{
-                    delay: 9000
+                    delay: 9000,
+                    // Keep cycling after a swipe (the timer restarts) instead of stopping for good.
+                    disableOnInteraction: false,
                 }}
-                speed={3500}
+                speed={AUTOPLAY_SPEED}
+                grabCursor={true}
+                onSliderFirstMove={userMoving}
+                onSetTransition={(swiper, duration) => { if (duration > 0) animated.current = true; }}
+                onTransitionEnd={(swiper) => {
+                    if (!animated.current) return;
+                    animated.current = false;
+                    swiper.params.speed = AUTOPLAY_SPEED;
+                }}
+                onAfterInit={(swiper) => {
+                    swiper.pagination.el?.addEventListener('pointerdown', () => userMoving(swiper));
+                }}
                 loop={true}
                 modules={[Autoplay, Pagination]}
                 className="frontpageSwiper"
             >
                 {showGala && (
-                    <SwiperSlide className='swiper-no-swiping'>
+                    <SwiperSlide>
                         <div className="single-slide-item slide-bg-gala">
                             <div className="slide-item-table">
                                 <div className="slide-item-tablecell">
@@ -88,27 +111,7 @@ const SliderOne = () => {
                         </div>
                     </SwiperSlide>
                 )}
-                <SwiperSlide className='swiper-no-swiping'>
-                    <div className="single-slide-item slide-bg1">
-                        <div className="slide-item-table">
-                            <div className="slide-item-tablecell">
-                                <div className="container">
-                                    <div className="row">
-                                        <div className="slider-heading">
-                                            <h3 className="slider__desc">
-                                                <div className="slider__box">Empowering Eritrean and East African communities through education, wellness, and opportunity.</div>
-                                            </h3>
-                                        </div>
-                                        <Link href="/about" className="theme-btn slider-btn">
-                                            About Us
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide className='swiper-no-swiping'>
+                <SwiperSlide>
                     <div className="single-slide-item slide-bg4">
                         <div className="slide-item-table">
                             <div className="slide-item-tablecell">
@@ -126,7 +129,7 @@ const SliderOne = () => {
                         </div>
                     </div>
                 </SwiperSlide>
-                <SwiperSlide className='swiper-no-swiping'>
+                <SwiperSlide>
                     <div className="single-slide-item slide-bg3">
                         <div className="slide-item-table">
                             <div className="slide-item-tablecell">
@@ -138,6 +141,26 @@ const SliderOne = () => {
                                             </h3>
                                         </div>
                                         <Link href="/award-recipients" className="theme-btn slider-btn">Meet Our Scholars</Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <div className="single-slide-item slide-bg1">
+                        <div className="slide-item-table">
+                            <div className="slide-item-tablecell">
+                                <div className="container">
+                                    <div className="row">
+                                        <div className="slider-heading">
+                                            <h3 className="slider__desc">
+                                                <div className="slider__box">Empowering Eritrean and East African communities through education, wellness, and opportunity.</div>
+                                            </h3>
+                                        </div>
+                                        <Link href="/about" className="theme-btn slider-btn">
+                                            About Us
+                                        </Link>
                                     </div>
                                 </div>
                             </div>

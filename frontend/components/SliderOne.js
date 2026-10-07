@@ -59,7 +59,7 @@ const SliderOne = () => {
                     clickable: true,
                 }}
                 autoplay={{
-                    delay: 9000,
+                    delay: 7000,
                     // Keep cycling after a swipe (the timer restarts) instead of stopping for good.
                     disableOnInteraction: false,
                 }}

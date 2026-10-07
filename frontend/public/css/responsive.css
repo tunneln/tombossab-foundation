@@ -183,6 +183,39 @@
     }
 }
 
+/* Hamburger header (wherever the full desktop nav above doesn't show): the
+   same reduction as the desktop header, 120px -> 96px, logo 250px -> 200px
+   wide, header buttons 49px -> 46px. What is positioned against the bar's
+   height moves with it: the homepage hero is pulled up under the transparent
+   header by exactly the bar's height, the phone hamburger icon's offset
+   (max-width:575px below), and the gala slide's top padding (further below). */
+@media (max-width:1366px), (max-aspect-ratio: 4/3) {
+    .header-area {
+        --header-btn-height: 46px;
+    }
+    .header-area .header-top .header-row .brand-logo,
+    .header-area .header-top .header-row .brand-logo a,
+    .header-area .header-top .header-row .primary-nav {
+        height: 96px;
+    }
+    .header-area .header-top .header-row .brand-logo img {
+        width: 200px;
+        height: auto;
+    }
+    .header-area .header-top .header-row .header-btn .theme-btn {
+        line-height: var(--header-btn-height);
+    }
+    /* Level the icon with the logo's center (its box sits 4px low). Phones
+       position it separately (max-width:575px, later in this file). */
+    .header-area .header-top .header-row .primary-nav .mobile-menu-toggle {
+        margin-top: -4px;
+    }
+    .entry-area,
+    .slider-area {
+        top: -96px;
+    }
+}
+
 @media (max-width:1280px) {
     /* .site-branding {
         width: 534px
@@ -747,7 +780,7 @@
     .header-area .header-top .header-row .primary-nav .mobile-menu-toggle {
         display: block;
         top: 0;
-        margin-top: -78px;
+        margin-top: -69px; /* level with the logo's center in the 96px bar */
         -webkit-transform: translateY(0);
         -moz-transform: translateY(0);
         -ms-transform: translateY(0);
@@ -1116,7 +1149,7 @@
         min-height: 100svh;
     }
     .slider-area .gala-slide {
-        padding-top: 100px;
+        padding-top: 76px; /* the 96px hamburger header's height, less 20px */
     }
 }
 @media (max-width:1024px) {
@@ -1132,7 +1165,7 @@
     /* Top padding clears the overlaid logo (incl. its tagline) with room to
        breathe; 44px sides clear the floating Donate tab on the left edge. */
     .slider-area .gala-slide {
-        padding: 140px 44px 44px;
+        padding: 116px 44px 44px;
     }
     .slider-area .gala-slide .gala-slide__eyebrow,
     .slider-area .gala-slide .gala-slide__date {
@@ -1190,7 +1223,7 @@
    slide so the whole lockup fits below the logo and above the pagination. */
 @media (max-width:767px) and (max-height:760px) {
     .slider-area .gala-slide {
-        padding-top: 128px;
+        padding-top: 104px;
         padding-bottom: 40px;
     }
     .slider-area .gala-slide .gala-slide__eyebrow {
@@ -1222,7 +1255,7 @@
 }
 @media (max-width:767px) and (max-height:600px) {
     .slider-area .gala-slide {
-        padding-top: 122px;
+        padding-top: 98px;
     }
     /* Very short screens: a single line, so everything fits above the buttons. */
     .slider-area .gala-slide .gala-slide__title {

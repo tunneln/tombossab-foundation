@@ -139,10 +139,11 @@ test('legacy .html URLs permanently redirect to the clean URL', async () => {
 
 // The full desktop header (contact bar + nav, > 1366px and wider than 4:3) is
 // the compact 32px + 96px version, and the homepage hero still fills the
-// screen exactly below it. The hamburger layout keeps its 120px bar.
-test('desktop header is compact (32px + 96px) and the hero fills the screen below it', async () => {
-  const measure = async (width, height) => {
-    const ctx = await browser.newContext({ viewport: { width, height } });
+// screen exactly below it. The hamburger header (everywhere else) is 96px too,
+// with the hero pulled up under it to start at the very top.
+test('headers are compact (desktop 32px + 96px, hamburger 96px) and the hero fills the screen', async () => {
+  const measure = async (width, height, mobile = false) => {
+    const ctx = await browser.newContext({ viewport: { width, height }, isMobile: mobile, hasTouch: mobile });
     try {
       const page = await ctx.newPage();
       await blockExternal(page, origin);
@@ -152,9 +153,14 @@ test('desktop header is compact (32px + 96px) and the hero fills the screen belo
         const box = (sel) => document.querySelector(sel)?.getBoundingClientRect();
         const donate = box('.header-area .header-btn .donate-btn');
         const pill = box('header a[class*="GalaNavButton_desktop"]');
+        const logo = [...document.querySelectorAll('.brand-logo img')].find((i) => i.offsetParent)?.getBoundingClientRect();
+        const burger = box('.mobile-menu-toggle i');
         return {
           contactBar: box('.header-top-action').height,
           nav: box('.header-top').height,
+          logoMid: logo.top + logo.height / 2,
+          burgerMid: burger && burger.height ? burger.top + burger.height / 2 : null,
+          heroTop: box('.single-slide-item').top,
           heroBottom: box('.single-slide-item').bottom,
           donate: donate?.height,
           pill: pill?.height ?? null,
@@ -172,8 +178,13 @@ test('desktop header is compact (32px + 96px) and the hero fills the screen belo
     assert.equal(m.donate, 46, `${width}px: header Donate button`);
     if (m.pill !== null) assert.equal(m.pill, m.donate, `${width}px: Gala Tickets matches Donate`);
   }
-  const laptop = await measure(1366, 768);
-  assert.equal(laptop.nav, 120, 'the hamburger layout keeps its 120px bar');
+  for (const [width, height, mobile] of [[1366, 768, false], [1024, 768, true], [390, 844, true]]) {
+    const m = await measure(width, height, mobile);
+    assert.equal(m.nav, 96, `${width}px: hamburger header`);
+    assert.ok(Math.abs(m.burgerMid - m.logoMid) <= 1, `${width}px: menu icon level with the logo (${m.burgerMid} vs ${m.logoMid})`);
+    assert.equal(Math.round(m.heroTop), 0, `${width}px: the hero starts at the top, under the header`);
+    assert.equal(Math.round(m.heroBottom), height, `${width}px: the hero fills the screen`);
+  }
 });
 
 // Every page's link-preview image must actually work when shared: it loads, is

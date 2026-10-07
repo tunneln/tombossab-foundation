@@ -755,7 +755,7 @@ test('homepage: the gala slide leads, then scholars, the newsletter, and the fou
     assert.match(slides[0], /^ANNOUNCING A NEW TRADITION Our Annual Fundraising Gala SATURDAY, NOVEMBER 28, 2026 · DALLAS/i);
     assert.match(slides[0], /An evening for the next generation\. One unforgettable night for our scholars\./);
     assert.doesNotMatch(slides[0], /\d:\d\d/, 'no time on the slide');
-    assert.match(slides[1], /^Meet our 2026 scholarship recipients/);
+    assert.match(slides[1], /^Meet our scholarship recipients, including our newest scholar, Kaleb!/);
     assert.match(slides[2], /^Read our September Newsletter/);
     assert.match(slides[3], /^Empowering Eritrean/);
     assert.equal(await page.evaluate(() => document.querySelector('.frontpageSwiper').swiper.realIndex), 0);

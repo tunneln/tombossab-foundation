@@ -126,7 +126,7 @@ const SliderOne = () => {
                                     <div className="row">
                                         <div className="slider-heading">
                                             <h3 className="slider__desc">
-                                                <div className="slider__box">Meet our 2026 scholarship recipients! Learn how they're making a difference in their communities.</div>
+                                                <div className="slider__box">Meet our scholarship recipients, including our newest scholar, Kaleb!</div>
                                             </h3>
                                         </div>
                                         <Link href="/award-recipients" className="theme-btn slider-btn">Meet Our Scholars</Link>

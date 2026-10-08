@@ -11,7 +11,8 @@ The backend's Flyway seed migrations are the production source of truth; these f
 
 - Files: `recipients.json`, `newsletters.json`, `events.json`.
 - String `id` slugs where applicable (`"elim-girma-2025"`, `"march-2026"`); events use `slug` (nullable — null means no detail page).
-- Sortable field, newest-first: recipients `year` (desc, seed order within a year), newsletters `date` `"YYYY-MM"` (desc), events `eventDate` `"YYYY-MM-DD"` (desc).
+- Sortable fields, newest-first: newsletters `date` `"YYYY-MM"` (desc), events `eventDate` `"YYYY-MM-DD"` (desc), recipients `year` desc, then `firstYear` desc, then seed order (see below).
+- Recipients: `year` is the **most recent** award year and `firstYear` the first (both 4-digit strings). A new recipient has `firstYear` = `year`; a repeat award moves `year` (and `cohort`) forward and keeps the `id`, and the card shows the range ("2025 – 2026 Recipient"). Order: latest award first, then newer scholars before returning ones within that year, then seed order. Keep the fixture in that order (`data.test.mjs` checks it).
 - Asset paths point into `../public/`: `/recipients/*.jpg`, `/newsletters/*.jpg|.pdf`, `/images/*`.
 
 ## Generating newsletter assets

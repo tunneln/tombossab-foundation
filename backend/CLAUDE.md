@@ -14,7 +14,7 @@ Spring Boot 3.5 / Java 21 / PostgreSQL 16 + Flyway. Standalone JSON API for the 
 
 | Endpoint | Behavior |
 |---|---|
-| `GET /api/recipients` / `newsletters` / `events` | Seeded content, newest first (recipients tie-break within a year: seed order) |
+| `GET /api/recipients` / `newsletters` / `events` | Seeded content, newest first (recipients: `award_year` desc, then `first_award_year` desc, then seed order) |
 | `POST /api/contact`, `POST /api/volunteer` | 202 + `{status:"accepted"}`; persisted, then emailed |
 | `POST /api/subscriptions` | 201 new / 200 duplicate (idempotent); email normalized lowercase |
 

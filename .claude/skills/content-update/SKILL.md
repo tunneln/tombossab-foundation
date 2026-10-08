@@ -21,7 +21,8 @@ The one rule: **a content change = a new Flyway seed migration + the matching fi
    - **Never edit an applied `V*` file** — always take the next number. Copy the INSERT format from the previous seed migration for the same table.
 3. **Fixture**: mirror the same rows in `frontend/data/<thing>.json`.
    - Field names must match the backend Response record exactly — the fixtures are the API's contract.
-   - Newest-first ordering: recipients by `year` desc (seed order within a year), newsletters by `date` `"YYYY-MM"` desc, events by `eventDate` `"YYYY-MM-DD"` desc.
+   - Newest-first ordering: recipients by `year` desc, then `firstYear` desc (newer scholars before returning ones), then seed order; newsletters by `date` `"YYYY-MM"` desc; events by `eventDate` `"YYYY-MM-DD"` desc.
+   - Recipients: `year` = most recent award year, `firstYear` = first. A repeat award is an UPDATE in the new migration (move `award_year` and `cohort` forward, keep `public_id`), and the card shows "first – latest".
    - Event `slug: null` means "no detail page — don't link". A non-null event slug needs a `DETAILS` registry entry in `frontend/app/events/[slug]/page.js`.
 4. **Verify both sides**:
    - `cd frontend && npm run build && npm test` — `data.test.mjs` guards shape, uniqueness, ordering, and that every referenced asset exists.

@@ -187,6 +187,31 @@ test('headers are compact (desktop 32px + 96px, hamburger 96px) and the hero fil
   }
 });
 
+// The scholars slide shows the art made for the screen's shape, sized to cover.
+test('the scholars slide uses the art for the screen shape, sized to cover', async () => {
+  const { ctx, page } = await openPage(browser, origin, '/');
+  try {
+    for (const [width, height, image, size] of [
+      [1920, 1080, 'slider3.jpg', '1920px'],
+      [1366, 768, 'slider3-tablet.jpg', 'cover'],
+      [1024, 768, 'slider3-tablet.jpg', 'cover'],
+      [844, 390, 'slider3-tablet.jpg', 'cover'],
+      [1024, 1366, 'slider3-mobile.jpg', 'cover'],
+      [390, 844, 'slider3-mobile.jpg', 'cover'],
+      [320, 568, 'slider3-mobile.jpg', 'cover'],
+    ]) {
+      await page.setViewportSize({ width, height });
+      const bg = await page.evaluate(() => {
+        const cs = getComputedStyle(document.querySelector('.slide-bg3'));
+        return { image: cs.backgroundImage.match(/images\/([^")]+)/)?.[1], size: cs.backgroundSize };
+      });
+      assert.deepEqual(bg, { image, size }, `${width}x${height}`);
+    }
+  } finally {
+    await ctx.close();
+  }
+});
+
 // Every page's link-preview image must actually work when shared: it loads, is
 // served as the image type its name says, and stays small (WhatsApp drops
 // preview images over ~300 KB, so keep a safe margin).

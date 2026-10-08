@@ -378,9 +378,6 @@
     .slider-area .slide-bg2 {
         background: url("../images/slider2-mobile.jpg") no-repeat center center fixed;
     }
-    .slider-area .slide-bg3 {
-        background: url("../images/slider3-mobile.jpg") no-repeat center center fixed;
-    }
     .slider-area .slide-bg4 {
         background: url("../images/slider4-mobile.jpg") no-repeat center center fixed;
     }
@@ -389,6 +386,14 @@
     }
     .image_mobile {
         display: block;
+    }
+}
+/* Scholars slide: portrait art on portrait screens up to 1024px wide; only the
+   image changes, so it keeps the cover sizing above (landscape keeps the tablet art) */
+@media (max-width:1024px) and (aspect-ratio < 4/3) {
+    .slider-area .slide-bg3 {
+        background-image: url("../images/slider3-mobile.jpg");
+        background-attachment: scroll; /* iOS ignores fixed */
     }
 }
 

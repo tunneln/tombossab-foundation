@@ -21,7 +21,7 @@ const HomePage = async () => {
     const events = await getEvents();
     return (
         <>
-          <NavOne />
+          <NavOne overHero />
           <SliderOne />
           <EntryArea />
           <HiwArea />

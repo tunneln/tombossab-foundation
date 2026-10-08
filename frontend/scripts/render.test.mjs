@@ -187,6 +187,61 @@ test('headers are compact (desktop 32px + 96px, hamburger 96px) and the hero fil
   }
 });
 
+// The nav is white (white logo + white hamburger) only at the top of the home
+// page, over the dark hero; dark on other pages and once scrolled. Checked in
+// the served HTML (what shows before JavaScript, and what hydration keeps) and
+// live, through scrolling and client-side navigation both ways.
+test('the nav is white only at the top of the home page', async () => {
+  const WHITE = { logo: '/images/logo-white.png', whiteBars: true };
+  const DARK = { logo: '/images/logo.png', whiteBars: false };
+  const served = async (route) => {
+    const html = await (await fetch(`${origin}${route}`)).text();
+    return { logo: html.match(/<img id="white-logo" src="([^"]+)"/)?.[1], whiteBars: /class="fa fa-bars[^"]*white-nav-bar/.test(html) };
+  };
+  assert.deepEqual(await served('/'), WHITE, 'home page HTML');
+  for (const route of ['/about', '/gala', '/events/community-field-day-2025']) {
+    assert.deepEqual(await served(route), DARK, `${route} HTML`);
+  }
+
+  const { ctx, page } = await openPage(browser, origin, '/');
+  try {
+    await page.setViewportSize({ width: 390, height: 844 }); // hamburger layout: logo and icon sit on the hero
+    await page.waitForFunction(() => document.documentElement.dataset.galaState); // hydrated
+    const nav = () => page.evaluate(() => {
+      const bars = document.querySelector('.mobile-menu-toggle i');
+      return { logo: document.getElementById('white-logo').getAttribute('src'), whiteBars: getComputedStyle(bars).color === 'rgb(255, 255, 255)' };
+    });
+    const until = (want) => page.waitForFunction((src) => document.getElementById('white-logo').getAttribute('src') === src, want.logo);
+    assert.deepEqual(await nav(), WHITE, 'top of the home page');
+    await page.evaluate(() => window.scrollTo(0, 600));
+    await until(DARK);
+    assert.deepEqual(await nav(), DARK, 'home page, scrolled');
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await until(WHITE);
+    assert.deepEqual(await nav(), WHITE, 'home page, scrolled back to the top');
+    await page.evaluate(() => document.querySelector('a[href="/about"]').click());
+    await page.waitForURL(`${origin}/about`);
+    await until(DARK);
+    assert.deepEqual(await nav(), DARK, 'client-side navigation to /about');
+    await page.evaluate(() => document.querySelector('.brand-logo a').click());
+    await page.waitForURL(`${origin}/`);
+    await until(WHITE);
+    assert.deepEqual(await nav(), WHITE, 'client-side navigation back home');
+  } finally {
+    await ctx.close();
+  }
+});
+
+// Regression guard for a production-only bug: Vercel regenerates the home page
+// (ISR) as "/index", so a nav that compared the URL to "/" shipped the dark logo
+// on the regenerated page (and hydration left it dark). The home page must say
+// it has a hero instead; this can't be reproduced locally, so pin the contract.
+test('the nav takes its hero treatment from the page, not the URL', () => {
+  const read = (file) => readFileSync(path.join(FRONTEND_DIR, file), 'utf8');
+  assert.match(read('app/page.js'), /<NavOne overHero \/>/, 'the home page passes overHero');
+  assert.doesNotMatch(read('components/NavOne.js'), /pathname\s*[!=]==?\s*['"]\/['"]/, 'NavOne must not compare the URL to "/"');
+});
+
 // The page-title banner stays compact on every screen, and on phones its title
 // stays clear of the fixed Donate tab (/apply has a two-line title there).
 test('the page-title banner is compact and clear of the Donate tab', async () => {

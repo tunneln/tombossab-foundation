@@ -7,49 +7,38 @@ import { usePathname } from "next/navigation";
 import DonateButton from "./DonateButton";
 import GalaNavButton from "./GalaNavButton";
 
-const NavOne = () => {
+// `overHero`: the page opens with the nav over a dark full-screen hero (the home
+// page), so it starts in its "white" treatment (white logo + white hamburger)
+// and keeps it until scrolled. The page says so explicitly rather than the nav
+// inferring it from the URL: when Vercel regenerates the home page (ISR) it
+// renders it as "/index", so checking the URL for the root path shipped the dark logo,
+// and hydration doesn't repair mismatched attributes, so it stayed dark.
+const NavOne = ({ overHero = false }) => {
     const pathname = usePathname();
-
-    // A fresh load always starts at the top of the page, so the nav begins in
-    // its "white" state only on the home page (over the dark hero). Deriving
-    // the initial values from the route — instead of hardcoding the dark logo —
-    // keeps the statically-generated HTML correct for each page and avoids a
-    // post-hydration flash. usePathname() is identical between prerender and
-    // client hydration, so there's no markup mismatch.
-    const startsWhite = pathname === '/';
     const [sticky, setSticky] = useState(false);
-    const [logoSrc, setLogoSrc] = useState(startsWhite ? "/images/logo-white.png" : "/images/logo.png");
-    const [whiteNav, setWhiteNav] = useState(startsWhite);
+    const [logoSrc, setLogoSrc] = useState(overHero ? "/images/logo-white.png" : "/images/logo.png");
+    const [whiteNav, setWhiteNav] = useState(overHero);
     const [menuOpen, setMenuOpen] = useState(false);
 
-    // The nav uses its "white" treatment (white logo + white hamburger icon)
-    // ONLY at the top of the home page, where it sits over the dark hero.
-    // On every other page — and on the home page once scrolled — it goes dark.
-    const syncNav = () => {
-        const scrolled = window.scrollY > 100;
-        const atHomeTop = window.location.pathname === '/' && !scrolled;
-        setSticky(scrolled);
-        setLogoSrc(atHomeTop ? "/images/logo-white.png" : "/images/logo.png");
-        setWhiteNav(atHomeTop);
-    };
-
-    // Wire up listeners once on mount.
+    // White only at the top of a hero page; dark everywhere else and once
+    // scrolled. Re-synced (and the listener re-bound) on client-side navigation
+    // too, so the nav never keeps the previous page's colors (e.g. a white
+    // hamburger from the home hero turning invisible on a light inner page).
     useEffect(() => {
-        window.addEventListener("scroll", syncNav);
-
-        // Cleanup event listeners on unmount
-        return () => {
-            window.removeEventListener("scroll", syncNav);
+        const syncNav = () => {
+            const scrolled = window.scrollY > 100;
+            const white = overHero && !scrolled;
+            setSticky(scrolled);
+            setLogoSrc(white ? "/images/logo-white.png" : "/images/logo.png");
+            setWhiteNav(white);
         };
-    }, []);
-
-    // Re-sync on client-side navigation. NavOne stays mounted across route
-    // changes, so the mount effect above never re-runs — without this, the nav
-    // would keep the previous page's colors (e.g. a white hamburger from the
-    // home hero turning invisible on a light inner page).
-    // The side menu closes on navigation too.
-    useEffect(() => {
         syncNav();
+        window.addEventListener("scroll", syncNav);
+        return () => window.removeEventListener("scroll", syncNav);
+    }, [overHero, pathname]);
+
+    // The side menu closes on navigation.
+    useEffect(() => {
         setMenuOpen(false);
     }, [pathname]);
 

@@ -1364,12 +1364,12 @@ a[href^="mailto:"] {
 .breadcrumb-area .breadcrumb-content {
    text-align: center;
     position: relative;
-    padding-top: 110px;
-    padding-bottom: 115px;
+    padding-top: 46px;
+    padding-bottom: 70px;
 }
 .breadcrumb-area .breadcrumb-content .breadcrumb__title {
-    font-size: 60px;
-    line-height: 60px;
+    font-size: 52px;
+    line-height: 56px;
     letter-spacing: 0;
     color: #424242;
     font-weight: 800;
@@ -1381,7 +1381,7 @@ a[href^="mailto:"] {
     left: 0;
     background-color: #e36955;
     padding: 0 30px 0 35px;
-    line-height: 49px;
+    line-height: 42px;
     /* Never let the bar exceed its column, so a long trail can't push the
        page wider than the viewport on mobile. */
     max-width: 100%;

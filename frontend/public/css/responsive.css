@@ -404,6 +404,15 @@
     991px tablet device
 ------------------------------*/
 @media (max-width:991px) {
+    /*=== .breadcrumb-area ===*/
+    .breadcrumb-area .breadcrumb-content {
+        padding-top: 40px;
+        padding-bottom: 64px;
+    }
+    .breadcrumb-area .breadcrumb-content .breadcrumb__title {
+        font-size: 44px;
+        line-height: 50px;
+    }
     .header-area .header-top-action .top-action-content:before,
     .header-area .header-top-action .top-action-content:after{
         display: none;
@@ -858,14 +867,6 @@
     /* .entry-area:after {
         height: 230px;
     } */
-    /*=== .breadcrumb-area ===*/
-    .breadcrumb-area .breadcrumb-content {
-        padding-top: 90px;
-    }
-    .breadcrumb-area .breadcrumb-content .breadcrumb__title {
-        font-size: 50px;
-        line-height: 50px;
-    }
     .service-area .col,
     .footer-area .footer-widget-wrap .col,
     .helping-area .helping-item .col {
@@ -949,6 +950,20 @@
 
 
 }
+/* Page title banner on phones and short landscape screens; the side padding
+   keeps the title clear of the fixed Donate tab */
+@media (max-width:575px), (max-height:500px) {
+    .breadcrumb-area .breadcrumb-content {
+        padding: 26px 32px 60px;
+    }
+    .breadcrumb-area .breadcrumb-content .breadcrumb__title {
+        font-size: 34px;
+        line-height: 40px;
+    }
+    .breadcrumb-area .breadcrumb-content .breadcrumb__list {
+        line-height: 38px;
+    }
+}
 /*-----------------------------
     375px
 ------------------------------*/
@@ -960,6 +975,10 @@
     381px
 ------------------------------*/
 @media (max-width:381px) {
+    .breadcrumb-area .breadcrumb-content .breadcrumb__title {
+        font-size: 30px;
+        line-height: 36px;
+    }
     .slider__desc {
         font-size: 22px;
     }

@@ -187,6 +187,29 @@ test('headers are compact (desktop 32px + 96px, hamburger 96px) and the hero fil
   }
 });
 
+// The page-title banner stays compact on every screen, and on phones its title
+// stays clear of the fixed Donate tab (/apply has a two-line title there).
+test('the page-title banner is compact and clear of the Donate tab', async () => {
+  const { ctx, page } = await openPage(browser, origin, '/apply');
+  try {
+    for (const [width, height, maxBanner] of [[1440, 900, 180], [1366, 768, 180], [768, 1024, 160], [390, 844, 170], [360, 780, 170], [320, 568, 170]]) {
+      await page.setViewportSize({ width, height });
+      const m = await page.evaluate(() => {
+        const banner = document.querySelector('.breadcrumb-area').getBoundingClientRect();
+        const tab = [...document.querySelectorAll('a.donate-floating')].map((e) => e.getBoundingClientRect()).find((r) => r.width > 0);
+        const range = document.createRange();
+        range.selectNodeContents(document.querySelector('.breadcrumb__title'));
+        const hit = !!tab && [...range.getClientRects()].some((l) => l.left < tab.right && l.right > tab.left && l.top < tab.bottom && l.bottom > tab.top);
+        return { height: banner.height, hit };
+      });
+      assert.ok(m.height <= maxBanner, `${width}x${height}: banner is ${m.height}px (max ${maxBanner})`);
+      assert.equal(m.hit, false, `${width}x${height}: the title runs under the Donate tab`);
+    }
+  } finally {
+    await ctx.close();
+  }
+});
+
 // The scholars slide shows the art made for the screen's shape, sized to cover.
 test('the scholars slide uses the art for the screen shape, sized to cover', async () => {
   const { ctx, page } = await openPage(browser, origin, '/');

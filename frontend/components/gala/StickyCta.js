@@ -38,7 +38,7 @@ const StickyCta = () => {
     return (
         <div className={`${styles.sticky} ${visible ? styles.stickyVisible : ''}`} aria-hidden={!visible}>
             <a href="#tickets" className={`${styles.btn} ${styles.btnPrimary}`} tabIndex={visible ? 0 : -1}>
-                Get Tickets — from {formatPrice(minTicketPrice())}
+                Get Tickets{minTicketPrice() != null && ` — from ${formatPrice(minTicketPrice())}`}
             </a>
         </div>
     );

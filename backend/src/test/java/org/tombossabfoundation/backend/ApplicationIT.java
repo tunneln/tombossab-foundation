@@ -97,6 +97,9 @@ class ApplicationIT extends AbstractPostgresIT {
 		// async email from landing in the next test's (restarted) inbox.
 		assertTrue(greenMail.waitForIncomingEmail(5000, 1), "notification email should arrive");
 		assertEquals("New Newsletter Subscription", greenMail.getReceivedMessages()[0].getSubject());
+		// ...and the duplicate signup sends no second one (give it time to arrive if it did).
+		Thread.sleep(1500);
+		assertEquals(1, greenMail.getReceivedMessages().length, "a duplicate signup must not notify again");
 	}
 
 	@Test

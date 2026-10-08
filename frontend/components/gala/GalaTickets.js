@@ -1,14 +1,12 @@
 import React from 'react';
 import { gala } from '../../config/gala-2026';
-import { BEFORE_EVENT, checkoutMode, CONTACT_EMAIL, EXTERNAL_LINK, formatPrice, formatTime, formatWeekdayDate, providerInfo } from '../../lib/gala';
+import { BEFORE_EVENT, checkoutMode, CONTACT_EMAIL, doorPricesLine, EXTERNAL_LINK, formatTime, formatWeekdayDate, providerInfo } from '../../lib/gala';
 import { ShowIn } from './GalaState';
 import CheckoutCta from './CheckoutCta';
 import GalaGoal from './GalaGoal';
 import TierCard from './TierCard';
 import styles from './Gala.module.css';
 
-const doorLine = () => `Door tickets, if available: ${gala.tiers.attend
-    .map((t) => `${t.name} ${formatPrice(t.doorPrice)}`).join(' · ')}.`;
 
 // An inline checkout below the cards, only in embed mode (lazy-loaded by the
 // browser as it nears the viewport) with a new-tab fallback. In modal and link
@@ -74,7 +72,7 @@ const GalaTickets = () => (
                             </li>
                         </ShowIn>
                     )}
-                    {gala.sales.doorSalesAvailable && <li>{doorLine()}</li>}
+                    {gala.sales.doorSalesAvailable && doorPricesLine() && <li>{doorPricesLine()}</li>}
                     <li>Tables are available in advance only.</li>
                 </ul>
 
@@ -95,7 +93,7 @@ const GalaTickets = () => (
                 <ShowIn states={['online_closed']}>
                     <div className={styles.statusPanel}>
                         <p className={styles.statusTitle}>Online ticket sales have closed.</p>
-                        {gala.sales.doorSalesAvailable && <p className={styles.statusText}>{doorLine()}</p>}
+                        {gala.sales.doorSalesAvailable && doorPricesLine() && <p className={styles.statusText}>{doorPricesLine()}</p>}
                     </div>
                 </ShowIn>
             </div>

@@ -52,7 +52,7 @@ const OG = page(1200, 630, `
   <div class="band" style="top: 28px"></div>
   <img src="${LOGO}" alt="" style="width: 190px; margin-bottom: 26px">
   <h1 class="display" style="font-size: 70px; line-height: 1.08; max-width: 1000px; text-wrap: balance">${displayName()}</h1>
-  <p style="margin-top: 30px; font-size: 30px; font-weight: 600; letter-spacing: .04em; color: #E3C98F">Saturday, November 28, 2026 · Dallas, TX</p>
+  <p style="margin-top: 30px; font-size: 30px; font-weight: 600; letter-spacing: .04em; color: #E3C98F">${[gala.dateDisplay, venueCity()].filter(Boolean).join(' · ')}</p>
   <p style="margin-top: 16px; font-size: 24px; font-weight: 500; color: #CBBFD6">tombossabfoundation.org/gala</p>
   <div class="band" style="bottom: 28px"></div>`);
 
@@ -85,9 +85,9 @@ const STORY = page(1080, 1920, `
   <p class="display" style="font-size: 116px; line-height: 1.05">${gala.shortName}</p>
   <p class="display" style="font-size: 116px; line-height: 1.05; color: #C9A45C; letter-spacing: .06em">${gala.year}</p>
   ${gala.tagline ? `<p style="margin-top: 26px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 50px; color: #E3C98F">${gala.tagline}</p>` : ''}
-  <p style="margin-top: 70px; font-size: 44px; font-weight: 600; letter-spacing: .02em; color: #E3C98F">Saturday, November 28, 2026</p>
+  <p style="margin-top: 70px; font-size: 44px; font-weight: 600; letter-spacing: .02em; color: #E3C98F">${gala.dateDisplay}</p>
   <p style="margin-top: 14px; font-size: 34px; font-weight: 500; color: #CBBFD6">${when}</p>
-  <p style="margin-top: 190px; padding: 22px 54px; border-radius: 999px; background: #C9A45C; color: ${INK}; font-size: 40px; font-weight: 600; letter-spacing: .04em">Tickets from ${formatPrice(minTicketPrice())}</p>
+  ${minTicketPrice() != null ? `<p style="margin-top: 190px; padding: 22px 54px; border-radius: 999px; background: #C9A45C; color: ${INK}; font-size: 40px; font-weight: 600; letter-spacing: .04em">Tickets from ${formatPrice(minTicketPrice())}</p>` : '<div style="height: 190px"></div>'}
   <p style="margin-top: 26px; font-size: 36px; font-weight: 500; color: #F7F1E6">tombossabfoundation.org/gala</p>
   <div class="band" style="bottom: 340px"></div>`);
 

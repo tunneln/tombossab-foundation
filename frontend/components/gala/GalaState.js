@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { defaultGalaState, getGalaState, nowOverride, stateOverride } from '../../lib/gala';
+import { defaultGalaState, galaSlideVisible, getGalaState, nowOverride, stateOverride } from '../../lib/gala';
 
 // The gala's live state (coming_soon | on_sale | online_closed | past), provided
 // once for the whole app from the root layout. Every consumer (header button,
@@ -22,11 +22,15 @@ import { defaultGalaState, getGalaState, nowOverride, stateOverride } from '../.
 //
 // In development, ?galaState=past (or any state) overrides the state, and
 // ?galaNow=<ISO timestamp> overrides the clock.
-const GalaStateContext = createContext({ state: defaultGalaState() });
+const GalaStateContext = createContext({ state: defaultGalaState(), slideVisible: true });
 const GalaClockContext = createContext(null);
 
-export const GalaStateProvider = ({ initialState, children }) => {
+// `initialSlideVisible` works like `initialState`: computed by the server at
+// render time, so the static homepage drops the gala slide on its own after
+// homeSlide.removeAfter (instead of the browser removing it after load).
+export const GalaStateProvider = ({ initialState, initialSlideVisible = true, children }) => {
     const [state, setState] = useState(initialState ?? defaultGalaState);
+    const [slideVisible, setSlideVisible] = useState(initialSlideVisible);
     const [now, setNow] = useState(null);
 
     useEffect(() => {
@@ -34,6 +38,7 @@ export const GalaStateProvider = ({ initialState, children }) => {
             const date = nowOverride(window.location.search) ?? new Date();
             setNow(date);
             setState(stateOverride(window.location.search) ?? getGalaState(date));
+            setSlideVisible(galaSlideVisible(date));
         };
         tick();
         const timer = setInterval(tick, 60_000);
@@ -47,7 +52,7 @@ export const GalaStateProvider = ({ initialState, children }) => {
         if (now) document.documentElement.dataset.galaState = state;
     }, [state, now]);
 
-    const value = useMemo(() => ({ state }), [state]);
+    const value = useMemo(() => ({ state, slideVisible }), [state, slideVisible]);
     return (
         <GalaStateContext.Provider value={value}>
             <GalaClockContext.Provider value={now}>{children}</GalaClockContext.Provider>
@@ -55,7 +60,7 @@ export const GalaStateProvider = ({ initialState, children }) => {
     );
 };
 
-// { state }: re-renders only when the state changes.
+// { state, slideVisible }: re-renders only when one of them changes.
 export const useGala = () => useContext(GalaStateContext);
 
 // The browser's current time (null until mount), updated every minute.

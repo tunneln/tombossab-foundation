@@ -16,9 +16,10 @@ export const EXTERNAL_LINK = { target: '_blank', rel: 'noopener noreferrer' };
 
 // ---------------------------------------------------------------- formatting
 
-// $55, $1,000 (whole dollars, no cents).
+// $55, $1,000 (whole dollars, no cents). A price that's still null in the
+// config ("not confirmed yet") shows as "TBA" rather than breaking the page.
 export const formatPrice = (amount) =>
-    `$${amount.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+    (amount == null ? 'TBA' : `$${amount.toLocaleString('en-US', { maximumFractionDigits: 0 })}`);
 
 const zoned = (iso, options, g = GALA) =>
     new Intl.DateTimeFormat('en-US', { timeZone: g.timezone, ...options }).format(new Date(iso));
@@ -60,12 +61,17 @@ export const displayName = (g = GALA) => g.name.replace('Tombossa B', 'Tombossa\
 export const venueCity = (g = GALA) =>
     g.venue.city ? `${g.venue.city}, ${g.venue.region}` : null;
 
+// The address's last line: "Dallas, TX 75201" (whatever parts are set).
+export const venueCityLine = (g = GALA) => {
+    const { city, region, postalCode } = g.venue;
+    return [city && `${city}, ${region}`, postalCode].filter(Boolean).join(' ');
+};
+
 // One-line full address for maps/calendars: "Name, 1 Main St, Dallas, TX 75201".
 export const venueAddress = (g = GALA) => {
     if (!hasVenue(g)) return null;
-    const { name, street, city, region, postalCode } = g.venue;
-    const cityLine = [city && `${city}, ${region}`, postalCode].filter(Boolean).join(' ');
-    return [name, street, cityLine].filter(Boolean).join(', ');
+    const { name, street } = g.venue;
+    return [name, street, venueCityLine(g)].filter(Boolean).join(', ');
 };
 
 // ---------------------------------------------------------------- state
@@ -125,6 +131,13 @@ export const nowOverride = (search) => {
 // The homepage slide lives until homeSlide.removeAfter.
 export const isAfter = (iso, now = new Date()) => now.getTime() > new Date(iso).getTime();
 
+// A plain primary click. Cmd/Ctrl/Shift/Alt-clicks and middle-clicks keep the
+// browser's link behavior (new tab/window) instead of opening the pop-up.
+export const isPlainClick = (e) => e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey;
+
+// Whether the homepage still leads with the gala slide (until homeSlide.removeAfter).
+export const galaSlideVisible = (now = new Date(), g = GALA) => !isAfter(g.homeSlide.removeAfter, now);
+
 // Whole calendar days (Central time) from `now` until the event date.
 export const daysUntil = (now = new Date(), g = GALA) => {
     const today = new Intl.DateTimeFormat('en-CA', { timeZone: g.timezone }).format(now);
@@ -146,6 +159,7 @@ export const countdownLabel = (days) => {
 //  sponsor tier:    price - seats * FMV per guest of its seat type
 // Clamped at 0: a Student & Youth ticket's FMV exceeds its price.
 export const tierDeductible = (tier, g = GALA) => {
+    if (tier.price == null) return null; // price not confirmed yet
     if (tier.fullyDeductible) return tier.price;
     const key = tier.fmvKey ?? tier.seatType;
     const fmv = g.fmvPerGuest[key];
@@ -154,7 +168,20 @@ export const tierDeductible = (tier, g = GALA) => {
     return Math.max(0, tier.price - value);
 };
 
-export const minTicketPrice = (g = GALA) => Math.min(...g.tiers.attend.map((t) => t.price));
+// The lowest confirmed ticket price, or null if none is confirmed yet.
+export const minTicketPrice = (g = GALA) => {
+    const prices = g.tiers.attend.map((t) => t.price).filter((p) => p != null);
+    return prices.length ? Math.min(...prices) : null;
+};
+
+// "Door tickets, if available: Student & Youth $40 · …", listing only the
+// confirmed door prices; null when there are none.
+export const doorPricesLine = (g = GALA) => {
+    const priced = g.tiers.attend.filter((t) => t.doorPrice != null);
+    return priced.length
+        ? `Door tickets, if available: ${priced.map((t) => `${t.name} ${formatPrice(t.doorPrice)}`).join(' · ')}.`
+        : null;
+};
 
 // { remaining, soldOut } for a limited tier (Scholarship Sponsor); null if unlimited.
 export const tierAvailability = (tier) => {
@@ -284,7 +311,8 @@ export const eventJsonLd = (state = defaultGalaState(), g = GALA) => {
         eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
         location: { '@type': 'Place', name, address },
         organizer: { '@type': 'Organization', name: 'Tombossa B Foundation', url: 'https://tombossabfoundation.org' },
-        offers: g.tiers.attend.map((tier) => ({
+        // Only confirmed prices: an Offer without one would list as $0.
+        offers: g.tiers.attend.filter((tier) => tier.price != null).map((tier) => ({
             '@type': 'Offer',
             name: tier.name,
             price: tier.price,

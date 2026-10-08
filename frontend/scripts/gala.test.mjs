@@ -13,20 +13,24 @@ import {
     sponsorshipHref, minTicketPrice, formatPrice, formatTime, formatWeekdayDate, timeRange, cardTimeLabel,
     daysUntil, countdownLabel, googleCalendarUrl, icsContent, eventJsonLd, shareLinks,
     venueAddress, CONFIRM_FIELDS, confirmChecklist, getPath, GALA_META, providerInfo, timePublished,
+    doorPricesLine, galaSlideVisible, isPlainClick,
 } from '../lib/gala.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CONFIG_SRC = readFileSync(path.resolve(__dirname, '../config/gala-2026.js'), 'utf8');
 
 // A deep copy of the real config with overrides merged in (one level deep per key).
+// A deep copy of the real config with some fields replaced (objects merged one
+// level deep). Overrides are cloned too, so no test can reach, and change, the
+// shared `gala` config that later tests read.
 const variant = (overrides = {}) => {
     const g = structuredClone(gala);
-    for (const [key, value] of Object.entries(overrides)) {
-        g[key] = value && typeof value === 'object' && !Array.isArray(value) ? { ...g[key], ...value } : value;
+    for (const [key, raw] of Object.entries(structuredClone(overrides))) {
+        g[key] = raw && typeof raw === 'object' && !Array.isArray(raw) ? { ...g[key], ...raw } : raw;
     }
     return g;
 };
-const withCheckout = (tickets) => variant({ checkout: { ...gala.checkout, tickets } });
+const withCheckout = (tickets) => variant({ checkout: { tickets } });
 const at = (iso) => new Date(iso);
 
 const LINK = { hostedUrl: 'https://example.org/tickets', embedSrc: null };
@@ -195,6 +199,7 @@ test('sponsorship CTA: sponsorship link -> tickets link -> email', () => {
     const g = withCheckout(LINK);
     g.checkout.sponsorship.hostedUrl = 'https://example.org/sponsor';
     assert.equal(sponsorshipHref(g), 'https://example.org/sponsor');
+    assert.equal(gala.checkout.sponsorship.hostedUrl, null, 'the shared config is untouched');
 });
 
 test('formatting: prices, close date, minimum price', () => {
@@ -330,4 +335,36 @@ test('JSON-LD: a complete schema.org Event once confirmed', () => {
         [['Student & Youth', 30, 'USD'], ['General Admission', 55, 'USD'], ['Champion', 85, 'USD']]);
     assert.ok(ld.offers.every((o) => o.availability === 'https://schema.org/InStock' && o.url === gala.canonicalUrl));
     assert.ok(ld.image[0].startsWith('https://'), 'absolute image URL');
+});
+
+test('prices not confirmed yet (null) are hidden or shown as TBA, never break the page', () => {
+    assert.equal(formatPrice(null), 'TBA');
+    assert.equal(formatPrice(undefined), 'TBA');
+    const [student, general, champion] = gala.tiers.attend;
+    const g = variant({ tiers: { attend: [{ ...student, price: null, doorPrice: null }, general, { ...champion, doorPrice: null }] } });
+    assert.equal(minTicketPrice(g), general.price, 'lowest confirmed price');
+    assert.equal(tierDeductible(g.tiers.attend[0], g), null, 'no deductible estimate without a price');
+    assert.equal(doorPricesLine(g), `Door tickets, if available: ${general.name} $${general.doorPrice}.`);
+    const offers = eventJsonLd('on_sale', g).offers;
+    assert.deepEqual(offers.map((o) => o.name), [general.name, champion.name], 'no $0 Offer for an unconfirmed price');
+
+    const none = variant({ tiers: { attend: gala.tiers.attend.map((t) => ({ ...t, price: null, doorPrice: null })) } });
+    assert.equal(minTicketPrice(none), null);
+    assert.equal(doorPricesLine(none), null);
+    assert.deepEqual(eventJsonLd('on_sale', none).offers, []);
+    assert.equal(tierDeductible({ ...gala.tiers.give.sponsorSeat, price: null }), null);
+});
+
+test('homepage gala slide shows until homeSlide.removeAfter, then goes', () => {
+    const cutoff = new Date(gala.homeSlide.removeAfter).getTime();
+    assert.equal(galaSlideVisible(new Date(cutoff - 1000)), true);
+    assert.equal(galaSlideVisible(new Date(cutoff + 1000)), false);
+});
+
+test('isPlainClick: only an unmodified primary click opens the pop-up', () => {
+    const click = (over = {}) => ({ button: 0, metaKey: false, ctrlKey: false, shiftKey: false, altKey: false, ...over });
+    assert.equal(isPlainClick(click()), true);
+    for (const mod of [{ metaKey: true }, { ctrlKey: true }, { shiftKey: true }, { altKey: true }, { button: 1 }]) {
+        assert.equal(isPlainClick(click(mod)), false, JSON.stringify(mod));
+    }
 });

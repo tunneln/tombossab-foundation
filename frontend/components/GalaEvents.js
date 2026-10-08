@@ -32,7 +32,8 @@ const GalaEvents = ({ upcoming = [], past = [] }) => {
     return (
         <>
             <Events events={isPast ? upcoming : [card, ...upcoming]} />
-            <PastEvents events={isPast ? [card, ...past] : past} />
+            {/* Past Events only when there is one to show (no empty heading). */}
+            {(isPast || past.length > 0) && <PastEvents events={isPast ? [card, ...past] : past} />}
         </>
     );
 };

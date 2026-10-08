@@ -365,7 +365,7 @@ test('/gala: ticket section content follows the state and the checkout config',
 
     // Sponsorship opens the pop-up checkout while it's available, else falls back to email.
     const popUp = checkoutMode() === 'modal' && STATE === 'on_sale';
-    const sponsorButtons = await page.locator('#sponsor button', { hasText: 'Become a Sponsor' }).count();
+    const sponsorButtons = await page.locator(`#sponsor a[href="${gala.checkout.tickets.modalUrl}"]`, { hasText: 'Become a Sponsor' }).count();
     const sponsorMail = await page.locator('#sponsor a[href^="mailto:contact@tombossabfoundation.org?subject=Gala%202026%20Sponsorship"]').count();
     assert.deepEqual([sponsorButtons, sponsorMail], popUp ? [3, 0] : [0, 3]);
 
@@ -657,9 +657,9 @@ test('/gala on sale: every ticket, sponsor, and Sponsor a Seat button opens the 
     assert.match(await page.locator('#faq').innerText(), /Why does checkout ask for an optional tip\?/);
 
     const buttons = [
-      ...await page.locator('#tickets button', { hasText: 'Get Tickets' }).all(),
-      ...await page.locator('#sponsor button', { hasText: 'Become a Sponsor' }).all(),
-      page.locator('#give button', { hasText: 'Sponsor a Seat' }),
+      ...await page.locator('#tickets a', { hasText: 'Get Tickets' }).all(),
+      ...await page.locator('#sponsor a', { hasText: 'Become a Sponsor' }).all(),
+      page.locator('#give a', { hasText: 'Sponsor a Seat' }),
     ];
     assert.equal(buttons.length, 3 + 3 + 1);
     assert.equal(await page.getByText('Get Your Tickets').count(), 0, 'no extra button under the tiers');
@@ -678,7 +678,65 @@ test('/gala on sale: every ticket, sponsor, and Sponsor a Seat button opens the 
   }
 });
 
+// Before the page's scripts run (a slow phone) or with JavaScript off, the
+// checkout buttons are still real links to the checkout form, not dead buttons.
+test('/gala on sale: checkout buttons are working links even before JavaScript runs',
+  { skip: unless(STATE === 'on_sale' && checkoutMode() === 'modal', 'needs the pop-up checkout on sale') }, async () => {
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, javaScriptEnabled: false });
+  try {
+    const page = await ctx.newPage();
+    await blockExternal(page, origin);
+    await page.goto(`${origin}/gala`, { waitUntil: 'load' });
+    const ctas = await page.$$eval('#tickets a, #sponsor a, #give a', (els) => els
+      .filter((a) => /Get Tickets|Become a Sponsor|Sponsor a Seat/.test(a.textContent))
+      .map((a) => ({ href: a.getAttribute('href'), target: a.getAttribute('target'), rel: a.getAttribute('rel') })));
+    assert.equal(ctas.length, 3 + 3 + 1);
+    for (const cta of ctas) {
+      assert.equal(cta.href, gala.checkout.tickets.hostedUrl || gala.checkout.tickets.modalUrl);
+      assert.equal(cta.target, '_blank');
+      assert.match(cta.rel, /noopener/);
+    }
+    assert.equal(await page.locator('#tickets button, #sponsor button, #give button').filter({ hasText: /Get Tickets|Become a Sponsor|Sponsor a Seat/ }).count(), 0);
+  } finally {
+    await ctx.close();
+  }
+});
+
+test('/gala on sale: a modifier-click on a checkout button opens it in a new tab, not the pop-up',
+  { skip: unless(STATE === 'on_sale' && checkoutMode() === 'modal', 'needs the pop-up checkout on sale') }, async () => {
+  const { ctx, page } = await openReady('/gala');
+  try {
+    await page.locator('#top').getByText(/days? to go|Tonight/).waitFor();
+    const cta = page.locator('#tickets a', { hasText: 'Get Tickets' }).first();
+    await cta.scrollIntoViewIfNeeded();
+    const [popup] = await Promise.all([
+      ctx.waitForEvent('page', { timeout: 5000 }),
+      cta.click({ modifiers: [process.platform === 'darwin' ? 'Meta' : 'Control'] }),
+    ]);
+    assert.equal(popup.url().startsWith('about:blank') || popup.url().includes('zeffy.com'), true);
+    assert.equal(await page.locator('[role="dialog"][aria-label="Gala ticket checkout"]').count(), 0);
+  } finally {
+    await ctx.close();
+  }
+});
+
 // ------------------------------------------------------------------ homepage & /events
+
+test('homepage: the gala slide is gone after homeSlide.removeAfter', async () => {
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+  try {
+    const page = await ctx.newPage();
+    await blockExternal(page, origin);
+    await page.clock.setFixedTime(new Date(new Date(gala.homeSlide.removeAfter).getTime() + 60_000));
+    await page.goto(`${origin}/`, { waitUntil: 'load' });
+    await page.waitForFunction(() => document.querySelector('.frontpageSwiper')?.swiper?.initialized
+      && !document.querySelector('.frontpageSwiper .slide-bg-gala'));
+    const slides = await page.evaluate(() => document.querySelector('.frontpageSwiper').swiper.slides.length);
+    assert.equal(slides, 3, 'only the three info slides');
+  } finally {
+    await ctx.close();
+  }
+});
 
 test('homepage: the gala slide leads, then the info slides, with the foundation intro last',
   { skip: unless(['coming_soon', 'on_sale'].includes(STATE), 'slide copy before sales close') }, async () => {

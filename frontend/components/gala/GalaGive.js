@@ -22,7 +22,7 @@ const GalaGive = () => {
                             <h3 className={styles.tierName}>{sponsorSeat.name}</h3>
                             <p className={styles.price}>{formatPrice(sponsorSeat.price)}</p>
                             <p className={styles.giveText}>{sponsorSeat.description}</p>
-                            {tierDeductible(sponsorSeat) === sponsorSeat.price && (
+                            {sponsorSeat.price != null && tierDeductible(sponsorSeat) === sponsorSeat.price && (
                                 <p className={styles.deductible}>Fully tax-deductible</p>
                             )}
                             <ShowIn states={['on_sale']}>
@@ -41,10 +41,10 @@ const GalaGive = () => {
                     <FundCard />
                 </div>
                 <ShowIn states={BEFORE_EVENT}>
-                    <p className={styles.giveNote}>
+                    {programListing.threshold != null && <p className={styles.giveNote}>
                         Gifts of {formatPrice(programListing.threshold)} or more are listed as Friends of the Foundation in the gala program.
                         {programListing.deadline && ` Give by ${programListing.deadline} to be included.`}
-                    </p>
+                    </p>}
                 </ShowIn>
             </div>
         </section>

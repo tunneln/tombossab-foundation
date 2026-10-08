@@ -10,9 +10,8 @@ import 'swiper/css/navigation';
 
 import { Pagination, Autoplay } from 'swiper/modules';
 
-import { useGala, useGalaNow } from './gala/GalaState';
+import { useGala } from './gala/GalaState';
 import { gala } from '../config/gala-2026';
-import { isAfter } from '../lib/gala';
 
 // Gala slide copy per gala state (config/gala-2026.js holds the text).
 const GALA_SLIDE = {
@@ -30,14 +29,20 @@ const GALA_SLIDE = {
 const AUTOPLAY_SPEED = 3500;
 const USER_SPEED = 600;
 const userMoving = (swiper) => { swiper.params.speed = USER_SPEED; };
+// A gesture can also end with no transition at all (a drag back to exactly
+// where it started, a tap on the current dot): then restore the slow speed
+// right away, once Swiper has had its turn to start one.
+const settle = (swiper) => setTimeout(() => {
+    if (!swiper.destroyed && !swiper.animating) swiper.params.speed = AUTOPLAY_SPEED;
+}, 0);
 
 const SliderOne = () => {
-    // The gala slide leads the slider until homeSlide.removeAfter, then removes
-    // itself (client-side, once the date is known). The Swiper is keyed on it so
-    // the looped slider remounts cleanly instead of splicing a slide out.
-    const { state } = useGala();
-    const now = useGalaNow();
-    const showGala = !(now && isAfter(gala.homeSlide.removeAfter, now));
+    // The gala slide leads the slider until homeSlide.removeAfter. Whether it
+    // shows comes with the gala state (decided at render time, re-checked by the
+    // browser), so the static homepage already has the right slides and the
+    // slider doesn't re-render every minute. The Swiper is keyed on it so the
+    // looped slider remounts cleanly if it ever flips while the page is open.
+    const { state, slideVisible: showGala } = useGala();
     const galaSlide = GALA_SLIDE[state];
     const animated = useRef(false);
 
@@ -66,6 +71,7 @@ const SliderOne = () => {
                 speed={AUTOPLAY_SPEED}
                 grabCursor={true}
                 onSliderFirstMove={userMoving}
+                onTouchEnd={settle}
                 onSetTransition={(swiper, duration) => { if (duration > 0) animated.current = true; }}
                 onTransitionEnd={(swiper) => {
                     if (!animated.current) return;
@@ -74,6 +80,7 @@ const SliderOne = () => {
                 }}
                 onAfterInit={(swiper) => {
                     swiper.pagination.el?.addEventListener('pointerdown', () => userMoving(swiper));
+                    swiper.pagination.el?.addEventListener('click', () => settle(swiper));
                 }}
                 loop={true}
                 modules={[Autoplay, Pagination]}

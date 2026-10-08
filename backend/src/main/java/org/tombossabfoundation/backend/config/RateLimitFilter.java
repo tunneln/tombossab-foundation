@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.HexFormat;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -24,6 +25,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class RateLimitFilter extends OncePerRequestFilter {
 
 	static final int MAX_TRACKED_CLIENTS = 10_000;
+
+	/** An IPv6 literal's characters: hex digits, colons, dots (IPv4-mapped). */
+	private static final Pattern IPV6_LITERAL = Pattern.compile("[0-9A-Fa-f:.]+");
 
 	private final RateLimitProperties properties;
 
@@ -83,7 +87,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
 	static String clientKey(String ip) {
 		// Only IPv6 literals (hex digits, colons, dots) are parsed, so getByName
 		// never does a DNS lookup on a header value.
-		if (ip.indexOf(':') < 0 || !ip.matches("[0-9A-Fa-f:.]+")) {
+		if (ip.indexOf(':') < 0 || !IPV6_LITERAL.matcher(ip).matches()) {
 			return ip;
 		}
 		try {

@@ -3,13 +3,10 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { isPlainClick } from '../lib/gala';
 import { useGala } from './gala/GalaState';
 import { useGalaCheckout } from './GalaCheckout';
 import styles from './GalaNavButton.module.css';
-
-// A plain primary click. Cmd/Ctrl/Shift/Alt-clicks and middle-clicks keep the
-// browser's link behavior (new tab/window) instead of opening the pop-up.
-const isPlainClick = (e) => e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey;
 
 // Gold "Gala Tickets" CTA (see NavOne for its placements). Label follows the gala
 // state; it disappears after the event.

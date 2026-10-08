@@ -1,6 +1,6 @@
 import React from 'react';
 import { gala } from '../../config/gala-2026';
-import { CONTACT_EMAIL, EXTERNAL_LINK, formatPrice, hasVenue, providerInfo, tierDeductible, timeRange, venueAddress } from '../../lib/gala';
+import { CONTACT_EMAIL, EXTERNAL_LINK, formatPrice, hasVenue, providerInfo, tierDeductible, timeRange, venueAddress, venueCityLine } from '../../lib/gala';
 import FaqAccordion from './FaqAccordion';
 import styles from './Gala.module.css';
 
@@ -16,7 +16,7 @@ const WhenWhere = () => {
             </p>
         );
     }
-    const { name, street, city, region, postalCode } = gala.venue;
+    const { name, street } = gala.venue;
     const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(venueAddress())}&output=embed`;
     return (
         <>
@@ -24,7 +24,7 @@ const WhenWhere = () => {
             <p>
                 <strong>{name}</strong><br />
                 {street && <>{street}<br /></>}
-                {[city && `${city}, ${region}`, postalCode].filter(Boolean).join(' ')}
+                {venueCityLine()}
             </p>
             <div className={styles.mapFrame}>
                 <iframe src={mapSrc} title={`Map to ${name}`} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />

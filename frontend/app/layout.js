@@ -2,7 +2,7 @@ import React from 'react';
 import { DonateProvider } from '../components/DonateProvider';
 import { GalaCheckoutProvider } from '../components/GalaCheckout';
 import { GalaStateProvider } from '../components/gala/GalaState';
-import { getGalaState } from '../lib/gala';
+import { galaSlideVisible, getGalaState } from '../lib/gala';
 
 // Re-render every page at most hourly (ISR), so the gala state baked into the
 // static HTML (header button, homepage slide, /gala sections, its JSON-LD)
@@ -72,7 +72,7 @@ export default function RootLayout({ children }) {
                     as of this render (see GalaState). The single app-level donate
                     modal persists across client-side navigation so a donor's
                     in-progress form is never lost; same for the gala checkout. */}
-                <GalaStateProvider initialState={getGalaState()}>
+                <GalaStateProvider initialState={getGalaState()} initialSlideVisible={galaSlideVisible()}>
                     <DonateProvider>
                         <GalaCheckoutProvider>{children}</GalaCheckoutProvider>
                     </DonateProvider>

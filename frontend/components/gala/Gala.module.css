@@ -406,6 +406,16 @@
     gap: 28px;
     margin-bottom: 36px;
 }
+/* Desktop (two columns): an odd last scholar sits centered under the pair
+   above, at one column's width. Tablets and phones (<= 991px) are already a
+   single column, so this applies from 992px only. */
+@media (min-width: 992px) {
+    .scholar:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+        justify-self: center;
+        width: calc((100% - 28px) / 2); /* one column: half, less half the gap */
+    }
+}
 .scholar {
     display: flex;
     gap: 24px;

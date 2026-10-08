@@ -591,6 +591,42 @@ test('side menu: opens, closes, and closes on a same-page Gala Tickets jump and 
   }
 });
 
+// Desktop (>= 992px, two columns): an odd last scholar is centered under the
+// others at one column's width. Tablets and phones: one full-width column.
+test('/gala scholars: an odd last card is centered on desktop; tablets and phones stay one column', async () => {
+  const geometry = async (width, height, mobile) => {
+    const ctx = await browser.newContext({ viewport: { width, height }, isMobile: mobile, hasTouch: mobile });
+    try {
+      const page = await ctx.newPage();
+      await blockExternal(page, origin);
+      await page.goto(`${origin}/gala`, { waitUntil: 'load' });
+      await waitForGalaState(page);
+      return await page.evaluate(() => {
+        const ul = document.querySelector('#scholars ul').getBoundingClientRect();
+        const cards = [...document.querySelectorAll('#scholars ul > li')].map((li) => li.getBoundingClientRect());
+        return { ul: { left: ul.left, width: ul.width }, cards: cards.map((c) => ({ left: c.left, width: c.width })) };
+      });
+    } finally {
+      await ctx.close();
+    }
+  };
+  const desktop = await geometry(1280, 800, false);
+  const n = desktop.cards.length;
+  assert.ok(n > 0, 'scholars render');
+  const last = desktop.cards[n - 1];
+  if (n % 2 === 1 && n > 1) {
+    const ulMid = desktop.ul.left + desktop.ul.width / 2;
+    assert.ok(Math.abs(last.left + last.width / 2 - ulMid) < 1, 'odd last card is centered');
+    assert.ok(Math.abs(last.width - desktop.cards[0].width) < 1, 'at the same width as the others');
+  }
+  for (const [width, height] of [[991, 800], [768, 1024], [390, 844]]) {
+    const m = await geometry(width, height, true);
+    for (const card of m.cards) {
+      assert.ok(Math.abs(card.left - m.ul.left) < 1 && Math.abs(card.width - m.ul.width) < 1, `${width}px: one full-width column`);
+    }
+  }
+});
+
 test('/gala: the tax FAQ shows the foundation EIN', async () => {
   const { ctx, page } = await openReady('/gala');
   try {

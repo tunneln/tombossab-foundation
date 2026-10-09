@@ -12,7 +12,7 @@
 //   node --test scripts/render.test.mjs      (or: npm test)
 import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
 import { FRONTEND_DIR, startServer, openPage, blockExternal } from './next-server.mjs';
@@ -233,13 +233,22 @@ test('the nav is white only at the top of the home page', async () => {
 });
 
 // Regression guard for a production-only bug: Vercel regenerates the home page
-// (ISR) as "/index", so a nav that compared the URL to "/" shipped the dark logo
-// on the regenerated page (and hydration left it dark). The home page must say
-// it has a hero instead; this can't be reproduced locally, so pin the contract.
-test('the nav takes its hero treatment from the page, not the URL', () => {
-  const read = (file) => readFileSync(path.join(FRONTEND_DIR, file), 'utf8');
-  assert.match(read('app/page.js'), /<NavOne overHero \/>/, 'the home page passes overHero');
-  assert.doesNotMatch(read('components/NavOne.js'), /pathname\s*[!=]==?\s*['"]\/['"]/, 'NavOne must not compare the URL to "/"');
+// (ISR) as "/index", so a home-page check on usePathname() rendered the wrong
+// HTML there (a dark nav that hydration left dark) while local runs, which see
+// "/", passed. Routes must be read through lib/route-path.js, which maps
+// "/index" back to "/"; this can't be reproduced locally, so pin it.
+test('the current route is read only through lib/route-path.js', () => {
+  const offenders = [];
+  const walk = (dir) => {
+    for (const entry of readdirSync(path.join(FRONTEND_DIR, dir), { withFileTypes: true })) {
+      const rel = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(rel);
+      else if (/\.(m?js|jsx|tsx?)$/.test(entry.name) && rel !== path.join('lib', 'route-path.js')
+        && /\busePathname\b/.test(readFileSync(path.join(FRONTEND_DIR, rel), 'utf8'))) offenders.push(rel);
+    }
+  };
+  ['app', 'components', 'lib', 'config'].forEach(walk);
+  assert.deepEqual(offenders, [], `use useRoutePath() from lib/route-path.js instead of usePathname() in: ${offenders.join(', ')}`);
 });
 
 // The page-title banner stays compact on every screen, and on phones its title

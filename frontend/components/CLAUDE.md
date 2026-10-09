@@ -19,7 +19,7 @@ The `/gala` page sections, styled by one CSS module (`gala/Gala.module.css`, its
   export default Thing;
   ```
 - 4-space indentation. `import Link from 'next/link';` for internal links.
-- Prefer hooks over class components. `NavOne.js` is the hooks reference (note: `usePathname` from `next/navigation`, never `next/router`).
+- Prefer hooks over class components. `NavOne.js` is the hooks reference. Read the current route with `useRoutePath()` from `../lib/route-path.js`, never `usePathname()` directly (Vercel renders the regenerated home page as `/index`; a test enforces this) or `next/router`.
 - Markup is Bootstrap grid (`container` / `row` / `col-lg-*`) plus the site's shared CSS classes. Reuse existing classes (`theme-btn`, `section-heading`, `blog-item`, `recent-item`, `team-item`) before writing new CSS.
 - Brand accent gold `#f1ae44` (the gala's own palette is the one exception: `gala/`, the homepage `gala-slide__*` rules, the header pill `GalaNavButton.module.css`, the checkout pop-up `GalaCheckout.module.css`, and the `/events` gala card rules; see the root CLAUDE.md). Use inline `style={{ }}` only for small one-off custom bits (see `RecipientCard.js`, `Newsletter.js`); lean on classes otherwise.
 - Plain `<img src="/images/..." />` (never `next/image`); assets live in `../public/`.

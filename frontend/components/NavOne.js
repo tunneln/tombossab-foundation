@@ -2,45 +2,30 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 import DonateButton from "./DonateButton";
 import GalaNavButton from "./GalaNavButton";
+import { useRoutePath } from "../lib/route-path";
 
 // `overHero`: the page opens with the nav over a dark full-screen hero (the home
-// page), so it starts in its "white" treatment (white logo + white hamburger)
-// and keeps it until scrolled. The page says so explicitly rather than the nav
-// inferring it from the URL: when Vercel regenerates the home page (ISR) it
-// renders it as "/index", so checking the URL for the root path shipped the dark logo,
-// and hydration doesn't repair mismatched attributes, so it stayed dark.
+// page), so the nav starts in its "white" treatment (white logo + white
+// hamburger) and keeps it until scrolled; dark everywhere else. The page says so
+// explicitly rather than the nav inferring it from the URL (see lib/route-path).
+// Each page renders its own NavOne, so it remounts on every navigation (fresh
+// colors, closed side menu).
 const NavOne = ({ overHero = false }) => {
-    const pathname = usePathname();
+    const pathname = useRoutePath();
     const [sticky, setSticky] = useState(false);
-    const [logoSrc, setLogoSrc] = useState(overHero ? "/images/logo-white.png" : "/images/logo.png");
-    const [whiteNav, setWhiteNav] = useState(overHero);
     const [menuOpen, setMenuOpen] = useState(false);
+    const whiteNav = overHero && !sticky;
+    const logoSrc = whiteNav ? "/images/logo-white.png" : "/images/logo.png";
 
-    // White only at the top of a hero page; dark everywhere else and once
-    // scrolled. Re-synced (and the listener re-bound) on client-side navigation
-    // too, so the nav never keeps the previous page's colors (e.g. a white
-    // hamburger from the home hero turning invisible on a light inner page).
     useEffect(() => {
-        const syncNav = () => {
-            const scrolled = window.scrollY > 100;
-            const white = overHero && !scrolled;
-            setSticky(scrolled);
-            setLogoSrc(white ? "/images/logo-white.png" : "/images/logo.png");
-            setWhiteNav(white);
-        };
-        syncNav();
-        window.addEventListener("scroll", syncNav);
-        return () => window.removeEventListener("scroll", syncNav);
-    }, [overHero, pathname]);
-
-    // The side menu closes on navigation.
-    useEffect(() => {
-        setMenuOpen(false);
-    }, [pathname]);
+        const syncSticky = () => setSticky(window.scrollY > 100);
+        syncSticky();
+        window.addEventListener("scroll", syncSticky, { passive: true });
+        return () => window.removeEventListener("scroll", syncSticky);
+    }, []);
 
     return (
         <div>

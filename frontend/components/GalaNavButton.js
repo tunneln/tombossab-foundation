@@ -2,8 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { isPlainClick } from '../lib/gala';
+import { useRoutePath } from '../lib/route-path';
 import { useGala } from './gala/GalaState';
 import { useGalaCheckout } from './GalaCheckout';
 import styles from './GalaNavButton.module.css';
@@ -21,7 +21,7 @@ import styles from './GalaNavButton.module.css';
 const GalaNavButton = ({ placement, fallback = null, onNavigate }) => {
     const { state } = useGala();
     const { available, open } = useGalaCheckout();
-    const pathname = usePathname();
+    const pathname = useRoutePath();
 
     if (placement === 'floating' && !['coming_soon', 'on_sale'].includes(state)) return fallback;
     if (state === 'past') return null;

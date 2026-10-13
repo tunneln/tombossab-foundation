@@ -59,7 +59,6 @@ const SliderOne = () => {
 
                 }}
                 spaceBetween={5}
-                centeredSlides={true}
                 pagination={{
                     clickable: true,
                 }}

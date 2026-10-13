@@ -16,7 +16,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { startServer, openPage, blockExternal } from './next-server.mjs';
-import { cardTimeLabel, checkoutMode, getGalaState, providerInfo, STORY_IMAGE, timePublished } from '../lib/gala.js';
+import { cardTimeLabel, checkoutMode, galaSlideVisible, getGalaState, providerInfo, STORY_IMAGE, timePublished } from '../lib/gala.js';
 import { gala } from '../config/gala-2026.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -805,43 +805,101 @@ test('homepage: the gala slide leads, then scholars, the newsletter, and the fou
 
 // Homepage slider: swipe on phones, drag with a mouse on computers, dots too.
 const sliderIndex = (page) => page.evaluate(() => document.querySelector('.frontpageSwiper').swiper.realIndex);
-async function openSlider(ctxOptions) {
+async function openSlider(ctxOptions, fixedTime) {
   const ctx = await browser.newContext(ctxOptions);
   const page = await ctx.newPage();
   await blockExternal(page, origin);
+  if (fixedTime) await page.clock.setFixedTime(fixedTime);
   await page.goto(`${origin}/`, { waitUntil: 'load' });
-  await waitForGalaState(page);
-  await page.waitForFunction(() => document.querySelector('.frontpageSwiper')?.swiper?.initialized);
+  await page.waitForFunction((s) => document.documentElement.dataset.galaState === s,
+    fixedTime ? getGalaState(fixedTime) : STATE);
+  await page.waitForFunction((visible) => {
+    const slider = document.querySelector('.frontpageSwiper');
+    return slider?.swiper?.initialized && Boolean(slider.querySelector('.slide-bg-gala')) === visible;
+  }, galaSlideVisible(fixedTime ?? new Date()));
   const box = await page.locator('.frontpageSwiper').boundingBox();
   return { ctx, page, box };
 }
 
-test('homepage slider: a mouse drag changes slides quickly, without following links, and autoplay keeps going', async () => {
-  const { ctx, page, box } = await openSlider({ viewport: { width: 1440, height: 900 } });
-  try {
-    assert.equal(await page.locator('.frontpageSwiper .swiper-no-swiping').count(), 0, 'no slide blocks dragging');
-    assert.equal(await sliderIndex(page), 0);
-    // Start the drag on the gala slide's "Learn More" link: it must move the slide, not open the link.
-    const start = await page.locator('.swiper-slide-active .slide-bg-gala a[href="/gala"]').boundingBox();
-    const y = start.y + start.height / 2;
-    await page.mouse.move(start.x + start.width / 2, y);
-    await page.mouse.down();
-    for (let i = 1; i <= 10; i++) await page.mouse.move(start.x + start.width / 2 - i * 40, y);
-    await page.mouse.up();
-    await page.waitForFunction(() => document.querySelector('.frontpageSwiper').swiper.realIndex === 1, null, { timeout: 2000 });
-    await page.waitForFunction(() => !document.querySelector('.frontpageSwiper').swiper.animating, null, { timeout: 1500 });
-    assert.equal(new URL(page.url()).pathname, '/', 'a drag is not a click');
-    assert.equal(await page.evaluate(() => document.querySelector('.frontpageSwiper').swiper.autoplay.running), true);
-    // Dragging back (left to right) returns to the gala slide.
-    await page.mouse.move(box.x + box.width * 0.3, box.y + box.height / 2);
-    await page.mouse.down();
-    for (let i = 1; i <= 10; i++) await page.mouse.move(box.x + box.width * 0.3 + i * 40, box.y + box.height / 2);
-    await page.mouse.up();
-    await page.waitForFunction(() => document.querySelector('.frontpageSwiper').swiper.realIndex === 0, null, { timeout: 2000 });
-  } finally {
-    await ctx.close();
+test('homepage: gala content and both buttons fit on short portrait and landscape phones', async () => {
+  const fixedTime = new Date('2026-11-01T12:00:00-06:00');
+  for (const [width, height] of [[390, 664], [320, 568], [844, 390], [667, 375], [568, 320], [932, 430]]) {
+    const { ctx, page } = await openSlider({ viewport: { width, height }, isMobile: true, hasTouch: true }, fixedTime);
+    try {
+      await page.evaluate(() => document.querySelector('.frontpageSwiper').swiper.autoplay.stop());
+      const layout = await page.locator('.swiper-slide-active .slide-bg-gala').evaluate((slide) => {
+        const hero = slide.getBoundingClientRect();
+        const header = document.querySelector('.header-top').getBoundingClientRect();
+        const dots = document.querySelector('.frontpageSwiper .swiper-pagination').getBoundingClientRect();
+        const elements = [...slide.querySelectorAll('.gala-slide__eyebrow, .gala-slide__title, .gala-slide__date, .gala-slide__subline, .gala-slide__btn')];
+        return elements.map((el) => {
+          const r = el.getBoundingClientRect();
+          const hit = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2);
+          return {
+            text: el.textContent,
+            inHero: r.top >= Math.max(hero.top, header.bottom) && r.bottom <= Math.min(hero.bottom, dots.top)
+              && r.left >= hero.left && r.right <= hero.right,
+            clickable: !el.matches('a') || el === hit || el.contains(hit),
+            height: r.height,
+            button: el.matches('a'),
+          };
+        });
+      });
+      assert.equal(layout.filter((el) => el.button).length, 2, `${width}x${height}: both gala buttons`);
+      for (const el of layout) {
+        assert.ok(el.inHero, `${width}x${height}: "${el.text}" fits between the header and pagination`);
+        assert.ok(el.clickable, `${width}x${height}: "${el.text}" receives clicks`);
+        if (el.button) assert.ok(el.height >= 44, `${width}x${height}: button touch target`);
+      }
+    } finally {
+      await ctx.close();
+    }
   }
 });
+
+for (const [when, fixedTime] of [
+  ['today', undefined],
+  ['after gala removal', new Date(new Date(gala.homeSlide.removeAfter).getTime() + 60_000)],
+]) {
+  test(`homepage slider: a mouse drag changes slides quickly, without following links, and autoplay keeps going (${when})`, async () => {
+    const { ctx, page, box } = await openSlider({ viewport: { width: 1440, height: 900 } }, fixedTime);
+    try {
+      assert.equal(await page.locator('.frontpageSwiper .swiper-no-swiping').count(), 0, 'no slide blocks dragging');
+      assert.equal(await sliderIndex(page), 0);
+      // The scholars slide is always present, including after the gala is removed.
+      const infoIndex = await page.locator('.frontpageSwiper .slide-bg3').evaluate((el) => {
+        const swiper = el.closest('.frontpageSwiper').swiper;
+        const index = Number(el.closest('.swiper-slide').dataset.swiperSlideIndex);
+        if (swiper.realIndex !== index) swiper.slideToLoop(index, 0);
+        return index;
+      });
+      await page.waitForFunction((index) => {
+        const swiper = document.querySelector('.frontpageSwiper').swiper;
+        return swiper.realIndex === index && !swiper.animating;
+      }, infoIndex);
+      const nextIndex = (infoIndex + 1) % await page.evaluate(() => document.querySelector('.frontpageSwiper').swiper.slides.length);
+      // Drag its "Meet Our Scholars" link: it must move the slide, not open the link.
+      const start = await page.locator('.swiper-slide-active .slide-bg3 a[href="/award-recipients"]').boundingBox();
+      const y = start.y + start.height / 2;
+      await page.mouse.move(start.x + start.width / 2, y);
+      await page.mouse.down();
+      for (let i = 1; i <= 10; i++) await page.mouse.move(start.x + start.width / 2 - i * 40, y);
+      await page.mouse.up();
+      await page.waitForFunction((index) => document.querySelector('.frontpageSwiper').swiper.realIndex === index, nextIndex, { timeout: 2000 });
+      await page.waitForFunction(() => !document.querySelector('.frontpageSwiper').swiper.animating, null, { timeout: 1500 });
+      assert.equal(new URL(page.url()).pathname, '/', 'a drag is not a click');
+      assert.equal(await page.evaluate(() => document.querySelector('.frontpageSwiper').swiper.autoplay.running), true);
+      // Dragging back (left to right) returns to the scholars slide.
+      await page.mouse.move(box.x + box.width * 0.3, box.y + box.height / 2);
+      await page.mouse.down();
+      for (let i = 1; i <= 10; i++) await page.mouse.move(box.x + box.width * 0.3 + i * 40, box.y + box.height / 2);
+      await page.mouse.up();
+      await page.waitForFunction((index) => document.querySelector('.frontpageSwiper').swiper.realIndex === index, infoIndex, { timeout: 2000 });
+    } finally {
+      await ctx.close();
+    }
+  });
+}
 
 test('homepage slider: a finger swipe changes slides on phones', async () => {
   const { ctx, page, box } = await openSlider({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });

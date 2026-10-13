@@ -1237,9 +1237,9 @@
         font-size: 13px;
     }
 }
-/* Short phone screens (e.g. Safari with its toolbars showing): compact the gala
-   slide so the whole lockup fits below the logo and above the pagination. */
-@media (max-width:767px) and (max-height:760px) {
+/* Short screens, including landscape phones: compact the gala slide so the
+   whole lockup fits below the logo and above the pagination at any width. */
+@media (max-height:760px) {
     .slider-area .gala-slide {
         padding-top: 104px;
         padding-bottom: 40px;
@@ -1271,7 +1271,7 @@
         display: none;
     }
 }
-@media (max-width:767px) and (max-height:600px) {
+@media (max-height:600px) {
     .slider-area .gala-slide {
         padding-top: 98px;
     }
@@ -1285,5 +1285,35 @@
     .slider-area .gala-slide .gala-slide__subline {
         font-size: 14px;
         margin-bottom: 14px;
+    }
+}
+@media (max-height:600px) and (orientation:landscape) {
+    .slider-area .gala-slide {
+        padding-top: 96px;
+        padding-bottom: 24px;
+    }
+    .slider-area .gala-slide .gala-slide__eyebrow,
+    .slider-area .gala-slide .gala-slide__date {
+        font-size: 12px;
+        line-height: 1.4;
+    }
+    .slider-area .gala-slide .gala-slide__eyebrow,
+    .slider-area .gala-slide .gala-slide__title,
+    .slider-area .gala-slide .gala-slide__date {
+        margin-bottom: 8px;
+    }
+    /* Keep the date and buttons in single rows even below the phone-width
+       breakpoint, where the portrait layout would stack them. */
+    .slider-area .gala-slide .gala-slide__sep,
+    .slider-area .gala-slide .gala-slide__part {
+        display: inline;
+    }
+    .slider-area .gala-slide .gala-slide__subline {
+        font-size: 13px;
+        line-height: 1.35;
+        margin-bottom: 10px;
+    }
+    .slider-area .gala-slide .gala-slide__btn {
+        width: auto;
     }
 }

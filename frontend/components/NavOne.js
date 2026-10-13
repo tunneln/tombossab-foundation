@@ -18,7 +18,7 @@ const NavOne = ({ overHero = false }) => {
     const [sticky, setSticky] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const whiteNav = overHero && !sticky;
-    const logoSrc = whiteNav ? "/images/logo-white.png" : "/images/logo.png";
+    const logoSrc = whiteNav ? "/images/logo-white.svg" : "/images/logo.svg";
 
     useEffect(() => {
         const syncSticky = () => setSticky(window.scrollY > 100);
@@ -68,7 +68,7 @@ const NavOne = ({ overHero = false }) => {
                                     <div className="brand-logo">
                                         <Link href="/">
                                             <img id="white-logo" src={logoSrc} alt="Tombossa B Foundation" title="Tombossa B Foundation" />
-                                            <img id="black-logo" src="/images/logo.png" alt="Tombossa B Foundation" title="Tombossa B Foundation" />
+                                            <img id="black-logo" src="/images/logo.svg" alt="Tombossa B Foundation" title="Tombossa B Foundation" />
                                         </Link>
                                     </div>
                                     <div className="header-btn ml-auto">

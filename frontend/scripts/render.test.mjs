@@ -192,8 +192,8 @@ test('headers are compact (desktop 32px + 96px, hamburger 96px) and the hero fil
 // the served HTML (what shows before JavaScript, and what hydration keeps) and
 // live, through scrolling and client-side navigation both ways.
 test('the nav is white only at the top of the home page', async () => {
-  const WHITE = { logo: '/images/logo-white.png', whiteBars: true };
-  const DARK = { logo: '/images/logo.png', whiteBars: false };
+  const WHITE = { logo: '/images/logo-white.svg', whiteBars: true };
+  const DARK = { logo: '/images/logo.svg', whiteBars: false };
   const served = async (route) => {
     const html = await (await fetch(`${origin}${route}`)).text();
     return { logo: html.match(/<img id="white-logo" src="([^"]+)"/)?.[1], whiteBars: /class="fa fa-bars[^"]*white-nav-bar/.test(html) };

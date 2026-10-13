@@ -29,7 +29,7 @@ const IMAGES = path.resolve(__dirname, '../public/images');
 const GALA_URL = 'https://tombossabfoundation.org/gala';
 
 const INK = '#120C1C';
-const LOGO = `data:image/png;base64,${readFileSync(path.join(IMAGES, 'logo-white.png')).toString('base64')}`;
+const LOGO = `data:image/svg+xml;base64,${readFileSync(path.join(IMAGES, 'logo-white.svg')).toString('base64')}`;
 const MOTIF = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='18' viewBox='0 0 28 18'%3E%3Cg fill='none' stroke='%23C9A45C' stroke-width='1'%3E%3Cpath d='M0 1.5h28M0 16.5h28'/%3E%3Cpath d='M14 4l5 5-5 5-5-5z'/%3E%3C/g%3E%3Cg fill='%23C9A45C'%3E%3Cpath d='M14 7.6l1.4 1.4-1.4 1.4-1.4-1.4z'/%3E%3Ccircle cx='0' cy='9' r='1.3'/%3E%3Ccircle cx='28' cy='9' r='1.3'/%3E%3C/g%3E%3C/svg%3E\")";
 
 const page = (width, height, body, extraCss = '') => `<!doctype html><html><head><meta charset="utf-8">

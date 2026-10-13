@@ -603,7 +603,7 @@ This page will be shared everywhere. The link preview is the first impression.
 2. **OG image (`/public/images/gala-2026-og.jpg`, 1200×630):**
    - Content:
      - Gala palette background with the gold motif.
-     - Foundation logo (from `/public/images/logo-white.png` if it exists).
+     - Foundation logo (from `/public/images/logo-white.svg`).
      - `The Tombossa B Foundation Gala`
      - `Saturday, November 28, 2026`
      - `tombossabfoundation.org/gala`

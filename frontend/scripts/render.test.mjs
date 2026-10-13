@@ -193,10 +193,10 @@ test('headers are compact (desktop 32px + 96px, hamburger 96px) and the hero fil
 // live, through scrolling and client-side navigation both ways.
 test('the nav is white only at the top of the home page', async () => {
   const WHITE = { logo: '/images/logo-white.svg', whiteBars: true };
-  const DARK = { logo: '/images/logo.svg', whiteBars: false };
+  const DARK = { logo: '/images/logo-black.svg', whiteBars: false };
   const served = async (route) => {
     const html = await (await fetch(`${origin}${route}`)).text();
-    return { logo: html.match(/<img id="white-logo" src="([^"]+)"/)?.[1], whiteBars: /class="fa fa-bars[^"]*white-nav-bar/.test(html) };
+    return { logo: html.match(/<img id="site-logo" src="([^"]+)"/)?.[1], whiteBars: /class="fa fa-bars[^"]*white-nav-bar/.test(html) };
   };
   assert.deepEqual(await served('/'), WHITE, 'home page HTML');
   for (const route of ['/about', '/gala', '/events/community-field-day-2025']) {
@@ -209,13 +209,18 @@ test('the nav is white only at the top of the home page', async () => {
     await page.waitForFunction(() => document.documentElement.dataset.galaState); // hydrated
     const nav = () => page.evaluate(() => {
       const bars = document.querySelector('.mobile-menu-toggle i');
-      return { logo: document.getElementById('white-logo').getAttribute('src'), whiteBars: getComputedStyle(bars).color === 'rgb(255, 255, 255)' };
+      return { logo: document.getElementById('site-logo').getAttribute('src'), whiteBars: getComputedStyle(bars).color === 'rgb(255, 255, 255)' };
     });
-    const until = (want) => page.waitForFunction((src) => document.getElementById('white-logo').getAttribute('src') === src, want.logo);
+    const until = (want) => page.waitForFunction((src) => document.getElementById('site-logo').getAttribute('src') === src, want.logo);
+    // The white and black logos share one layout, so turning dark changes only the color.
+    const logoBox = () => page.evaluate(() => { const r = document.getElementById('site-logo').getBoundingClientRect(); return [r.x, r.width, r.height].map((v) => Math.round(v * 10) / 10); });
     assert.deepEqual(await nav(), WHITE, 'top of the home page');
+    const whiteBox = await logoBox();
     await page.evaluate(() => window.scrollTo(0, 600));
     await until(DARK);
     assert.deepEqual(await nav(), DARK, 'home page, scrolled');
+    await page.waitForFunction(() => document.getElementById('site-logo').complete);
+    assert.deepEqual(await logoBox(), whiteBox, 'the logo keeps its size and position when the nav turns dark');
     await page.evaluate(() => window.scrollTo(0, 0));
     await until(WHITE);
     assert.deepEqual(await nav(), WHITE, 'home page, scrolled back to the top');
@@ -229,6 +234,24 @@ test('the nav is white only at the top of the home page', async () => {
     assert.deepEqual(await nav(), WHITE, 'client-side navigation back home');
   } finally {
     await ctx.close();
+  }
+});
+
+// The header has one logo image: a desktop visitor downloads only the desktop
+// logo (not the hidden menu-layout ones), and the menu layout only its own.
+test('each header layout downloads only the logo it shows', async () => {
+  for (const [width, height, want] of [[1440, 900, ['logo.svg']], [390, 844, ['logo-white.svg']]]) {
+    const ctx = await browser.newContext({ viewport: { width, height } });
+    try {
+      const page = await ctx.newPage();
+      await blockExternal(page, origin);
+      const logos = [];
+      page.on('request', (r) => { const m = r.url().match(/\/images\/(logo(?:-white|-black)?\.svg)/); if (m) logos.push(m[1]); });
+      await page.goto(`${origin}/`, { waitUntil: 'load', timeout: 30000 });
+      assert.deepEqual([...new Set(logos)], want, `${width}x${height}`);
+    } finally {
+      await ctx.close();
+    }
   }
 });
 

@@ -285,10 +285,7 @@ a[href^="mailto:"] {
 }
 
 /*=== header-top ====*/
-#white-logo {
-    display: none;
-}
-#black-logo {
+#site-logo {
     display: block;
 }
 .white-nav-bar {
@@ -858,9 +855,6 @@ a[href^="mailto:"] {
 /*===================================
         SLIDER AREA
  =====================================*/
-.logo-img {
-    src: "/images/logo.png";
-}
 .slider-area  {
     position: relative;
     z-index: 1;

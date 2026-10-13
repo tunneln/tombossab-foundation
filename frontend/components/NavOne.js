@@ -7,6 +7,12 @@ import DonateButton from "./DonateButton";
 import GalaNavButton from "./GalaNavButton";
 import { useRoutePath } from "../lib/route-path";
 
+// The full desktop header (same query as its CSS) shows logo.svg. The menu-icon
+// layout shows logo-white.svg over the home hero and logo-black.svg elsewhere:
+// one layout in two colors, so scrolling only changes the color. <picture>
+// downloads just the logo that is shown.
+const DESKTOP_HEADER = "(width > 1366px) and (aspect-ratio > 4/3)";
+
 // `overHero`: the page opens with the nav over a dark full-screen hero (the home
 // page), so the nav starts in its "white" treatment (white logo + white
 // hamburger) and keeps it until scrolled; dark everywhere else. The page says so
@@ -18,7 +24,7 @@ const NavOne = ({ overHero = false }) => {
     const [sticky, setSticky] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const whiteNav = overHero && !sticky;
-    const logoSrc = whiteNav ? "/images/logo-white.svg" : "/images/logo.svg";
+    const logoSrc = whiteNav ? "/images/logo-white.svg" : "/images/logo-black.svg";
 
     useEffect(() => {
         const syncSticky = () => setSticky(window.scrollY > 100);
@@ -67,8 +73,10 @@ const NavOne = ({ overHero = false }) => {
                                 <div className="logo-action d-flex align-items-center">
                                     <div className="brand-logo">
                                         <Link href="/">
-                                            <img id="white-logo" src={logoSrc} alt="Tombossa B Foundation" title="Tombossa B Foundation" />
-                                            <img id="black-logo" src="/images/logo.svg" alt="Tombossa B Foundation" title="Tombossa B Foundation" />
+                                            <picture>
+                                                <source media={DESKTOP_HEADER} srcSet="/images/logo.svg" />
+                                                <img id="site-logo" src={logoSrc} alt="Tombossa B Foundation" title="Tombossa B Foundation" />
+                                            </picture>
                                         </Link>
                                     </div>
                                     <div className="header-btn ml-auto">

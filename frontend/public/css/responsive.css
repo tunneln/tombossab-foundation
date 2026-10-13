@@ -48,12 +48,6 @@
 }
 
 @media (max-width:1366px), (max-aspect-ratio: 4/3) {
-    #white-logo {
-        display: block;
-    }
-    #black-logo {
-        display: none;
-    }
     .slider__desc {
         padding-left: 33%;
     }

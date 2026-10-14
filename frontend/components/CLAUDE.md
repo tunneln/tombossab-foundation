@@ -4,7 +4,7 @@ Reusable UI, one component per site section. ~40 components; you should not need
 
 ## Server vs client
 
-Components are **server components by default** (no pragma). Add `"use client"` as the first line only when the component needs state, effects, browser APIs, event handlers, context, or styled-jsx. Current client components: the donate family (`DonateProvider/DonateModal/DonateButton/Donate`), `NavOne`, `Footer`, the forms (`Contact`, `Volunteer`), the swiper users (`SliderOne`, `ClientsLogo`, `ClientsLogoTwo`, `MixerArea`), `EntryArea`, `VideoModal`, `Gallery`, `FaqArea`, `Map`, `GalaNavButton`, `GalaEvents`, `GalaCheckout` (app-level ticket modal; shares `useDialog` with `DonateModal`), and the interactive pieces in `gala/`. Everything presentational stays server-rendered.
+Components are **server components by default** (no pragma). Add `"use client"` as the first line only when the component needs state, effects, browser APIs, event handlers, context, or styled-jsx (`grep -l '"use client"'` lists the current ones; `GalaCheckout` shares `useDialog` with `DonateModal`). Everything presentational stays server-rendered.
 
 ## Gala 2026 (`gala/`)
 
@@ -12,12 +12,7 @@ The `/gala` page sections, styled by one CSS module (`gala/Gala.module.css`, its
 
 ## Style
 
-- Functional components with arrow syntax, default-exported:
-  ```js
-  import React from 'react';
-  const Thing = () => { return ( /* JSX */ ); };
-  export default Thing;
-  ```
+- Functional components with arrow syntax (`const Thing = () => …`), default-exported.
 - 4-space indentation. `import Link from 'next/link';` for internal links.
 - Prefer hooks over class components. `NavOne.js` is the hooks reference. Read the current route with `useRoutePath()` from `../lib/route-path.js`, never `usePathname()` directly (Vercel renders the regenerated home page as `/index`; a test enforces this) or `next/router`.
 - Markup is Bootstrap grid (`container` / `row` / `col-lg-*`) plus the site's shared CSS classes. Reuse existing classes (`theme-btn`, `section-heading`, `blog-item`, `recent-item`, `team-item`) before writing new CSS.

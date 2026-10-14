@@ -19,7 +19,7 @@ Design rationale for the architecture lives in `docs/refactor-plan.md`.
 
 ## Verification — definition of done
 
-- Frontend change: `cd frontend && npm run build && npm test` must be green. New page ⇒ add its ROUTES entry **before** running tests.
+- Frontend change: `cd frontend && npm run build && npm test` must be green. New page ⇒ add its ROUTES entry in `frontend/scripts/render.test.mjs` **before** running tests.
 - Visual/CSS/image change: a passing build is not proof — render it with `node frontend/scripts/shoot.mjs <label> [routes...]` and compare. Be token-frugal: viewport/cropped shots + DOM assertions, one build+shoot cycle (the homepage is ~11,600 px tall full-page). Final gate: diff against the live site.
 - Backend change: `cd backend && ./mvnw test`; also `./mvnw verify` when touching migrations, persistence, or `SecurityConfig`.
 - Content change: follow the `content-update` skill (migration + fixture + assets + tests, all in one PR).
@@ -38,20 +38,16 @@ Content (recipients, newsletters, events) lives in Postgres, seeded by versioned
 
 ## Frontend conventions
 
-- Routes in `frontend/app/` (see `app/CLAUDE.md`). Standard page: `NavOne → PageHeader → [section components] → Footer`, plus `export const metadata = { title: 'Tombossa B Foundation | X' }`.
-- One component per section in `frontend/components/` — server components by default, `"use client"` only for interactivity (see `components/CLAUDE.md`).
 - Brand accent gold `#f1ae44`. Reuse the shared classes (`theme-btn`, `section-heading`, `blog-item`, `recent-item`, `slide-bg*`) instead of bespoke CSS. **One deliberate exception: the gala.** Everything that belongs to the gala shares its own event palette (gold `#C9A45C`/`#E3C98F` on plum) so it all reads as one event. It lives in exactly these places: the `/gala` page (`components/gala/Gala.module.css`), its homepage slide (the `gala-slide__*` rules in style.css + responsive.css), the header "Gala Tickets" pill (`components/GalaNavButton.module.css`), the ticket checkout pop-up (`components/GalaCheckout.module.css`), and the `/events` gala card (`.blog__tag-gala`, `.event-card--gala`, `.event-card__pill` in style.css). Keep it to those; everything else uses the site's. Site styling is runtime CSS under `public/` (`css/` + `plugins/`) whose order is load-bearing — managed in `app/layout.js`, do not convert to bundler imports.
 - Plain `<img>`, never `next/image`. Static assets in `frontend/public/`; PDF/static links get `<a target="_blank" rel="noopener noreferrer">`.
 - Nav is `NavOne.js`; homepage slider is `SliderOne.js` (`slide-bg*` classes in style.css + responsive.css, never inline backgrounds).
-- New page ⇒ add its ROUTES entry in `frontend/scripts/render.test.mjs` (the coverage guard fails the suite otherwise).
 
 ## Backend
 
-See `backend/CLAUDE.md`. Public surface: `GET /api/{recipients,newsletters,events}`, `POST /api/{contact,volunteer,subscriptions}`. Security is closed-by-default (`anyRequest().denyAll()`), CORS-allowlisted to the production domains, POSTs rate-limited per IP. Swagger at `/swagger-ui`.
+See `backend/CLAUDE.md`.
 
 ## Gotchas
 
-- PDF cover thumbnails: use macOS `qlmanage` — ImageMagick here lacks ghostscript and can't rasterize PDFs.
 - Vercel preview deploys are deliberately NOT in the backend CORS allowlist — previews render fixtures.
 
 ## Git

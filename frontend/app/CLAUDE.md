@@ -4,28 +4,7 @@ App Router: `x/page.js` is route `/x`. Everything is a server component unless m
 
 ## Standard page shape
 
-```js
-import React from 'react';
-import NavOne from "../../components/NavOne";
-import PageHeader from "../../components/PageHeader";
-import SomeSection from "../../components/SomeSection";
-import Footer from "../../components/Footer";
-
-export const metadata = { title: "Tombossa B Foundation | Something" };
-
-const SomethingPage = () => {
-    return (
-        <>
-            <NavOne />
-            <PageHeader title="Something" />
-            <SomeSection />
-            <Footer />
-        </>
-    );
-};
-
-export default SomethingPage;
-```
+`NavOne → PageHeader → [section components] → Footer`, plus `export const metadata` (mirror any existing page, e.g. `about/page.js`).
 
 - Component named `XPage`, default-exported.
 - Title format `"Tombossa B Foundation | X"`; home has no title export (inherits the bare root title).
@@ -35,19 +14,7 @@ export default SomethingPage;
 
 ## Data-driven pages
 
-Async server component + a `lib/api.js` getter (API fetch with ISR caching, falling back to the committed fixture in `data/`):
-
-```js
-import { getRecipients } from '../../lib/api';
-export const metadata = { title: "Tombossa B Foundation | Scholarship | Award Recipients" };
-
-const AwardRecipientsPage = async () => {
-    const recipients = await getRecipients();
-    return ( /* ...sections receiving the array as a prop... */ );
-};
-```
-
-See `award-recipients/`, `newsletters/`, `events/`. Event detail pages: `events/[slug]/page.js` maps slugs to bespoke detail components via its `DETAILS` registry + `generateStaticParams` (`dynamicParams = false` — unknown slugs 404).
+Async server component + a `lib/api.js` getter (API fetch with ISR caching, falling back to the committed fixture in `data/`); the page awaits the getter and passes the array to its sections as a prop. See `award-recipients/`, `newsletters/`, `events/`. Event detail pages: `events/[slug]/page.js` maps slugs to bespoke detail components via its `DETAILS` registry + `generateStaticParams` (`dynamicParams = false` — unknown slugs 404).
 
 ## /gala
 

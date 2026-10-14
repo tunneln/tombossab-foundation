@@ -857,6 +857,21 @@ test('homepage: gala content and both buttons fit on short portrait and landscap
   }
 });
 
+// The compact gala layout is for phones only: laptop and tablet windows that are
+// merely short keep the full slide (the motif under the buttons is the tell).
+test('homepage: short laptop and tablet windows keep the full gala slide', async () => {
+  const fixedTime = new Date('2026-11-01T12:00:00-06:00');
+  for (const [width, height, mobile] of [[1536, 730, false], [1440, 760, false], [1366, 657, false], [1024, 690, true], [800, 600, false]]) {
+    const { ctx, page } = await openSlider({ viewport: { width, height }, isMobile: mobile, hasTouch: mobile }, fixedTime);
+    try {
+      const motif = await page.locator('.swiper-slide-active .slide-bg-gala .gala-slide__motif').evaluate((el) => getComputedStyle(el).display);
+      assert.notEqual(motif, 'none', `${width}x${height}: full gala slide, not the phone layout`);
+    } finally {
+      await ctx.close();
+    }
+  }
+});
+
 for (const [when, fixedTime] of [
   ['today', undefined],
   ['after gala removal', new Date(new Date(gala.homeSlide.removeAfter).getTime() + 60_000)],

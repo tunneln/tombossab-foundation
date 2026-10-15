@@ -143,7 +143,7 @@ const SliderOne = () => {
                                     <div className="row">
                                         <div className="slider-heading">
                                             <h3 className="slider__desc">
-                                                <div className="slider__box">Read our September Newsletter&nbsp;— highlights from the Eritrean Festival and a <span className="text-nowrap">save-the-date</span> for our 2026 Gala!</div>
+                                                <div className="slider__box">Read our September Newsletter: highlights from the Eritrean Festival and a <span className="text-nowrap">save-the-date</span> for our 2026 Gala!</div>
                                             </h3>
                                         </div>
                                         <a href="/newsletters/september-2026-newsletter.pdf" target="_blank" rel="noopener noreferrer" className="theme-btn slider-btn">Read Here!</a>

@@ -139,9 +139,10 @@ test('legacy .html URLs permanently redirect to the clean URL', async () => {
 
 // The full desktop header (contact bar + nav, > 1366px and wider than 4:3) is
 // the compact 32px + 96px version, and the homepage hero still fills the
-// screen exactly below it. The hamburger header (everywhere else) is 96px too,
-// with the hero pulled up under it to start at the very top.
-test('headers are compact (desktop 32px + 96px, hamburger 96px) and the hero fills the screen', async () => {
+// screen exactly below it. The hamburger header (everywhere else) is 108px,
+// leaving the logo room above and below it, or 96px on short screens (phones
+// turned sideways), with the hero pulled up under it to start at the very top.
+test('headers are compact (desktop 32px + 96px, hamburger 108px, 96px when short) and the hero fills the screen', async () => {
   const measure = async (width, height, mobile = false) => {
     const ctx = await browser.newContext({ viewport: { width, height }, isMobile: mobile, hasTouch: mobile });
     try {
@@ -178,9 +179,9 @@ test('headers are compact (desktop 32px + 96px, hamburger 96px) and the hero fil
     assert.equal(m.donate, 46, `${width}px: header Donate button`);
     if (m.pill !== null) assert.equal(m.pill, m.donate, `${width}px: Gala Tickets matches Donate`);
   }
-  for (const [width, height, mobile] of [[1366, 768, false], [1024, 768, true], [390, 844, true]]) {
+  for (const [width, height, mobile, nav] of [[1366, 768, false, 108], [1024, 768, true, 108], [390, 844, true, 108], [844, 390, true, 96]]) {
     const m = await measure(width, height, mobile);
-    assert.equal(m.nav, 96, `${width}px: hamburger header`);
+    assert.equal(m.nav, nav, `${width}x${height}: hamburger header`);
     assert.ok(Math.abs(m.burgerMid - m.logoMid) <= 1, `${width}px: menu icon level with the logo (${m.burgerMid} vs ${m.logoMid})`);
     assert.equal(Math.round(m.heroTop), 0, `${width}px: the hero starts at the top, under the header`);
     assert.equal(Math.round(m.heroBottom), height, `${width}px: the hero fills the screen`);

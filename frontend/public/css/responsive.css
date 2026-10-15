@@ -55,10 +55,6 @@
     .hiw-area {
         padding-top: 0px;
     }
-    .entry-area,
-    .slider-area  {
-        top: -120px;
-    }
     .header-semi-fixed {
         background-color: rgba(255, 255, 255, 0);
     }
@@ -129,9 +125,8 @@
    of (max-width:1366px), (max-aspect-ratio: 4/3). A more compact header:
    contact/social bar 38px -> 32px, nav bar 120px -> 96px (158px -> 128px in
    all), logo 95px -> 74px tall, header buttons 49px -> 46px, nav links
-   centered in the bar. The hamburger layout keeps its 120px bar: its hero is
-   positioned against that height (top: -120px above). Browsers without range
-   media queries keep the previous header as a whole. */
+   centered in the bar. The hamburger layout sizes its own bar (below).
+   Browsers without range media queries keep the previous header as a whole. */
 @media (width > 1366px) and (aspect-ratio > 4/3) {
     /* Also sizes the header "Gala Tickets" pill (GalaNavButton.module.css). */
     .header-area {
@@ -209,8 +204,8 @@
         top: calc(-1 * var(--nav-bar-height));
     }
 }
-/* Short screens (phones turned sideways) keep a 96px bar: their slides have
-   no height to spare. */
+/* Short screens (phones turned sideways, short laptop windows) keep a 96px
+   bar: their slides have no height to spare. */
 @media (max-width:1366px) and (max-height:500px) {
     :root {
         --nav-bar-height: 96px;
@@ -1282,7 +1277,7 @@
 }
 @media (max-width:767px) and (max-height:600px), (max-width:1366px) and (max-height:500px) {
     .slider-area .gala-slide {
-        padding-top: 98px;
+        padding-top: calc(var(--nav-bar-height) + 2px);
     }
     /* Very short screens: a single line, so everything fits above the buttons. */
     .slider-area .gala-slide .gala-slide__title {
@@ -1298,7 +1293,7 @@
 }
 @media (max-width:1366px) and (max-height:500px) and (orientation:landscape) {
     .slider-area .gala-slide {
-        padding-top: 96px;
+        padding-top: var(--nav-bar-height);
         padding-bottom: 24px;
     }
     .slider-area .gala-slide .gala-slide__eyebrow,

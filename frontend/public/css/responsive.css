@@ -49,13 +49,8 @@
 
 @media (max-width:1366px), (max-aspect-ratio: 4/3) {
     .slider__desc {
+        font-size: 24px;
         padding-left: 33%;
-    }
-    .slider__box {
-        border-top: 50px solid rgba(227, 105, 85, 1);
-        border-right: 29px solid rgba(227, 105, 85, 1);
-        border-bottom: 53px solid rgba(227, 105, 85, 1);
-        border-left: 33px solid rgba(227, 105, 85, 1);
     }
     .hiw-area {
         padding-top: 0px;
@@ -240,9 +235,6 @@
 
 /*=== 1199px ===*/
 @media (max-width:1199px) {
-    .slider__desc {
-        /* font-size: 45px; */
-    }
     .helping-area2:after,
     .mixer-area2:after {
         display: none;
@@ -432,9 +424,6 @@
     }
     .header-area .header-top-action .top-action-content .info-box-2 {
         /* padding-top: 0; */
-    }
-    .slider__desc {
-        /* font-size: 37px; */
     }
     .slider-area .single-slide-item:after {
         display: none;
@@ -676,7 +665,7 @@
         line-height: 90px;
     }
     .slider__desc {
-        font-size: 28px;
+        font-size: 21px;
     }
     .hiw-area .col {
         -ms-flex: 0 0 100%;
@@ -770,8 +759,13 @@
         display: none;
         margin-bottom: -60px;
     }
+    /* Homepage slide caption: the text grows about 1px per 27px of screen width
+       (19.8px at 360px wide, 21px at 393px, 23px from 448px) and the box starts
+       21% in instead of 33% to make room for it, so the caption keeps the same
+       shape and line breaks from phone to phone. */
     .slider__desc {
-        font-size: 24px;
+        font-size: clamp(18px, 6.6px + 3.66vw, 23px);
+        padding-left: 21%;
     }
     .header-area .header-top-action .top-action-content:before {
         display: none;
@@ -829,6 +823,14 @@
         width: 75%;
     }
 }
+/* Short screens up to 1366px wide (phones turned sideways, short laptop
+   windows) keep the slide caption at 18px so it stays clear of the header.
+   It must come after the 1366px, 767px and 575px caption sizes above. */
+@media (max-width:1366px) and (max-height:500px) {
+    .slider__desc {
+        font-size: 18px;
+    }
+}
 /*-----------------------------
     480px
 ------------------------------*/
@@ -848,9 +850,6 @@
     425px
 ------------------------------*/
 @media (max-width:425px) {
-    .slider__desc {
-        /* font-size: 22px; */
-    }
     .slider-area .slider-heading .slider__title {
         font-size: 55px;
         line-height: 70px;
@@ -972,9 +971,6 @@
     .breadcrumb-area .breadcrumb-content .breadcrumb__title {
         font-size: 30px;
         line-height: 36px;
-    }
-    .slider__desc {
-        font-size: 22px;
     }
     .section-heading .section__title {
         font-size: 36px;

@@ -1043,23 +1043,30 @@ a[href^="mailto:"] {
     font-weight: 900;
     margin-bottom: 47px;
 }
+/* The homepage slides' caption box, anchored to the slide's bottom-right
+   corner. Its padding (the same-color borders) and maximum width are in em, so
+   the whole box scales with the font size each breakpoint sets (responsive.css). */
 .slider__desc {
-    font-size: 2em;
+    /* Desktop: 24px at 1440px wide, 26px at 1920px, 28px from about 2400px. */
+    font-size: clamp(24px, 18px + 0.42vw, 28px);
     color: #fff;
     /* font-weight: 850; */
     position: absolute;
+    right: 0;
     padding-right: 45px;
     padding-left: 45%;
     bottom: 80px;
-    line-height: 1.15;
+    line-height: 1.25;
     word-wrap: break-word;
 }
 .slider__box {
+    max-width: 21em;
     background-color: rgba(227, 105, 85, 1);
-    border-top: 55px solid rgba(227, 105, 85, 1);
-    border-right: 37px solid rgba(227, 105, 85, 1);
-    border-bottom: 58px solid rgba(227, 105, 85, 1);
-    border-left: 37px solid rgba(227, 105, 85, 1);
+    border-top: 1.45em solid rgba(227, 105, 85, 1);
+    border-right: 1.15em solid rgba(227, 105, 85, 1);
+    border-bottom: 1.55em solid rgba(227, 105, 85, 1);
+    border-left: 1.15em solid rgba(227, 105, 85, 1);
+    text-wrap: pretty;
 }
 /*=== owl-nav ===*/
 .slider-area .homepage-slide1 .owl-dots {

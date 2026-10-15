@@ -4,7 +4,7 @@ Reusable UI, one component per site section. ~40 components; you should not need
 
 ## Server vs client
 
-Components are **server components by default** (no pragma). Add `"use client"` as the first line only when the component needs state, effects, browser APIs, event handlers, context, or styled-jsx (`grep -l '"use client"'` lists the current ones; `GalaCheckout` shares `useDialog` with `DonateModal`). Everything presentational stays server-rendered.
+Components are **server components by default** (no pragma). Add `"use client"` as the first line only when the component needs state, effects, browser APIs, event handlers, context, or styled-jsx (`grep -rl '"use client"' frontend/components` lists the current ones; `GalaCheckout` shares `useDialog` with `DonateModal`). Everything presentational stays server-rendered.
 
 ## Gala 2026 (`gala/`)
 

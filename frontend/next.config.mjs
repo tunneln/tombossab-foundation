@@ -11,6 +11,21 @@ if (process.env.VERCEL_ENV === 'production') {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    // Don't advertise the framework (X-Powered-By: Next.js).
+    poweredByHeader: false,
+    async headers() {
+        return [
+            {
+                source: '/:path*',
+                headers: [
+                    // Nothing frames this site, so refuse framing outright (clickjacking).
+                    { key: 'X-Frame-Options', value: 'DENY' },
+                    { key: 'X-Content-Type-Options', value: 'nosniff' },
+                    { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+                ],
+            },
+        ];
+    },
     async redirects() {
         // Legacy URLs, carried over from the old backend HtmlController 301s.
         return [

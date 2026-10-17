@@ -1,7 +1,8 @@
 # Local development dependencies for the backend.
 #   docker compose -f docker-compose.dev.yml up -d
 # Postgres matches application-local.properties; Mailpit catches outbound
-# mail (SMTP :1025, web UI http://localhost:8025).
+# mail (SMTP :1025, web UI http://localhost:8025). Ports bind to localhost
+# only, so nothing is reachable from other machines on the network.
 name: tombossab-dev
 
 services:
@@ -12,7 +13,7 @@ services:
       POSTGRES_USER: tombossa
       POSTGRES_PASSWORD: tombossa
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - pgdata-dev:/var/lib/postgresql/data
     healthcheck:
@@ -24,8 +25,8 @@ services:
   mailpit:
     image: axllent/mailpit:latest
     ports:
-      - "1025:1025"
-      - "8025:8025"
+      - "127.0.0.1:1025:1025"
+      - "127.0.0.1:8025:8025"
 
 volumes:
   pgdata-dev:

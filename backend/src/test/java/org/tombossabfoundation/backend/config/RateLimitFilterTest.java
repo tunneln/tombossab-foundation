@@ -43,15 +43,15 @@ class RateLimitFilterTest {
 	}
 
 	@Test
-	void forwardedForHeader_identifiesTheClientBehindCaddy() throws Exception {
+	void spoofedForwardedForHeader_doesNotBuyAFreshBucket() throws Exception {
 		RateLimitFilter filter = new RateLimitFilter(new RateLimitProperties(1, 1));
-		MockHttpServletRequest request = post("172.18.0.2");
-		request.addHeader("X-Forwarded-For", "203.0.113.9, 172.18.0.2");
+		MockHttpServletRequest request = post("203.0.113.9");
+		request.addHeader("X-Forwarded-For", "198.51.100.1");
 		filter.doFilter(request, new MockHttpServletResponse(), new MockFilterChain());
 
-		// Same forwarded client from a different proxy hop is still rate-limited.
-		MockHttpServletRequest again = post("172.18.0.3");
-		again.addHeader("X-Forwarded-For", "203.0.113.9");
+		// Inventing another forwarded address doesn't escape the limit.
+		MockHttpServletRequest again = post("203.0.113.9");
+		again.addHeader("X-Forwarded-For", "198.51.100.2");
 		MockHttpServletResponse limited = new MockHttpServletResponse();
 		filter.doFilter(again, limited, new MockFilterChain());
 		assertEquals(429, limited.getStatus());

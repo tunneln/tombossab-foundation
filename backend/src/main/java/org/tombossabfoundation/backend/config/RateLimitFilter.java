@@ -21,6 +21,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * Per-client-IP token bucket over the public POST endpoints. In-memory is
  * deliberate: the API runs as a single instance; swap the map for a shared
  * store if that ever changes.
+ * <p>
+ * The client IP is {@code getRemoteAddr()}. Behind Caddy in production,
+ * Tomcat's RemoteIpValve ({@code server.forward-headers-strategy=native}) has
+ * already set it from X-Forwarded-For, and only for requests from a trusted
+ * internal proxy. Never read that header here: any client can send it.
  */
 public class RateLimitFilter extends OncePerRequestFilter {
 
@@ -56,7 +61,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
-		Bucket bucket = buckets.computeIfAbsent(clientKey(clientIp(request)), ip -> newBucket());
+		Bucket bucket = buckets.computeIfAbsent(clientKey(request.getRemoteAddr()), ip -> newBucket());
 		if (bucket.tryConsume(1)) {
 			chain.doFilter(request, response);
 			return;
@@ -99,15 +104,6 @@ public class RateLimitFilter extends OncePerRequestFilter {
 		} catch (UnknownHostException e) {
 			return ip;
 		}
-	}
-
-	/** Caddy fronts the app in production and sets X-Forwarded-For. */
-	private String clientIp(HttpServletRequest request) {
-		String forwarded = request.getHeader("X-Forwarded-For");
-		if (forwarded != null && !forwarded.isBlank()) {
-			return forwarded.split(",")[0].trim();
-		}
-		return request.getRemoteAddr();
 	}
 
 }

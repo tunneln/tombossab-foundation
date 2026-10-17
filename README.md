@@ -22,7 +22,7 @@ education, support, and opportunity. Live at
 - **Backend** (`backend/`): domain-oriented Spring Boot API (content read side,
   engagement write side, async notifications). Closed-by-default security,
   CORS allowlist, per-IP rate limiting, RFC-9457 error responses, Flyway
-  migrations, OpenAPI docs at `/swagger-ui`.
+  migrations, OpenAPI docs at `/swagger-ui` (off in production).
 - **Infra** (`deploy/`): Docker Compose (app + Postgres + Caddy), nightly
   `pg_dump` to S3, GitHub Actions CI/CD (backend image → GHCR → SSH deploy →
   ISR revalidate ping). Cutover/ops runbook in `deploy/RUNBOOK.md`.

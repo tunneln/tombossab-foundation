@@ -18,7 +18,7 @@ Spring Boot 3.5 / Java 21 / PostgreSQL 16 + Flyway. Standalone JSON API for the 
 | `POST /api/contact`, `POST /api/volunteer` | 202 + `{status:"accepted"}`; persisted, then emailed |
 | `POST /api/subscriptions` | 201 new / 200 duplicate (idempotent); email normalized lowercase |
 
-Swagger UI at `/swagger-ui`; health at `/actuator/health` (the only actuator endpoint exposed). POSTs are rate-limited 5/min/IP (bucket4j; `X-Forwarded-For`-aware — Caddy sets it).
+Swagger UI at `/swagger-ui` (disabled in the prod profile); health at `/actuator/health` (the only actuator endpoint exposed). POSTs are rate-limited 5/min/IP (bucket4j; keyed on `getRemoteAddr()`, which Tomcat sets from Caddy's `X-Forwarded-For` in prod — never read that header directly).
 
 ## Add an endpoint (recipe)
 

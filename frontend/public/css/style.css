@@ -5047,19 +5047,38 @@ html {
     background: #f1ae44;
 }
 
-/* Side Donate tab. Hidden on desktop; shown only at <=1024px (where the header
-   donate button hides, see responsive.css), so each viewport has exactly one
-   donate CTA. A slim tab on the right edge, its top end 10px below the header:
-   it turns a quarter up around its top-right corner after moving up by its own
+/* Side tab on phones and tablets, shared by the Donate tab (.donate-floating)
+   and the gold "Gala Tickets" tab on /gala (GalaNavButton). It hangs off the
+   right edge with its top end 10px below what holds it: the header bar (NavOne
+   renders it inside the bar, so it moves with the header) or, on pages with a
+   title card, the zero-height holder under the card (.donate-tab-anchor). It
+   turns a quarter up around its top-right corner after moving up by its own
    thickness, so `top` places its top end exactly and it meets the right edge
    whatever its size. */
-.donate-floating {
-    position: fixed;
-    top: calc(var(--nav-bar-height, 96px) + 10px);
+.side-tab {
+    position: absolute;
+    top: calc(100% + 10px);
     right: 0;
     transform: rotate(-90deg) translateY(-100%);
     transform-origin: top right;
     z-index: 9990;
+}
+/* A 44px-deep touch target from the screen edge in, whatever the tab's
+   thickness (its bottom edge is the one on the screen edge once turned). */
+.side-tab::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 44px;
+}
+
+/* Side Donate tab. Hidden on desktop; shown only at <=1024px (where the header
+   donate button hides, see responsive.css), so each viewport has exactly one
+   donate CTA. The visibility delay keeps it hidden until the side menu has
+   finished sliding out (responsive.css). */
+.donate-floating {
     display: none;
     align-items: center;
     width: fit-content;
@@ -5067,11 +5086,12 @@ html {
     color: #ffffff;
     font-size: 13px;
     line-height: 18px;
-    /* Tight ends: see the heart below. */
-    padding: 6px 7px;
+    /* 36px thick (18px line + 2 x 9px); short ends, see the heart below. */
+    padding: 9px 7px;
     border-radius: 6px 6px 0 0;
     text-decoration: none;
     white-space: nowrap;
+    transition: visibility 0s linear 0.4s;
 }
 
 .donate-floating:hover {
@@ -5090,16 +5110,15 @@ html {
 /* Pages with a title card: PageHeader renders the tab again right after the
    card, in this zero-height sticky holder. The tab starts 10px below the card,
    whatever the card's height, and once the card scrolls away the holder sticks
-   under the header, so the tab rides 10px below it. responsive.css shows the
-   holder and hides the header's copy of the tab on these pages. */
+   under the header, so the tab rides 10px below it. The bottom offset (10px +
+   the ~75px tab + 10px) keeps the tab on screen when a tall card nearly fills a
+   short screen (a phone turned sideways). responsive.css shows the holder and
+   hides the header's copy of the tab on these pages. */
 .donate-tab-anchor {
     display: none;
     position: sticky;
     top: var(--nav-bar-height, 96px);
+    bottom: 95px;
     height: 0;
     z-index: 9990;
-}
-.donate-tab-anchor .donate-floating {
-    position: absolute;
-    top: 10px;
 }

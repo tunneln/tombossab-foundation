@@ -122,6 +122,13 @@ const NavOne = ({ overHero = false }) => {
                             </div>
                         </div>
                     </div>
+                    {/* Side tab for phones and tablets (replaces Donorbox's injected popup
+                        button), hanging just below this bar so it moves with it (.side-tab in
+                        style.css). Pages with a title card show PageHeader's copy instead. On
+                        /gala it is a gold "Gala Tickets" tab while tickets are selling. */}
+                    {pathname === '/gala'
+                        ? <GalaNavButton placement="floating" fallback={<DonateButton className="donate-floating side-tab" />} />
+                        : <DonateButton className="donate-floating side-tab" />}
                 </div>
                 <div className={`side-nav-container${menuOpen ? ' active' : ''}`}>
                     <div className="humburger-menu">
@@ -162,12 +169,6 @@ const NavOne = ({ overHero = false }) => {
                     </div>
                 </div>
             </header>
-            {/* Side donate tab for phones and tablets (replaces Donorbox's injected popup
-                button); pages with a title card show PageHeader's copy instead. On /gala
-                it becomes a gold "Gala Tickets" tab while tickets are selling. */}
-            {pathname === '/gala'
-                ? <GalaNavButton placement="floating" fallback={<DonateButton className="donate-floating" />} />
-                : <DonateButton className="donate-floating" />}
         </div>
     );
 };

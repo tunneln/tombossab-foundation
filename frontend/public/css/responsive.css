@@ -384,17 +384,15 @@
         display: block;
     }
 }
-/* Side donate tab (style.css): on pages with a title card, the copy under the
-   card replaces the one after the header. The tab hides as soon as the side
-   menu, which slides in from the right, opens, and comes back only once the
-   menu has finished sliding out (0.4s), so it never sits on top of it. */
-body:has(.donate-tab-anchor) .header-area ~ .donate-floating {
+/* Side tab (style.css): on pages with a title card, the copy under the card
+   replaces the one in the header. The tab hides as soon as the side menu, which
+   slides in from the right, opens, and comes back only once the menu has
+   finished sliding out (each tab's 0.4s visibility delay), so it never sits on
+   top of it. */
+body:has(.donate-tab-anchor) .header-area .side-tab {
     display: none;
 }
-.donate-floating {
-    transition: visibility 0s linear 0.4s;
-}
-body:has(.side-nav-container.active) .donate-floating {
+body:has(.side-nav-container.active) .side-tab {
     visibility: hidden;
     transition-delay: 0s;
 }

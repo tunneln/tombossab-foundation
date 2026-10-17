@@ -48,9 +48,9 @@ const PageHeader = ({ title, prev, link, crumbs, imgUrl }) => {
             </section>
             {/* Phones and tablets: the side Donate tab, starting just below this
                 card and then riding just below the header (.donate-tab-anchor in
-                style.css). It replaces the tab NavOne renders after the header. */}
+                style.css). It replaces the tab NavOne renders in the header. */}
             <div className="donate-tab-anchor">
-                <DonateButton className="donate-floating" />
+                <DonateButton className="donate-floating side-tab" />
             </div>
         </>
     );

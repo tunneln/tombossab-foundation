@@ -75,33 +75,23 @@
     background-color: #E3C98F;
 }
 
-/* /gala side tab: a gold take on the side Donate tab it replaces there, in the
-   same place (right edge, top end 10px below the header) and, like it, shown
-   only at <= 1024px and hidden while the side menu is open, until the menu has
-   slid out (public/css/style.css + responsive.css). It turns a quarter up the
-   same way, so it meets the right edge whatever its size; the shadow is set
-   before the turn, so -2px here falls into the page. */
+/* /gala side tab: a gold take on the side Donate tab it replaces there. Its
+   placement, touch target and hiding while the side menu is open come from the
+   shared `side-tab` class (public/css/style.css + responsive.css); like the
+   Donate tab it shows only at <= 1024px. The shadow is set before the tab turns,
+   so -2px here falls into the page; the visibility delay keeps it hidden until
+   the side menu has slid out. */
 .pill.floating { display: none; }
 @media (max-width: 1024px) {
     .pill.floating {
         display: inline-flex;
-        position: fixed;
-        top: calc(var(--nav-bar-height, 96px) + 10px);
-        right: 0;
-        z-index: 9990;
-        transform: rotate(-90deg) translateY(-100%);
-        transform-origin: top right;
         gap: 6px;
         height: auto;
-        padding: 7px 16px 7px 14px;
+        padding: 10px 16px 10px 14px; /* 32px thick: 12px line + 2 x 10px */
         border-radius: 6px 6px 0 0;
         font-size: 12px;
         box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.25);
         transition: background-color 0.2s ease, visibility 0s linear 0.4s;
-    }
-    :global(body:has(.side-nav-container.active)) .pill.floating {
-        visibility: hidden;
-        transition-delay: 0s;
     }
 }
 

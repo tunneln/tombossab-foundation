@@ -27,7 +27,8 @@ const GalaNavButton = ({ placement, fallback = null, onNavigate }) => {
     if (state === 'past') return null;
 
     const label = state === 'online_closed' ? 'The Gala' : 'Gala Tickets';
-    const className = `${styles.pill} ${styles[placement]}`;
+    // `side-tab` (style.css): the placement it shares with the Donate side tab.
+    const className = `${styles.pill} ${styles[placement]}${placement === 'floating' ? ' side-tab' : ''}`;
     const href = pathname === '/gala' ? '#tickets' : '/gala';
     const opensModal = available && (placement === 'desktop' || placement === 'floating');
 

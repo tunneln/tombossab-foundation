@@ -299,10 +299,13 @@ test('the page-title banner is compact and clear of the Donate tab', async () =>
 });
 
 // Phones and tablets: the side tab (red Donate; gold Gala Tickets on /gala while
-// tickets sell) hugs the right edge. On pages with a title card it starts 10px
-// below the card (one- or two-line title) and ends above whatever opens the page,
-// heading or photo; elsewhere, and once scrolled, its top is 10px below the header.
-// It hides while the side menu is open and stays hidden until the menu has slid out.
+// tickets sell) hugs the right edge with a 44px-deep touch target. On pages with
+// a title card it starts 10px below the card (one- or two-line title) and ends
+// above whatever opens the page, heading or photo, unless the card nearly fills a
+// short screen, where it stops 10px above the bottom instead; elsewhere its top
+// is 10px below the header, also while the header scrolls away, and once
+// scrolled it rides 10px below the header. It hides while the side menu is open
+// and stays hidden until the menu has slid out.
 test('the side tab sits just below the page-title card, then just below the header', async () => {
   const { ctx, page } = await openPage(browser, origin, '/');
   const measure = () => page.evaluate(() => {
@@ -318,6 +321,9 @@ test('the side tab sits just below the page-title card, then just below the head
       banner: banner?.bottom, firstBelow: below && Math.min(...below),
       hidden: tabs[0] && getComputedStyle(tabs[0]).visibility === 'hidden',
       canScroll: document.documentElement.scrollHeight - innerHeight > 150,
+      vh: innerHeight,
+      // A tap 40px in from the screen edge, halfway along the tab, lands on it.
+      touch: tab && tabs[0].contains(document.elementFromPoint(document.documentElement.clientWidth - 40, (tab.top + tab.bottom) / 2)),
     };
   });
   const check = async (route, width, height, { menu = false } = {}) => {
@@ -327,11 +333,21 @@ test('the side tab sits just below the page-title card, then just below the head
     let m = await measure();
     assert.equal(m.count, 1, `${at}: one side tab`);
     assert.ok(Math.abs(m.tab.right - m.vw) < 1, `${at}: on the right edge (${m.tab.right} vs ${m.vw})`);
-    if (m.banner != null) {
+    assert.ok(m.touch, `${at}: 44px-deep touch target`);
+    assert.ok(m.tab.bottom <= m.vh, `${at}: fully on screen (${m.tab.bottom} vs ${m.vh})`);
+    if (m.banner != null && m.banner > m.vh - 95) {
+      // The holder's sticky `bottom: 95px` (style.css) caught it: card bottom past vh - 95.
+      assert.ok(Math.abs(m.tab.top - (m.vh - 85)) < 1, `${at}: tall card on a short screen, held up from the bottom (${m.tab.top} vs ${m.vh})`);
+    } else if (m.banner != null) {
       assert.ok(Math.abs(m.tab.top - m.banner - 10) < 1, `${at}: starts 10px below the title card (${m.tab.top} vs ${m.banner})`);
       assert.ok(m.tab.bottom < m.firstBelow, `${at}: ends above the first heading or photo (${m.tab.bottom} vs ${m.firstBelow})`);
     } else {
       assert.ok(Math.abs(m.tab.top - m.header - 10) < 1, `${at}: starts 10px below the header (${m.tab.top} vs ${m.header})`);
+      if (m.canScroll) {
+        await page.evaluate(() => { document.documentElement.style.scrollBehavior = 'auto'; window.scrollTo(0, 60); });
+        const s = await measure();
+        assert.ok(Math.abs(s.tab.top - s.header - 10) < 1, `${at}: moves with the header as it scrolls away (${s.tab.top} vs ${s.header})`);
+      }
     }
     if (m.canScroll) {
       await page.evaluate(() => { document.documentElement.style.scrollBehavior = 'auto'; window.scrollTo(0, Math.min(900, document.documentElement.scrollHeight - innerHeight)); });
@@ -352,7 +368,9 @@ test('the side tab sits just below the page-title card, then just below the head
   };
   try {
     const sitemap = await (await fetch(`${origin}/sitemap.xml`)).text();
-    for (const loc of sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)) await check(new URL(loc[1]).pathname, 390, 844);
+    const routes = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((loc) => new URL(loc[1]).pathname);
+    for (const route of routes) await check(route, 390, 844);
+    for (const route of routes) await check(route, 568, 320);
     for (const [width, height] of [[360, 780], [768, 1024], [1024, 768], [844, 390]]) {
       for (const route of ['/apply', '/about', '/', '/gala']) await check(route, width, height, { menu: true });
     }

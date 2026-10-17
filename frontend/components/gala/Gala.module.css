@@ -818,7 +818,7 @@
 @media (max-width: 767px) {
     .section { padding: 68px 0; }
     .hero { padding-top: 64px; }
-    /* Clear the site's floating Donate tab on the left edge (kept symmetric).
+    /* Clear the gold side tab on the right edge (kept symmetric).
        Two classes so it beats the later `.container` padding rule at <= 575px. */
     .container.heroInner { padding: 0 44px 56px; }
     /* Stacked "Fundraising / Gala", "Fundraising" filling ~95% of the width
@@ -842,7 +842,7 @@
     .chip { font-size: 14px; }
     .tier, .giveCard { padding-left: 22px; padding-right: 22px; }
     /* Details as a tidy block: date and venue full width, time + attire paired.
-       It sits below the floating Donate tab, so it reclaims most of the hero's
+       It sits below the gold side tab, so it reclaims most of the hero's
        tab-clearance padding (negative side margins) to keep each pill on one line. */
     .chips {
         display: grid;

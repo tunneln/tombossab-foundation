@@ -11,7 +11,7 @@ import { useDonate } from './DonateProvider';
 // enhancement); the click handler intercepts and opens the modal instead.
 //
 // `className` controls the look: pass "theme-btn" for a normal button or
-// "donate-floating" for the fixed side tab. `donate-btn` is always present as a
+// "donate-floating" for the side tab on phones and tablets. `donate-btn` is always present as a
 // stable hook for styling/tests.
 const DonateButton = ({ className = '' }) => {
     const { open } = useDonate();

@@ -5050,13 +5050,14 @@ html {
 /* Side Donate tab. Hidden on desktop; shown only at <=1024px (where the header
    donate button hides, see responsive.css), so each viewport has exactly one
    donate CTA. A slim tab on the right edge, its top end 10px below the header:
-   it turns a quarter up around its top-right corner, so `top` places its top end
-   exactly and `right` equals its thickness (18px line + 2 x 6px padding). */
+   it turns a quarter up around its top-right corner after moving up by its own
+   thickness, so `top` places its top end exactly and it meets the right edge
+   whatever its size. */
 .donate-floating {
     position: fixed;
     top: calc(var(--nav-bar-height, 96px) + 10px);
-    right: 30px;
-    transform: rotate(-90deg);
+    right: 0;
+    transform: rotate(-90deg) translateY(-100%);
     transform-origin: top right;
     z-index: 9990;
     display: none;

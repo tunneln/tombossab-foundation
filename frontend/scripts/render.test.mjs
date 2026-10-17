@@ -298,15 +298,15 @@ test('the page-title banner is compact and clear of the Donate tab', async () =>
   }
 });
 
-// Phones and tablets: the side Donate tab hugs the right edge. On pages with a
-// title card it starts 10px below the card (one- or two-line title) and ends
-// above whatever opens the page, heading or photo; scrolled, it rides 10px below
-// the header, as on the home page. It hides while the side menu is open and on
-// short (sideways) screens.
-test('the side Donate tab sits just below the page-title card, then just below the header', async () => {
+// Phones and tablets: the side tab (red Donate; gold Gala Tickets on /gala while
+// tickets sell) hugs the right edge. On pages with a title card it starts 10px
+// below the card (one- or two-line title) and ends above whatever opens the page,
+// heading or photo; elsewhere, and once scrolled, its top is 10px below the header.
+// It hides while the side menu is open and stays hidden until the menu has slid out.
+test('the side tab sits just below the page-title card, then just below the header', async () => {
   const { ctx, page } = await openPage(browser, origin, '/');
   const measure = () => page.evaluate(() => {
-    const tabs = [...document.querySelectorAll('a.donate-floating')].filter((e) => e.getBoundingClientRect().width > 0);
+    const tabs = [...document.querySelectorAll('a.donate-floating, a[class*="GalaNavButton_floating"]')].filter((e) => e.getBoundingClientRect().width > 0);
     const tab = tabs[0]?.getBoundingClientRect();
     const banner = document.querySelector('.breadcrumb-area')?.getBoundingClientRect();
     const below = banner && [...document.querySelectorAll('h1, h2, h3, img, iframe')]
@@ -317,36 +317,44 @@ test('the side Donate tab sits just below the page-title card, then just below t
       header: document.querySelector('.header-area .header-top').getBoundingClientRect().bottom,
       banner: banner?.bottom, firstBelow: below && Math.min(...below),
       hidden: tabs[0] && getComputedStyle(tabs[0]).visibility === 'hidden',
+      canScroll: document.documentElement.scrollHeight - innerHeight > 150,
     };
   });
-  try {
-    for (const [width, height] of [[390, 844], [360, 780], [768, 1024], [1024, 768]]) {
-      await page.setViewportSize({ width, height });
-      for (const route of ['/apply', '/about', '/']) {
-        const at = `${width}x${height} ${route}`;
-        await page.goto(`${origin}${route}`, { waitUntil: 'load' });
-        let m = await measure();
-        assert.equal(m.count, 1, `${at}: one side tab`);
-        assert.ok(Math.abs(m.tab.right - m.vw) < 1, `${at}: on the right edge`);
-        if (m.banner != null) {
-          assert.ok(Math.abs(m.tab.top - m.banner - 10) < 1, `${at}: starts 10px below the title card (${m.tab.top} vs ${m.banner})`);
-          assert.ok(m.tab.bottom < m.firstBelow, `${at}: ends above the first heading or photo (${m.tab.bottom} vs ${m.firstBelow})`);
-        } else {
-          assert.ok(Math.abs(m.tab.top - m.header - 10) < 1, `${at}: starts 10px below the header (${m.tab.top} vs ${m.header})`);
-        }
-        await page.evaluate(() => { document.documentElement.style.scrollBehavior = 'auto'; window.scrollTo(0, 900); });
-        await page.waitForSelector('.header-top.header-fixed');
-        m = await measure();
-        assert.ok(Math.abs(m.tab.top - m.header - 10) < 1, `${at}: scrolled, 10px below the header (${m.tab.top} vs ${m.header})`);
-        await page.click('.mobile-menu-toggle');
-        await page.waitForSelector('.side-nav-container.active');
-        assert.equal((await measure()).hidden, true, `${at}: hidden while the side menu is open`);
-      }
+  const check = async (route, width, height, { menu = false } = {}) => {
+    const at = `${width}x${height} ${route}`;
+    await page.setViewportSize({ width, height });
+    await page.goto(`${origin}${route}`, { waitUntil: 'load' });
+    let m = await measure();
+    assert.equal(m.count, 1, `${at}: one side tab`);
+    assert.ok(Math.abs(m.tab.right - m.vw) < 1, `${at}: on the right edge (${m.tab.right} vs ${m.vw})`);
+    if (m.banner != null) {
+      assert.ok(Math.abs(m.tab.top - m.banner - 10) < 1, `${at}: starts 10px below the title card (${m.tab.top} vs ${m.banner})`);
+      assert.ok(m.tab.bottom < m.firstBelow, `${at}: ends above the first heading or photo (${m.tab.bottom} vs ${m.firstBelow})`);
+    } else {
+      assert.ok(Math.abs(m.tab.top - m.header - 10) < 1, `${at}: starts 10px below the header (${m.tab.top} vs ${m.header})`);
     }
-    await page.setViewportSize({ width: 844, height: 390 });
-    for (const route of ['/about', '/']) {
-      await page.goto(`${origin}${route}`, { waitUntil: 'load' });
-      assert.equal((await measure()).count, 0, `844x390 ${route}: no side tab on a short screen`);
+    if (m.canScroll) {
+      await page.evaluate(() => { document.documentElement.style.scrollBehavior = 'auto'; window.scrollTo(0, Math.min(900, document.documentElement.scrollHeight - innerHeight)); });
+      await page.waitForSelector('.header-top.header-fixed');
+      m = await measure();
+      assert.ok(Math.abs(m.tab.top - m.header - 10) < 1, `${at}: scrolled, 10px below the header (${m.tab.top} vs ${m.header})`);
+    }
+    if (menu) {
+      await page.click('.mobile-menu-toggle');
+      await page.waitForSelector('.side-nav-container.active');
+      assert.equal((await measure()).hidden, true, `${at}: hidden while the side menu is open`);
+      await page.click('.side-menu-close');
+      await page.waitForSelector('.side-nav-container.active', { state: 'detached' });
+      assert.equal((await measure()).hidden, true, `${at}: still hidden while the menu slides out`);
+      await page.waitForTimeout(600);
+      assert.equal((await measure()).hidden, false, `${at}: back once the menu is gone`);
+    }
+  };
+  try {
+    const sitemap = await (await fetch(`${origin}/sitemap.xml`)).text();
+    for (const loc of sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)) await check(new URL(loc[1]).pathname, 390, 844);
+    for (const [width, height] of [[360, 780], [768, 1024], [1024, 768], [844, 390]]) {
+      for (const route of ['/apply', '/about', '/', '/gala']) await check(route, width, height, { menu: true });
     }
   } finally {
     await ctx.close();

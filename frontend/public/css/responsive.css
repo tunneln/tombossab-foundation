@@ -385,22 +385,18 @@
     }
 }
 /* Side donate tab (style.css): on pages with a title card, the copy under the
-   card replaces the one after the header. The tab hides while the side menu,
-   which slides in from the right, is open, and on short screens (phones turned
-   sideways), where no spot on the right edge clears both the title card and
-   the slides' buttons; Donate stays in the side menu there. These follow the
-   1024px rule above, which shows the tab. */
+   card replaces the one after the header. The tab hides as soon as the side
+   menu, which slides in from the right, opens, and comes back only once the
+   menu has finished sliding out (0.4s), so it never sits on top of it. */
 body:has(.donate-tab-anchor) .header-area ~ .donate-floating {
     display: none;
 }
+.donate-floating {
+    transition: visibility 0s linear 0.4s;
+}
 body:has(.side-nav-container.active) .donate-floating {
     visibility: hidden;
-}
-@media (max-height:500px) {
-    .donate-floating,
-    .donate-tab-anchor {
-        display: none;
-    }
+    transition-delay: 0s;
 }
 /* Scholars slide: portrait art on portrait screens up to 1024px wide; only the
    image changes, so it keeps the cover sizing above (landscape keeps the tablet art) */
@@ -971,8 +967,7 @@ body:has(.side-nav-container.active) .donate-floating {
 
 
 }
-/* Page title banner on phones and short landscape screens; the side padding
-   keeps the title clear of the fixed Donate tab */
+/* Page title banner on phones and short landscape screens */
 @media (max-width:575px), (max-height:500px) {
     .breadcrumb-area .breadcrumb-content {
         padding: 26px 32px 60px;

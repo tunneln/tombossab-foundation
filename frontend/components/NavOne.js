@@ -162,8 +162,9 @@ const NavOne = ({ overHero = false }) => {
                     </div>
                 </div>
             </header>
-            {/* Always-visible fixed donate tab (replaces Donorbox's injected popup button).
-                On /gala it becomes a gold "Gala Tickets" tab while tickets are selling. */}
+            {/* Side donate tab for phones and tablets (replaces Donorbox's injected popup
+                button); pages with a title card show PageHeader's copy instead. On /gala
+                it becomes a gold "Gala Tickets" tab while tickets are selling. */}
             {pathname === '/gala'
                 ? <GalaNavButton placement="floating" fallback={<DonateButton className="donate-floating" />} />
                 : <DonateButton className="donate-floating" />}

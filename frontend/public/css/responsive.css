@@ -320,9 +320,12 @@
 
 /*=== 1024px ===*/
 @media (max-width:1024px) {
-    /* Show the fixed side donate tab where the header donate button hides. */
+    /* Show the side donate tab where the header donate button hides. */
     .donate-floating {
         display: inline-flex;
+    }
+    .donate-tab-anchor {
+        display: block;
     }
     .header-btn {
         display: none;
@@ -379,6 +382,24 @@
     }
     .image_mobile {
         display: block;
+    }
+}
+/* Side donate tab (style.css): on pages with a title card, the copy under the
+   card replaces the one after the header. The tab hides while the side menu,
+   which slides in from the right, is open, and on short screens (phones turned
+   sideways), where no spot on the right edge clears both the title card and
+   the slides' buttons; Donate stays in the side menu there. These follow the
+   1024px rule above, which shows the tab. */
+body:has(.donate-tab-anchor) .header-area ~ .donate-floating {
+    display: none;
+}
+body:has(.side-nav-container.active) .donate-floating {
+    visibility: hidden;
+}
+@media (max-height:500px) {
+    .donate-floating,
+    .donate-tab-anchor {
+        display: none;
     }
 }
 /* Scholars slide: portrait art on portrait screens up to 1024px wide; only the
@@ -1184,7 +1205,7 @@
 }
 @media (max-width:767px) {
     /* Top padding clears the overlaid logo (incl. its tagline) with room to
-       breathe; 44px sides clear the floating Donate tab on the left edge. */
+       breathe, with 44px sides. */
     .slider-area .gala-slide {
         padding: calc(var(--nav-bar-height) + 14px) 44px 44px;
     }

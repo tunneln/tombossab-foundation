@@ -5047,26 +5047,28 @@ html {
     background: #f1ae44;
 }
 
-/* Fixed side tab, mirroring the old Donorbox-injected button. Hidden on desktop;
-   shown only at <=1024px (where the header donate button hides), so each viewport
-   has exactly one donate CTA — header button on desktop, side tab on mobile/tablet. */
+/* Side Donate tab. Hidden on desktop; shown only at <=1024px (where the header
+   donate button hides, see responsive.css), so each viewport has exactly one
+   donate CTA. A slim tab on the right edge, its top end 10px below the header:
+   it turns a quarter up around its top-right corner, so `top` places its top end
+   exactly and `right` equals its thickness (18px line + 2 x 6px padding). */
 .donate-floating {
     position: fixed;
-    top: 25%;
-    left: 20px;
-    transform: translate(-50%, -50%) rotate(-90deg);
-    transform-origin: center center;
+    top: calc(var(--nav-bar-height, 96px) + 10px);
+    right: 30px;
+    transform: rotate(-90deg);
+    transform-origin: top right;
     z-index: 9990;
     display: none;
     align-items: center;
-    gap: 8px;
     width: fit-content;
     background: #e36955;
     color: #ffffff;
-    font-size: 16px;
-    line-height: 24px;
-    padding: 8px 22px 8px 18px;
-    border-radius: 0 0 5px 5px;
+    font-size: 13px;
+    line-height: 18px;
+    /* Tight ends: see the heart below. */
+    padding: 6px 7px;
+    border-radius: 6px 6px 0 0;
     text-decoration: none;
     white-space: nowrap;
 }
@@ -5076,7 +5078,27 @@ html {
     color: #ffffff;
 }
 
+/* A small heart (the file's 16:14 shape at 10px) and tight ends keep the tab
+   about 75px long, so on pages that open with a photo (90px below the title
+   card) it ends a few px above the photo instead of on its corner. */
 .donate-floating img {
-    width: 16px;
-    height: 14px;
+    width: 10px;
+    height: 9px;
+}
+
+/* Pages with a title card: PageHeader renders the tab again right after the
+   card, in this zero-height sticky holder. The tab starts 10px below the card,
+   whatever the card's height, and once the card scrolls away the holder sticks
+   under the header, so the tab rides 10px below it. responsive.css shows the
+   holder and hides the header's copy of the tab on these pages. */
+.donate-tab-anchor {
+    display: none;
+    position: sticky;
+    top: var(--nav-bar-height, 96px);
+    height: 0;
+    z-index: 9990;
+}
+.donate-tab-anchor .donate-floating {
+    position: absolute;
+    top: 10px;
 }

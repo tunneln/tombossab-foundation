@@ -75,26 +75,32 @@
     background-color: #E3C98F;
 }
 
-/* /gala side tab: a slimmer gold take on the fixed Donate tab it replaces there.
-   Like that tab, it shows only at <= 1024px (desktop uses the header button).
-   It hugs the left edge: `left` = half the tab's thickness, since it's rotated. */
+/* /gala side tab: a gold take on the side Donate tab it replaces there, in the
+   same place (right edge, top end 10px below the header) and, like it, shown
+   only at <= 1024px, hidden on short screens and while the side menu is open
+   (public/css/style.css + responsive.css). It turns a quarter up around its
+   top-right corner, so `right` = its thickness (12px line + 2 x 7px padding). */
 .pill.floating { display: none; }
 @media (max-width: 1024px) {
     .pill.floating {
         display: inline-flex;
         position: fixed;
-        top: 25%;
-        left: 13px;
+        top: calc(var(--nav-bar-height, 96px) + 10px);
+        right: 26px;
         z-index: 9990;
-        transform: translate(-50%, -50%) rotate(-90deg);
-        transform-origin: center center;
+        transform: rotate(-90deg);
+        transform-origin: top right;
         gap: 6px;
         height: auto;
         padding: 7px 16px 7px 14px;
-        border-radius: 0 0 6px 6px;
+        border-radius: 6px 6px 0 0;
         font-size: 12px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
     }
+    :global(body:has(.side-nav-container.active)) .pill.floating { visibility: hidden; }
+}
+@media (max-width: 1024px) and (max-height: 500px) {
+    .pill.floating { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

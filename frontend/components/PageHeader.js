@@ -1,6 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 
+import DonateButton from './DonateButton';
+
 // Separator between crumbs. The `whiteSpace: 'pre'` on the <li> preserves
 // these spaces and keeps the trail on one line.
 const SEPARATOR = ' > ';
@@ -22,27 +24,35 @@ const PageHeader = ({ title, prev, link, crumbs, imgUrl }) => {
     ];
 
     return (
-        <section className="breadcrumb-area" style={imgUrl ? { backgroundImage: `url(${imgUrl})` } : undefined}>
-            <div className="container">
-                <div className="row">
-                    <div className="col-lg-12">
-                        <div className="breadcrumb-content">
-                            <h2 className="breadcrumb__title">{ title }</h2>
-                            <ul className="breadcrumb__list">
-                                <li className="active__list-item" style={{ whiteSpace: 'pre' }}>
-                                    {trail.map((crumb, i) => (
-                                        <React.Fragment key={i}>
-                                            {i > 0 && SEPARATOR}
-                                            {crumb.href ? <Link href={crumb.href}>{ crumb.label }</Link> : crumb.label}
-                                        </React.Fragment>
-                                    ))}
-                                </li>
-                            </ul>
+        <>
+            <section className="breadcrumb-area" style={imgUrl ? { backgroundImage: `url(${imgUrl})` } : undefined}>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-lg-12">
+                            <div className="breadcrumb-content">
+                                <h2 className="breadcrumb__title">{ title }</h2>
+                                <ul className="breadcrumb__list">
+                                    <li className="active__list-item" style={{ whiteSpace: 'pre' }}>
+                                        {trail.map((crumb, i) => (
+                                            <React.Fragment key={i}>
+                                                {i > 0 && SEPARATOR}
+                                                {crumb.href ? <Link href={crumb.href}>{ crumb.label }</Link> : crumb.label}
+                                            </React.Fragment>
+                                        ))}
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </section>
+            {/* Phones and tablets: the side Donate tab, starting just below this
+                card and then riding just below the header (.donate-tab-anchor in
+                style.css). It replaces the tab NavOne renders after the header. */}
+            <div className="donate-tab-anchor">
+                <DonateButton className="donate-floating" />
             </div>
-        </section>
+        </>
     );
 };
 

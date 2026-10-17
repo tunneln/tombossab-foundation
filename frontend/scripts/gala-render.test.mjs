@@ -434,7 +434,7 @@ test('/gala on phones: a gold "Gala Tickets" side tab replaces the Donate tab',
 
     await page.goto(`${origin}/about`, { waitUntil: 'load' });
     await waitForGalaState(page);
-    assert.ok(await page.locator('.donate-floating').isVisible(), 'other pages keep the Donate side tab');
+    assert.ok(await page.locator('.donate-tab-anchor .donate-floating').isVisible(), 'other pages keep the Donate side tab');
     assert.equal(await page.locator('a[class*="GalaNavButton_floating"]').count(), 0);
   } finally {
     await ctx.close();

@@ -865,6 +865,12 @@
     .chip { gap: 6px; padding: 8px; font-size: 13px; }
 }
 
+/* Below the common 360px Androids (e.g. 320px iPhone SE 1st gen): tighter
+   pills so "5:00 PM – 10:00 PM" keeps clear of its border. */
+@media (max-width: 359px) {
+    .chip { gap: 4px; padding: 8px 6px; font-size: 12px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .motif::after { animation: none; display: none; }
     .reveal, .reveal[data-reveal="pending"] { opacity: 1; transform: none; transition: none; }

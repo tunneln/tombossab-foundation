@@ -9,15 +9,18 @@
     "test": "node --test scripts/*.test.mjs"
   },
   "dependencies": {
-    "next": "^15.5.20",
+    "next": "^15.5.28",
     "react": "^19.2.7",
     "react-countup": "^6.5.3",
     "react-dom": "^19.2.7",
     "server-only": "^0.0.1",
-    "swiper": "^11.2.10"
+    "swiper": "^12.2.0"
   },
   "devDependencies": {
     "playwright": "^1.61.1",
     "qrcode": "^1.5.4"
+  },
+  "overrides": {
+    "postcss": "^8.5.31"
   }
 }

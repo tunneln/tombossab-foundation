@@ -10,7 +10,8 @@
 	</parent>
 	<groupId>org.tombossabfoundation</groupId>
 	<artifactId>backend</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<!-- Set by release-please on develop; never edit by hand (docs/RELEASING.md). -->
+	<version>1.0.0</version>
 	<name>tombossab-foundation</name>
 	<description>API for the Tombossa B Foundation site, created in honor of my late father</description>
 

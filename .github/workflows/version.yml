@@ -1,0 +1,90 @@
+name: Version backend
+
+# On every push to develop, release-please reads the commits that touched
+# backend/ since the last backend-v* tag. If any of them need a new version
+# (feat, fix, perf, deps, revert, or a breaking change), it opens a version PR
+# that bumps backend/pom.xml and backend/CHANGELOG.md; this workflow merges that
+# PR and tags it (backend-v1.4.1) in the same run. Other pushes change nothing.
+# Releasing is separate: fast-forwarding main (release.yml). See docs/RELEASING.md.
+#
+# Needs the repo setting "Allow GitHub Actions to create and approve pull requests".
+
+on:
+  push:
+    branches: [develop]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+# One run at a time, in push order: each run builds on the previous one's tag.
+concurrency:
+  group: version-backend
+  cancel-in-progress: false
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # First run only: publish the starting version from the manifest as a
+      # release, so release-please knows where counting starts.
+      - name: Tag the starting backend version
+        run: |
+          if [ -z "$(git tag --list 'backend-v*')" ]; then
+            version=$(jq -r '.backend' .release-please-manifest.json)
+            gh release create "backend-v$version" --target "$GITHUB_SHA" \
+              --title "backend v$version" --notes "Starting version." --latest=false
+          fi
+
+      # Also tags any version PR a previous run merged but failed to tag.
+      - name: Open or update the version PR
+        uses: googleapis/release-please-action@v5
+        with:
+          target-branch: develop
+
+      - name: Merge the version PR
+        id: merge
+        run: |
+          pr=$(gh pr list --base develop --state open --label "autorelease: pending" \
+            --json number --jq '.[0].number // empty')
+          if [ -z "$pr" ]; then
+            echo "No backend changes need a new version."
+            exit 0
+          fi
+          # A brand-new PR can take a few seconds to become mergeable.
+          for attempt in 1 2 3 4 5 6; do
+            if gh pr merge "$pr" --squash; then
+              echo "merged=true" >>"$GITHUB_OUTPUT"
+              exit 0
+            fi
+            echo "Merge attempt $attempt didn't go through; retrying in 10s."
+            sleep 10
+          done
+          echo "::error::Couldn't merge version PR #$pr."
+          exit 1
+
+      - name: Tag the new backend version
+        id: tag
+        if: steps.merge.outputs.merged == 'true'
+        uses: googleapis/release-please-action@v5
+        with:
+          target-branch: develop
+          skip-github-pull-request: true
+
+      - name: Check the version was tagged
+        if: steps.merge.outputs.merged == 'true'
+        env:
+          TAG: ${{ steps.tag.outputs.backend--tag_name }}
+        run: |
+          if [ -z "$TAG" ]; then
+            echo "::error::The version PR merged but no backend-v* tag was created. Re-run this workflow."
+            exit 1
+          fi
+          echo "Tagged $TAG." | tee -a "$GITHUB_STEP_SUMMARY"

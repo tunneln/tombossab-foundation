@@ -84,17 +84,19 @@ to finish and run the same command again. Nothing was tagged or deployed.
 
 - **Each clone:** turn on the commit-message hook:
   `git config core.hooksPath .githooks` (needs `jq`; macOS ships it).
-- **The GitHub repo, once:** Settings → Actions → General → Workflow permissions →
-  tick "Allow GitHub Actions to create and approve pull requests". Without it,
-  **Version backend** can't open its version PR.
+- **The GitHub repo** (already on here): Settings → Actions → General → Workflow
+  permissions → "Allow GitHub Actions to create and approve pull requests". Without
+  it, **Version backend** can't open its version PR. No branch protection on
+  `develop`: the workflow merges its own PR, and required checks would block it.
 
 ## How it works
 
 - `release-please-config.json` + `.release-please-manifest.json`: release-please
   versions the `backend` package (Maven type) and keeps the commit types above.
 - `.github/workflows/version.yml` (push to `develop`): release-please opens a
-  version PR, the workflow merges and tags it in the same run. Its first ever run
-  tags the starting version, `backend-v1.0.0`.
+  version PR, the workflow merges and tags it in the same run, then hands GitHub's
+  "Latest" label back to `main`'s newest release. Its first ever run tags the
+  starting version, `backend-v1.0.0`.
 - `.github/workflows/release.yml` (push to `main`): `check-backend-version.sh`
   then `tag-release.sh`.
 - `.github/workflows/deploy.yml`: runs the same check before deploying a push.

@@ -1,0 +1,36 @@
+name: Release
+
+# Every push to main (a fast-forward of develop) is a release. This tags it
+# "<date>-backend-<version>", e.g. 2026.10.21-backend-1.4.1, and publishes a
+# GitHub Release listing its commits. First it checks that every backend change
+# in it already has a version (see version.yml); if not, nothing is tagged and
+# deploy.yml refuses to deploy. Vercel deploys the frontend on its own.
+# See docs/RELEASING.md.
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check every backend change has a version
+        run: .github/scripts/check-backend-version.sh
+
+      - name: Tag the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BEFORE: ${{ github.event.before }}
+        run: .github/scripts/tag-release.sh

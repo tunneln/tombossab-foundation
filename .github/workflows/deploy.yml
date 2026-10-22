@@ -16,11 +16,24 @@ jobs:
     # Flip the repo variable DEPLOY_ENABLED to 'true' at cutover (runbook step).
     if: vars.DEPLOY_ENABLED == 'true'
     runs-on: ubuntu-latest
+    # Lists each deploy on GitHub's Deployments page: that's what is live.
+    # Named apart from the frontend's Vercel deployments, which appear there too.
+    environment:
+      name: api-production
+      url: https://api.tombossabfoundation.org
     permissions:
       contents: read
       packages: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Same check as release.yml: never ship backend changes that don't have
+      # a version yet. Manual runs (redeploys, rollbacks) skip it.
+      - name: Check every backend change has a version
+        if: github.event_name == 'push'
+        run: .github/scripts/check-backend-version.sh
 
       - uses: docker/login-action@v3
         with:

@@ -343,7 +343,6 @@ export const GALA_META = {
 // Every TODO_CONFIRM in config/gala-2026.js, by path (scripts/gala.test.mjs keeps
 // this in sync with the comments). The dev-only panel on /gala lists them.
 export const CONFIRM_FIELDS = [
-    'endAt',
     'copy.intro.1',
     'sales.doorSalesAvailable',
     'fmvPerGuest.standard', 'fmvPerGuest.champion',

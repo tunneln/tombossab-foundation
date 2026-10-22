@@ -154,7 +154,7 @@ test('/gala: the confirmed start time, calendar links, and Event JSON-LD are pub
     if (STATE !== 'past') {
       const google = page.locator('#share a[href^="https://calendar.google.com/"]');
       assert.equal(await google.count(), 1);
-      assert.match(await google.getAttribute('href'), /dates=20261128T230000Z%2F20261128T230000Z/);
+      assert.match(await google.getAttribute('href'), /dates=20261128T230000Z%2F20261129T040000Z/);
       assert.equal(await page.locator('#share button', { hasText: '.ics' }).count(), 1);
     }
   } finally {

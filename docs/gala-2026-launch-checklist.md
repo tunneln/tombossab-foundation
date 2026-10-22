@@ -8,7 +8,7 @@ Manual steps outside the code for **https://tombossabfoundation.org/gala** (The 
 
 - [x] **Switched to Zeffy** (2026-10-04): `checkout.provider` is `'zeffy'` and `checkout.tickets.modalUrl` is the form's modal link. The site is now **on sale**: every ticket button opens the Zeffy form in a pop-up. Nothing was sold on Donorbox.
 - [ ] **Update the Champion description in Zeffy**: it still promises "a pre-program reception with our scholars", which the site no longer offers.
-- [ ] **End time**: Zeffy shows 5:00 PM - 10:00 PM, but the site has no end time (`endAt`). Set `endAt: '2026-11-28T22:00:00-06:00'` if 10 PM is right, so calendar entries and search listings show it too.
+- [x] **End time**: `endAt` is 10:00 PM, matching Zeffy's 5:00 PM - 10:00 PM, so calendar entries and search listings show it too.
 - [ ] Optional: paste the form's public page link into `checkout.tickets.hostedUrl` (Zeffy dashboard, share link). It adds an "open in a new tab" fallback.
 - [ ] Create these ticket types:
 
@@ -58,7 +58,7 @@ Manual steps outside the code for **https://tombossabfoundation.org/gala** (The 
 
 Every `TODO_CONFIRM` in the config. Run `npm run dev` and open `/gala` to see a live checklist panel of the ones still unset. Until a value is filled in, its element is hidden or shows a fallback; nothing placeholder-like is ever shown.
 
-- [ ] End time (`endAt`). The 5:00 PM start is confirmed and published; without an end time, calendar entries are start-only and the page shows just "5:00 PM".
+- [x] End time (`endAt`): 10:00 PM, so the page shows "5:00 PM – 10:00 PM" and calendar entries run 5 to 10 PM.
 - [ ] **Final confirmation that the scholars will attend and speak.** If not, edit the hero sentence in `copy.intro` ("words from the students your support makes possible", swap in "inspiring speakers") and the Speakers tile.
 - [ ] Venue accessibility (`faq.accessibility`), silent auction access and remote bidding (`faq.auction`; the question is hidden until set).
 - [ ] Board approval of the **proposed** wording (shown now): age policy (`faq.ages`), refund policy (`faq.refunds`), the "introduction to the scholar" Scholarship Sponsor benefit.
@@ -82,7 +82,7 @@ To mark a sponsor: add `{ name, level, logo, url }` to `sponsorship.sponsors` (`
 
 ## 4. After the event
 
-The page switches to its thank-you state on its own after 11:59 PM CST on November 28 (or `endAt`). The header button disappears, the gala card moves to Past Events, and the homepage slide shows "See the Recap" until December 2, then removes itself.
+The page switches to its thank-you state on its own after 10:00 PM CST on November 28 (`endAt`). The header button disappears, the gala card moves to Past Events, and the homepage slide shows "See the Recap" until December 2, then removes itself.
 
 - [ ] Update `goal.amountRaised` (if the goal is shown).
 - [ ] Add the sponsor wall (`sponsorship.sponsors`).

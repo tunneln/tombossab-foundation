@@ -26,7 +26,7 @@ export const gala = {
     // startTimeConfirmed is true: a wrong time saved to a calendar never updates.
     startAt: '2026-11-28T17:00:00-06:00', // 5:00 PM CST
     startTimeConfirmed: true,
-    endAt: null, // TODO_CONFIRM e.g. '2026-11-28T22:00:00-06:00'
+    endAt: '2026-11-28T22:00:00-06:00', // 10:00 PM CST
     venue: {
         name: 'Empire Event Center',
         street: '9560 Skillman St, Suite 126',

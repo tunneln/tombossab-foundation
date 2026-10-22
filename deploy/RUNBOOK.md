@@ -136,7 +136,10 @@ plus the two legacy redirects on the new site:
 - Anything wrong after step 6: point apex DNS back at the Lightsail IP —
   nginx + old jar are still installed until you remove them (keep them for a
   grace week).
-- Backend-only trouble: pin the previous image and re-up (each deploy pushes a
+- Backend-only trouble, from GitHub: Actions → Deploy backend → Run workflow →
+  "Use workflow from" → a version tag (e.g. `backend-v1.4.0`) builds and
+  deploys that version (`docs/RELEASING.md`).
+- Backend-only trouble, on the box: pin the previous image and re-up (each deploy pushes a
   `:<sha>` tag alongside `:latest`, so the compose file reads `APP_IMAGE_TAG`):
   `APP_IMAGE_TAG=<old-sha> docker compose up -d --pull always`.
 - Content page trouble on Vercel: instant rollback to any previous deployment

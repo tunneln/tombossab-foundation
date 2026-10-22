@@ -28,6 +28,12 @@ Pick the section(s) matching what changed. A change is "done" only when its chec
    ```
 3. New or changed endpoint? Confirm `SecurityConfig` opens the exact path and `anyRequest().denyAll()` is still last.
 
+## Release tooling (`.github/scripts/`, `.github/workflows/`, `release-please-config.json`, `.githooks/`)
+
+1. `.github/scripts/test-release-scripts.sh` — throwaway git repos + a fake `gh`; must end `0 failed`. Also run it under macOS's stock bash 3.2 (`env -i HOME=$HOME PATH=/usr/bin:/bin /bin/bash -c .github/scripts/test-release-scripts.sh`): the hook runs on whichever bash git finds.
+2. Lint: `actionlint .github/workflows/*.yml` and `shellcheck -x .github/scripts/*.sh .githooks/commit-msg` (not installed by default: download the release binaries or `brew install actionlint shellcheck`).
+3. Changing what release-please does (config, `version.yml`) can't be proven locally: run it in a private throwaway repo first (push to `develop`, watch the version PR get merged and tagged, then fast-forward `main`).
+
 ## Full-stack (data flow, forms, revalidation)
 
 ```bash

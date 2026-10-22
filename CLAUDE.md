@@ -5,7 +5,7 @@ Nonprofit website. Decoupled monorepo:
 - `frontend/` — Next.js 15 App Router (React 19), hosted on Vercel. Public pages are SSG + ISR.
 - `backend/` — Spring Boot 3.5 / Java 21 API + PostgreSQL 16 (Flyway). Runs in Docker Compose behind Caddy on Lightsail at `api.tombossabfoundation.org`.
 - `deploy/` — production compose stack, Caddyfile, backups, and the cutover RUNBOOK.
-- CI/CD: `.github/workflows/ci.yml` tests both sides; `deploy.yml` ships the backend image (GHCR → SSH → compose up → ISR revalidate ping).
+- CI/CD: `.github/workflows/ci.yml` tests both sides; `deploy.yml` ships the backend image (GHCR → SSH → compose up → ISR revalidate ping). Versions and releases: `version.yml` (release-please on `develop`) and `release.yml` (tags on `main`); see `docs/RELEASING.md`.
 
 Design rationale for the architecture lives in `docs/refactor-plan.md`.
 
@@ -23,6 +23,7 @@ Design rationale for the architecture lives in `docs/refactor-plan.md`.
 - Visual/CSS/image change: a passing build is not proof — render it with `node frontend/scripts/shoot.mjs <label> [routes...]` and compare. Be token-frugal: viewport/cropped shots + DOM assertions, one build+shoot cycle (the homepage is ~11,600 px tall full-page). Final gate: diff against the live site.
 - Backend change: `cd backend && ./mvnw test`; also `./mvnw verify` when touching migrations, persistence, or `SecurityConfig`.
 - Content change: follow the `content-update` skill (migration + fixture + assets + tests, all in one PR).
+- Release tooling change (`.github/scripts/`, `version.yml`, `release.yml`, `release-please-config.json`, `.githooks/`): `.github/scripts/test-release-scripts.sh` must pass, plus actionlint on the workflows.
 - Full recipes live in the project `verify` skill. Never report a change as done without stating which checks actually ran and their results.
 
 ## Working style
@@ -51,4 +52,6 @@ See `backend/CLAUDE.md`.
 ## Git
 
 - Do **not** add `Co-Authored-By` trailers to commit messages.
-- Commit messages should be as concise as possible.
+- Every commit is `type: summary` (optionally `type(scope): summary`, `!` before the colon for a breaking API change), as concise as possible, summary ≤ 100 chars. Types: `feat` `fix` `perf` `deps` `revert` (these give the backend a new version when they touch `backend/`) and `refactor` `docs` `test` `build` `ci` `chore` `style` (never). Pick the type by what the change does for the site, not by which files moved. The `.githooks/commit-msg` hook and CI enforce it; enable the hook per clone with `git config core.hooksPath .githooks`.
+- Never edit the backend version (`backend/pom.xml`, `.release-please-manifest.json`, `backend/CHANGELOG.md`) or create, move, or delete tags by hand: the workflows own them. Never force-push `develop` or `main`.
+- Flow: branches merge into `develop` (fast-forward); a release is `git fetch origin && git push origin origin/develop:main` once the Version backend run is green. Full guide: `docs/RELEASING.md`.

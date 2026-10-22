@@ -41,6 +41,10 @@ cd frontend && API_BASE_URL=http://localhost:8080 NEXT_PUBLIC_API_BASE_URL=http:
 
 Tests: `cd frontend && npm run build && npm test` · `cd backend && ./mvnw verify` — see `TESTING.md`.
 
+Commits follow `type: summary` (a hook checks them; enable it with
+`git config core.hooksPath .githooks`). How versions, releases, and rollbacks
+work: `docs/RELEASING.md`.
+
 ## Content updates
 
 Content lives in Postgres, seeded by versioned Flyway migrations. Adding a

@@ -50,3 +50,23 @@ jobs:
           cache: maven
       # verify includes Testcontainers ITs; the runner provides Docker.
       - run: ./mvnw -B verify
+
+  # The release tooling (docs/RELEASING.md): its scripts' tests, and the commit
+  # message format, which the local hook enforces but can be skipped.
+  release-tooling:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Test the release scripts
+        run: .github/scripts/test-release-scripts.sh
+      - name: Check commit messages
+        env:
+          EVENT: ${{ github.event_name }}
+          BEFORE: ${{ github.event.before }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: .github/scripts/check-commit-range.sh

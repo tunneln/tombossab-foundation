@@ -1,4 +1,8 @@
 #!/bin/sh
 # Rejects commit messages that don't follow "type: summary" (docs/RELEASING.md).
 # Turn the repo's hooks on once per clone: git config core.hooksPath .githooks
-exec "$(git rev-parse --show-toplevel)/.github/scripts/check-commit-message.sh" "$1"
+check="$(git rev-parse --show-toplevel)/.github/scripts/check-commit-message.sh"
+if [ -f "$(git rev-parse --git-path MERGE_HEAD)" ]; then
+    exec "$check" --merge "$1"
+fi
+exec "$check" "$1"

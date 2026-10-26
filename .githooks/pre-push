@@ -1,0 +1,20 @@
+#!/bin/sh
+# Checks every commit about to be pushed (docs/RELEASING.md). Catches what the
+# commit-msg hook can't see: git revert and cherry-pick skip it, and so does
+# `git commit --no-verify`.
+check="$(git rev-parse --show-toplevel)/.github/scripts/check-commits.sh"
+zero=0000000000000000000000000000000000000000
+status=0
+while read -r _ local_sha _ remote_sha; do
+    [ "$local_sha" = "$zero" ] && continue    # deleting a branch
+    if [ "$remote_sha" != "$zero" ] && git cat-file -e "$remote_sha^{commit}" 2>/dev/null; then
+        "$check" "$remote_sha..$local_sha" </dev/null >/dev/null || status=1
+    else
+        # New branch (or a remote commit we don't have): everything no remote has yet.
+        "$check" "$local_sha" --not --remotes </dev/null >/dev/null || status=1
+    fi
+done
+if [ $status -ne 0 ]; then
+    echo "Push stopped: fix the commit messages above (git rebase -i, then reword)." >&2
+fi
+exit $status

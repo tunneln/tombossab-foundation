@@ -137,8 +137,9 @@ plus the two legacy redirects on the new site:
   nginx + old jar are still installed until you remove them (keep them for a
   grace week).
 - Backend-only trouble, from GitHub: Actions → Deploy backend → Run workflow →
-  "Use workflow from" → a version tag (e.g. `backend-v1.4.0`) builds and
-  deploys that version (`docs/RELEASING.md`).
+  "Use workflow from" → Tags → the release that was live before the bad one
+  (e.g. `2026.10.20-backend-1.4.0`) builds and deploys exactly that
+  (`docs/RELEASING.md`).
 - Backend-only trouble, on the box: pin the previous image and re-up (each deploy pushes a
   `:<sha>` tag alongside `:latest`, so the compose file reads `APP_IMAGE_TAG`):
   `APP_IMAGE_TAG=<old-sha> docker compose up -d --pull always`.

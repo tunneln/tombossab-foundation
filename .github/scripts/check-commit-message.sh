@@ -34,7 +34,7 @@ types="${versioned// /|}|${unversioned// /|}"
 if $ci; then
     msg=$(sed '/[^[:space:]]/,$!d' "$file")
 else
-    comment=$(git config --get core.commentChar || true)
+    comment=$(git config --get core.commentString || git config --get core.commentChar || true)
     case $comment in '' | auto) comment='#' ;; esac
     msg=$(awk -v c="$comment" -v scissors="$comment ------------------------ >8 ------------------------" \
         '$0 == scissors { exit } index($0, c) == 1 { next } { print }' "$file" | sed '/[^[:space:]]/,$!d')

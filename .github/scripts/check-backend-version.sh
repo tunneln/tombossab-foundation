@@ -26,13 +26,22 @@ tag_sha=$(git rev-parse "$tag^{commit}")
 
 # Release-please's rule: a commit needs a version when it touches backend/ and its
 # type has a visible changelog section, or it's a breaking change.
-types=$(jq -r '[."changelog-sections"[] | select(.hidden != true) | .type] | join("|")' "$root/release-please-config.json")
+config="$root/release-please-config.json"
+types=$(jq -r '[."changelog-sections"[] | select(.hidden != true) | .type] | join("|")' "$config")
 needs_version="^($types)(\([^()]+\))?!?: |^[a-z]+(\([^()]+\))?!: "
+# It also reads a later paragraph that starts like a commit as a commit of its own,
+# for the types in its split list (feat fix docs style refactor perf test build ci
+# chore revert; not deps, not "!"). That's how a merge commit's PR title counts.
+split_types=$(jq -r '[."changelog-sections"[] | select(.hidden != true) | .type
+    | select(IN("feat","fix","docs","style","refactor","perf","test","build","ci","chore","revert"))] | join("|")' "$config")
 needs_a_version() {
-    local subject body
+    local subject message paragraphs
     subject=$(git log -1 --format=%s "$1")
-    body=$(git log -1 --format=%b "$1")
-    [[ $subject =~ $needs_version ]] || grep -qE '^BREAKING[ -]CHANGE: ' <<<"$body"
+    message=$(git log -1 --format=%B "$1")
+    [[ $subject =~ $needs_version ]] && return 0
+    grep -qE '^BREAKING[ -]CHANGE: ' <<<"$message" && return 0
+    paragraphs=$(awk 'NR > 1 && prev == "" { print } { prev = $0 }' <<<"$message")
+    [ -n "$split_types" ] && grep -qE "^($split_types)(\([^)]*\))?: " <<<"$paragraphs"
 }
 touches_backend() {    # against the first parent, like GitHub's file list for a commit
     ! git diff --quiet "$1^1" "$1" -- backend/

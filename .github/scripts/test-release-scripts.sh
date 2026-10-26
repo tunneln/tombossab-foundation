@@ -79,7 +79,7 @@ commit_at() {
 }
 # What release-please does on develop: bump manifest + pom in one commit, tag it.
 release_backend() { tick; set_version "$1"; git add -A; git commit -q --no-verify -m "chore(develop): release backend $1 (#$RANDOM)"; git tag "backend-v$1"; }
-merge() { tick; git merge -q --no-ff --no-verify --no-edit -m "$1" "$2"; }
+merge() { tick; git merge -q --no-ff --no-verify --no-edit -m "$(printf '%b' "$1")" "$2"; }    # message may contain \n
 msg_file() { printf '%b\n' "$1" >"$work/msg"; echo "$work/msg"; }
 check_msg() { local f; f=$(msg_file "$1"); shift; .github/scripts/check-commit-message.sh "$@" "$f"; }
 x() { printf 'x%.0s' $(seq "$1"); }    # x 3 -> xxx
@@ -110,6 +110,9 @@ git config core.commentChar ';'
 expect_ok "custom comment character" check_msg "fix: x\n; Please enter the commit message"
 expect_fail "custom comment character: # is text" "blank line" check_msg "fix: x\n# not a comment"
 git config --unset core.commentChar
+git config core.commentString '%%'
+expect_ok "custom comment string (git 2.45+)" check_msg "fix: x\n%% Please enter the commit message"
+git config --unset core.commentString
 # The hooks themselves, through git.
 git config core.hooksPath .githooks
 tick && echo b >>frontend/app.txt && git add -A
@@ -156,8 +159,11 @@ expect_fail "pre-push checks a new branch" "Push stopped" git push -q origin top
 git checkout -q develop && git branch -q -D topic
 git checkout -q -b topic2 && commit frontend/app.txt "feat: new branch work"
 expect_ok "pre-push allows a good new branch" git push -q origin topic2
-git checkout -q develop && git fetch -q origin
-expect_ok "pre-push allows a release (origin/develop:main)" git push -q origin origin/develop:main
+git checkout -q develop && commit frontend/app.txt "Edited on GitHub" && git push -q --no-verify origin develop && git fetch -q origin
+expect_ok "pre-push allows a release, even with a bad commit already on develop" git push -q origin origin/develop:main
+commit frontend/app.txt "Another bad one"
+expect_fail "pre-push still stops a new bad commit on develop" "Push stopped" git push -q origin develop
+git reset -q --hard origin/develop
 git config --unset core.hooksPath
 
 # ------------------------------------------------------------ main-branch guard
@@ -195,11 +201,25 @@ release_backend 1.1.5
 # must not block every release on them. It warns instead.
 git checkout -q -b old-branch && commit_at $((clock - 86400)) backend/Deps.java "deps: bump z in /backend"
 git checkout -q develop && commit backend/App.java "fix: newer fix" && release_backend 1.1.6
-merge "Merge pull request #9 from tunneln/old-branch" old-branch
+merge "Merge pull request #9 from tunneln/old-branch\n\ndeps: bump z in /backend" old-branch
 expect_ok_saying "older merged-in change: warn, don't block" "missed: [0-9a-f]+ deps: bump z" "$guard"
+# But a merge commit whose message carries a fix: paragraph (GitHub puts the PR title
+# there) is versioned by release-please, so it must wait for its version like any fix.
+git checkout -q -b old-fix && commit_at $((clock - 86400)) backend/Legacy.java "fix: stop the legacy crash"
+git checkout -q develop && merge "Merge pull request #10 from tunneln/old-fix\n\nfix: stop the legacy crash" old-fix
+expect_fail "merge commit with a fix: paragraph needs a version" "Merge pull request #10" "$guard"
+release_backend 1.1.7
+out=$("$guard" 2>&1) && ! grep -q "missed" <<<"$out" && ok || bad "versioned merge: no warning left" "$out"
 commit backend/App.java "fix: after the old merge"
 expect_fail "newer changes still need a version after a warning" "fix: after the old merge" "$guard"
-release_backend 1.1.7
+release_backend 1.1.8
+# Release-please splits a message at blank lines followed by feat/fix/perf/revert
+# (and other types it never versions), but not deps or "!"; the guard mirrors that.
+commit backend/App.java "chore: tidy\n\nfix: also stop the null crash"
+expect_fail "a fix: paragraph inside another commit needs a version" "chore: tidy" "$guard"
+release_backend 1.1.9
+commit backend/App.java "chore: tidy\n\ndeps: bump y\n\nfeat!: not split by release-please"
+expect_ok "deps: and type!: paragraphs aren't split out" "$guard"
 set_version 1.1.0 1.1.1 && tick && git add -A && git commit -q --no-verify -m "chore: hand-edited pom"
 expect_fail "pom and manifest disagree" "pom.xml says 1.1.1" "$guard"
 set_version 1.2.0 && tick && git add -A && git commit -q --no-verify -m "chore: manifest ahead of its tag"

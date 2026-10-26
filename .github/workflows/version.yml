@@ -17,6 +17,7 @@ permissions:
   contents: write
   pull-requests: write
   issues: write
+  actions: write    # to delete the never-run CI runs GitHub holds on the version PR
 
 # One run at a time, in push order: each run builds on the previous one's tag.
 concurrency:
@@ -100,11 +101,29 @@ jobs:
           echo "Tagged $TAG." | tee -a "$GITHUB_STEP_SUMMARY"
 
       # GitHub marks each new release "Latest", but a backend version isn't live
-      # until main is released. Hand the label back to main's newest release.
+      # until main is released. Hand the label back to main's newest release (only
+      # if a backend-v* release holds it, so a release made meanwhile keeps it).
       - name: Keep "Latest" on the live release
         if: steps.release-please.outputs.releases_created == 'true' || steps.tag.outputs.releases_created == 'true'
         run: |
+          latest=$(gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq .tag_name 2>/dev/null || true)
           live=$(gh release list --limit 100 --json tagName --jq '[.[].tagName | select(test("^[0-9]{4}\\."))][0] // empty')
-          if [ -n "$live" ]; then
+          if [[ $latest == backend-v* ]] && [ -n "$live" ]; then
             gh release edit "$live" --latest
           fi
+
+      # GitHub holds CI on a PR the workflow token opened until someone approves it,
+      # and marks those runs failed once the PR merges. They never ran anything, so
+      # remove them instead of leaving a red X per version.
+      - name: Remove the version PR's held CI runs
+        if: steps.merge.outputs.merged == 'true'
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs?event=pull_request&per_page=100" \
+            --jq '.workflow_runs[] | select((.head_branch | startswith("release-please--")) and .status == "completed" and .conclusion != "success") | .id' |
+            while read -r id; do
+              if gh api -X DELETE "repos/$GITHUB_REPOSITORY/actions/runs/$id"; then
+                echo "Removed held run $id"
+              else
+                echo "::warning::Couldn't remove held CI run $id; it's harmless."
+              fi
+            done

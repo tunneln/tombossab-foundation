@@ -33,4 +33,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           BEFORE: ${{ github.event.before }}
+          PUSHED_AT: ${{ github.event.repository.pushed_at }}
         run: .github/scripts/tag-release.sh

@@ -2,8 +2,10 @@
 # Tags the commit just pushed to main as one release, "<date>-backend-<version>"
 # (e.g. 2026.10.21-backend-1.4.1; a second release that day is
 # 2026.10.21.2-backend-1.4.1), and publishes a GitHub Release listing what's in it.
-# Dates are Dallas time. Needs GH_TOKEN, GITHUB_SHA, GITHUB_REPOSITORY, and BEFORE
-# (main's previous commit). See docs/RELEASING.md.
+# Dated by when main was pushed, in Dallas time. Needs GH_TOKEN, GITHUB_SHA,
+# GITHUB_REPOSITORY, BEFORE (main's previous commit), and PUSHED_AT (the push's
+# Unix time; a queued or re-run job would otherwise date it by when it ran).
+# See docs/RELEASING.md.
 set -euo pipefail
 
 root=$(git rev-parse --show-toplevel)
@@ -18,7 +20,9 @@ if [ -n "$existing" ]; then
     exit 0
 fi
 
-day=$(TZ=America/Chicago date +%Y.%m.%d)
+pushed_at=${PUSHED_AT:-$(date +%s)}
+day=$(TZ=America/Chicago date -d "@$pushed_at" +%Y.%m.%d 2>/dev/null ||    # GNU (CI)
+    TZ=America/Chicago date -r "$pushed_at" +%Y.%m.%d)                      # BSD (macOS)
 count=$(git tag --list "$day-backend-*" "$day.*-backend-*" | wc -l | tr -d ' ')
 if [ "$count" -eq 0 ]; then tag="$day-backend-$version"; else tag="$day.$((count + 1))-backend-$version"; fi
 

@@ -52,8 +52,9 @@ release once nothing uses it. That keeps every rollback safe.
 Keep history linear: rebase rather than merge, and squash- or rebase-merge pull
 requests on GitHub. Release-please reads `develop` newest-first and stops at the last
 version, so a merge commit that brings in a branch older than that version hides
-the branch's changes from it: they ship without their own version, and the Release
-run says so in a warning.
+the branch's own commits from it. Only the merge commit itself is read, and it counts
+only if its PR title is a `feat`/`fix`/`perf`/`revert`. Anything hidden ships without
+its own version, and the Release run says so in a warning.
 
 **Reverting:** `git revert --no-commit <sha>`, then
 `git commit -m "revert: <the original summary>"`. (A plain `git revert` writes

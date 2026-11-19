@@ -9,7 +9,7 @@
     "test": "node --test scripts/*.test.mjs"
   },
   "dependencies": {
-    "next": "^15.5.28",
+    "next": "^16.4.6",
     "react": "^19.2.7",
     "react-countup": "^6.5.3",
     "react-dom": "^19.2.7",

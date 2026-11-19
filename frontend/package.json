@@ -14,7 +14,7 @@
     "react-countup": "^6.5.3",
     "react-dom": "^19.2.7",
     "server-only": "^0.0.1",
-    "swiper": "^12.2.0"
+    "swiper": "^14.4.0"
   },
   "devDependencies": {
     "playwright": "^1.61.1",

@@ -1,8 +1,29 @@
 # Gala 2026 launch checklist
 
-Manual steps outside the code for **https://tombossabfoundation.org/gala** (The Tombossa B Foundation Fundraising Gala, Saturday, November 28, 2026, Empire Event Center, Dallas). Everything the site shows comes from `frontend/config/gala-2026.js`; editing that file, then committing and deploying, is all a content change needs.
+Manual steps outside the code for **https://tombossabfoundation.org/gala** (The Tombossa B Foundation Fundraising Gala, Saturday, November 28, 2026, Delina Bistro & Bar, 6770 Abrams Rd #105, Dallas, TX 75231; moved from Empire Event Center on November 23). Everything the site shows comes from `frontend/config/gala-2026.js`; editing that file, then committing and deploying, is all a content change needs.
 
 > The gala ships with the decoupling refactor (Vercel frontend). The live site is still the old nginx build, so none of this is public until the cutover in `deploy/RUNBOOK.md`.
+
+## Venue change (November 23): make sure every guest knows
+
+The site shows the new venue everywhere it shows one: the `/gala` hero and FAQ (with its map), the `/events` card, the calendar link and `.ics` file, the search-engine event data, and the Instagram story image. Until the night it also flags the move: a "New location" notice on the `/gala` hero (naming both venues) and on the homepage gala slide. Both go away on their own once the gala is over; to remove them sooner, set `venue.previousName` to `null`.
+
+Calendar apps never update an entry a guest already saved: Apple Calendar and Google ignore a re-added file with the same event ID, and Outlook varies by app. So the `.ics` download now has a new event ID (`calendarRevision: 1`), and adding it again always creates an entry with the new venue; guests have to delete the old one themselves. Everything else happens outside the code:
+
+- [ ] **Zeffy, the address**: Campaigns → the ⋯ next to the gala → Edit → change the address → Save. Form links don't change. Zeffy does **not** tell anyone about the change.
+- [ ] **Zeffy, the reminder email**: Campaigns → Edit → **Automated Emails**. The reminder's text was written from the old address and doesn't update by itself. Edit the 1-day reminder (it goes out November 27) before it sends. The 7-day reminder (around November 21) has probably already gone out with the old address.
+- [ ] **Email every ticket holder** from Zeffy: Campaigns → **Communications** → New email. Recipients are preselected as current ticket holders, and you can schedule a second send closer to the day. Say:
+  - the new venue and address, and that the date and time are unchanged (Saturday, November 28, 5:00–10:00 PM);
+  - parking;
+  - that their ticket and QR code still work, even though the ticket PDF shows the old venue (Zeffy can't reissue a ticket without cancelling it);
+  - "If you saved the gala to your calendar, change the location in that entry, or delete it and add it again from tombossabfoundation.org/gala (Google Calendar users: use 'Add to Google Calendar' there)."
+- [ ] **Text guests**: Zeffy can't send texts. Export the guest list (Campaigns → ⋯ → Manage → Guest list) and text or call anyone you have a number for, especially people who don't read email.
+- [ ] **Social**: post the change on Instagram and Facebook (feed and story) and pin it. Repost the regenerated story image (`public/images/gala-2026-story.jpg`, which now shows the new venue) or download it from `/gala` with "Share to Instagram Story".
+- [ ] **Newsletter subscribers**: send a short update.
+- [ ] **Everyone working the night**: speakers and scholars, performers or DJ, caterer, volunteers, photographer, sponsors, and auction donors (deliveries go to the new address).
+- [ ] **Printed materials** showing the old venue (flyers, posters, programs, table signs): reprint or sticker them. QR codes still work: they open `/gala`.
+- [ ] **On the day**: put a sign at Empire Event Center (9560 Skillman St, Suite 126), ideally with a volunteer from about 4:30 PM, pointing to 6770 Abrams Rd #105 with the `/gala` QR code. Also tell Empire Event Center, in case guests call them.
+- [ ] **Google**: in Search Console, inspect https://tombossabfoundation.org/gala and click "Request Indexing", so the event listing picks up the new location sooner. Google gives no timeline, so a search listing may show the old venue for a few days anyway.
 
 ## 1. Checkout platform setup
 

@@ -74,6 +74,22 @@ export const venueAddress = (g = GALA) => {
     return [name, street, venueCityLine(g)].filter(Boolean).join(', ');
 };
 
+// While venue.previousName is set (the venue changed after it was announced):
+// "New location: the gala has moved from Empire Event Center to Delina Bistro &
+// Bar, 6770 Abrams Rd #105, Dallas." for the /gala hero, and the shorter
+// "New location: Delina Bistro & Bar, 6770 Abrams Rd #105" for the homepage
+// slide. Both null otherwise.
+export const venueNotice = (g = GALA) => {
+    if (!hasVenue(g) || !g.venue.previousName) return null;
+    const { name, street, city, previousName } = g.venue;
+    return `New location: the gala has moved from ${previousName} to ${[name, street, city].filter(Boolean).join(', ')}.`;
+};
+
+export const venueNoticeShort = (g = GALA) => {
+    if (!hasVenue(g) || !g.venue.previousName) return null;
+    return `New location: ${[g.venue.name, g.venue.street].filter(Boolean).join(', ')}`;
+};
+
 // ---------------------------------------------------------------- state
 
 const CST_END_OF_DAY = 'T23:59:00-06:00';
@@ -247,7 +263,8 @@ export const icsContent = (now = new Date(), g = GALA) => {
         'CALSCALE:GREGORIAN',
         'METHOD:PUBLISH',
         'BEGIN:VEVENT',
-        `UID:gala-${g.year}@tombossabfoundation.org`,
+        // A new UID per calendarRevision (see the config).
+        `UID:gala-${g.year}${g.calendarRevision ? `-r${g.calendarRevision}` : ''}@tombossabfoundation.org`,
         `DTSTAMP:${utcStamp(now)}`,
         `DTSTART:${utcStamp(new Date(g.startAt))}`,
         ...(g.endAt ? [`DTEND:${utcStamp(new Date(g.endAt))}`] : []),

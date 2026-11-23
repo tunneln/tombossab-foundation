@@ -17,7 +17,11 @@ const WhenWhere = () => {
         );
     }
     const { name, street } = gala.venue;
-    const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(venueAddress())}&output=embed`;
+    // The street address alone gets one pin and an address card. With the
+    // venue's name and suite number too, Google answers with a list of places
+    // in the building instead (no pin).
+    const mapQuery = street ? `${street}, ${venueCityLine()}` : venueAddress();
+    const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`;
     return (
         <>
             <p>{timeRange() ? `${gala.dateDisplay}, ${timeRange()}.` : `${gala.dateDisplay}. Time to be announced.`}</p>

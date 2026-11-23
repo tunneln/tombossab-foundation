@@ -12,12 +12,14 @@ import { Pagination, Autoplay } from 'swiper/modules';
 
 import { useGala } from './gala/GalaState';
 import { gala } from '../config/gala-2026';
+import { venueNoticeShort } from '../lib/gala';
 
-// Gala slide copy per gala state (config/gala-2026.js holds the text).
+// Gala slide copy per gala state (config/gala-2026.js holds the text). Until the
+// night, a venue change (venue.previousName) takes the subline's place.
 const GALA_SLIDE = {
-    coming_soon: { subline: gala.homeSlide.subline, primary: 'Learn More', sponsor: true, kicker: true },
-    on_sale: { subline: gala.homeSlide.subline, primary: 'Learn More', sponsor: true, kicker: true },
-    online_closed: { subline: gala.homeSlide.closedSubline, primary: 'Event Details', sponsor: false, kicker: false },
+    coming_soon: { subline: venueNoticeShort() ?? gala.homeSlide.subline, primary: 'Learn More', sponsor: true, kicker: true },
+    on_sale: { subline: venueNoticeShort() ?? gala.homeSlide.subline, primary: 'Learn More', sponsor: true, kicker: true },
+    online_closed: { subline: venueNoticeShort() ?? gala.homeSlide.closedSubline, primary: 'Event Details', sponsor: false, kicker: false },
     past: { subline: gala.homeSlide.pastSubline, primary: 'See the Recap', sponsor: false, kicker: false },
 };
 

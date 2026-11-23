@@ -16,7 +16,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { startServer, openPage, blockExternal } from './next-server.mjs';
-import { cardTimeLabel, checkoutMode, galaSlideVisible, getGalaState, providerInfo, STORY_IMAGE, timePublished } from '../lib/gala.js';
+import { cardTimeLabel, checkoutMode, galaSlideVisible, getGalaState, providerInfo, STORY_IMAGE, timePublished, venueNotice, venueNoticeShort } from '../lib/gala.js';
 import { gala } from '../config/gala-2026.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -149,7 +149,7 @@ test('/gala: the confirmed start time, calendar links, and Event JSON-LD are pub
     const ld = JSON.parse(await page.locator('script[type="application/ld+json"]').textContent());
     assert.equal(ld['@type'], 'Event');
     assert.equal(ld.startDate, '2026-11-28T17:00:00-06:00');
-    assert.equal(ld.location.address.postalCode, '75243');
+    assert.equal(ld.location.address.postalCode, '75231');
     assert.equal(ld.offers.length, 3);
     if (STATE !== 'past') {
       const google = page.locator('#share a[href^="https://calendar.google.com/"]');
@@ -165,15 +165,17 @@ test('/gala: the confirmed start time, calendar links, and Event JSON-LD are pub
 test('/gala: confirmed venue renders (hero chip + FAQ with a lazy, titled map)', async () => {
   const { ctx, page } = await openReady('/gala');
   try {
-    assert.match(await page.locator('#top').innerText(), /Empire Event Center · Dallas/);
+    assert.match(await page.locator('#top').innerText(), /Delina Bistro & Bar · Dallas/);
     const faq = page.locator('#faq');
     await faq.getByRole('button', { name: 'When and where is the gala?' }).click();
     const panel = faq.locator('[role="region"]:visible');
-    assert.match(await panel.innerText(), /9560 Skillman St, Suite 126/);
-    assert.match(await panel.innerText(), /Dallas, TX 75243/);
+    assert.match(await panel.innerText(), /6770 Abrams Rd #105/);
+    assert.match(await panel.innerText(), /Dallas, TX 75231/);
     const map = panel.locator('iframe');
     assert.equal(await map.getAttribute('loading'), 'lazy');
-    assert.equal(await map.getAttribute('title'), 'Map to Empire Event Center');
+    assert.equal(await map.getAttribute('title'), 'Map to Delina Bistro & Bar');
+    // The street address alone: with the name and suite too, Google shows a list, not a pin.
+    assert.equal(new URL(await map.getAttribute('src')).searchParams.get('q'), '6770 Abrams Rd #105, Dallas, TX 75231');
     const questions = (await faq.locator('button[aria-expanded]').allInnerTexts()).map((q) => q.trim());
     assert.deepEqual(questions, [
       'What should I wear?', 'When and where is the gala?', 'What do I need to bring?',
@@ -223,6 +225,37 @@ test('/gala: no Get Tickets buttons once online sales close', async () => {
     assert.equal(await page.locator('#share button', { hasText: 'Instagram Story' }).count(), 0);
   } finally {
     await ctx.close();
+  }
+});
+
+test('venue change: /gala and the homepage slide flag the new location until the night, then drop it',
+  { skip: venueNotice() ? false : 'no venue change in the config (venue.previousName is null)' }, async () => {
+  for (const [iso, state] of [
+    ['2026-11-25T12:00:00-06:00', 'on_sale'],
+    ['2026-11-28T14:00:00-06:00', 'online_closed'],
+    ['2026-11-29T09:00:00-06:00', 'past'],
+  ]) {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    const page = await ctx.newPage();
+    try {
+      await blockExternal(page, origin);
+      await page.clock.setFixedTime(new Date(iso));
+      await page.goto(`${origin}/gala`, { waitUntil: 'load', timeout: 30000 });
+      await page.waitForFunction((s) => document.documentElement.dataset.galaState === s, state);
+      const notice = page.locator('#top p', { hasText: 'New location' });
+      if (state === 'past') {
+        assert.equal(await notice.count(), 0, `${state}: no notice once the night is over`);
+      } else {
+        assert.equal(await notice.count(), 1, state);
+        assert.equal((await notice.innerText()).trim(), venueNotice());
+      }
+      await page.goto(`${origin}/`, { waitUntil: 'load', timeout: 30000 });
+      await page.waitForFunction((s) => document.documentElement.dataset.galaState === s, state);
+      const subline = await page.locator('.frontpageSwiper .slide-bg-gala .gala-slide__subline').first().innerText();
+      assert.equal(subline.trim(), state === 'past' ? gala.homeSlide.pastSubline : venueNoticeShort(), state);
+    } finally {
+      await ctx.close();
+    }
   }
 });
 
@@ -789,7 +822,8 @@ test('homepage: the gala slide leads, then scholars, the newsletter, and the fou
     });
     assert.equal(slides.length, 4);
     assert.match(slides[0], /^ANNOUNCING A NEW TRADITION Our Annual Fundraising Gala SATURDAY, NOVEMBER 28, 2026 · DALLAS/i);
-    assert.match(slides[0], /An evening for the next generation\. One unforgettable night for our scholars\./);
+    // A venue change (venue.previousName) replaces the usual subline with the new location.
+    assert.ok(slides[0].includes(venueNoticeShort() ?? gala.homeSlide.subline), slides[0]);
     assert.doesNotMatch(slides[0], /\d:\d\d/, 'no time on the slide');
     assert.match(slides[1], /^Meet our scholarship recipients, including our newest scholar, Kaleb!/);
     assert.match(slides[2], /^Read our September Newsletter/);
@@ -964,7 +998,7 @@ test('/events: Upcoming (gala card -> /gala) above Past (fixture events, unchang
     assert.equal(await card.locator('.blog-img a').getAttribute('href'), '/gala');
     assert.equal((await card.locator('.blog__tag').textContent()).replace(/\s+/g, ''), '28Nov2026');
     const meta = await card.locator('.blog__list li').allTextContents();
-    assert.deepEqual(meta.map((m) => m.trim()), [cardTimeLabel(), 'Empire Event Center', 'Dallas, TX']);
+    assert.deepEqual(meta.map((m) => m.trim()), [cardTimeLabel(), 'Delina Bistro & Bar', 'Dallas, TX']);
     assert.equal(await card.locator('.event-card__pill').count(), STATE === 'on_sale' ? 1 : 0, '"Tickets on sale" pill only while on sale');
 
     const pastTitles = await past.locator('.blog__title').allInnerTexts();

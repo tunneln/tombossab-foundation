@@ -28,12 +28,21 @@ export const gala = {
     startTimeConfirmed: true,
     endAt: '2026-11-28T22:00:00-06:00', // 10:00 PM CST
     venue: {
-        name: 'Empire Event Center',
-        street: '9560 Skillman St, Suite 126',
+        name: 'Delina Bistro & Bar',
+        street: '6770 Abrams Rd #105',
         city: 'Dallas',
         region: 'TX',
-        postalCode: '75243',
+        postalCode: '75231',
+        // The venue announced before this one (moved on Nov 23). While set, /gala
+        // and the homepage slide flag the new location until the night; null = no notice.
+        previousName: 'Empire Event Center',
     },
+    // Calendar revision: bump it whenever the time or venue changes after people
+    // may have saved the event. Calendar apps don't reliably update a saved copy
+    // (Apple Calendar and Google ignore a re-added .ics with the same UID), so
+    // each revision gets its own UID: adding the event again always creates an
+    // entry with the new details. Guests are asked to delete the old one.
+    calendarRevision: 1,
     dressCode: {
         label: 'Cocktail Attire',
         detail:

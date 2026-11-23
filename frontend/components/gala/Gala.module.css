@@ -315,6 +315,24 @@
     color: var(--gala-gold-soft);
     font-weight: 500;
 }
+/* "New location: ..." under the chips while venue.previousName is set: boxed
+   so guests who saw the old venue notice the change. */
+.venueNotice {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    max-width: 640px;
+    margin: 24px auto 0;
+    padding: 12px 18px;
+    border: 1px solid var(--gala-gold);
+    border-radius: 12px;
+    background: rgba(201, 164, 92, 0.12);
+    color: var(--gala-gold-soft);
+    font-weight: 500;
+    line-height: 1.55;
+    text-align: left;
+}
+.venueNotice i { color: var(--gala-gold); }
 
 /* ------------------------------------------------------------ story */
 
@@ -854,6 +872,8 @@
     }
     .chip { justify-content: center; gap: 8px; padding: 9px 10px; font-size: 13.5px; white-space: nowrap; }
     .chipWide { grid-column: 1 / -1; }
+    /* As wide as the chips above it. */
+    .venueNotice { max-width: 360px; margin: 20px max(-28px, calc((100% - 360px) / 2)) 0; padding: 10px 14px; font-size: 15px; }
     .shareButtons .btn { flex: 1 1 calc(50% - 12px); padding: 0 14px; }
 }
 
@@ -861,7 +881,7 @@
     .container.heroInner { padding: 0 40px 48px; }
     .h1 { font-size: calc((100vw - 80px) / 5.95); }
     .titleLead { font-size: 18px; }
-    .chips { margin-left: max(-26px, calc((100% - 360px) / 2)); margin-right: max(-26px, calc((100% - 360px) / 2)); }
+    .chips, .venueNotice { margin-left: max(-26px, calc((100% - 360px) / 2)); margin-right: max(-26px, calc((100% - 360px) / 2)); }
     .chip { gap: 6px; padding: 8px; font-size: 13px; }
 }
 

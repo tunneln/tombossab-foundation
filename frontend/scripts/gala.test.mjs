@@ -12,7 +12,7 @@ import {
     getGalaState, defaultGalaState, checkoutMode, tierDeductible, tierAvailability,
     sponsorshipHref, minTicketPrice, formatPrice, formatTime, formatWeekdayDate, timeRange, cardTimeLabel,
     daysUntil, countdownLabel, googleCalendarUrl, icsContent, eventJsonLd, shareLinks,
-    venueAddress, CONFIRM_FIELDS, confirmChecklist, getPath, GALA_META, providerInfo, timePublished,
+    venueAddress, venueNotice, venueNoticeShort, CONFIRM_FIELDS, confirmChecklist, getPath, GALA_META, providerInfo, timePublished,
     doorPricesLine, galaSlideVisible, isPlainClick,
 } from '../lib/gala.js';
 
@@ -50,9 +50,11 @@ test('config: event facts match the spec', () => {
     assert.equal(gala.eventDate, '2026-11-28');
     assert.equal(gala.timezone, 'America/Chicago');
     assert.deepEqual(gala.venue, {
-        name: 'Empire Event Center', street: '9560 Skillman St, Suite 126',
-        city: 'Dallas', region: 'TX', postalCode: '75243',
+        name: 'Delina Bistro & Bar', street: '6770 Abrams Rd #105',
+        city: 'Dallas', region: 'TX', postalCode: '75231',
+        previousName: 'Empire Event Center',
     });
+    assert.equal(gala.calendarRevision, 1, 'bumped for the venue change');
     assert.equal(gala.startAt, '2026-11-28T17:00:00-06:00');
     assert.deepEqual(gala.tiers.attend.map((t) => [t.id, t.price, t.doorPrice]),
         [['student', 30, 40], ['ga', 55, 65], ['champion', 85, 95]]);
@@ -238,7 +240,19 @@ test('formatting: a start time is published only once confirmed', () => {
     assert.equal(timeRange(g), '6:00 PM – 10:00 PM');
     assert.equal(cardTimeLabel(g), '6:00pm to 10:00pm');
     assert.equal(venueAddress(g), 'Test Hall, 1 Main St, Dallas, TX 75201');
-    assert.equal(venueAddress(gala), 'Empire Event Center, 9560 Skillman St, Suite 126, Dallas, TX 75243');
+    assert.equal(venueAddress(gala), 'Delina Bistro & Bar, 6770 Abrams Rd #105, Dallas, TX 75231');
+});
+
+test('venue change: the notices name the new venue (and the old one) only while previousName is set', () => {
+    const moved = variant({ venue: { name: 'Test Hall', street: '1 Main St', city: 'Dallas', previousName: 'Old Hall' } });
+    assert.equal(venueNotice(moved), 'New location: the gala has moved from Old Hall to Test Hall, 1 Main St, Dallas.');
+    assert.equal(venueNoticeShort(moved), 'New location: Test Hall, 1 Main St');
+    const unchanged = variant({ venue: { previousName: null } });
+    assert.equal(venueNotice(unchanged), null);
+    assert.equal(venueNoticeShort(unchanged), null);
+    const noVenue = variant({ venue: { name: null, street: null, city: null, postalCode: null } });
+    assert.equal(venueNotice(noVenue), null, 'no notice before a venue is set');
+    assert.equal(venueNoticeShort(noVenue), null);
 });
 
 test('provider: platform behavior keys off checkout.provider alone', () => {
@@ -273,7 +287,11 @@ test('calendar: confirmed 5:00-10:00 PM CST -> 23:00Z to 04:00Z next day', () =>
     const ics = icsContent(at('2026-10-02T17:00:00Z'), g);
     assert.match(ics, /\r\nDTSTART:20261128T230000Z\r\n/);
     assert.match(ics, /\r\nDTEND:20261129T040000Z\r\n/);
-    assert.match(ics, /LOCATION:Empire Event Center\\, 9560 Skillman St\\, Suite 126\\, Dallas\\, TX 7\r\n 5243/);
+    assert.match(ics, /\r\nLOCATION:Delina Bistro & Bar\\, 6770 Abrams Rd #105\\, Dallas\\, TX 75231\r\n/);
+    // A revised event gets a new UID, so re-adding it creates an entry with the new venue.
+    assert.match(ics, /\r\nUID:gala-2026-r1@tombossabfoundation\.org\r\n/);
+    assert.match(icsContent(new Date(), variant({ calendarRevision: 0 })), /\r\nUID:gala-2026@tombossabfoundation\.org\r\n/);
+    assert.doesNotMatch(ics, /SEQUENCE/);
     assert.equal(new URL(googleCalendarUrl(g)).searchParams.get('dates'), '20261128T230000Z/20261129T040000Z');
     assert.doesNotMatch(icsContent(new Date(), variant({ endAt: null })), /DTEND/, 'never guess an end time');
 });
@@ -317,8 +335,9 @@ test('JSON-LD: absent while the start time is unconfirmed', () => {
     assert.equal(eventJsonLd('coming_soon', variant({ startTimeConfirmed: false })), null);
     const ld = eventJsonLd('coming_soon', gala);
     assert.equal(ld.startDate, '2026-11-28T17:00:00-06:00');
-    assert.equal(ld.location.name, 'Empire Event Center');
-    assert.equal(ld.location.address.streetAddress, '9560 Skillman St, Suite 126');
+    assert.equal(ld.location.name, 'Delina Bistro & Bar');
+    assert.equal(ld.location.address.streetAddress, '6770 Abrams Rd #105');
+    assert.equal(ld.location.address.postalCode, '75231');
     assert.equal(ld.endDate, '2026-11-28T22:00:00-06:00');
 });
 

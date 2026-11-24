@@ -12,7 +12,7 @@ import {
     getGalaState, defaultGalaState, checkoutMode, tierDeductible, tierAvailability,
     sponsorshipHref, minTicketPrice, formatPrice, formatTime, formatWeekdayDate, timeRange, cardTimeLabel,
     daysUntil, countdownLabel, googleCalendarUrl, icsContent, eventJsonLd, shareLinks,
-    venueAddress, venueNotice, venueNoticeShort, CONFIRM_FIELDS, confirmChecklist, getPath, GALA_META, providerInfo, timePublished,
+    venueAddress, VENUE_NOTICE_LABEL, venueNotice, venueNoticeShort, CONFIRM_FIELDS, confirmChecklist, getPath, GALA_META, providerInfo, timePublished,
     doorPricesLine, galaSlideVisible, isPlainClick,
 } from '../lib/gala.js';
 
@@ -245,8 +245,10 @@ test('formatting: a start time is published only once confirmed', () => {
 
 test('venue change: the notices name the new venue (and the old one) only while previousName is set', () => {
     const moved = variant({ venue: { name: 'Test Hall', street: '1 Main St', city: 'Dallas', previousName: 'Old Hall' } });
-    assert.equal(venueNotice(moved), 'New location: the gala has moved from Old Hall to Test Hall, 1 Main St, Dallas.');
-    assert.equal(venueNoticeShort(moved), 'New location: Test Hall, 1 Main St');
+    assert.equal(VENUE_NOTICE_LABEL, 'New location');
+    // Non-breaking spaces keep the new venue's name and street each on one line.
+    assert.equal(venueNotice(moved), 'The gala has moved from Old Hall to Test Hall, 1 Main St, Dallas.');
+    assert.equal(venueNoticeShort(moved), 'Test Hall, 1 Main St');
     const unchanged = variant({ venue: { previousName: null } });
     assert.equal(venueNotice(unchanged), null);
     assert.equal(venueNoticeShort(unchanged), null);

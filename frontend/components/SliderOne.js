@@ -12,14 +12,17 @@ import { Pagination, Autoplay } from 'swiper/modules';
 
 import { useGala } from './gala/GalaState';
 import { gala } from '../config/gala-2026';
-import { venueNoticeShort } from '../lib/gala';
+import { VENUE_NOTICE_LABEL, venueNoticeShort } from '../lib/gala';
 
 // Gala slide copy per gala state (config/gala-2026.js holds the text). Until the
-// night, a venue change (venue.previousName) takes the subline's place.
+// night, a venue change (venue.previousName) takes the subline's place, in
+// brighter text with a bold label (gala-slide__subline--venue).
+const VENUE_SUBLINE = venueNoticeShort() && <><strong>{VENUE_NOTICE_LABEL}:</strong> {venueNoticeShort()}</>;
+const sublineOr = (subline) => (VENUE_SUBLINE ? { subline: VENUE_SUBLINE, venue: true } : { subline });
 const GALA_SLIDE = {
-    coming_soon: { subline: venueNoticeShort() ?? gala.homeSlide.subline, primary: 'Learn More', sponsor: true, kicker: true },
-    on_sale: { subline: venueNoticeShort() ?? gala.homeSlide.subline, primary: 'Learn More', sponsor: true, kicker: true },
-    online_closed: { subline: venueNoticeShort() ?? gala.homeSlide.closedSubline, primary: 'Event Details', sponsor: false, kicker: false },
+    coming_soon: { ...sublineOr(gala.homeSlide.subline), primary: 'Learn More', sponsor: true, kicker: true },
+    on_sale: { ...sublineOr(gala.homeSlide.subline), primary: 'Learn More', sponsor: true, kicker: true },
+    online_closed: { ...sublineOr(gala.homeSlide.closedSubline), primary: 'Event Details', sponsor: false, kicker: false },
     past: { subline: gala.homeSlide.pastSubline, primary: 'See the Recap', sponsor: false, kicker: false },
 };
 
@@ -104,7 +107,7 @@ const SliderOne = () => {
                                                     </React.Fragment>
                                                 ))}
                                             </p>
-                                            <p className="gala-slide__subline">{galaSlide.subline}</p>
+                                            <p className={`gala-slide__subline${galaSlide.venue ? ' gala-slide__subline--venue' : ''}`}>{galaSlide.subline}</p>
                                             <div className="gala-slide__ctas">
                                                 <Link href="/gala" className="gala-slide__btn gala-slide__btn--primary">{galaSlide.primary}</Link>
                                                 {galaSlide.sponsor && (

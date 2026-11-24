@@ -74,20 +74,24 @@ export const venueAddress = (g = GALA) => {
     return [name, street, venueCityLine(g)].filter(Boolean).join(', ');
 };
 
-// While venue.previousName is set (the venue changed after it was announced):
-// "New location: the gala has moved from Empire Event Center to Delina Bistro &
-// Bar, 6770 Abrams Rd #105, Dallas." for the /gala hero, and the shorter
-// "New location: Delina Bistro & Bar, 6770 Abrams Rd #105" for the homepage
-// slide. Both null otherwise.
+// While venue.previousName is set (the venue changed after it was announced),
+// /gala and the homepage slide show a bold VENUE_NOTICE_LABEL with the text:
+// "The gala has moved from Empire Event Center to Delina Bistro & Bar, 6770
+// Abrams Rd #105, Dallas." on the /gala hero, and the shorter "Delina Bistro &
+// Bar, 6770 Abrams Rd #105" on the homepage slide. Both null otherwise. Non-
+// breaking spaces keep the new venue's name and street each on one line.
+export const VENUE_NOTICE_LABEL = 'New location';
+
+const newVenue = (g) => [g.venue.name, g.venue.street].filter(Boolean).map((part) => part.replace(/ /g, ' ')).join(', ');
+
 export const venueNotice = (g = GALA) => {
     if (!hasVenue(g) || !g.venue.previousName) return null;
-    const { name, street, city, previousName } = g.venue;
-    return `New location: the gala has moved from ${previousName} to ${[name, street, city].filter(Boolean).join(', ')}.`;
+    return `The gala has moved from ${g.venue.previousName} to ${[newVenue(g), g.venue.city].filter(Boolean).join(', ')}.`;
 };
 
 export const venueNoticeShort = (g = GALA) => {
     if (!hasVenue(g) || !g.venue.previousName) return null;
-    return `New location: ${[g.venue.name, g.venue.street].filter(Boolean).join(', ')}`;
+    return newVenue(g);
 };
 
 // ---------------------------------------------------------------- state

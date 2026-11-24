@@ -16,7 +16,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { startServer, openPage, blockExternal } from './next-server.mjs';
-import { cardTimeLabel, checkoutMode, galaSlideVisible, getGalaState, providerInfo, STORY_IMAGE, timePublished, venueNotice, venueNoticeShort } from '../lib/gala.js';
+import { cardTimeLabel, checkoutMode, galaSlideVisible, getGalaState, providerInfo, STORY_IMAGE, timePublished, VENUE_NOTICE_LABEL, venueNotice, venueNoticeShort } from '../lib/gala.js';
 import { gala } from '../config/gala-2026.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -242,17 +242,31 @@ test('venue change: /gala and the homepage slide flag the new location until the
       await page.clock.setFixedTime(new Date(iso));
       await page.goto(`${origin}/gala`, { waitUntil: 'load', timeout: 30000 });
       await page.waitForFunction((s) => document.documentElement.dataset.galaState === s, state);
-      const notice = page.locator('#top p', { hasText: 'New location' });
+      const notice = page.locator('#top p', { hasText: 'moved from' });
       if (state === 'past') {
         assert.equal(await notice.count(), 0, `${state}: no notice once the night is over`);
       } else {
         assert.equal(await notice.count(), 1, state);
-        assert.equal((await notice.innerText()).trim(), venueNotice());
+        assert.equal(await notice.textContent(), venueNotice());
+        assert.equal(await notice.evaluate((el) => getComputedStyle(el).textAlign), 'center');
+        // A bold label above the text.
+        const label = notice.locator('xpath=preceding-sibling::p[1]');
+        assert.equal((await label.textContent()).trim(), VENUE_NOTICE_LABEL);
+        assert.equal(await label.evaluate((el) => getComputedStyle(el).fontWeight), '700');
       }
       await page.goto(`${origin}/`, { waitUntil: 'load', timeout: 30000 });
       await page.waitForFunction((s) => document.documentElement.dataset.galaState === s, state);
-      const subline = await page.locator('.frontpageSwiper .slide-bg-gala .gala-slide__subline').first().innerText();
-      assert.equal(subline.trim(), state === 'past' ? gala.homeSlide.pastSubline : venueNoticeShort(), state);
+      const subline = page.locator('.frontpageSwiper .slide-bg-gala .gala-slide__subline').first();
+      if (state === 'past') {
+        assert.equal((await subline.innerText()).trim(), gala.homeSlide.pastSubline);
+      } else {
+        assert.equal(await subline.textContent(), `${VENUE_NOTICE_LABEL}: ${venueNoticeShort()}`, state);
+        // Brighter than the usual subline (ivory, not lavender), with a bold gold label.
+        assert.equal(await subline.evaluate((el) => getComputedStyle(el).color), 'rgb(247, 241, 230)');
+        const label = subline.locator('strong');
+        assert.equal(await label.evaluate((el) => getComputedStyle(el).color), 'rgb(227, 201, 143)');
+        assert.equal(await label.evaluate((el) => getComputedStyle(el).fontWeight), '700');
+      }
     } finally {
       await ctx.close();
     }
@@ -823,7 +837,8 @@ test('homepage: the gala slide leads, then scholars, the newsletter, and the fou
     assert.equal(slides.length, 4);
     assert.match(slides[0], /^ANNOUNCING A NEW TRADITION Our Annual Fundraising Gala SATURDAY, NOVEMBER 28, 2026 · DALLAS/i);
     // A venue change (venue.previousName) replaces the usual subline with the new location.
-    assert.ok(slides[0].includes(venueNoticeShort() ?? gala.homeSlide.subline), slides[0]);
+    const subline = venueNoticeShort() ? `${VENUE_NOTICE_LABEL}: ${venueNoticeShort()}` : gala.homeSlide.subline;
+    assert.ok(slides[0].includes(subline.replace(/\s+/g, ' ')), slides[0]);
     assert.doesNotMatch(slides[0], /\d:\d\d/, 'no time on the slide');
     assert.match(slides[1], /^Meet our scholarship recipients, including our newest scholar, Kaleb!/);
     assert.match(slides[2], /^Read our September Newsletter/);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { gala } from '../../config/gala-2026';
-import { BEFORE_EVENT, timeRange, venueNotice } from '../../lib/gala';
+import { BEFORE_EVENT, timeRange, VENUE_NOTICE_LABEL, venueNotice } from '../../lib/gala';
 import { ShowIn } from './GalaState';
 import Countdown from './Countdown';
 import Motif from './Motif';
@@ -44,10 +44,13 @@ const GalaHero = () => {
 
                 <ShowIn states={BEFORE_EVENT}>
                     {venueNotice() && (
-                        <p className={styles.venueNotice}>
-                            <i className="fa fa-map-marker" aria-hidden="true"></i>
-                            {venueNotice()}
-                        </p>
+                        <div className={styles.venueNotice}>
+                            <p className={`${styles.eyebrow} ${styles.venueNoticeLabel}`}>
+                                <i className="fa fa-map-marker" aria-hidden="true"></i>
+                                {VENUE_NOTICE_LABEL}
+                            </p>
+                            <p>{venueNotice()}</p>
+                        </div>
                     )}
                     <div className={styles.intro}>
                         {gala.copy.intro.map((para) => <p key={para}>{para}</p>)}

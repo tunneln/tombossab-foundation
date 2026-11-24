@@ -964,6 +964,16 @@ a[href^="mailto:"] {
     margin: 0 auto 34px;
     text-wrap: balance;
 }
+/* A venue change (venue.previousName in the gala config) takes the subline's
+   place: brighter ivory text, with its "New location:" label in bold gold. */
+.slider-area .gala-slide .gala-slide__subline--venue {
+    color: #F7F1E6;
+    font-weight: 500;
+}
+.slider-area .gala-slide .gala-slide__subline--venue strong {
+    color: #E3C98F;
+    font-weight: 700;
+}
 .slider-area .gala-slide .gala-slide__ctas {
     display: flex;
     flex-wrap: wrap;

@@ -12,17 +12,21 @@ import { Pagination, Autoplay } from 'swiper/modules';
 
 import { useGala } from './gala/GalaState';
 import { gala } from '../config/gala-2026';
-import { VENUE_NOTICE_LABEL, venueNoticeShort } from '../lib/gala';
+import { EXTERNAL_LINK, VENUE_NOTICE_LABEL, venueDirectionsUrl, venueNoticeShort } from '../lib/gala';
 
 // Gala slide copy per gala state (config/gala-2026.js holds the text). Until the
 // night, a venue change (venue.previousName) takes the subline's place, in
-// brighter text with a bold label (gala-slide__subline--venue).
-const VENUE_SUBLINE = venueNoticeShort() && <><strong>{VENUE_NOTICE_LABEL}:</strong> {venueNoticeShort()}</>;
+// brighter text with a bold label (gala-slide__subline--venue); the new address
+// links to directions in Google Maps. Once online sales close, the sponsor
+// button's place goes to a "Get Directions" button.
+const VENUE_SUBLINE = venueNoticeShort() && (
+    <><strong>{VENUE_NOTICE_LABEL}:</strong> <a href={venueDirectionsUrl()} {...EXTERNAL_LINK}>{venueNoticeShort()}</a></>
+);
 const sublineOr = (subline) => (VENUE_SUBLINE ? { subline: VENUE_SUBLINE, venue: true } : { subline });
 const GALA_SLIDE = {
     coming_soon: { ...sublineOr(gala.homeSlide.subline), primary: 'Learn More', sponsor: true, kicker: true },
     on_sale: { ...sublineOr(gala.homeSlide.subline), primary: 'Learn More', sponsor: true, kicker: true },
-    online_closed: { ...sublineOr(gala.homeSlide.closedSubline), primary: 'Event Details', sponsor: false, kicker: false },
+    online_closed: { ...sublineOr(gala.homeSlide.closedSubline), primary: 'Event Details', sponsor: false, directions: true, kicker: false },
     past: { subline: gala.homeSlide.pastSubline, primary: 'See the Recap', sponsor: false, kicker: false },
 };
 
@@ -112,6 +116,9 @@ const SliderOne = () => {
                                                 <Link href="/gala" className="gala-slide__btn gala-slide__btn--primary">{galaSlide.primary}</Link>
                                                 {galaSlide.sponsor && (
                                                     <Link href="/gala#sponsor" className="gala-slide__btn gala-slide__btn--outline">Become a Sponsor</Link>
+                                                )}
+                                                {galaSlide.directions && venueDirectionsUrl() && (
+                                                    <a href={venueDirectionsUrl()} className="gala-slide__btn gala-slide__btn--outline" {...EXTERNAL_LINK}>Get Directions</a>
                                                 )}
                                             </div>
                                             <span className="gala-slide__motif" aria-hidden="true"></span>

@@ -74,6 +74,21 @@ export const venueAddress = (g = GALA) => {
     return [name, street, venueCityLine(g)].filter(Boolean).join(', ');
 };
 
+// What Google Maps is asked for: the street address alone gets one pin and an
+// address card. With the venue's name and suite number too, Google answers with
+// a list of places in the building instead (no pin).
+export const venueMapQuery = (g = GALA) => {
+    if (!hasVenue(g)) return null;
+    return g.venue.street ? `${g.venue.street}, ${venueCityLine(g)}` : venueAddress(g);
+};
+
+// "Get directions": Google Maps (the app, on phones) with a route from wherever
+// the visitor is to the venue. null until there's a venue.
+export const venueDirectionsUrl = (g = GALA) => {
+    const query = venueMapQuery(g);
+    return query && `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(query)}`;
+};
+
 // While venue.previousName is set (the venue changed after it was announced),
 // /gala and the homepage slide show a bold VENUE_NOTICE_LABEL with the text:
 // "The gala has moved from Empire Event Center to Delina Bistro & Bar, 6750

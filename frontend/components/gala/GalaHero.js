@@ -1,6 +1,6 @@
 import React from 'react';
 import { gala } from '../../config/gala-2026';
-import { BEFORE_EVENT, timeRange, VENUE_NOTICE_LABEL, venueNotice } from '../../lib/gala';
+import { BEFORE_EVENT, EXTERNAL_LINK, timeRange, VENUE_NOTICE_LABEL, venueDirectionsUrl, venueNotice } from '../../lib/gala';
 import { ShowIn } from './GalaState';
 import Countdown from './Countdown';
 import Motif from './Motif';
@@ -50,6 +50,9 @@ const GalaHero = () => {
                                 {VENUE_NOTICE_LABEL}
                             </p>
                             <p>{venueNotice()}</p>
+                            <a href={venueDirectionsUrl()} className={`${styles.textLink} ${styles.directionsLink}`} {...EXTERNAL_LINK}>
+                                <i className="fa fa-location-arrow" aria-hidden="true"></i><span>Get directions</span>
+                            </a>
                         </div>
                     )}
                     <div className={styles.intro}>

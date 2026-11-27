@@ -974,6 +974,18 @@ a[href^="mailto:"] {
     color: #E3C98F;
     font-weight: 700;
 }
+/* The new address links to directions in Google Maps. */
+.slider-area .gala-slide .gala-slide__subline--venue a,
+.slider-area .gala-slide .gala-slide__subline--venue a:hover {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: rgba(227, 201, 143, 0.7);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+}
+.slider-area .gala-slide .gala-slide__subline--venue a:hover {
+    text-decoration-color: #E3C98F;
+}
 .slider-area .gala-slide .gala-slide__ctas {
     display: flex;
     flex-wrap: wrap;

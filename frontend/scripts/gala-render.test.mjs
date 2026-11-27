@@ -16,7 +16,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { startServer, openPage, blockExternal } from './next-server.mjs';
-import { cardTimeLabel, checkoutMode, galaSlideVisible, getGalaState, providerInfo, STORY_IMAGE, timePublished, VENUE_NOTICE_LABEL, venueNotice, venueNoticeShort } from '../lib/gala.js';
+import { cardTimeLabel, checkoutMode, galaSlideVisible, getGalaState, providerInfo, STORY_IMAGE, timePublished, VENUE_NOTICE_LABEL, venueDirectionsUrl, venueNotice, venueNoticeShort } from '../lib/gala.js';
 import { gala } from '../config/gala-2026.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -176,6 +176,10 @@ test('/gala: confirmed venue renders (hero chip + FAQ with a lazy, titled map)',
     assert.equal(await map.getAttribute('title'), 'Map to Delina Bistro & Bar');
     // The street address alone: with the name and suite too, Google shows a list, not a pin.
     assert.equal(new URL(await map.getAttribute('src')).searchParams.get('q'), '6750 Abrams Rd #105, Dallas, TX 75231');
+    // A tap away from directions in Google Maps (the map above it is only a picture on phones).
+    const directions = panel.getByRole('link', { name: 'Get directions' });
+    assert.equal(await directions.getAttribute('href'), venueDirectionsUrl());
+    assert.equal(await directions.getAttribute('target'), '_blank');
     const questions = (await faq.locator('button[aria-expanded]').allInnerTexts()).map((q) => q.trim());
     assert.deepEqual(questions, [
       'What should I wear?', 'When and where is the gala?', 'What do I need to bring?',
@@ -243,8 +247,10 @@ test('venue change: /gala and the homepage slide flag the new location until the
       await page.goto(`${origin}/gala`, { waitUntil: 'load', timeout: 30000 });
       await page.waitForFunction((s) => document.documentElement.dataset.galaState === s, state);
       const notice = page.locator('#top p', { hasText: 'moved from' });
+      const heroDirections = page.locator('#top').getByRole('link', { name: 'Get directions' });
       if (state === 'past') {
         assert.equal(await notice.count(), 0, `${state}: no notice once the night is over`);
+        assert.equal(await heroDirections.count(), 0, state);
       } else {
         assert.equal(await notice.count(), 1, state);
         assert.equal(await notice.textContent(), venueNotice());
@@ -253,6 +259,8 @@ test('venue change: /gala and the homepage slide flag the new location until the
         const label = notice.locator('xpath=preceding-sibling::p[1]');
         assert.equal((await label.textContent()).trim(), VENUE_NOTICE_LABEL);
         assert.equal(await label.evaluate((el) => getComputedStyle(el).fontWeight), '700');
+        // Directions to the new venue, right under the notice.
+        assert.equal(await heroDirections.getAttribute('href'), venueDirectionsUrl(), state);
       }
       await page.goto(`${origin}/`, { waitUntil: 'load', timeout: 30000 });
       await page.waitForFunction((s) => document.documentElement.dataset.galaState === s, state);
@@ -266,7 +274,14 @@ test('venue change: /gala and the homepage slide flag the new location until the
         const label = subline.locator('strong');
         assert.equal(await label.evaluate((el) => getComputedStyle(el).color), 'rgb(227, 201, 143)');
         assert.equal(await label.evaluate((el) => getComputedStyle(el).fontWeight), '700');
+        // The new address links to directions, keeping the subline's color.
+        const address = subline.locator('a');
+        assert.equal(await address.getAttribute('href'), venueDirectionsUrl(), state);
+        assert.equal(await address.evaluate((el) => getComputedStyle(el).color), 'rgb(247, 241, 230)');
       }
+      // On the night, once online sales close, a Get Directions button takes the sponsor button's place.
+      const ctas = page.locator('.frontpageSwiper .slide-bg-gala .gala-slide__ctas').first();
+      assert.equal(await ctas.locator(`a[href="${venueDirectionsUrl()}"]`).count(), state === 'online_closed' ? 1 : 0, state);
     } finally {
       await ctx.close();
     }

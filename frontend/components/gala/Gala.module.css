@@ -331,6 +331,15 @@
 }
 .eyebrow.venueNoticeLabel { margin-bottom: 6px; font-weight: 700; }
 .venueNoticeLabel i { margin-right: 8px; color: var(--gala-gold); }
+/* "Get directions" (Google Maps), in the notice above and under the FAQ's
+   address: a textLink whose underline is on the words only, not the icon. */
+.textLink.directionsLink { gap: 8px; text-decoration: none; }
+.directionsLink span {
+    text-decoration: underline;
+    text-decoration-color: var(--rule);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+}
 
 /* ------------------------------------------------------------ story */
 

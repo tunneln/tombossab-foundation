@@ -1,6 +1,6 @@
 import React from 'react';
 import { gala } from '../../config/gala-2026';
-import { CONTACT_EMAIL, EXTERNAL_LINK, formatPrice, hasVenue, providerInfo, tierDeductible, timeRange, venueAddress, venueCityLine } from '../../lib/gala';
+import { CONTACT_EMAIL, EXTERNAL_LINK, formatPrice, hasVenue, providerInfo, tierDeductible, timeRange, venueCityLine, venueDirectionsUrl, venueMapQuery } from '../../lib/gala';
 import FaqAccordion from './FaqAccordion';
 import styles from './Gala.module.css';
 
@@ -17,11 +17,7 @@ const WhenWhere = () => {
         );
     }
     const { name, street } = gala.venue;
-    // The street address alone gets one pin and an address card. With the
-    // venue's name and suite number too, Google answers with a list of places
-    // in the building instead (no pin).
-    const mapQuery = street ? `${street}, ${venueCityLine()}` : venueAddress();
-    const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`;
+    const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(venueMapQuery())}&output=embed`;
     return (
         <>
             <p>{timeRange() ? `${gala.dateDisplay}, ${timeRange()}.` : `${gala.dateDisplay}. Time to be announced.`}</p>
@@ -30,6 +26,9 @@ const WhenWhere = () => {
                 {street && <>{street}<br /></>}
                 {venueCityLine()}
             </p>
+            <a href={venueDirectionsUrl()} className={`${styles.textLink} ${styles.directionsLink}`} {...EXTERNAL_LINK}>
+                <i className="fa fa-location-arrow" aria-hidden="true"></i><span>Get directions</span>
+            </a>
             <div className={styles.mapFrame}>
                 <iframe src={mapSrc} title={`Map to ${name}`} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
             </div>

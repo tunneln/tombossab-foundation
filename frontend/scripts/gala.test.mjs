@@ -12,7 +12,7 @@ import {
     getGalaState, defaultGalaState, checkoutMode, tierDeductible, tierAvailability,
     sponsorshipHref, minTicketPrice, formatPrice, formatTime, formatWeekdayDate, timeRange, cardTimeLabel,
     daysUntil, countdownLabel, googleCalendarUrl, icsContent, eventJsonLd, shareLinks,
-    venueAddress, VENUE_NOTICE_LABEL, venueNotice, venueNoticeShort, CONFIRM_FIELDS, confirmChecklist, getPath, GALA_META, providerInfo, timePublished,
+    venueAddress, venueMapQuery, venueDirectionsUrl, VENUE_NOTICE_LABEL, venueNotice, venueNoticeShort, CONFIRM_FIELDS, confirmChecklist, getPath, GALA_META, providerInfo, timePublished,
     doorPricesLine, galaSlideVisible, isPlainClick,
 } from '../lib/gala.js';
 
@@ -255,6 +255,22 @@ test('venue change: the notices name the new venue (and the old one) only while 
     const noVenue = variant({ venue: { name: null, street: null, city: null, postalCode: null } });
     assert.equal(venueNotice(noVenue), null, 'no notice before a venue is set');
     assert.equal(venueNoticeShort(noVenue), null);
+});
+
+test('directions: Google Maps gets the street address, not the venue name', () => {
+    // The name and suite would get a list of places in the building, not one pin.
+    assert.equal(venueMapQuery(gala), '6750 Abrams Rd #105, Dallas, TX 75231');
+    const url = new URL(venueDirectionsUrl(gala));
+    assert.equal(`${url.origin}${url.pathname}`, 'https://www.google.com/maps/dir/');
+    assert.equal(url.searchParams.get('api'), '1');
+    assert.equal(url.searchParams.get('destination'), '6750 Abrams Rd #105, Dallas, TX 75231');
+    // "#" must be encoded, or everything after it is a URL fragment Google never sees.
+    assert.match(venueDirectionsUrl(gala), /destination=6750%20Abrams%20Rd%20%23105%2C%20Dallas/);
+    const noStreet = variant({ venue: { name: 'Test Hall', street: null, city: 'Dallas', region: 'TX', postalCode: null } });
+    assert.equal(venueMapQuery(noStreet), 'Test Hall, Dallas, TX');
+    const noVenue = variant({ venue: { name: null, street: null, city: null, postalCode: null } });
+    assert.equal(venueMapQuery(noVenue), null);
+    assert.equal(venueDirectionsUrl(noVenue), null, 'no link before a venue is set');
 });
 
 test('provider: platform behavior keys off checkout.provider alone', () => {

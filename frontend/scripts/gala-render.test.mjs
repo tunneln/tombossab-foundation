@@ -169,13 +169,13 @@ test('/gala: confirmed venue renders (hero chip + FAQ with a lazy, titled map)',
     const faq = page.locator('#faq');
     await faq.getByRole('button', { name: 'When and where is the gala?' }).click();
     const panel = faq.locator('[role="region"]:visible');
-    assert.match(await panel.innerText(), /6770 Abrams Rd #105/);
+    assert.match(await panel.innerText(), /6750 Abrams Rd #105/);
     assert.match(await panel.innerText(), /Dallas, TX 75231/);
     const map = panel.locator('iframe');
     assert.equal(await map.getAttribute('loading'), 'lazy');
     assert.equal(await map.getAttribute('title'), 'Map to Delina Bistro & Bar');
     // The street address alone: with the name and suite too, Google shows a list, not a pin.
-    assert.equal(new URL(await map.getAttribute('src')).searchParams.get('q'), '6770 Abrams Rd #105, Dallas, TX 75231');
+    assert.equal(new URL(await map.getAttribute('src')).searchParams.get('q'), '6750 Abrams Rd #105, Dallas, TX 75231');
     const questions = (await faq.locator('button[aria-expanded]').allInnerTexts()).map((q) => q.trim());
     assert.deepEqual(questions, [
       'What should I wear?', 'When and where is the gala?', 'What do I need to bring?',

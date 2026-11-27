@@ -50,11 +50,11 @@ test('config: event facts match the spec', () => {
     assert.equal(gala.eventDate, '2026-11-28');
     assert.equal(gala.timezone, 'America/Chicago');
     assert.deepEqual(gala.venue, {
-        name: 'Delina Bistro & Bar', street: '6770 Abrams Rd #105',
+        name: 'Delina Bistro & Bar', street: '6750 Abrams Rd #105',
         city: 'Dallas', region: 'TX', postalCode: '75231',
         previousName: 'Empire Event Center',
     });
-    assert.equal(gala.calendarRevision, 1, 'bumped for the venue change');
+    assert.equal(gala.calendarRevision, 2, 'bumped for the venue change, then the street number fix');
     assert.equal(gala.startAt, '2026-11-28T17:00:00-06:00');
     assert.deepEqual(gala.tiers.attend.map((t) => [t.id, t.price, t.doorPrice]),
         [['student', 30, 40], ['ga', 55, 65], ['champion', 85, 95]]);
@@ -240,7 +240,7 @@ test('formatting: a start time is published only once confirmed', () => {
     assert.equal(timeRange(g), '6:00 PM – 10:00 PM');
     assert.equal(cardTimeLabel(g), '6:00pm to 10:00pm');
     assert.equal(venueAddress(g), 'Test Hall, 1 Main St, Dallas, TX 75201');
-    assert.equal(venueAddress(gala), 'Delina Bistro & Bar, 6770 Abrams Rd #105, Dallas, TX 75231');
+    assert.equal(venueAddress(gala), 'Delina Bistro & Bar, 6750 Abrams Rd #105, Dallas, TX 75231');
 });
 
 test('venue change: the notices name the new venue (and the old one) only while previousName is set', () => {
@@ -289,9 +289,9 @@ test('calendar: confirmed 5:00-10:00 PM CST -> 23:00Z to 04:00Z next day', () =>
     const ics = icsContent(at('2026-10-02T17:00:00Z'), g);
     assert.match(ics, /\r\nDTSTART:20261128T230000Z\r\n/);
     assert.match(ics, /\r\nDTEND:20261129T040000Z\r\n/);
-    assert.match(ics, /\r\nLOCATION:Delina Bistro & Bar\\, 6770 Abrams Rd #105\\, Dallas\\, TX 75231\r\n/);
+    assert.match(ics, /\r\nLOCATION:Delina Bistro & Bar\\, 6750 Abrams Rd #105\\, Dallas\\, TX 75231\r\n/);
     // A revised event gets a new UID, so re-adding it creates an entry with the new venue.
-    assert.match(ics, /\r\nUID:gala-2026-r1@tombossabfoundation\.org\r\n/);
+    assert.match(ics, /\r\nUID:gala-2026-r2@tombossabfoundation\.org\r\n/);
     assert.match(icsContent(new Date(), variant({ calendarRevision: 0 })), /\r\nUID:gala-2026@tombossabfoundation\.org\r\n/);
     assert.doesNotMatch(ics, /SEQUENCE/);
     assert.equal(new URL(googleCalendarUrl(g)).searchParams.get('dates'), '20261128T230000Z/20261129T040000Z');
@@ -338,7 +338,7 @@ test('JSON-LD: absent while the start time is unconfirmed', () => {
     const ld = eventJsonLd('coming_soon', gala);
     assert.equal(ld.startDate, '2026-11-28T17:00:00-06:00');
     assert.equal(ld.location.name, 'Delina Bistro & Bar');
-    assert.equal(ld.location.address.streetAddress, '6770 Abrams Rd #105');
+    assert.equal(ld.location.address.streetAddress, '6750 Abrams Rd #105');
     assert.equal(ld.location.address.postalCode, '75231');
     assert.equal(ld.endDate, '2026-11-28T22:00:00-06:00');
 });

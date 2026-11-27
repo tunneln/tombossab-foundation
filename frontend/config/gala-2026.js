@@ -29,7 +29,9 @@ export const gala = {
     endAt: '2026-11-28T22:00:00-06:00', // 10:00 PM CST
     venue: {
         name: 'Delina Bistro & Bar',
-        street: '6770 Abrams Rd #105',
+        // 6750, confirmed by the organizers on Nov 27. Google Maps' listing for
+        // Delina wrongly says 6770; don't copy the address from there.
+        street: '6750 Abrams Rd #105',
         city: 'Dallas',
         region: 'TX',
         postalCode: '75231',
@@ -42,7 +44,8 @@ export const gala = {
     // (Apple Calendar and Google ignore a re-added .ics with the same UID), so
     // each revision gets its own UID: adding the event again always creates an
     // entry with the new details. Guests are asked to delete the old one.
-    calendarRevision: 1,
+    // 1 = moved to Delina (Nov 23); 2 = street number corrected to 6750 (Nov 27).
+    calendarRevision: 2,
     dressCode: {
         label: 'Cocktail Attire',
         detail:

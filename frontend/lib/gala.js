@@ -76,9 +76,9 @@ export const venueAddress = (g = GALA) => {
 
 // While venue.previousName is set (the venue changed after it was announced),
 // /gala and the homepage slide show a bold VENUE_NOTICE_LABEL with the text:
-// "The gala has moved from Empire Event Center to Delina Bistro & Bar, 6770
+// "The gala has moved from Empire Event Center to Delina Bistro & Bar, 6750
 // Abrams Rd #105, Dallas." on the /gala hero, and the shorter "Delina Bistro &
-// Bar, 6770 Abrams Rd #105" on the homepage slide. Both null otherwise. Non-
+// Bar, 6750 Abrams Rd #105" on the homepage slide. Both null otherwise. Non-
 // breaking spaces keep the new venue's name and street each on one line.
 export const VENUE_NOTICE_LABEL = 'New location';
 
